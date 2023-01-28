@@ -427,7 +427,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor), Resources.INVALID_CONSTRUCTOR);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor), Resources.INVALID_DEPENDENCY);
         }
 
         [Test]
@@ -435,7 +435,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, new { }), Resources.INVALID_CONSTRUCTOR);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, new { }), Resources.INVALID_DEPENDENCY);
         }
 
         [Test]

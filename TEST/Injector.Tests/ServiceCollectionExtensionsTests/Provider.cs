@@ -61,7 +61,7 @@ namespace Solti.Utils.DI.Tests
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldThrowIfTheProviderHasNonInterfaceDependency(Lifetime lifetime) =>
-            Assert.Throws<ArgumentException>(() => Collection.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(lifetime), Resources.INVALID_CONSTRUCTOR);
+            Assert.Throws<ArgumentException>(() => Collection.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(lifetime), Resources.INVALID_DEPENDENCY);
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldSupportServiceActivatorAttribute(Lifetime lifetime) =>

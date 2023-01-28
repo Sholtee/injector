@@ -3,6 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System.Collections.Generic;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -26,6 +27,11 @@ namespace Solti.Utils.DI.Interfaces
         /// Contains the method how to dispose the created service instances.
         /// </summary>
         public ServiceDisposalMode DisposalMode { get; set; } = ServiceDisposalMode.Force;
+
+        /// <summary>
+        /// Additional dependency resolvers to be invoked before the default ones.
+        /// </summary>
+        public IReadOnlyList<IDependencyResolver>? DependencyResolvers { get; set; }
 
         /// <summary>
         /// The default options.

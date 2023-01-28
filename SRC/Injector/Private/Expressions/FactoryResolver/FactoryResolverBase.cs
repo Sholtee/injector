@@ -126,7 +126,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         protected static Expression DefaultServiceResolver(ParameterExpression injector, Type type, string _, OptionsAttribute? options)
         {
-            type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR);
+            type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_DEPENDENCY);
 
             return isLazy
                 //

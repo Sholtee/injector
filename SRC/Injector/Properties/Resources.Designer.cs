@@ -115,11 +115,11 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All constructor arguments must be an interface/Lazy&lt;interface&gt;..
+        ///   Looks up a localized string similar to A dependency must be an interface/Lazy&lt;interface&gt;..
         /// </summary>
-        internal static string INVALID_CONSTRUCTOR {
+        internal static string INVALID_DEPENDENCY {
             get {
-                return ResourceManager.GetString("INVALID_CONSTRUCTOR", resourceCulture);
+                return ResourceManager.GetString("INVALID_DEPENDENCY", resourceCulture);
             }
         }
         

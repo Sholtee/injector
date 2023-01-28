@@ -154,7 +154,7 @@ namespace Solti.Utils.DI.Internals
                         valueProvider
                     );
 
-                type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_CONSTRUCTOR, nameof(constructor));
+                type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_DEPENDENCY, nameof(constructor));
 
                 return isLazy
                     //
