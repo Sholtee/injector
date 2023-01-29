@@ -167,7 +167,14 @@ namespace Solti.Utils.DI.Internals
                 return FSlots[slot]!;
 
             if (FInstantiationLock is not null)
+            {
+#if DEBUG
+                bool lockTaken = Monitor.TryEnter(FInstantiationLock, TimeSpan.FromSeconds(10));
+                Debug.Assert(lockTaken, "Cannot acquire lock... Possible deadlock");
+#else
                 Monitor.Enter(FInstantiationLock);
+#endif
+            }
             try
             {
                 if (!features.HasFlag(ServiceEntryFeatures.CreateSingleInstance))

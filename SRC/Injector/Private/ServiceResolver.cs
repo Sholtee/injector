@@ -87,8 +87,13 @@ namespace Solti.Utils.DI.Internals
             // Since IServiceEntryBuilder is not meant to be thread-safe, every write operations
             // need to be exclusive.
             //
-
-            lock (FBuildLock)
+#if DEBUG
+            bool lockTaken = Monitor.TryEnter(FBuildLock, TimeSpan.FromSeconds(10));
+            Debug.Assert(lockTaken, "Cannot acquire lock... Possible deadlock");
+#else
+            Monitor.Enter(FBuildLock);
+#endif
+            try
             {
                 //
                 // Another thread may have done this work while we reached here
@@ -100,6 +105,10 @@ namespace Solti.Utils.DI.Internals
                     FEntryBuilder.Build(specialized);
                 }
                 return specialized;
+            }
+            finally
+            {
+                Monitor.Exit(FBuildLock);
             }
         }
 
