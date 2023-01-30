@@ -309,6 +309,39 @@ namespace Solti.Utils.DI.Internals.Tests
             );
         }
 
+        private sealed class BlockingServiceEntry : ProducibleServiceEntry
+        {
+            public BlockingServiceEntry(Type @interface) : base(@interface, null, (_, _) => null, ServiceOptions.Default)
+            {
+            }
+
+            public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+            {
+                Evt.Wait();
+                return new BlockingServiceEntry(Interface.MakeGenericType(genericArguments));
+            }
+
+            public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.SupportsBuild;
+
+            public ManualResetEventSlim Evt = new();
+        }
+
+        [Test]
+        public void Resolver_ShouldHaveTimeout()
+        {
+            BlockingServiceEntry entry = new(typeof(IList<>));
+            IServiceResolver resolver = ServiceResolver.Create(new[] { entry }, ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
+
+            Task<AbstractServiceEntry>
+                t1 = Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<int>), null)),
+                t2 = Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<object>), null));
+
+            entry.Evt.Set();
+
+            Assert.DoesNotThrow(t1.Wait);
+            Assert.Throws<TimeoutException>(() => t2.GetAwaiter().GetResult());
+        }
+
         [Test]
         public void Resolver_ShouldReturnNullOnNonRegisteredService([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode)
         {

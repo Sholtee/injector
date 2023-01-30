@@ -17,6 +17,8 @@ namespace Solti.Utils.DI.Tests
     using Internals;
     using Primitives.Patterns;
     using Properties;
+    using System.Threading.Tasks;
+    using System.Threading;
 
     public partial class InjectorTests
     {
@@ -47,6 +49,31 @@ namespace Solti.Utils.DI.Tests
         public void Injector_Get_ShouldBeNullChecked()
         {
             Assert.Throws<ArgumentNullException>(() => IInjectorBasicExtensions.Get<IDictionary>(null));
+        }
+
+        [Test]
+        public void Get_ShouldHaveTimeout()
+        {
+            ManualResetEventSlim evt = new();
+
+            Func<IInjector, Type, object> fact = Factory;
+
+            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IList<>), (i, t) => fact(i, t), Lifetime.Singleton), ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
+
+            Task
+                t1 = Task.Factory.StartNew(() => Root.CreateScope().Get<IList<int>>()),
+                t2 = Task.Factory.StartNew(() => Root.CreateScope().Get<IList<int>>());
+
+            evt.Set();
+
+            Assert.DoesNotThrow(t1.Wait);
+            Assert.Throws<TimeoutException>(() => t2.GetAwaiter().GetResult());
+
+            object Factory(IInjector injector, Type iface)
+            {
+                evt.Wait();
+                return Activator.CreateInstance(typeof(List<>).MakeGenericType(iface.GetGenericArguments()));
+            }
         }
 
         [Test]

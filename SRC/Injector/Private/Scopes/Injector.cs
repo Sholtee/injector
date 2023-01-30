@@ -168,12 +168,13 @@ namespace Solti.Utils.DI.Internals
 
             if (FInstantiationLock is not null)
             {
-#if DEBUG
-                bool lockTaken = Monitor.TryEnter(FInstantiationLock, TimeSpan.FromSeconds(10));
-                Debug.Assert(lockTaken, "Cannot acquire lock... Possible deadlock");
-#else
-                Monitor.Enter(FInstantiationLock);
-#endif
+                //
+                // The same thread may acquire the lock more times so this approach supports
+                // recursion.
+                //
+
+                if (!Monitor.TryEnter(FInstantiationLock, Options.ResolutionLockTimeout))
+                    throw new TimeoutException();
             }
             try
             {
@@ -198,6 +199,10 @@ namespace Solti.Utils.DI.Internals
             finally
             {
                 if (FInstantiationLock is not null)
+                    //
+                    // This won't release the lock when called in a recursion.
+                    //
+
                     Monitor.Exit(FInstantiationLock);
             }
         }

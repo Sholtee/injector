@@ -33,6 +33,11 @@ namespace Solti.Utils.DI.Interfaces
         public ServiceResolutionMode ServiceResolutionMode { get; set; } = ServiceResolutionMode.AOT;
 
         /// <summary>
+        /// Specifies the maximum amount of time to wait to acquire the resolution lock.
+        /// </summary>
+        public TimeSpan ResolutionLockTimeout { get; set; } = TimeSpan.FromSeconds(10);
+
+        /// <summary>
         /// The default options.
         /// </summary>
         public static ScopeOptions Default { get; } = new();

@@ -26,6 +26,7 @@ namespace Solti.Utils.DI.Internals
         private readonly bool FInitialized;
         private readonly Func<object, AbstractServiceEntry?> FValueFactory;
         private readonly object FBuildLock = new();
+        private readonly TimeSpan FBuildLockTimeout;
         private int FSlots;
 
         private sealed class CompositeKey : IServiceId
@@ -87,12 +88,9 @@ namespace Solti.Utils.DI.Internals
             // Since IServiceEntryBuilder is not meant to be thread-safe, every write operations
             // need to be exclusive.
             //
-#if DEBUG
-            bool lockTaken = Monitor.TryEnter(FBuildLock, TimeSpan.FromSeconds(10));
-            Debug.Assert(lockTaken, "Cannot acquire lock... Possible deadlock");
-#else
-            Monitor.Enter(FBuildLock);
-#endif
+
+            if (!Monitor.TryEnter(FBuildLock, FBuildLockTimeout))
+                throw new TimeoutException();
             try
             {
                 //
@@ -120,6 +118,7 @@ namespace Solti.Utils.DI.Internals
         )
         {
             FCompiler = compiler;
+            FBuildLockTimeout = scopeOptions.ResolutionLockTimeout;
 
             //
             // Collect all the possible service names to make ResolveMany() more efficient
