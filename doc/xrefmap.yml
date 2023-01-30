@@ -1640,6 +1640,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.op_Inequality
   fullName: Solti.Utils.DI.Interfaces.ScopeOptions.Inequality
   nameWithType: ScopeOptions.Inequality
+- uid: Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout
+  name: ResolutionLockTimeout
+  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_ResolutionLockTimeout
+  commentId: P:Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout
+  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout
+  nameWithType: ScopeOptions.ResolutionLockTimeout
+- uid: Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout*
+  name: ResolutionLockTimeout
+  href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_ResolutionLockTimeout_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout
+  fullName: Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout
+  nameWithType: ScopeOptions.ResolutionLockTimeout
 - uid: Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode
   name: ServiceResolutionMode
   href: Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_ServiceResolutionMode
