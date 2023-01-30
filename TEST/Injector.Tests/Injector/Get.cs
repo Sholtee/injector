@@ -52,17 +52,20 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Get_ShouldHaveTimeout()
+        public void Injector_Get_ShouldHaveTimeout()
         {
-            ManualResetEventSlim evt = new();
-
+            ManualResetEventSlim evt = new();   
             Func<IInjector, Type, object> fact = Factory;
 
             Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IList<>), (i, t) => fact(i, t), Lifetime.Singleton), ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
 
-            Task
-                t1 = Task.Factory.StartNew(() => Root.CreateScope().Get<IList<int>>()),
-                t2 = Task.Factory.StartNew(() => Root.CreateScope().Get<IList<int>>());
+            bool t1Started = false;
+            Task t1 = Task.Factory.StartNew(() => { t1Started = true; return Root.CreateScope().Get<IList<int>>(); });
+            SpinWait.SpinUntil(() => t1Started);
+
+            bool t2Started = false;
+            Task t2 = Task.Factory.StartNew(() => { t2Started = true; return Root.CreateScope().Get<IList<int>>(); });
+            SpinWait.SpinUntil(() => t2Started);
 
             evt.Set();
 

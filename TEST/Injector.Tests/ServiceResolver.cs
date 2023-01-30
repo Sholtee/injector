@@ -332,9 +332,17 @@ namespace Solti.Utils.DI.Internals.Tests
             BlockingServiceEntry entry = new(typeof(IList<>));
             IServiceResolver resolver = ServiceResolver.Create(new[] { entry }, ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
 
-            Task<AbstractServiceEntry>
-                t1 = Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<int>), null)),
-                t2 = Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<object>), null));
+            //
+            // First thread will enter the lock even if the event has not been set
+            //
+
+            bool t1Started = false;
+            Task<AbstractServiceEntry> t1 = Task<AbstractServiceEntry>.Factory.StartNew(() => { t1Started = true; return resolver.Resolve(typeof(IList<int>), null); });
+            SpinWait.SpinUntil(() => t1Started);
+
+            bool t2Started = false;
+            Task<AbstractServiceEntry> t2 = Task<AbstractServiceEntry>.Factory.StartNew(() => { t2Started = true; return resolver.Resolve(typeof(IList<int>), null); });
+            SpinWait.SpinUntil(() => t2Started);
 
             entry.Evt.Set();
 
