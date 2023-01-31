@@ -19,10 +19,9 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <param name="injector">The <see cref="IInjector"/> instance to be used to resolve the dependency.</param>
         /// <param name="dependency">The dependency descriptor.</param>
-        /// <param name="options">The options related to depdendency.</param>
         /// <param name="userData">Optional data, passed by the end-user.</param>
         /// <param name="next">Invokes the next resolver.</param>
         /// <returns>The resolution of the requiested dependency, for instance <code>(TDependency) injector.Get(dependency.Type, options.Name)</code></returns>
-        Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, OptionsAttribute? options, object? userData, Func<Expression> next);
+        Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Func<Expression> next);
     }
 }

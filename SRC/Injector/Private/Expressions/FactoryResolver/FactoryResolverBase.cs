@@ -18,37 +18,7 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class FactoryResolverBase
     {
-        private static readonly MethodInfo
-            FInjectorGet     = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
-            FInjectorTryGet  = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null)),
-            FCreateLazy      = MethodInfoExtractor.Extract(() => CreateLazy<object>(null!, null)).GetGenericMethodDefinition(),
-            FCreateLazyOpt   = MethodInfoExtractor.Extract(() => CreateLazyOpt<object>(null!, null)).GetGenericMethodDefinition();
-
-        private static Lazy<TService> CreateLazy<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService)injector.Get(typeof(TService), name));
-
-        private static Lazy<TService> CreateLazyOpt<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService)injector.TryGet(typeof(TService), name)!);
-
-        protected static Type? GetEffectiveType(Type type, out bool isLazy)
-        {
-            if (type.IsInterface)
-            {
-                isLazy = false;
-                return type;
-            }
-
-            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>))
-            {
-                type = type.GetGenericArguments().Single();
-                if (type.IsInterface)
-                {
-                    isLazy = true;
-                    return type;
-                }
-            }
-
-            isLazy = false;
-            return null;
-        }
+        private readonly IReadOnlyList<IDependencyResolver> FResolvers;
 
         protected static void EnsureCanBeInstantiated(Type type) 
         {
@@ -65,6 +35,20 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(type));
         }
 
+        protected virtual Expression ResolveDependency
+        (
+            ParameterExpression injector,
+            DependencyDescriptor dependency,
+            object? userData
+        )
+        {
+            return Resolve(0);
+
+            Expression Resolve(int i) => i == FResolvers.Count
+                ? throw new InvalidOperationException(Resources.INVALID_DEPENDENCY)
+                : FResolvers[i].Resolve(injector, dependency, userData, () => Resolve(i + 1));
+        }
+
         /// <summary>
         /// <code>
         /// new TClass(..., ..., ...)
@@ -74,11 +58,11 @@ namespace Solti.Utils.DI.Internals
         /// }
         /// </code>
         /// </summary>
-        protected static Expression New
+        protected virtual Expression ResolveService
         (
             ConstructorInfo constructor,
             ParameterExpression injector,
-            Func<ParameterExpression, Type, string, OptionsAttribute?, Expression> resolveDep
+            object? userData
         ) => Expression.MemberInit
         (
             Expression.New
@@ -88,12 +72,11 @@ namespace Solti.Utils.DI.Internals
                     .GetParameters()
                     .Select
                     (
-                        param => resolveDep
+                        param => ResolveDependency
                         (
                             injector,
-                            param.ParameterType,
-                            param.Name,
-                            param.GetCustomAttribute<OptionsAttribute>()
+                            new DependencyDescriptor(param),
+                            userData
                         )
                     )
             ),
@@ -106,41 +89,15 @@ namespace Solti.Utils.DI.Internals
                     property => Expression.Bind
                     (
                         property,
-                        resolveDep
+                        ResolveDependency
                         (
                             injector,
-                            property.PropertyType,
-                            property.Name,
-                            property.GetCustomAttribute<OptionsAttribute>()
+                            new DependencyDescriptor(property),
+                            userData
                         )
                     )
                 )
         );
-
-        /// <summary>
-        /// <code>
-        /// (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
-        /// // or
-        /// Lazy&lt;IInterface&gt;(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
-        /// </code>
-        /// </summary>
-        protected static Expression DefaultServiceResolver(ParameterExpression injector, Type type, string _, OptionsAttribute? options)
-        {
-            type = GetEffectiveType(type, out bool isLazy) ?? throw new ArgumentException(Resources.INVALID_DEPENDENCY);
-
-            return isLazy
-                //
-                // Lazy<IInterface>(() => (IInterface) injector.[Try]Get(typeof(IInterface), svcName))
-                //
-
-                ? ResolveLazyService(injector, type, options)
-
-                //
-                // (TInterface) injector.[Try]Get(typeof(IInterface), svcName)
-                //
-
-                : ResolveService(injector, type, options);
-        }
 
         protected static Expression<TDelegate> CreateActivator<TDelegate>(Func<IReadOnlyList<ParameterExpression>, Expression> createInstance, params ParameterExpression[] variables) where TDelegate : Delegate
         {
@@ -171,86 +128,39 @@ namespace Solti.Utils.DI.Internals
             return resolver;
         }
 
-        protected static Expression<TDelegate> CreateActivator<TDelegate>
+        protected Expression<TDelegate> CreateActivator<TDelegate>
         (
             ConstructorInfo constructor,
-            Func<ParameterExpression, Type, string, OptionsAttribute?, Expression> resolveSvc,
+            object? userData,
             params ParameterExpression[] variables
         ) where TDelegate : Delegate => CreateActivator<TDelegate>
         (
-            paramz => New
+            paramz => ResolveService
             (
                 constructor,
                 paramz.Single(static param => param.Type == typeof(IInjector)),
-                resolveSvc
+                userData
             ),
             variables
         );
 
-        protected static Expression ResolveService(ParameterExpression injector, Type iface, OptionsAttribute? options) => Expression.Convert
-        (
-            Expression.Call
-            (
-                injector,
-                options?.Optional is true ? FInjectorTryGet : FInjectorGet,
-                Expression.Constant(iface),
-                Expression.Constant(options?.Name, typeof(string))
-            ),
-            iface
-        );
-
-        protected internal static Expression ResolveLazyService(ParameterExpression injector, Type iface, OptionsAttribute? options)
+        protected FactoryResolverBase(IReadOnlyList<IDependencyResolver>? additionalResolvers)
         {
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
-
-            //
-            // According to ServiceActivator_Lazy perf tests, runtime built lambdas containing a nested function
-            // are ridiculously slow (I suspect the nested lambda is instantiated by an Activator.CreateInstance
-            // call).
-            //
-
-            /*
-            Type delegateType = typeof(Func<>).MakeGenericType(iface);
-
-            //
-            // () => (iface) injector.[Try]Get(iface, svcName)
-            //
-
-            LambdaExpression valueFactory = Expression.Lambda
-            (
-                delegateType,
-                GetService(injector, iface, options)
-            );
-
-            //
-            // new Lazy<iface>(() => (iface) injector.[Try]Get(iface, svcName))
-            //
-
-            Type lazyType = typeof(Lazy<>).MakeGenericType(iface);
-
-            return Expression.New
-            (
-                lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, ConstructorInfo.ConstructorName),
-                valueFactory
-            );
-            */
-
-            //
-            // This workaround solves the above mentioned issue but suppresses the ServiceRequestReplacerVisitor.
-            // Altough it shouldn't matter as Lazy pattern is for services having considerable instatiation time.
-            //
-
-            MethodInfo createLazy = options?.Optional is true
-                ? FCreateLazyOpt
-                : FCreateLazy;
-
-            return Expression.Call
-            (
-                createLazy.MakeGenericMethod(iface),
-                injector,
-                Expression.Constant(options?.Name, typeof(string))
-            );
+            List<IDependencyResolver> resolvers = new();
+            if (additionalResolvers is not null)
+            {
+                resolvers.AddRange(additionalResolvers);
+            }
+            resolvers.AddRange(DefaultDependencyResolvers);
+            FResolvers = resolvers;
         }
+
+        public static readonly IReadOnlyList<IDependencyResolver> DefaultDependencyResolvers = new IDependencyResolver[]
+        {
+            ExplicitArgResolver_Dict.Instance,
+            ExplicitArgResolver_Obj.Instance,
+            LazyDependencyResolver.Instance,
+            RegularDependencyResolver.Instance
+        };
     }
 }

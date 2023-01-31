@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>(TInterface) injector.[Try]Get(typeof(TInterface), options?.Name)</code>
         /// </summary>
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, OptionsAttribute? options, object? userData, Func<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Func<Expression> next)
         {
             if (dependency.Type.IsInterface)
             {
@@ -30,9 +30,9 @@ namespace Solti.Utils.DI.Internals
                     Expression.Call
                     (
                         injector,
-                        options?.Optional is true ? FInjectorTryGet : FInjectorGet,
+                        dependency.Options?.Optional is true ? FInjectorTryGet : FInjectorGet,
                         Expression.Constant(dependency.Type),
-                        Expression.Constant(options?.Name, typeof(string))
+                        Expression.Constant(dependency.Options?.Name, typeof(string))
                     ),
                     dependency.Type
                 );

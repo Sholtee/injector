@@ -30,6 +30,7 @@ Solti.Utils.DI.Interfaces.DecoratorDelegate
 Solti.Utils.DI.Interfaces.DependencyDescriptor
 Solti.Utils.DI.Interfaces.DependencyDescriptor.DependencyDescriptor(object! original) -> void
 Solti.Utils.DI.Interfaces.DependencyDescriptor.Name.get -> string!
+Solti.Utils.DI.Interfaces.DependencyDescriptor.Options.get -> Solti.Utils.DI.Interfaces.OptionsAttribute?
 Solti.Utils.DI.Interfaces.DependencyDescriptor.Original.get -> object!
 Solti.Utils.DI.Interfaces.DependencyDescriptor.Type.get -> System.Type!
 Solti.Utils.DI.Interfaces.FactoryDelegate
@@ -42,7 +43,7 @@ Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.DI.Interface
 Solti.Utils.DI.Interfaces.IDelegateCompiler
 Solti.Utils.DI.Interfaces.IDelegateCompiler.Compile<TDelegate>(System.Linq.Expressions.Expression<TDelegate!>! expression, System.Action<TDelegate!>! completionCallback) -> void
 Solti.Utils.DI.Interfaces.IDependencyResolver
-Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression! injector, Solti.Utils.DI.Interfaces.DependencyDescriptor! dependency, Solti.Utils.DI.Interfaces.OptionsAttribute? options, object? userData, System.Func<System.Linq.Expressions.Expression!>! next) -> System.Linq.Expressions.Expression!
+Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression! injector, Solti.Utils.DI.Interfaces.DependencyDescriptor! dependency, object? userData, System.Func<System.Linq.Expressions.Expression!>! next) -> System.Linq.Expressions.Expression!
 Solti.Utils.DI.Interfaces.IFactoryVisitor
 Solti.Utils.DI.Interfaces.IFactoryVisitor.Visit(System.Linq.Expressions.LambdaExpression! factory, Solti.Utils.DI.Interfaces.AbstractServiceEntry! entry) -> System.Linq.Expressions.LambdaExpression!
 Solti.Utils.DI.Interfaces.IHasTag
