@@ -4,18 +4,13 @@ const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>!>!
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
-override Solti.Utils.DI.Interfaces.ScopeOptions.Equals(object? obj) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
-override Solti.Utils.DI.Interfaces.ScopeOptions.GetHashCode() -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
-override Solti.Utils.DI.Interfaces.ScopeOptions.ToString() -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
-override Solti.Utils.DI.Interfaces.ServiceOptions.Equals(object? obj) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
-override Solti.Utils.DI.Interfaces.ServiceOptions.GetHashCode() -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
-override Solti.Utils.DI.Interfaces.ServiceOptions.ToString() -> string! (forwarded, contained in Solti.Utils.DI.Interfaces)
 override Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext! context) -> object?
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext! context, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IFactoryVisitor!>! visitors) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression! getService, System.Linq.Expressions.ParameterExpression! scope, System.Linq.Expressions.ParameterExpression! disposable) -> System.Linq.Expressions.Expression!
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorate(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate!>! decorator) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Features.get -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures
 override Solti.Utils.DI.Lifetime.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase! other) -> int
+Solti.Utils.DI.DefaultDependencyResolvers
 Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions
 Solti.Utils.DI.Interfaces.AbstractServiceEntry (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type! interface, string? name, System.Type? implementation, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>? factory) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -72,10 +67,6 @@ Solti.Utils.DI.Interfaces.RequestNotAllowedException (forwarded, contained in So
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string! message) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string! message, System.Exception! innerException) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ScopeOptions (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode.get -> Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ScopeOptions.SupportsServiceProvider.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceActivatorAttribute (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.ServiceActivatorAttribute() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -102,10 +93,6 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException (forwarded, contained in Solt
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, System.Exception! innerException) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ServiceOptions (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.get -> Solti.Utils.DI.Interfaces.ServiceDisposalMode (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.get -> Solti.Utils.DI.Interfaces.IProxyEngine? (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.AOT = 1 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT = 0 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -129,6 +116,7 @@ Solti.Utils.DI.PoolConfig.PoolConfig(int Capacity) -> void
 Solti.Utils.DI.ScopeFactory
 Solti.Utils.DI.ServiceCollection
 Solti.Utils.DI.ServiceEntryAdvancedExtensions
+static Solti.Utils.DI.DefaultDependencyResolvers.Value.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver!>!
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(this Solti.Utils.DI.Interfaces.IScopeFactory! root, System.Type! iface, string? name = null, string? newLine = null) -> string!
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(this Solti.Utils.DI.Interfaces.IScopeFactory! root, string? name = null, string? newLine = null) -> string!
 static Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get<TInterface>(this Solti.Utils.DI.Interfaces.IInjector! self, string? name = null) -> TInterface! (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -160,15 +148,9 @@ static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInte
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string! name, object! explicitArgs, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime, Solti.Utils.DI.Interfaces.ServiceOptions? options = null) -> Solti.Utils.DI.Interfaces.IServiceCollection! (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TInterface, TImplementation>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string! name, Solti.Utils.DI.Interfaces.LifetimeBase! lifetime, Solti.Utils.DI.Interfaces.ServiceOptions? options = null) -> Solti.Utils.DI.Interfaces.IServiceCollection! (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService<TInterface>(this System.IServiceProvider! self) -> TInterface? (forwarded, contained in Solti.Utils.DI.Interfaces)
-static Solti.Utils.DI.Interfaces.ScopeOptions.Default.get -> Solti.Utils.DI.Interfaces.ScopeOptions! (forwarded, contained in Solti.Utils.DI.Interfaces)
-static Solti.Utils.DI.Interfaces.ScopeOptions.operator !=(Solti.Utils.DI.Interfaces.ScopeOptions? left, Solti.Utils.DI.Interfaces.ScopeOptions? right) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
-static Solti.Utils.DI.Interfaces.ScopeOptions.operator ==(Solti.Utils.DI.Interfaces.ScopeOptions? left, Solti.Utils.DI.Interfaces.ScopeOptions? right) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(this Solti.Utils.DI.Interfaces.AbstractServiceEntry! self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
-static Solti.Utils.DI.Interfaces.ServiceOptions.Default.get -> Solti.Utils.DI.Interfaces.ServiceOptions! (forwarded, contained in Solti.Utils.DI.Interfaces)
-static Solti.Utils.DI.Interfaces.ServiceOptions.operator !=(Solti.Utils.DI.Interfaces.ServiceOptions? left, Solti.Utils.DI.Interfaces.ServiceOptions? right) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
-static Solti.Utils.DI.Interfaces.ServiceOptions.operator ==(Solti.Utils.DI.Interfaces.ServiceOptions? left, Solti.Utils.DI.Interfaces.ServiceOptions? right) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate<TInterceptor>(this Solti.Utils.DI.Interfaces.IServiceCollection! self) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! iface, object! instance, Solti.Utils.DI.Interfaces.ServiceOptions? options = null) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! iface, string? name, object! instance, Solti.Utils.DI.Interfaces.ServiceOptions? options = null) -> Solti.Utils.DI.Interfaces.IServiceCollection!

@@ -97,6 +97,6 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
-        public DecoratorResolver(IReadOnlyList<IDependencyResolver>? additionalResolvers) : base(additionalResolvers) { }
+        public DecoratorResolver(IReadOnlyList<IDependencyResolver>? resolvers) : base(resolvers) { }
     }
 }

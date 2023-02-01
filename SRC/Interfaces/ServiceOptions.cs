@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Interfaces
         public ServiceDisposalMode DisposalMode { get; set; } = ServiceDisposalMode.Force;
 
         /// <summary>
-        /// Additional dependency resolvers to be invoked before the default ones.
+        /// User defined dependency resolvers. Leave blank to use the default ones.
         /// </summary>
         public IReadOnlyList<IDependencyResolver>? DependencyResolvers { get; set; }
 

@@ -26,6 +26,6 @@ namespace Solti.Utils.DI.Internals
             return Resolve(type.GetApplicableConstructor(), userData);
         }
 
-        public FactoryResolver(IReadOnlyList<IDependencyResolver>? additionalResolvers): base(additionalResolvers) { }
+        public FactoryResolver(IReadOnlyList<IDependencyResolver>? resolvers): base(resolvers) { }
     }
 }

@@ -130,23 +130,7 @@ namespace Solti.Utils.DI.Internals
                 variables
             );
 
-        protected FactoryResolverBase(IReadOnlyList<IDependencyResolver>? additionalResolvers)
-        {
-            List<IDependencyResolver> resolvers = new();
-            if (additionalResolvers is not null)
-            {
-                resolvers.AddRange(additionalResolvers);
-            }
-            resolvers.AddRange(DefaultDependencyResolvers);
-            FResolvers = resolvers;
-        }
-
-        public static readonly IReadOnlyList<IDependencyResolver> DefaultDependencyResolvers = new IDependencyResolver[]
-        {
-            ExplicitArgResolver_Dict.Instance,
-            ExplicitArgResolver_Obj.Instance,
-            LazyDependencyResolver.Instance,
-            RegularDependencyResolver.Instance
-        };
+        protected FactoryResolverBase(IReadOnlyList<IDependencyResolver>? resolvers)
+            => FResolvers = resolvers ?? DefaultDependencyResolvers.Value;
     }
 }
