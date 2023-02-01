@@ -7,6 +7,24 @@ references:
   commentId: N:Solti.Utils.DI
   fullName: Solti.Utils.DI
   nameWithType: Solti.Utils.DI
+- uid: Solti.Utils.DI.DefaultDependencyResolvers
+  name: DefaultDependencyResolvers
+  href: Solti.Utils.DI.DefaultDependencyResolvers.html
+  commentId: T:Solti.Utils.DI.DefaultDependencyResolvers
+  fullName: Solti.Utils.DI.DefaultDependencyResolvers
+  nameWithType: DefaultDependencyResolvers
+- uid: Solti.Utils.DI.DefaultDependencyResolvers.Value
+  name: Value
+  href: Solti.Utils.DI.DefaultDependencyResolvers.html#Solti_Utils_DI_DefaultDependencyResolvers_Value
+  commentId: P:Solti.Utils.DI.DefaultDependencyResolvers.Value
+  fullName: Solti.Utils.DI.DefaultDependencyResolvers.Value
+  nameWithType: DefaultDependencyResolvers.Value
+- uid: Solti.Utils.DI.DefaultDependencyResolvers.Value*
+  name: Value
+  href: Solti.Utils.DI.DefaultDependencyResolvers.html#Solti_Utils_DI_DefaultDependencyResolvers_Value_
+  commentId: Overload:Solti.Utils.DI.DefaultDependencyResolvers.Value
+  fullName: Solti.Utils.DI.DefaultDependencyResolvers.Value
+  nameWithType: DefaultDependencyResolvers.Value
 - uid: Solti.Utils.DI.Diagnostics
   name: Solti.Utils.DI.Diagnostics
   href: Solti.Utils.DI.Diagnostics.html
