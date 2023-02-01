@@ -35,17 +35,12 @@ namespace Solti.Utils.DI.Internals
                 throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(type));
         }
 
-        protected virtual Expression ResolveDependency
-        (
-            ParameterExpression injector,
-            DependencyDescriptor dependency,
-            object? userData
-        )
+        protected virtual Expression ResolveDependency(ParameterExpression injector, DependencyDescriptor dependency, object? userData)
         {
             return Resolve(0);
 
             Expression Resolve(int i) => i == FResolvers.Count
-                ? throw new InvalidOperationException(Resources.INVALID_DEPENDENCY)
+                ? throw new ArgumentException(Resources.INVALID_DEPENDENCY, dependency.Name)
                 : FResolvers[i].Resolve(injector, dependency, userData, () => Resolve(i + 1));
         }
 
@@ -58,12 +53,7 @@ namespace Solti.Utils.DI.Internals
         /// }
         /// </code>
         /// </summary>
-        protected virtual Expression ResolveService
-        (
-            ConstructorInfo constructor,
-            ParameterExpression injector,
-            object? userData
-        ) => Expression.MemberInit
+        protected virtual Expression ResolveService(ConstructorInfo constructor, ParameterExpression injector, object? userData) => Expression.MemberInit
         (
             Expression.New
             (
@@ -128,21 +118,17 @@ namespace Solti.Utils.DI.Internals
             return resolver;
         }
 
-        protected Expression<TDelegate> CreateActivator<TDelegate>
-        (
-            ConstructorInfo constructor,
-            object? userData,
-            params ParameterExpression[] variables
-        ) where TDelegate : Delegate => CreateActivator<TDelegate>
-        (
-            paramz => ResolveService
+        protected Expression<TDelegate> CreateActivator<TDelegate>(ConstructorInfo constructor, object? userData, params ParameterExpression[] variables) where TDelegate: Delegate
+            => CreateActivator<TDelegate>
             (
-                constructor,
-                paramz.Single(static param => param.Type == typeof(IInjector)),
-                userData
-            ),
-            variables
-        );
+                paramz => ResolveService
+                (
+                    constructor,
+                    paramz.Single(static param => param.Type == typeof(IInjector)),
+                    userData
+                ),
+                variables
+            );
 
         protected FactoryResolverBase(IReadOnlyList<IDependencyResolver>? additionalResolvers)
         {

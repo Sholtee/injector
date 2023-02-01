@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Perf
         private static Func<IInjector, Lazy<IInjector>> CreateFactory()
         {
             ParameterExpression injector = Expression.Parameter(typeof(IInjector));
-            return Expression.Lambda<Func<IInjector, Lazy<IInjector>>>(FactoryResolver.ResolveLazyService(injector, typeof(IInjector), null), injector).Compile();
+            return Expression.Lambda<Func<IInjector, Lazy<IInjector>>>(LazyDependencyResolver.ResolveLazyService(injector, typeof(IInjector), null), injector).Compile();
         }
 
         private static readonly Func<IInjector, Lazy<IInjector>> Factory = CreateFactory();

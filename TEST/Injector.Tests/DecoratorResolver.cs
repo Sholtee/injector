@@ -29,6 +29,8 @@ namespace Solti.Utils.DI.Internals.Tests
         {
         }
 
+        private static DecoratorResolver DecoratorResolver { get; } = new DecoratorResolver(null);
+
         [Test]
         public void ResolveForAspects_ShouldThrowOnInvalidInterceptor() =>
             Assert.Throws<InvalidOperationException>(() => DecoratorResolver.ResolveForAspects(typeof(IMyService), typeof(MyServiceUsingInvalidAspect), ProxyEngine.Instance));
