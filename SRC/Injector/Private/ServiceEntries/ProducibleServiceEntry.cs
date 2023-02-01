@@ -28,6 +28,9 @@ namespace Solti.Utils.DI.Internals
 
         private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation, object? explicitArgs, ServiceOptions options)
         {
+            if (!implementation.IsClass)
+                throw new ArgumentException(NOT_A_CLASS, nameof(implementation));
+
             ConstructorInfo ctor = implementation.GetApplicableConstructor();  // validates the implementation even in case of a generic svc
             return !@interface.IsGenericTypeDefinition
                 ? new FactoryResolver(options.DependencyResolvers).Resolve(ctor, explicitArgs)
@@ -43,7 +46,7 @@ namespace Solti.Utils.DI.Internals
                 Features = ServiceEntryFeatures.SupportsAspects;
                 if (Factory is not null)
                 {
-                    Expression<DecoratorDelegate>? decorator = new DecoratorResolver(options.DependencyResolvers).ResolveForAspects
+                    Expression<DecoratorDelegate>? decorator = new DecoratorResolver(Options.DependencyResolvers).ResolveForAspects
                     (
                         Interface,
                         Implementation ?? Interface,
