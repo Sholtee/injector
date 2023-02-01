@@ -27,6 +27,12 @@ Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.CreateServiceDelegate
 Solti.Utils.DI.Interfaces.DecoratorDelegate
+Solti.Utils.DI.Interfaces.DependencyDescriptor
+Solti.Utils.DI.Interfaces.DependencyDescriptor.DependencyDescriptor(object! original) -> void
+Solti.Utils.DI.Interfaces.DependencyDescriptor.Name.get -> string!
+Solti.Utils.DI.Interfaces.DependencyDescriptor.Options.get -> Solti.Utils.DI.Interfaces.OptionsAttribute?
+Solti.Utils.DI.Interfaces.DependencyDescriptor.Original.get -> object!
+Solti.Utils.DI.Interfaces.DependencyDescriptor.Type.get -> System.Type!
 Solti.Utils.DI.Interfaces.FactoryDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>
 Solti.Utils.DI.Interfaces.IAspect
@@ -36,6 +42,8 @@ Solti.Utils.DI.Interfaces.IBuildContext.AssignSlot() -> int
 Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.DI.Interfaces.IDelegateCompiler!
 Solti.Utils.DI.Interfaces.IDelegateCompiler
 Solti.Utils.DI.Interfaces.IDelegateCompiler.Compile<TDelegate>(System.Linq.Expressions.Expression<TDelegate!>! expression, System.Action<TDelegate!>! completionCallback) -> void
+Solti.Utils.DI.Interfaces.IDependencyResolver
+Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression! injector, Solti.Utils.DI.Interfaces.DependencyDescriptor! dependency, object? userData, System.Func<System.Linq.Expressions.Expression!>! next) -> System.Linq.Expressions.Expression!
 Solti.Utils.DI.Interfaces.IFactoryVisitor
 Solti.Utils.DI.Interfaces.IFactoryVisitor.Visit(System.Linq.Expressions.LambdaExpression! factory, Solti.Utils.DI.Interfaces.AbstractServiceEntry! entry) -> System.Linq.Expressions.LambdaExpression!
 Solti.Utils.DI.Interfaces.IHasTag
@@ -124,6 +132,8 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() ->
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message) -> void
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, System.Exception! innerException) -> void
 Solti.Utils.DI.Interfaces.ServiceOptions
+Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver!>?
+Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers.set -> void
 Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.get -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
 Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode.set -> void
 Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine.get -> Solti.Utils.DI.Interfaces.IProxyEngine?

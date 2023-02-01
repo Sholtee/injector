@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -25,32 +26,15 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly List<Expression<DecoratorDelegate>> FDecorators = new();
 
-        private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation)
+        private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation, object? explicitArgs, ServiceOptions options)
         {
-            if (!@interface.IsGenericTypeDefinition)
-                return FactoryResolver.Resolve(implementation);
+            if (!implementation.IsClass)
+                throw new ArgumentException(NOT_A_CLASS, nameof(implementation));
 
-            //
-            // Just to validate the implementation.
-            //
-
-            implementation.GetApplicableConstructor();
-            return null;
-        }
-
-        private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation, object explicitArgs)
-        {
-            if (!@interface.IsGenericTypeDefinition)
-                return explicitArgs is IReadOnlyDictionary<string, object?> dict
-                    ? FactoryResolver.Resolve(implementation, dict)
-                    : FactoryResolver.Resolve(implementation, explicitArgs);
-
-            //
-            // Just to validate the implementation.
-            //
-
-            implementation.GetApplicableConstructor();
-            return null;
+            ConstructorInfo ctor = implementation.GetApplicableConstructor();  // validates the implementation even in case of a generic svc
+            return !@interface.IsGenericTypeDefinition
+                ? new FactoryResolver(options.DependencyResolvers).Resolve(ctor, explicitArgs)
+                : null;
         }
 
         private ProducibleServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, ServiceOptions options) : base(@interface, name, implementation, factory)
@@ -62,7 +46,7 @@ namespace Solti.Utils.DI.Internals
                 Features = ServiceEntryFeatures.SupportsAspects;
                 if (Factory is not null)
                 {
-                    Expression<DecoratorDelegate>? decorator = DecoratorResolver.ResolveForAspects
+                    Expression<DecoratorDelegate>? decorator = new DecoratorResolver(Options.DependencyResolvers).ResolveForAspects
                     (
                         Interface,
                         Implementation ?? Interface,
@@ -99,9 +83,11 @@ namespace Solti.Utils.DI.Internals
             GetFactory
             (
                 @interface,
-                implementation
+                implementation,
+                null,
+                options ?? throw new ArgumentNullException(nameof(options))
             ),
-            options ?? throw new ArgumentNullException(nameof(options))
+            options
         ) {}
 
         /// <summary>
@@ -116,9 +102,10 @@ namespace Solti.Utils.DI.Internals
             (
                 @interface,
                 implementation,
-                explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs))
+                explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
+                options ?? throw new ArgumentNullException(nameof(options))
             ),
-            options ?? throw new ArgumentNullException(nameof(options))
+            options
         )
             //
             // Ancestor does the rest of validation

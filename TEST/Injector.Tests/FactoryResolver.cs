@@ -76,13 +76,15 @@ namespace Solti.Utils.DI.Internals.Tests
             public IList Dep { get; init; }
         }
 
+        private static FactoryResolver FactoryResolver { get; } = new FactoryResolver(null);
+
         public static IEnumerable<Func<ConstructorInfo, Func<IInjector, object>>> Activators
         {
             get
             {
                 yield return ctor =>
                 {
-                    FactoryDelegate factory = FactoryResolver.Resolve(ctor).Compile();
+                    FactoryDelegate factory = FactoryResolver.Resolve(ctor, null).Compile();
                     return injector => factory(injector, null);
                 };
 
@@ -214,7 +216,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClassHavingOptionalProperty)).Compile();
+            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClassHavingOptionalProperty), null).Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList)));
 
@@ -227,7 +229,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClass).GetConstructor(Type.EmptyTypes)).Compile();
+            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClass).GetConstructor(Type.EmptyTypes), null).Compile();
 
             Assert.That(factory, Is.Not.Null);
 
@@ -427,7 +429,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor), Resources.INVALID_CONSTRUCTOR);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, null), Resources.INVALID_DEPENDENCY);
         }
 
         [Test]
@@ -435,15 +437,15 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, new { }), Resources.INVALID_CONSTRUCTOR);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, new { }), Resources.INVALID_DEPENDENCY);
         }
 
         [Test]
         public void Resolve_ShouldValidate() 
         {
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable)), Resources.PARAMETER_NOT_A_CLASS);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>)), Resources.PARAMETER_IS_GENERIC);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass)), Resources.PARAMETER_IS_ABSTRACT);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable), null), Resources.PARAMETER_NOT_A_CLASS);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>), null), Resources.PARAMETER_IS_GENERIC);
+            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass), null), Resources.PARAMETER_IS_ABSTRACT);
         }
 
         [Test]
@@ -566,7 +568,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Func<IInjector, Lazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, Lazy<IDisposable>>>
             (
-                FactoryResolver.ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                LazyDependencyResolver.ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
                 injector
             ).Compile();
 

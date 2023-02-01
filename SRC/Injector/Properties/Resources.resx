@@ -126,8 +126,8 @@
   <data name="CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED" xml:space="preserve">
     <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
-  <data name="INVALID_CONSTRUCTOR" xml:space="preserve">
-    <value>All constructor arguments must be an interface/Lazy&lt;interface&gt;.</value>
+  <data name="INVALID_DEPENDENCY" xml:space="preserve">
+    <value>A dependency must be an interface/Lazy&lt;interface&gt;.</value>
   </data>
   <data name="PARAMETER_NOT_AN_INTERFACE" xml:space="preserve">
     <value>Parameter must be an interface.</value>

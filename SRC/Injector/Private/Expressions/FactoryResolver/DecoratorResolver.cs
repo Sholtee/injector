@@ -14,10 +14,8 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Properties;
 
-    internal class DecoratorResolver: FactoryResolverBase
+    internal sealed class DecoratorResolver: FactoryResolverBase
     {
-        private DecoratorResolver() { } // class cannot be instantiated (required as static classes cannot have ancestor)
-
         /// <summary>
         /// <code>
         /// (injector, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
@@ -31,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<DecoratorDelegate> Resolve(Type iface, Type target, IEnumerable<Type> interceptorTypes, IProxyEngine proxyEngine) => CreateActivator<DecoratorDelegate>
+        public Expression<DecoratorDelegate> Resolve(Type iface, Type target, IEnumerable<Type> interceptorTypes, IProxyEngine proxyEngine) => CreateActivator<DecoratorDelegate>
         (
             paramz => proxyEngine.CreateActivatorExpression
             (
@@ -43,11 +41,11 @@ namespace Solti.Utils.DI.Internals
                     typeof(IInterfaceInterceptor),
                     interceptorTypes.Select
                     (
-                        interceptorType => New
+                        interceptorType => ResolveService
                         (
                             interceptorType.GetApplicableConstructor(),
                             paramz[0],
-                            DefaultServiceResolver
+                            null
                         )
                     )
                 )
@@ -67,7 +65,7 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<DecoratorDelegate>? ResolveForAspects(Type iface, Type target, IProxyEngine proxyEngine)
+        public Expression<DecoratorDelegate>? ResolveForAspects(Type iface, Type target, IProxyEngine proxyEngine)
         {
             IEnumerable<Type> interceptors = GetInterceptors(iface);
             if (target != iface)
@@ -98,5 +96,7 @@ namespace Solti.Utils.DI.Internals
                 }
             }
         }
+
+        public DecoratorResolver(IReadOnlyList<IDependencyResolver>? additionalResolvers) : base(additionalResolvers) { }
     }
 }
