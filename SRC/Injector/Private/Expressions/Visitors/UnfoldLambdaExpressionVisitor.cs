@@ -21,9 +21,9 @@ namespace Solti.Utils.DI.Internals
     {
         private readonly WriteOnce<IReadOnlyList<ParameterExpression>> FParameters = new();
 
-        public IReadOnlyList<Expression> ParameterSubstitutions { get; }
+        private UnfoldLambdaExpressionVisitor(IReadOnlyList<Expression> parameterSubstitutions) => ParameterSubstitutions = parameterSubstitutions;
 
-        public UnfoldLambdaExpressionVisitor(IReadOnlyList<Expression> parameterSubstitutions) => ParameterSubstitutions = parameterSubstitutions;
+        public IReadOnlyList<Expression> ParameterSubstitutions { get; }
 
         public static Expression Unfold(LambdaExpression lamda, params Expression[] parameterSubstitutions) =>
             new UnfoldLambdaExpressionVisitor(parameterSubstitutions).Visit(lamda);
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
 
             int? index = FParameters
                 .Value
-                .Select((p, i) => new { Parameter = p, Index = i })
+                .Select(static (p, i) => new { Parameter = p, Index = i })
                 .SingleOrDefault(p => p.Parameter == node)
                 ?.Index;
 
