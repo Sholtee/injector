@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ServiceOptions
+    <title>Class DependencyDescriptor
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ServiceOptions
+    <meta name="title" content="Class DependencyDescriptor
    | Injector ">
     <meta name="generator" content="docfx 2.59.3.0">
     
@@ -37,196 +37,39 @@
       <div role="main" class="container body-content hide-when-search">
         <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions">
+            <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor">
   
   
-  <h1 id="Solti_Utils_DI_Interfaces_ServiceOptions" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions" class="text-break">Class ServiceOptions
+  <h1 id="Solti_Utils_DI_Interfaces_DependencyDescriptor" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor" class="text-break">Class DependencyDescriptor
   </h1>
-  <div class="markdown level0 summary"><p>Specifies the general service behavior.</p>
+  <div class="markdown level0 summary"><p>Describes a dependency (a property or parameter).</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">ServiceOptions</span></div>
+    <div class="level1"><span class="xref">DependencyDescriptor</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a>&gt;</div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
-  <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_syntax">Syntax</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ServiceOptions : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class DependencyDescriptor : Object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions__ctor_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions__ctor" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.#ctor">ServiceOptions()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceOptions()</code></pre>
-  </div>
-  <h3 id="properties">Properties
-  </h3>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_Default_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Default*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_Default" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Default">Default</h4>
-  <div class="markdown level1 summary"><p>The default options.</p>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor__ctor_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor__ctor_System_Object_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.#ctor(System.Object)">DependencyDescriptor(Object)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ServiceOptions Default { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_DependencyResolvers_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_DependencyResolvers" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers">DependencyResolvers</h4>
-  <div class="markdown level1 summary"><p>Additional dependency resolvers to be invoked before the default ones.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;IDependencyResolver&gt; DependencyResolvers { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IDependencyResolver.html">IDependencyResolver</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_DisposalMode_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_DisposalMode" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode">DisposalMode</h4>
-  <div class="markdown level1 summary"><p>Contains the method how to dispose the created service instances.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceDisposalMode DisposalMode { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceDisposalMode.html">ServiceDisposalMode</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_ProxyEngine_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_ProxyEngine" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ProxyEngine">ProxyEngine</h4>
-  <div class="markdown level1 summary"><p>The proxy engine to be used. Leave blank to use the default engine.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IProxyEngine ProxyEngine { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IProxyEngine.html">IProxyEngine</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects">SupportAspects</h4>
-  <div class="markdown level1 summary"><p>If set to true, the system tries to apply proxies defined via <a class="xref" href="Solti.Utils.DI.Interfaces.AspectAttribute.html">AspectAttribute</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SupportAspects { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The default value for this property is <pre><code>true</code></pre></p>
-</div>
-  <h3 id="methods">Methods
-  </h3>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions__Clone___" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.{Clone}$*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions__Clone__" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.{Clone}$">&lt;Clone&gt;$()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceOptions &lt;Clone&gt;$()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals(Solti.Utils.DI.Interfaces.ServiceOptions)">Equals(ServiceOptions)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Equals(ServiceOptions other)</code></pre>
+    <pre><code class="lang-csharp hljs">public DependencyDescriptor(object original)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -239,7 +82,159 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">original</span></td>
+        <td><p>The original member.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_DependencyDescriptor__ctor_System_Object__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This class is required as there is no common base class for <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a> and <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a>.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Name_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Name*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Name" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Name">Name</h4>
+  <div class="markdown level1 summary"><p>The name of the dependency (parameter or property).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Options_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Options*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Options" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Options">Options</h4>
+  <div class="markdown level1 summary"><p>Bound options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionsAttribute Options { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.OptionsAttribute.html">OptionsAttribute</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Original_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Original*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Original" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Original">Original</h4>
+  <div class="markdown level1 summary"><p>The original member.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object Original { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Type_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Type*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Type" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Type">Type</h4>
+  <div class="markdown level1 summary"><p>The type of the dependency (parameter or property).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type Type { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor__Clone___" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.{Clone}$*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor__Clone__" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.{Clone}$">&lt;Clone&gt;$()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DependencyDescriptor &lt;Clone&gt;$()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Equals_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Equals_Solti_Utils_DI_Interfaces_DependencyDescriptor_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(Solti.Utils.DI.Interfaces.DependencyDescriptor)">Equals(DependencyDescriptor)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(DependencyDescriptor other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a></td>
         <td><span class="parametername">other</span></td>
         <td></td>
       </tr>
@@ -260,8 +255,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_Equals_System_Object_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.Equals(System.Object)">Equals(Object)</h4>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Equals_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Equals_System_Object_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(System.Object)">Equals(Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -300,8 +295,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_GetHashCode_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.GetHashCode*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_GetHashCode" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.GetHashCode">GetHashCode()</h4>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_GetHashCode_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_GetHashCode" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode">GetHashCode()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -323,8 +318,8 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_ToString_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ToString*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_ToString" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.ToString">ToString()</h4>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_ToString_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_ToString" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString">ToString()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -348,13 +343,13 @@
   </table>
   <h3 id="operators">Operators
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Equality_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Equality*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Equality_Solti_Utils_DI_Interfaces_ServiceOptions_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Equality(Solti.Utils.DI.Interfaces.ServiceOptions,Solti.Utils.DI.Interfaces.ServiceOptions)">Equality(ServiceOptions, ServiceOptions)</h4>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Equality_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Equality*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Equality_Solti_Utils_DI_Interfaces_DependencyDescriptor_Solti_Utils_DI_Interfaces_DependencyDescriptor_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Equality(Solti.Utils.DI.Interfaces.DependencyDescriptor,Solti.Utils.DI.Interfaces.DependencyDescriptor)">Equality(DependencyDescriptor, DependencyDescriptor)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(ServiceOptions left, ServiceOptions right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator ==(DependencyDescriptor left, DependencyDescriptor right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -367,12 +362,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a></td>
         <td><span class="parametername">left</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a></td>
         <td><span class="parametername">right</span></td>
         <td></td>
       </tr>
@@ -393,13 +388,13 @@
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Inequality_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Inequality*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_op_Inequality_Solti_Utils_DI_Interfaces_ServiceOptions_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.op_Inequality(Solti.Utils.DI.Interfaces.ServiceOptions,Solti.Utils.DI.Interfaces.ServiceOptions)">Inequality(ServiceOptions, ServiceOptions)</h4>
+  <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Inequality_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Inequality*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Inequality_Solti_Utils_DI_Interfaces_DependencyDescriptor_Solti_Utils_DI_Interfaces_DependencyDescriptor_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Inequality(Solti.Utils.DI.Interfaces.DependencyDescriptor,Solti.Utils.DI.Interfaces.DependencyDescriptor)">Inequality(DependencyDescriptor, DependencyDescriptor)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(ServiceOptions left, ServiceOptions right)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator !=(DependencyDescriptor left, DependencyDescriptor right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -412,12 +407,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a></td>
         <td><span class="parametername">left</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a></td>
         <td><span class="parametername">right</span></td>
         <td></td>
       </tr>

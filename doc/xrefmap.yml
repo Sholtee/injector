@@ -475,6 +475,150 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.DecoratorDelegate.Invoke
   fullName: Solti.Utils.DI.Interfaces.DecoratorDelegate.Invoke
   nameWithType: DecoratorDelegate.Invoke
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor
+  name: DependencyDescriptor
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html
+  commentId: T:Solti.Utils.DI.Interfaces.DependencyDescriptor
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor
+  nameWithType: DependencyDescriptor
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.#ctor(System.Object)
+  name: DependencyDescriptor(Object)
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor__ctor_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.#ctor(System.Object)
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.DependencyDescriptor(System.Object)
+  nameWithType: DependencyDescriptor.DependencyDescriptor(Object)
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.#ctor*
+  name: DependencyDescriptor
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.#ctor
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.DependencyDescriptor
+  nameWithType: DependencyDescriptor.DependencyDescriptor
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.{Clone}$
+  name: <Clone>$()
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor__Clone__
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.{Clone}$
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.<Clone>$()
+  nameWithType: DependencyDescriptor.<Clone>$()
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.{Clone}$*
+  name: <Clone>$
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor__Clone___
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.{Clone}$
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.<Clone>$
+  nameWithType: DependencyDescriptor.<Clone>$
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  name: Equals(DependencyDescriptor)
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Equals_Solti_Utils_DI_Interfaces_DependencyDescriptor_
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  nameWithType: DependencyDescriptor.Equals(DependencyDescriptor)
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(System.Object)
+  name: Equals(Object)
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Equals_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(System.Object)
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals(System.Object)
+  nameWithType: DependencyDescriptor.Equals(Object)
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals*
+  name: Equals
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Equals_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equals
+  nameWithType: DependencyDescriptor.Equals
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode
+  name: GetHashCode()
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_GetHashCode
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode()
+  nameWithType: DependencyDescriptor.GetHashCode()
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode*
+  name: GetHashCode
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_GetHashCode_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.GetHashCode
+  nameWithType: DependencyDescriptor.GetHashCode
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Name
+  name: Name
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Name
+  commentId: P:Solti.Utils.DI.Interfaces.DependencyDescriptor.Name
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Name
+  nameWithType: DependencyDescriptor.Name
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Name*
+  name: Name
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Name_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.Name
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Name
+  nameWithType: DependencyDescriptor.Name
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Equality(Solti.Utils.DI.Interfaces.DependencyDescriptor,Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  name: Equality(DependencyDescriptor, DependencyDescriptor)
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Equality_Solti_Utils_DI_Interfaces_DependencyDescriptor_Solti_Utils_DI_Interfaces_DependencyDescriptor_
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Equality(Solti.Utils.DI.Interfaces.DependencyDescriptor,Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equality(Solti.Utils.DI.Interfaces.DependencyDescriptor, Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  nameWithType: DependencyDescriptor.Equality(DependencyDescriptor, DependencyDescriptor)
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Equality*
+  name: Equality
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Equality_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Equality
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Equality
+  nameWithType: DependencyDescriptor.Equality
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Inequality(Solti.Utils.DI.Interfaces.DependencyDescriptor,Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  name: Inequality(DependencyDescriptor, DependencyDescriptor)
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Inequality_Solti_Utils_DI_Interfaces_DependencyDescriptor_Solti_Utils_DI_Interfaces_DependencyDescriptor_
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Inequality(Solti.Utils.DI.Interfaces.DependencyDescriptor,Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Inequality(Solti.Utils.DI.Interfaces.DependencyDescriptor, Solti.Utils.DI.Interfaces.DependencyDescriptor)
+  nameWithType: DependencyDescriptor.Inequality(DependencyDescriptor, DependencyDescriptor)
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Inequality*
+  name: Inequality
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_op_Inequality_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.op_Inequality
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Inequality
+  nameWithType: DependencyDescriptor.Inequality
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Options
+  name: Options
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Options
+  commentId: P:Solti.Utils.DI.Interfaces.DependencyDescriptor.Options
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Options
+  nameWithType: DependencyDescriptor.Options
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Options*
+  name: Options
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Options_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.Options
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Options
+  nameWithType: DependencyDescriptor.Options
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Original
+  name: Original
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Original
+  commentId: P:Solti.Utils.DI.Interfaces.DependencyDescriptor.Original
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Original
+  nameWithType: DependencyDescriptor.Original
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Original*
+  name: Original
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Original_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.Original
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Original
+  nameWithType: DependencyDescriptor.Original
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString
+  name: ToString()
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_ToString
+  commentId: M:Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString()
+  nameWithType: DependencyDescriptor.ToString()
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString*
+  name: ToString
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_ToString_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.ToString
+  nameWithType: DependencyDescriptor.ToString
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Type
+  name: Type
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Type
+  commentId: P:Solti.Utils.DI.Interfaces.DependencyDescriptor.Type
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Type
+  nameWithType: DependencyDescriptor.Type
+- uid: Solti.Utils.DI.Interfaces.DependencyDescriptor.Type*
+  name: Type
+  href: Solti.Utils.DI.Interfaces.DependencyDescriptor.html#Solti_Utils_DI_Interfaces_DependencyDescriptor_Type_
+  commentId: Overload:Solti.Utils.DI.Interfaces.DependencyDescriptor.Type
+  fullName: Solti.Utils.DI.Interfaces.DependencyDescriptor.Type
+  nameWithType: DependencyDescriptor.Type
 - uid: Solti.Utils.DI.Interfaces.FactoryDelegate
   name: FactoryDelegate
   href: Solti.Utils.DI.Interfaces.FactoryDelegate.html
@@ -671,6 +815,27 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IDelegateCompiler.Compile(Of TDelegate)(System.Linq.Expressions.Expression(Of TDelegate), System.Action(Of TDelegate))
   nameWithType: IDelegateCompiler.Compile<TDelegate>(Expression<TDelegate>, Action<TDelegate>)
   nameWithType.vb: IDelegateCompiler.Compile(Of TDelegate)(Expression(Of TDelegate), Action(Of TDelegate))
+- uid: Solti.Utils.DI.Interfaces.IDependencyResolver
+  name: IDependencyResolver
+  href: Solti.Utils.DI.Interfaces.IDependencyResolver.html
+  commentId: T:Solti.Utils.DI.Interfaces.IDependencyResolver
+  fullName: Solti.Utils.DI.Interfaces.IDependencyResolver
+  nameWithType: IDependencyResolver
+- uid: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,System.Func{System.Linq.Expressions.Expression})
+  name: Resolve(ParameterExpression, DependencyDescriptor, Object, Func<Expression>)
+  href: Solti.Utils.DI.Interfaces.IDependencyResolver.html#Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_System_Linq_Expressions_ParameterExpression_Solti_Utils_DI_Interfaces_DependencyDescriptor_System_Object_System_Func_System_Linq_Expressions_Expression__
+  commentId: M:Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,System.Func{System.Linq.Expressions.Expression})
+  name.vb: Resolve(ParameterExpression, DependencyDescriptor, Object, Func(Of Expression))
+  fullName: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression, Solti.Utils.DI.Interfaces.DependencyDescriptor, System.Object, System.Func<System.Linq.Expressions.Expression>)
+  fullName.vb: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression, Solti.Utils.DI.Interfaces.DependencyDescriptor, System.Object, System.Func(Of System.Linq.Expressions.Expression))
+  nameWithType: IDependencyResolver.Resolve(ParameterExpression, DependencyDescriptor, Object, Func<Expression>)
+  nameWithType.vb: IDependencyResolver.Resolve(ParameterExpression, DependencyDescriptor, Object, Func(Of Expression))
+- uid: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve*
+  name: Resolve
+  href: Solti.Utils.DI.Interfaces.IDependencyResolver.html#Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve
+  fullName: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve
+  nameWithType: IDependencyResolver.Resolve
 - uid: Solti.Utils.DI.Interfaces.IFactoryVisitor
   name: IFactoryVisitor
   href: Solti.Utils.DI.Interfaces.IFactoryVisitor.html
@@ -1970,6 +2135,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.Default
   fullName: Solti.Utils.DI.Interfaces.ServiceOptions.Default
   nameWithType: ServiceOptions.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers
+  name: DependencyResolvers
+  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_DependencyResolvers
+  commentId: P:Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers
+  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers
+  nameWithType: ServiceOptions.DependencyResolvers
+- uid: Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers*
+  name: DependencyResolvers
+  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_DependencyResolvers_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers
+  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers
+  nameWithType: ServiceOptions.DependencyResolvers
 - uid: Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode
   name: DisposalMode
   href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_DisposalMode
