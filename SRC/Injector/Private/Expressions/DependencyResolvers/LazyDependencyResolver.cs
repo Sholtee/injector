@@ -16,8 +16,8 @@ namespace Solti.Utils.DI.Internals
     internal sealed class LazyDependencyResolver: Singleton<LazyDependencyResolver>, IDependencyResolver
     {
         private static readonly MethodInfo
-            FCreateLazy    = MethodInfoExtractor.Extract(() => CreateLazy<object>(null!, null)).GetGenericMethodDefinition(),
-            FCreateLazyOpt = MethodInfoExtractor.Extract(() => CreateLazyOpt<object>(null!, null)).GetGenericMethodDefinition();
+            FCreateLazy    = MethodInfoExtractor.Extract(static () => CreateLazy<object>(null!, null)).GetGenericMethodDefinition(),
+            FCreateLazyOpt = MethodInfoExtractor.Extract(static () => CreateLazyOpt<object>(null!, null)).GetGenericMethodDefinition();
 
         private static Lazy<TService> CreateLazy<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService) injector.Get(typeof(TService), name));
 

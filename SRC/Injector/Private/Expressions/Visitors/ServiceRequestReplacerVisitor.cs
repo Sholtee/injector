@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     /// <remarks>This results a quicker delegate since it saves a <see cref="IServiceResolver.Resolve(Type, string?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
-        private static readonly MethodInfo FGetOrCreate = MethodInfoExtractor.Extract<IServiceActivator>(fact => fact.GetOrCreateInstance(null!));
+        private static readonly MethodInfo FGetOrCreate = MethodInfoExtractor.Extract<IServiceActivator>(static fact => fact.GetOrCreateInstance(null!));
 
         private readonly IServiceResolver FServiceResolver;
 

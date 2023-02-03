@@ -19,13 +19,13 @@ namespace Solti.Utils.DI.Internals
         private static readonly MethodInfo[]
             FInjectorGet = new[]
             {
-                MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
-                MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null))
+                MethodInfoExtractor.Extract<IInjector>(static i => i.Get(null!, null)),
+                MethodInfoExtractor.Extract<IInjector>(static i => i.TryGet(null!, null))
             },
             FGenericInjectorGet = new[]
             {
-                MethodInfoExtractor.Extract<IInjector>(i => i.Get<object>(null)).GetGenericMethodDefinition(),
-                MethodInfoExtractor.Extract<IInjector>(i => i.TryGet<object>(null)).GetGenericMethodDefinition()
+                MethodInfoExtractor.Extract<IInjector>(static i => i.Get<object>(null)).GetGenericMethodDefinition(),
+                MethodInfoExtractor.Extract<IInjector>(static i => i.TryGet<object>(null)).GetGenericMethodDefinition()
             };
 
         protected abstract Expression VisitServiceRequest(MethodCallExpression request, Expression scope, Type iface, string? name);

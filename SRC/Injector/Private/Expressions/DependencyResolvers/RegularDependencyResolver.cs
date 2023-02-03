@@ -15,8 +15,8 @@ namespace Solti.Utils.DI.Internals
     internal sealed class RegularDependencyResolver: Singleton<RegularDependencyResolver>, IDependencyResolver
     {
         private static readonly MethodInfo
-            FInjectorGet = MethodInfoExtractor.Extract<IInjector>(i => i.Get(null!, null)),
-            FInjectorTryGet = MethodInfoExtractor.Extract<IInjector>(i => i.TryGet(null!, null));
+            FInjectorGet = MethodInfoExtractor.Extract<IInjector>(static i => i.Get(null!, null)),
+            FInjectorTryGet = MethodInfoExtractor.Extract<IInjector>(static i => i.TryGet(null!, null));
 
         /// <summary>
         /// <code>(TInterface) injector.[Try]Get(typeof(TInterface), options?.Name)</code>
