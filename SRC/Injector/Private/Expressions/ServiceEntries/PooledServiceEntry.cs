@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Internals
         }
 
         /*
-        if (scope.Tag is ILifetimeManager<object>)
+        if (scope.Tag == POOL_SCOPE)
             //
             // In pool, we call the original factory
             //
@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
         (
             test: UnfoldLambdaExpressionVisitor.Unfold
             (
-                (Expression<Func<IInjector, bool>>) (scope => scope.Tag is ILifetimeManager<object>),
+                (Expression<Func<IInjector, bool>>) (static scope => POOL_SCOPE.Equals(scope.Tag)),
                 scope
             ),
             ifTrue: base.CreateLifetimeManager(getService, scope, disposable),

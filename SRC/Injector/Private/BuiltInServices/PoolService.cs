@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -13,21 +12,12 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Primitives.Threading;
 
-    //                                        !!!FIGYELEM!!!
-    //
-    // Ez az osztaly kozponti komponens, ezert minden modositast korultekintoen, a teljesitmenyt szem elott tartva
-    // kell elvegezni:
-    // - nincs Sysmte.Linq
-    // - nincs System.Reflection
-    // - mindig futtassuk a teljesitmeny teszteket (is) hogy a hatekonysag nem romlott e
-    //
-
     internal sealed class PoolService<TInterface> : ObjectPool<object>, IPool<TInterface> where TInterface: class
     {
         private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<object>
         {
             //
-            // Ne [ThreadStatic]-t hasznaljunk, hogy minden interface-nev paroshoz kulon peldany tartozzon.
+            // Don't use [ThreadStatic] here as every interface-name pair requires its own instance.
             //
 
             private readonly ThreadLocal<IInjector> FDedicatedScope;
@@ -51,17 +41,20 @@ namespace Solti.Utils.DI.Internals
 
             public PoolServiceLifetimeManager(IScopeFactory scopeFactory, string? name)
             {
-                FDedicatedScope = new ThreadLocal<IInjector>(() => scopeFactory.CreateScope(this), trackAllValues: true);
+                FDedicatedScope = new ThreadLocal<IInjector>
+                (
+                    () => scopeFactory.CreateScope(tag: PooledServiceEntry.POOL_SCOPE), 
+                    trackAllValues: true
+                );
                 Name = name;
             }
 
             public object Create()
             {
                 //
-                // Ez itt trukkos mert:
-                //   - Minden egyes legyartott elemnek sajat scope kell (az egyes elemek kulon szalakban vannak hasznalva)
-                //   - Mivel az osszes pool elemnek sajat scope-ja van ezert h az esetleges korkoros referenciat
-                //     detektalni tudjuk, rekurzio eseten a mar korabban letrehozott scope-ot kell hasznaljuk.
+                // It's tricky since:
+                //   - Every produced item requires a separate scope (as they will be used in separate threads)
+                //   - To let the system detect circular references -in case of recursion- we must not return a new instance.
                 //
 
                 IInjector dedicatedScope = FDedicatedScope.Value;
@@ -82,9 +75,12 @@ namespace Solti.Utils.DI.Internals
             public void RecursionDetected() {}
         }
 
-        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope")]
-        public PoolService(IScopeFactory scopeFactory, int capacity, string? name) : base(new PoolServiceLifetimeManager(scopeFactory, name), capacity) 
+        private readonly CheckoutPolicy FCheckoutPolicy;
+
+        public PoolService(IScopeFactory scopeFactory, PoolConfig config, string? name) : base(new PoolServiceLifetimeManager(scopeFactory, name), config.Capacity) 
         {
+            FCheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw;
+
             //                                            !!HACK!!
             //
             // Az egyes pool elemekhez tartozo dedikalt scope-ok felszabaditasa a pool szerviz felszabaditasakor tortenik.
@@ -105,6 +101,6 @@ namespace Solti.Utils.DI.Internals
                 ((IDisposable) LifetimeManager).Dispose();
         }
 
-        public object Get() => Get(CheckoutPolicy.Block)!;
+        public object Get() => Get(FCheckoutPolicy)!;
     }
 }

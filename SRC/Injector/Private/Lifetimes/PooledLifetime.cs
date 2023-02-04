@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Internals
             entry.Interface.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(entry.Interface),
-            new { capacity = Capacity, name = entry.Name },
+            new { config = Config, name = entry.Name },
             ServiceOptions.Default with { SupportAspects = false }
         );
 
@@ -88,19 +88,13 @@ namespace Solti.Utils.DI.Internals
                 : base.CompareTo(other);
         }
 
-        public int Capacity { get; init; } = Environment.ProcessorCount;
+        public PoolConfig Config { get; init; } = PoolConfig.Default;
 
         public override string ToString() => nameof(Pooled);
 
-        public override LifetimeBase Using(object configuration)
+        public override LifetimeBase Using(object configuration) => new PooledLifetime
         {
-            if (configuration is not PoolConfig config)
-                throw new ArgumentException(Resources.INVALID_CONFIG, nameof(configuration));
-
-            return new PooledLifetime
-            {
-                Capacity = config.Capacity,
-            };
-        }
+            Config = configuration as PoolConfig ?? throw new ArgumentException(Resources.INVALID_CONFIG, nameof(configuration))
+        };
     }
 }

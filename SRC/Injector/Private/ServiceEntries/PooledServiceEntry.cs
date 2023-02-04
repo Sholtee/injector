@@ -13,6 +13,8 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledServiceEntry : ScopedServiceEntryBase
     {
+        public const string POOL_SCOPE = nameof(POOL_SCOPE);
+
         private Type? FPoolType;
         public Type PoolType =>
             FPoolType ??= typeof(IPool<>).MakeGenericType(Interface);

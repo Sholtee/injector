@@ -111,9 +111,11 @@ Solti.Utils.DI.Lifetime
 Solti.Utils.DI.Lifetime.Lifetime(int precedence) -> void
 Solti.Utils.DI.Lifetime.Precedence.get -> int
 Solti.Utils.DI.PoolConfig
+Solti.Utils.DI.PoolConfig.Blocking.get -> bool
+Solti.Utils.DI.PoolConfig.Blocking.set -> void
 Solti.Utils.DI.PoolConfig.Capacity.get -> int
-Solti.Utils.DI.PoolConfig.Capacity.init -> void
-Solti.Utils.DI.PoolConfig.PoolConfig(int Capacity) -> void
+Solti.Utils.DI.PoolConfig.Capacity.set -> void
+static Solti.Utils.DI.PoolConfig.Default.get -> Solti.Utils.DI.PoolConfig!
 Solti.Utils.DI.ScopeFactory
 Solti.Utils.DI.ServiceCollection
 Solti.Utils.DI.ServiceEntryAdvancedExtensions
