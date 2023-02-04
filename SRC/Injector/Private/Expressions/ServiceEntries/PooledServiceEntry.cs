@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -13,12 +14,14 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
 
     internal sealed partial class PooledServiceEntry
-    {
-        private delegate object InvokePoolDelegate(IPool pool, out object disposable);
+    {  
+        private static readonly MethodInfo FInvokePool = MethodInfoExtractor
+            .Extract<object>(static res => InvokePool<object>(null!, null!, out res))
+            .GetGenericMethodDefinition();
 
-        private sealed class PoolItemCheckin : Disposable
+        private sealed class PoolItemCheckin<TInterface>: Disposable where TInterface : class
         {
-            public PoolItemCheckin(IPool pool, object instance)
+            public PoolItemCheckin(IPool<TInterface> pool, TInterface instance)
             {
                 Pool = pool;
                 Instance = instance;
@@ -27,45 +30,23 @@ namespace Solti.Utils.DI.Internals
             protected override void Dispose(bool disposeManaged)
             {
                 base.Dispose(disposeManaged);
-
                 Pool.Return(Instance);
             }
 
-            public IPool Pool { get; }
+            public IPool<TInterface> Pool { get; }
 
-            public object Instance { get; }
+            public TInterface Instance { get; }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static object InvokePool(IPool pool, out object disposable)
+        private static TInterface InvokePool<TInterface>(IInjector injector, string poolName, out object disposable) where TInterface : class
         {
-            object result = pool.Get();
-            disposable = new PoolItemCheckin(pool, result);
-            return result;
+            IPool<TInterface> pool = injector.Get<IPool<TInterface>>(poolName);
+            TInterface instance = pool.Get();
+            disposable = new PoolItemCheckin<TInterface>(pool, instance);
+            return instance;
         }
 
-        /*
-        if (scope.Tag == POOL_SCOPE)
-            //
-            // In pool, we call the original factory
-            //
-
-            return base.CreateInstance(scope, out lifetime);
-        else
-        {
-            //
-            // On consumer side we get the item from the pool
-            //
-
-            IPool relatedPool = (IPool) scope.Get(PoolType, PoolName);
-
-            object result = relatedPool.Get();
-            lifetime = new PoolItemCheckin(relatedPool, result);
-            return result;
-        }
-        */
-
-        /// <inheritdoc/>
         public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => Expression.Condition
         (
             test: UnfoldLambdaExpressionVisitor.Unfold
@@ -73,15 +54,22 @@ namespace Solti.Utils.DI.Internals
                 (Expression<Func<IInjector, bool>>) (static scope => POOL_SCOPE.Equals(scope.Tag)),
                 scope
             ),
+
+            //
+            // In pool, we call the original factory
+            //
+
             ifTrue: base.CreateLifetimeManager(getService, scope, disposable),
-            ifFalse: Expression.Invoke
+
+            //
+            // On consumer side we get the actual service from the pool
+            //
+
+            ifFalse: Expression.Call
             (
-                Expression.Constant((InvokePoolDelegate) InvokePool),
-                UnfoldLambdaExpressionVisitor.Unfold
-                (
-                    (Expression<Func<IInjector, IPool>>) (scope => (IPool) scope.Get(PoolType, PoolName)),
-                    scope
-                ),
+                FInvokePool.MakeGenericMethod(Interface),
+                scope,
+                Expression.Constant(PoolName),
                 disposable
             ),
             type: typeof(object)

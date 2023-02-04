@@ -16,7 +16,5 @@ namespace Solti.Utils.DI.Internals
         public static MethodInfo Extract(Expression<Action> expr) => Extract((LambdaExpression) expr);
 
         public static MethodInfo Extract<T>(Expression<Action<T>> expr) => Extract((LambdaExpression) expr);
-
-        public static MethodInfo Extract<T, TContext>(Expression<Action<T, TContext>> expr) => Extract((LambdaExpression) expr);
     }
 }

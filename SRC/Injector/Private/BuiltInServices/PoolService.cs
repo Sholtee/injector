@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Threading;
 
 namespace Solti.Utils.DI.Internals
@@ -12,9 +11,9 @@ namespace Solti.Utils.DI.Internals
     using Primitives.Patterns;
     using Primitives.Threading;
 
-    internal sealed class PoolService<TInterface> : ObjectPool<object>, IPool<TInterface> where TInterface: class
+    internal sealed class PoolService<TInterface>: Disposable, IPool<TInterface> where TInterface: class
     {
-        private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<object>
+        private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<TInterface>
         {
             //
             // Don't use [ThreadStatic] here as every interface-name pair requires its own instance.
@@ -49,7 +48,7 @@ namespace Solti.Utils.DI.Internals
                 Name = name;
             }
 
-            public object Create()
+            public TInterface Create()
             {
                 //
                 // It's tricky since:
@@ -62,11 +61,11 @@ namespace Solti.Utils.DI.Internals
                 return dedicatedScope.Get<TInterface>(Name);
             }
 
-            public void Dispose(object item) {} // scope fogja felszabaditani
+            public void Dispose(TInterface item) {} // related scope is reponsible for freeing the pool item
 
-            public void CheckOut(object item) {}
+            public void CheckOut(TInterface item) {}
 
-            public void CheckIn(object item)
+            public void CheckIn(TInterface item)
             {
                 if (item is IResettable resettable && resettable.Dirty)
                     resettable.Reset();
@@ -77,8 +76,14 @@ namespace Solti.Utils.DI.Internals
 
         private readonly CheckoutPolicy FCheckoutPolicy;
 
-        public PoolService(IScopeFactory scopeFactory, PoolConfig config, string? name) : base(new PoolServiceLifetimeManager(scopeFactory, name), config.Capacity) 
+        private readonly PoolServiceLifetimeManager FLifetimeManager;
+
+        private readonly ObjectPool<TInterface> FUnderlyingPool;
+
+        public PoolService(IScopeFactory scopeFactory, PoolConfig config, string? name) 
         {
+            FLifetimeManager = new PoolServiceLifetimeManager(scopeFactory, name);
+            FUnderlyingPool = new ObjectPool<TInterface>(FLifetimeManager, config.Capacity);
             FCheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw;
 
             //                                            !!HACK!!
@@ -95,12 +100,13 @@ namespace Solti.Utils.DI.Internals
 
         protected override void Dispose(bool disposeManaged)
         {
-            base.Dispose(disposeManaged); // eloszor hivjuk
-
-            if (disposeManaged)
-                ((IDisposable) LifetimeManager).Dispose();
+            FUnderlyingPool.Dispose();
+            FLifetimeManager.Dispose();
+            base.Dispose(disposeManaged);
         }
 
-        public object Get() => Get(FCheckoutPolicy)!;
+        public TInterface Get() => FUnderlyingPool.Get(FCheckoutPolicy)!;
+
+        public void Return(TInterface item) => FUnderlyingPool.Return(item);
     }
 }

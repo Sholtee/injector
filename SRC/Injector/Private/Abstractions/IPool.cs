@@ -3,22 +3,14 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.DI.Internals
 {
-    internal interface IPool: IDisposable
+    using Primitives.Patterns;
+
+    internal interface IPool<TInterface>: IDisposableEx where TInterface: class
     {
-        object Get();
+        TInterface Get();
 
-        void Return(object instance);
-    }
-
-    //
-    // Required to handle generic services
-    //
-
-    internal interface IPool<TInterface>: IPool where TInterface: class
-    {
+        void Return(TInterface instance);
     }
 }
