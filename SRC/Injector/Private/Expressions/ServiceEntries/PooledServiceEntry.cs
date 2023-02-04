@@ -10,11 +10,31 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Threading;
+    using Primitives.Patterns;
 
     internal sealed partial class PooledServiceEntry
     {
         private delegate object InvokePoolDelegate(IPool pool, out object disposable);
+
+        private sealed class PoolItemCheckin : Disposable
+        {
+            public PoolItemCheckin(IPool pool, object instance)
+            {
+                Pool = pool;
+                Instance = instance;
+            }
+
+            protected override void Dispose(bool disposeManaged)
+            {
+                base.Dispose(disposeManaged);
+
+                Pool.Return(Instance);
+            }
+
+            public IPool Pool { get; }
+
+            public object Instance { get; }
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static object InvokePool(IPool pool, out object disposable)

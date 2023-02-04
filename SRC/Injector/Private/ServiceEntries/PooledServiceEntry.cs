@@ -9,7 +9,6 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Patterns;
 
     internal sealed partial class PooledServiceEntry : ScopedServiceEntryBase
     {
@@ -33,26 +32,6 @@ namespace Solti.Utils.DI.Internals
 
         public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
         {
-        }
-
-        private sealed class PoolItemCheckin : Disposable
-        {
-            public PoolItemCheckin(IPool pool, object instance)
-            {
-                Pool = pool;
-                Instance = instance;
-            }
-
-            protected override void Dispose(bool disposeManaged)
-            {
-                base.Dispose(disposeManaged);
-
-                Pool.Return(Instance);
-            }
-
-            public IPool Pool { get; }
-
-            public object Instance { get; }
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
