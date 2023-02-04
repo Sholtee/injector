@@ -72,21 +72,15 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override int CompareTo(LifetimeBase other)
-        {
-            if (other is null)
-                throw new ArgumentNullException(nameof(other));
+        public override int CompareTo(LifetimeBase other) => other is PooledLifetime
+            //
+            // It breaks the contract how the IComparable interface is supposed to be implemented but
+            // required since a pooled service cannot have pooled dependency (dependency would never 
+            // get back to its parent pool)
+            //
 
-            return other is PooledLifetime
-                //
-                // It breaks the contract how the IComparable interface is supposed to be implemented but
-                // required since a pooled service cannot have pooled dependency (dependency would never 
-                // get back to its parent pool)
-                //
-
-                ? -1
-                : base.CompareTo(other);
-        }
+            ? -1
+            : base.CompareTo(other ?? throw new ArgumentNullException(nameof(other)));
 
         public PoolConfig Config { get; init; } = PoolConfig.Default;
 
