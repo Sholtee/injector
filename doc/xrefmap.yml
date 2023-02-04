@@ -2643,12 +2643,12 @@ references:
   commentId: T:Solti.Utils.DI.PoolConfig
   fullName: Solti.Utils.DI.PoolConfig
   nameWithType: PoolConfig
-- uid: Solti.Utils.DI.PoolConfig.#ctor(System.Int32)
-  name: PoolConfig(Int32)
-  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig__ctor_System_Int32_
-  commentId: M:Solti.Utils.DI.PoolConfig.#ctor(System.Int32)
-  fullName: Solti.Utils.DI.PoolConfig.PoolConfig(System.Int32)
-  nameWithType: PoolConfig.PoolConfig(Int32)
+- uid: Solti.Utils.DI.PoolConfig.#ctor
+  name: PoolConfig()
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig__ctor
+  commentId: M:Solti.Utils.DI.PoolConfig.#ctor
+  fullName: Solti.Utils.DI.PoolConfig.PoolConfig()
+  nameWithType: PoolConfig.PoolConfig()
 - uid: Solti.Utils.DI.PoolConfig.#ctor*
   name: PoolConfig
   href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig__ctor_
@@ -2667,6 +2667,18 @@ references:
   commentId: Overload:Solti.Utils.DI.PoolConfig.{Clone}$
   fullName: Solti.Utils.DI.PoolConfig.<Clone>$
   nameWithType: PoolConfig.<Clone>$
+- uid: Solti.Utils.DI.PoolConfig.Blocking
+  name: Blocking
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Blocking
+  commentId: P:Solti.Utils.DI.PoolConfig.Blocking
+  fullName: Solti.Utils.DI.PoolConfig.Blocking
+  nameWithType: PoolConfig.Blocking
+- uid: Solti.Utils.DI.PoolConfig.Blocking*
+  name: Blocking
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Blocking_
+  commentId: Overload:Solti.Utils.DI.PoolConfig.Blocking
+  fullName: Solti.Utils.DI.PoolConfig.Blocking
+  nameWithType: PoolConfig.Blocking
 - uid: Solti.Utils.DI.PoolConfig.Capacity
   name: Capacity
   href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Capacity
@@ -2679,21 +2691,18 @@ references:
   commentId: Overload:Solti.Utils.DI.PoolConfig.Capacity
   fullName: Solti.Utils.DI.PoolConfig.Capacity
   nameWithType: PoolConfig.Capacity
-- uid: Solti.Utils.DI.PoolConfig.Deconstruct(System.Int32@)
-  name: Deconstruct(out Int32)
-  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Deconstruct_System_Int32__
-  commentId: M:Solti.Utils.DI.PoolConfig.Deconstruct(System.Int32@)
-  name.vb: Deconstruct(ByRef Int32)
-  fullName: Solti.Utils.DI.PoolConfig.Deconstruct(out System.Int32)
-  fullName.vb: Solti.Utils.DI.PoolConfig.Deconstruct(ByRef System.Int32)
-  nameWithType: PoolConfig.Deconstruct(out Int32)
-  nameWithType.vb: PoolConfig.Deconstruct(ByRef Int32)
-- uid: Solti.Utils.DI.PoolConfig.Deconstruct*
-  name: Deconstruct
-  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Deconstruct_
-  commentId: Overload:Solti.Utils.DI.PoolConfig.Deconstruct
-  fullName: Solti.Utils.DI.PoolConfig.Deconstruct
-  nameWithType: PoolConfig.Deconstruct
+- uid: Solti.Utils.DI.PoolConfig.Default
+  name: Default
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Default
+  commentId: P:Solti.Utils.DI.PoolConfig.Default
+  fullName: Solti.Utils.DI.PoolConfig.Default
+  nameWithType: PoolConfig.Default
+- uid: Solti.Utils.DI.PoolConfig.Default*
+  name: Default
+  href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Default_
+  commentId: Overload:Solti.Utils.DI.PoolConfig.Default
+  fullName: Solti.Utils.DI.PoolConfig.Default
+  nameWithType: PoolConfig.Default
 - uid: Solti.Utils.DI.PoolConfig.Equals(Solti.Utils.DI.PoolConfig)
   name: Equals(PoolConfig)
   href: Solti.Utils.DI.PoolConfig.html#Solti_Utils_DI_PoolConfig_Equals_Solti_Utils_DI_PoolConfig_
