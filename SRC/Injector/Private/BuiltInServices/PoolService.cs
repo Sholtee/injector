@@ -3,7 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,78 +13,41 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PoolService<TInterface>: Disposable, IPool<TInterface> where TInterface: class
     {
-        private sealed class PoolServiceLifetimeManager: Disposable, ILifetimeManager<TInterface>
+        private sealed class PoolItem : Disposable, IPoolItem<TInterface>
         {
-            //
-            // Don't use [ThreadStatic] here as every interface-name pair requires its own instance.
-            //
-
-            private readonly ThreadLocal<IInjector> FDedicatedScope;
+            public PoolItem(PoolService<TInterface> owner)
+            {
+                Scope = owner.FScopePool.Get(owner.FCheckoutPolicy)!;
+                Value = Scope.Get<TInterface>(owner.FName);
+                Owner = owner;
+            }
 
             protected override void Dispose(bool disposeManaged)
             {
-                if (disposeManaged)
-                {
-                    foreach (IInjector scope in FDedicatedScope.Values)
-                    {
-                        scope.Dispose();
-                    }
-
-                    FDedicatedScope.Dispose();
-                }
-
-                base.Dispose(disposeManaged);
-            }
-
-            public string? Name { get; }
-
-            public PoolServiceLifetimeManager(IScopeFactory scopeFactory, string? name)
-            {
-                FDedicatedScope = new ThreadLocal<IInjector>
-                (
-                    () => scopeFactory.CreateScope(tag: PooledServiceEntry.POOL_SCOPE), 
-                    trackAllValues: true
-                );
-                Name = name;
-            }
-
-            public TInterface Create()
-            {
-                //
-                // It's tricky since:
-                //   - Every produced item requires a separate scope (as they will be used in separate threads)
-                //   - To let the system detect circular references -in case of recursion- we must not return a new instance.
-                //
-
-                IInjector dedicatedScope = FDedicatedScope.Value;
-
-                return dedicatedScope.Get<TInterface>(Name);
-            }
-
-            public void Dispose(TInterface item) {} // related scope is reponsible for freeing the pool item
-
-            public void CheckOut(TInterface item) {}
-
-            public void CheckIn(TInterface item)
-            {
-                if (item is IResettable resettable && resettable.Dirty)
+                if (Value is IResettable resettable && resettable.Dirty)
                     resettable.Reset();
+
+                Owner.FScopePool.Return(Scope);
             }
 
-            public void RecursionDetected() {}
+            public PoolService<TInterface> Owner { get; }
+
+            public IInjector Scope { get; }
+
+            public TInterface Value { get; }
         }
 
         private readonly CheckoutPolicy FCheckoutPolicy;
 
-        private readonly PoolServiceLifetimeManager FLifetimeManager;
+        private readonly string? FName;
 
-        private readonly ObjectPool<TInterface> FUnderlyingPool;
+        private readonly ObjectPool<IInjector> FScopePool;
 
         public PoolService(IScopeFactory scopeFactory, PoolConfig config, string? name) 
         {
-            FLifetimeManager = new PoolServiceLifetimeManager(scopeFactory, name);
-            FUnderlyingPool = new ObjectPool<TInterface>(FLifetimeManager, config.Capacity);
+            FScopePool = new ObjectPool<IInjector>(() =>scopeFactory.CreateScope(tag: PooledServiceEntry.POOL_SCOPE), config.Capacity);
             FCheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw;
+            FName = name;
 
             //                                            !!HACK!!
             //
@@ -95,18 +58,13 @@ namespace Solti.Utils.DI.Internals
             // esetleges megosztott fuggosegek mar peldanyositasra keruljenek.
             //
 
-            Return(Get());
+            Get().Dispose();
         }
 
-        protected override void Dispose(bool disposeManaged)
-        {
-            FUnderlyingPool.Dispose();
-            FLifetimeManager.Dispose();
-            base.Dispose(disposeManaged);
-        }
+        protected override void Dispose(bool disposeManaged) => FScopePool.Dispose();
 
-        public TInterface Get() => FUnderlyingPool.Get(FCheckoutPolicy)!;
+        protected override ValueTask AsyncDispose() => FScopePool.DisposeAsync();
 
-        public void Return(TInterface item) => FUnderlyingPool.Return(item);
+        public IPoolItem<TInterface> Get() => new PoolItem(this);
     }
 }
