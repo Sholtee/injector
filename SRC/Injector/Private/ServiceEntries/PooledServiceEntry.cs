@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
 
         private string? FPoolName;
         public string PoolName => 
-            FPoolName ??= $"{IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(Interface.IsConstructedGenericType ? Interface.GetGenericTypeDefinition() : Interface, Name).GetHashCode():X}";
+            FPoolName ??= $"{IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{(Interface.IsConstructedGenericType ? Interface.GetGenericTypeDefinition() : Interface).TypeHandle.Value:X}{Name?.Insert(0, ":")}";
 
         public PooledServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
         {
