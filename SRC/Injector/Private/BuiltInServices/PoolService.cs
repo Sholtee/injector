@@ -17,8 +17,8 @@ namespace Solti.Utils.DI.Internals
         {
             public PoolItem(PoolService<TInterface> owner)
             {
-                Scope = owner.FScopePool.Get(owner.FCheckoutPolicy)!;
-                Value = Scope.Get<TInterface>(owner.FName);
+                Scope = owner.ScopePool.Get(owner.CheckoutPolicy)!;
+                Value = Scope.Get<TInterface>(owner.Name);
                 Owner = owner;
             }
 
@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Internals
                 if (Value is IResettable resettable && resettable.Dirty)
                     resettable.Reset();
 
-                Owner.FScopePool.Return(Scope);
+                Owner.ScopePool.Return(Scope);
             }
 
             public PoolService<TInterface> Owner { get; }
@@ -37,17 +37,17 @@ namespace Solti.Utils.DI.Internals
             public TInterface Value { get; }
         }
 
-        private readonly CheckoutPolicy FCheckoutPolicy;
+        public CheckoutPolicy CheckoutPolicy { get; }
 
-        private readonly string? FName;
+        public string? Name { get; }
 
-        private readonly ObjectPool<IInjector> FScopePool;
+        public ObjectPool<IInjector> ScopePool { get; }
 
         public PoolService(IScopeFactory scopeFactory, PoolConfig config, string? name) 
         {
-            FScopePool = new ObjectPool<IInjector>(() =>scopeFactory.CreateScope(tag: PooledServiceEntry.POOL_SCOPE), config.Capacity);
-            FCheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw;
-            FName = name;
+            ScopePool = new ObjectPool<IInjector>(() => scopeFactory.CreateScope(tag: PooledServiceEntry.POOL_SCOPE), config.Capacity);
+            CheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw;
+            Name = name;
 
             //                                            !!HACK!!
             //
@@ -61,9 +61,9 @@ namespace Solti.Utils.DI.Internals
             Get().Dispose();
         }
 
-        protected override void Dispose(bool disposeManaged) => FScopePool.Dispose();
+        protected override void Dispose(bool disposeManaged) => ScopePool.Dispose();
 
-        protected override ValueTask AsyncDispose() => FScopePool.DisposeAsync();
+        protected override ValueTask AsyncDispose() => ScopePool.DisposeAsync();
 
         public IPoolItem<TInterface> Get() => new PoolItem(this);
     }
