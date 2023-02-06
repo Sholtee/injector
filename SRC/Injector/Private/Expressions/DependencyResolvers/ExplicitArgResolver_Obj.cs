@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -14,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ExplicitArgResolver_Obj : Singleton<ExplicitArgResolver_Obj>, IDependencyResolver
     {
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Func<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
         {
             if (userData is object explicitArgs)
             {

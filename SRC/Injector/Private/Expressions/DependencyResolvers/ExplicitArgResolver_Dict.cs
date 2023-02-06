@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -14,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ExplicitArgResolver_Dict : Singleton<ExplicitArgResolver_Dict>, IDependencyResolver
     {
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Func<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
         {
             if (userData is IReadOnlyDictionary<string, object?> explicitArgs && explicitArgs.TryGetValue(dependency.Name, out object? val))
             {

@@ -13,6 +13,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Contains the interception logic.
         /// </summary>
-        object? Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext);
+        object? Invoke(IInvocationContext context, Next<object?> callNext);
     }
 }

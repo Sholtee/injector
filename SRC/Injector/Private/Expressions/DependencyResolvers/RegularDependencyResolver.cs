@@ -3,7 +3,6 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -21,7 +20,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>(TInterface) injector.[Try]Get(typeof(TInterface), options?.Name)</code>
         /// </summary>
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Func<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
         {
             if (dependency.Type.IsInterface)
             {

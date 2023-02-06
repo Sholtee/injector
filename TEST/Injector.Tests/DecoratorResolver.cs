@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 public IList Dependency { get; }
 
-                public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext) => callNext();
+                public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
             }
 
             public override Type UnderlyingInterceptor { get; } = typeof(MyInterceptor);

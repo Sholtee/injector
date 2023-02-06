@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Interfaces
     public delegate TInterface FactoryDelegate<TInterface>(IInjector scope) where TInterface : class;
 
     /// <summary>
-    /// Defines an interceptor invocation.
+    /// Invokes the next member of chained items.
     /// </summary>
-    public delegate object? InvokeInterceptorDelegate();
+    public delegate T Next<T>();
 }

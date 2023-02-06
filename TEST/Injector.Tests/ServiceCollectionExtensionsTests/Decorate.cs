@@ -178,7 +178,7 @@ namespace Solti.Utils.DI.Tests
 
             public IInterface_3<int> Dependency { get; }
 
-            public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
