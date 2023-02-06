@@ -54,13 +54,13 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_" data-uid="Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_System_Linq_Expressions_ParameterExpression_Solti_Utils_DI_Interfaces_DependencyDescriptor_System_Object_System_Func_System_Linq_Expressions_Expression__" data-uid="Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,System.Func{System.Linq.Expressions.Expression})">Resolve(ParameterExpression, DependencyDescriptor, Object, Func&lt;Expression&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_System_Linq_Expressions_ParameterExpression_Solti_Utils_DI_Interfaces_DependencyDescriptor_System_Object_Solti_Utils_DI_Interfaces_Next_System_Linq_Expressions_Expression__" data-uid="Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,Solti.Utils.DI.Interfaces.Next{System.Linq.Expressions.Expression})">Resolve(ParameterExpression, DependencyDescriptor, Object, Next&lt;Expression&gt;)</h4>
   <div class="markdown level1 summary"><p>Tries to resolve a dependency.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object userData, Func&lt;Expression&gt; next)</code></pre>
+    <pre><code class="lang-csharp hljs">Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object userData, Next&lt;Expression&gt; next)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -91,7 +91,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a>&gt;</td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Next-1.html">Next</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a>&gt;</td>
         <td><span class="parametername">next</span></td>
         <td><p>Invokes the next resolver.</p>
 </td>
