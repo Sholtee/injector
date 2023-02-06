@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
         (
             test: UnfoldLambdaExpressionVisitor.Unfold
             (
-                (Expression<Func<IInjector, bool>>) (static scope => POOL_SCOPE.Equals(scope.Tag)),
+                (Expression<Func<IInjector, bool>>) (static scope => PooledLifetime.POOL_SCOPE.Equals(scope.Tag)),
                 scope
             ),
 

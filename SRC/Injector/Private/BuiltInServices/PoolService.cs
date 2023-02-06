@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Internals
 
         public PoolService(IScopeFactory scopeFactory, PoolConfig config, string? name) 
         {
-            ScopePool = new ObjectPool<IInjector>(() => scopeFactory.CreateScope(tag: PooledServiceEntry.POOL_SCOPE), config.Capacity);
+            ScopePool = new ObjectPool<IInjector>(() => scopeFactory.CreateScope(tag: PooledLifetime.POOL_SCOPE), config.Capacity);
             CheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw;
             Name = name;
 

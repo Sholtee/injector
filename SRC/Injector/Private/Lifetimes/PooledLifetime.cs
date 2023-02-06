@@ -14,6 +14,14 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : Lifetime
     {
+        private static string GetPoolName(Type iface, string? name)
+        {
+            if (iface.IsConstructedGenericType)
+                iface= iface.GetGenericTypeDefinition();
+
+            return $"{IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.TypeHandle.Value:X}{name?.Insert(0, ":")}";
+        }
+
         private AbstractServiceEntry GetPoolService(PooledServiceEntry entry) => new SingletonServiceEntry
         (
             entry.Interface.IsGenericTypeDefinition
@@ -27,6 +35,8 @@ namespace Solti.Utils.DI.Internals
             ServiceOptions.Default with { SupportAspects = false }
         );
 
+        public const string POOL_SCOPE = nameof(POOL_SCOPE);
+
         public PooledLifetime() : base(precedence: 20) { }
 
         public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions)
@@ -36,7 +46,8 @@ namespace Solti.Utils.DI.Internals
                 iface ?? throw new ArgumentNullException(nameof(iface)),
                 name,
                 implementation ?? throw new ArgumentNullException(nameof(implementation)),
-                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
+                GetPoolName(iface, name)
             );
 
             yield return GetPoolService(entry);
@@ -51,7 +62,8 @@ namespace Solti.Utils.DI.Internals
                 name,
                 implementation ?? throw new ArgumentNullException(nameof(implementation)),
                 explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
-                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
+                GetPoolName(iface, name)
             );
 
             yield return GetPoolService(entry);
@@ -65,7 +77,8 @@ namespace Solti.Utils.DI.Internals
                 iface ?? throw new ArgumentNullException(nameof(iface)),
                 name,
                 factory ?? throw new ArgumentNullException(nameof(factory)),
-                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions))
+                serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
+                GetPoolName(iface, name)
             );
 
             yield return GetPoolService(entry);

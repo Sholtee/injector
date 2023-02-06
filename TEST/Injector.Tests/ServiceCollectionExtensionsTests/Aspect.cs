@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -84,7 +84,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -115,7 +115,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -149,7 +149,7 @@ namespace Solti.Utils.DI.Tests
                 .Returns(new Disposable());
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -178,7 +178,7 @@ namespace Solti.Utils.DI.Tests
                 .Returns(new Disposable());
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -204,7 +204,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -237,7 +237,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
@@ -279,7 +279,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext

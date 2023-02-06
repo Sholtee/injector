@@ -103,7 +103,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             Assert.That(entry.CreateInstance(mockInjector.Object, out object _), Is.InstanceOf<IList>());
         }
@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.Tests
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
                 .SetupGet(i => i.Tag)
-                .Returns(PooledServiceEntry.POOL_SCOPE);
+                .Returns(PooledLifetime.POOL_SCOPE);
 
             Assert.That(entry.CreateInstance(mockInjector.Object, out object _), Is.InstanceOf<IList<int>>());
         }
