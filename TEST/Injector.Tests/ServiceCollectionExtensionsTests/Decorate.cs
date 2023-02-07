@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Moq;
@@ -61,6 +62,44 @@ namespace Solti.Utils.DI.Tests
 
             mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_1), It.IsAny<IInterface_1>()), Times.Once);
             mockCallback2.Verify(_ => _(It.IsAny<IInjector>(), typeof(IInterface_1), It.IsAny<IInterface_1>()), Times.Once);
+        }
+
+        [TestCaseSource(nameof(ScopeControlledLifetimes))]
+        public void Decorate_ShouldOverwriteTheFactoryFunction2(Lifetime lifetime)
+        {
+            var mockCallback1 = new Mock<Func<IInjector, IInterface_1, IInterface_1>>(MockBehavior.Strict);
+            mockCallback1
+                .Setup(_ => _(It.IsAny<IInjector>(), It.Is<IInterface_1>(inst => inst is Implementation_1_No_Dep)))
+                .Returns<IInjector, IInterface_1>((injector, inst) => inst);
+
+            var mockCallback2 = new Mock<Func<IInjector, IInterface_1, IInterface_1>>(MockBehavior.Strict);
+            mockCallback2
+                .Setup(_ => _(It.IsAny<IInjector>(), It.Is<IInterface_1>(inst => inst is Implementation_1_No_Dep)))
+                .Returns(new DecoratedImplementation_1());
+
+            Collection
+                .Service<IInterface_1, Implementation_1_No_Dep>(lifetime)
+                .Decorate<IInterface_1>((injector, curr) => mockCallback1.Object(injector, curr))
+                .Decorate<IInterface_1>((injector, curr) => mockCallback2.Object(injector, curr));
+
+            var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
+            mockInjector
+                .SetupGet(i => i.Options)
+                .Returns(new ScopeOptions());
+
+            var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
+            mockBuildContext
+                .SetupGet(ctx => ctx.Compiler)
+                .Returns(new SimpleDelegateCompiler());
+            mockBuildContext
+                .Setup(ctx => ctx.AssignSlot())
+                .Returns(0);
+
+            Collection.Find<IInterface_1>().Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Assert.That(Collection.Last().CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
+
+            mockCallback1.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
+            mockCallback2.Verify(_ => _(It.IsAny<IInjector>(), It.IsAny<IInterface_1>()), Times.Once);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
@@ -123,12 +162,23 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<NotSupportedException>(() => Collection.Decorate((p1, p2, p3) => default), Resources.DECORATING_NOT_SUPPORTED);
         }
 
-        [TestCaseSource(nameof(ScopeControlledLifetimes))]
-        public void Decorate_MayHaveDependency(Lifetime lifetime)
+        private static IEnumerable<Action<IServiceCollection>> Decorators
         {
-            Collection
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime)
-                .Decorate<MyInterceptorHavingDependency>();
+            get
+            {
+                yield return coll => coll.Decorate<MyInterceptorHavingDependency>();
+                yield return coll => coll.Decorate<IInterface_2, MyInterceptorHavingDependency>();
+                yield return coll => coll.Decorate<IInterface_2, MyInterceptorHavingDependency>(null);
+            }
+        }
+
+        [Test]
+        public void Decorate_MaySpecifyDependency([ValueSource(nameof(ScopeControlledLifetimes))] Lifetime lifetime, [ValueSource(nameof(Decorators))] Action<IServiceCollection> decortor)
+        {
+            decortor
+            (
+                Collection.Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(lifetime)
+            );
 
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
 
@@ -203,6 +253,14 @@ namespace Solti.Utils.DI.Tests
 
             Collection.Last().Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
             Assert.That(Collection.Last().CreateInstance(mockInjector.Object, out _), Is.InstanceOf<DecoratedImplementation_1>());
+        }
+
+        [Test]
+        public void Decorate_ShouldThrowOnInvalidInterceptor()
+        {
+            Assert.Throws<ArgumentException>(() => Collection
+                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Scoped)
+                .Decorate(typeof(IInterface_2), typeof(object)));
         }
     }
 }

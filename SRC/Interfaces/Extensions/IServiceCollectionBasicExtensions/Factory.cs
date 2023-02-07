@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         public static IServiceCollection Factory<TInterface>(this IServiceCollection self, string? name, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime, ServiceOptions? options = null) where TInterface : class
-            => self.Factory(typeof(TInterface), name, WrapToStandardFactory(factory), lifetime, options);
+            => self.Factory(typeof(TInterface), name, WrapToStandardDelegate(factory), lifetime, options);
 
         /// <summary>
         /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
@@ -77,9 +77,9 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         public static IServiceCollection Factory<TInterface>(this IServiceCollection self, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime, ServiceOptions? options = null) where TInterface : class
-            => self.Factory(typeof(TInterface), null, WrapToStandardFactory(factory), lifetime, options);
+            => self.Factory(typeof(TInterface), null, WrapToStandardDelegate(factory), lifetime, options);
 
-        private static Expression<FactoryDelegate> WrapToStandardFactory<TInterface>(Expression<FactoryDelegate<TInterface>> factory) where TInterface : class
+        private static Expression<FactoryDelegate> WrapToStandardDelegate<TInterface>(Expression<FactoryDelegate<TInterface>> factory) where TInterface : class
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));

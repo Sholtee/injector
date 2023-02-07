@@ -18,6 +18,11 @@ namespace Solti.Utils.DI.Interfaces
     public delegate object DecoratorDelegate(IInjector scope, Type iface, object instance);
 
     /// <summary>
+    /// Defines the layout of functions used to apply proxies.
+    /// </summary>
+    public delegate TInterface DecoratorDelegate<TInterface>(IInjector scope, TInterface instance);
+
+    /// <summary>
     /// Defines the layout of functions used as service factory.
     /// </summary>
     public delegate object FactoryDelegate(IInjector scope, Type iface);

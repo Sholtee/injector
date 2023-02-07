@@ -5,12 +5,9 @@
 ********************************************************************************/
 using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Solti.Utils.DI.Interfaces
 {
-    using Properties;
-
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
@@ -27,20 +24,10 @@ namespace Solti.Utils.DI.Interfaces
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            AbstractServiceEntry entry = self.SingleOrDefault
+            bool removed = self.Remove
             (
-                svc => svc.Interface == iface && svc.Name == name
-            ) ?? throw new ServiceNotFoundException
-            (
-                string.Format
-                (
-                    Resources.Culture,
-                    Resources.SERVICE_NOT_FOUND,
-                    new MissingServiceEntry(iface, name).ToString(shortForm: true)
-                )
+                self.Find(iface, name)
             );
-            
-            bool removed = self.Remove(entry);
             Debug.Assert(removed, "Entry cannot be removed");
 
             return self;

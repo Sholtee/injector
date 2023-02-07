@@ -29,5 +29,94 @@ namespace Solti.Utils.DI.Interfaces
             self.Last().Decorate(decorator);
             return self;
         }
+
+        /// <summary>
+        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
+        /// <param name="iface">The service interface.</param>
+        /// <param name="name">The (optional) service name.</param>
+        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
+        /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
+        /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
+        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, Expression<DecoratorDelegate> decorator)
+        {
+            if (self is null)
+                throw new ArgumentNullException(nameof(self));
+
+            if (decorator is null)
+                throw new ArgumentNullException(nameof(decorator));
+
+            self.Find(iface, name).Decorate(decorator);
+            return self;
+        }
+
+        /// <summary>
+        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
+        /// <param name="iface">The service interface.</param>
+        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
+        /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
+        /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
+        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Expression<DecoratorDelegate> decorator) =>
+            self.Decorate(iface, null, decorator);
+
+        /// <summary>
+        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
+        /// <param name="name">The (optional) service name.</param>
+        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
+        /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
+        /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
+        public static IServiceCollection Decorate<TInterface>(this IServiceCollection self, string? name, Expression<DecoratorDelegate<TInterface>> decorator) where TInterface : class =>
+            self.Decorate(typeof(TInterface), name, WrapToStandardDelegate(decorator));
+
+        /// <summary>
+        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
+        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
+        /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
+        /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
+        public static IServiceCollection Decorate<TInterface>(this IServiceCollection self, Expression<DecoratorDelegate<TInterface>> decorator) where TInterface: class =>
+            self.Decorate(typeof(TInterface), WrapToStandardDelegate(decorator));
+
+        private sealed class ParameterReplacer : ExpressionVisitor
+        {
+            public ParameterExpression TargetParameter { get; }
+
+            public Expression Replacement { get; }
+
+            public ParameterReplacer(ParameterExpression targetParameter, ParameterExpression replacement)
+            {
+                TargetParameter = targetParameter;
+                Replacement = Expression.Convert(replacement, TargetParameter.Type);
+            }
+
+            protected override Expression VisitParameter(ParameterExpression node) => node == TargetParameter
+                ? Replacement
+                : base.VisitParameter(node);
+        }
+
+        private static Expression<DecoratorDelegate> WrapToStandardDelegate<TInterface>(Expression<DecoratorDelegate<TInterface>> decorator) where TInterface : class
+        {
+            if (decorator is null)
+                throw new ArgumentNullException(nameof(decorator));
+
+            ParameterExpression
+                injector = decorator.Parameters[0],
+                iface    = Expression.Parameter(typeof(Type), nameof(iface)),
+                instance = Expression.Parameter(typeof(object), nameof(instance));
+
+            return Expression.Lambda<DecoratorDelegate>
+            (
+                new ParameterReplacer(decorator.Parameters[1], instance).Visit(decorator.Body),
+                injector,
+                iface,
+                instance
+            );
+        }
     }
 }
