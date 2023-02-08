@@ -3,6 +3,8 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
+using System;
+
 using NUnit.Framework;
 
 namespace Solti.Utils.DI.Tests
@@ -33,5 +35,12 @@ namespace Solti.Utils.DI.Tests
 
         [Test]
         public void Remove_ShouldThrowOnMissingServce() => Assert.Throws<ServiceNotFoundException>(() => Collection.Remove<IInterface_1>());
+
+        [Test]
+        public void Remove_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Remove<IInterface_1>(null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Remove(iface: null));
+        }
     }
 }

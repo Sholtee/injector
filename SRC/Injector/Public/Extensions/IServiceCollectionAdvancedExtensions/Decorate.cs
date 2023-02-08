@@ -18,7 +18,7 @@ namespace Solti.Utils.DI
     {
         private static void Decorate(this AbstractServiceEntry entry, Type interceptor)
         {
-            if (!typeof(IInterfaceInterceptor).IsAssignableFrom(interceptor))
+            if (!typeof(IInterfaceInterceptor).IsAssignableFrom(interceptor) || !interceptor.IsClass)
                 throw new ArgumentException(NOT_AN_INTERCEPTOR, nameof(interceptor));
 
             if (entry is not ProducibleServiceEntry pse)

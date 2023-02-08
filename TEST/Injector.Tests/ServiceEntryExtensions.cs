@@ -23,6 +23,12 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void IsService_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => ServiceEntryExtensions.IsService(null));
+        }
+
+        [Test]
         public void IsFactory_ShouldDetermineIfTheEntryUsesTheFactoryRecipe()
         {
             Assert.False(new TransientServiceEntry(typeof(IDisposable), null, typeof(MyDisposable), ServiceOptions.Default).IsFactory());
@@ -30,9 +36,21 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
+        public void IsFactory_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => ServiceEntryExtensions.IsFactory(null));
+        }
+
+        [Test]
         public void IsInternal_ShouldDetermineIfTheEntryHasAnInternalServiceImplementation([Values(null, "cica", "$cica")] string name)
         {
             Assert.That(new TransientServiceEntry(typeof(IDisposable), name, typeof(MyDisposable), ServiceOptions.Default).IsInternal(), Is.EqualTo(name?.StartsWith("$") is true));
+        }
+
+        [Test]
+        public void IsInternal_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => ServiceEntryExtensions.IsInternal(null));
         }
 
         [Test]

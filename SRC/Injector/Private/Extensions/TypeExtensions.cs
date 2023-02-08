@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
             if (promisingCtors.Count is 0)
                 promisingCtors = publicCtors;
 
-            if (promisingCtors.Count > 1)
+            if (promisingCtors.Count is not 1)
                 throw new NotSupportedException(string.Format(Resources.Culture, Resources.CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED, src));
 
             return promisingCtors[0];

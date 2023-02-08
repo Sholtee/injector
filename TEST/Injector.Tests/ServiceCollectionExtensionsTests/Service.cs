@@ -28,6 +28,11 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => Collection.Service(null, typeof(Disposable), Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), null, Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), null));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Service(null, typeof(IDisposable), typeof(Disposable), new { }, Lifetime.Transient));
+            Assert.Throws<ArgumentNullException>(() => Collection.Service(null, typeof(Disposable), new { }, Lifetime.Transient));
+            Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), null, new { }, Lifetime.Transient));
+            Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), new { }, null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), null, Lifetime.Transient));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

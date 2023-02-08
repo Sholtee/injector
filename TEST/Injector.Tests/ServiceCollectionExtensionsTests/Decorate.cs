@@ -24,6 +24,9 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Decorate(null, (_, _, _) => new object()));
             Assert.Throws<ArgumentNullException>(() => Collection.Decorate(null));
             Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.Decorate<IInterfaceInterceptor>(null));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.Decorate(null, typeof(IInterface_1), "name", typeof(IInterfaceInterceptor)));
+            Assert.Throws<ArgumentNullException>(() => Collection.Decorate(null, "name", typeof(IInterfaceInterceptor)));
+            Assert.Throws<ArgumentNullException>(() => Collection.Decorate(typeof(IInterface_1), "name", interceptor: null));
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
@@ -258,9 +261,54 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Decorate_ShouldThrowOnInvalidInterceptor()
         {
-            Assert.Throws<ArgumentException>(() => Collection
-                .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Scoped)
-                .Decorate(typeof(IInterface_2), typeof(object)));
+            Assert.Throws<ArgumentException>
+            (
+                () => Collection
+                    .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Scoped)
+                    .Decorate(typeof(IInterface_2), typeof(object))
+            );
+        }
+
+        [Test]
+        public void Decorate_ShouldThrowOnNonProducibleEntry()
+        {
+            Assert.Throws<NotSupportedException>
+            (
+                () => Collection
+                    .Instance<IInterface_1>(new Implementation_1_No_Dep())
+                    .Decorate((_, _, inst) => inst)
+            );
+        }
+
+        [Test]
+        public void Decorate_ShouldThrowOnNonProducibleEntry2()
+        {
+            Assert.Throws<NotSupportedException>
+            (
+                () =>
+                {
+                    Collection.Add(new MissingServiceEntry(typeof(IInterface_1), null));
+                    Collection.Decorate((_, _, inst) => inst);
+                }
+            );
+        }
+
+        private sealed class DummyInterceptor : IInterfaceInterceptor
+        {
+            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+        }
+
+        [Test]
+        public void Decorate_ShouldThrowOnNonProducibleEntry3()
+        {
+            Assert.Throws<NotSupportedException>
+            (
+                () =>
+                {
+                    Collection.Add(new MissingServiceEntry(typeof(IInterface_1), null));
+                    Collection.Decorate<IInterface_1, DummyInterceptor>();
+                }
+            );
         }
     }
 }

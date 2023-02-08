@@ -116,5 +116,11 @@ namespace Solti.Utils.DI.Tests
                 Assert.That(svc.Interface, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
+
+        [Test]
+        public void ServiceProvider_GetService_ShoulThrowOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => IServiceProviderBasicExtensions.GetService<IInterface_1>(null));
+        }
     }
 }
