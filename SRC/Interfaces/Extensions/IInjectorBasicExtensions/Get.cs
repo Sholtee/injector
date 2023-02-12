@@ -10,7 +10,8 @@ namespace Solti.Utils.DI.Interfaces
     public static partial class IInjectorBasicExtensions
     {
         /// <summary>
-        /// Gets the service instance associated with the given interface and (optional) name.
+        /// Gets the service instance associated with the given interface and (optional) name:
+        /// <code>IMyService svc = scope.Get&lt;IMyService&gt;();</code>
         /// </summary>
         /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
         /// <param name="self">The injector itself.</param>
@@ -26,7 +27,8 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Tries to get the service instance associated with the given interface and (optional) name.
+        /// Tries to get the service instance associated with the given interface and (optional) name:
+        /// <code>IMyService? svc = scope.TryGet&lt;IMyService&gt;();</code>
         /// </summary>
         /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
         /// <param name="self">The injector itself.</param>

@@ -29,15 +29,23 @@ namespace Solti.Utils.DI.Interfaces
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            return self.SingleOrDefault(svc => svc.Interface == iface && svc.Name == name) ?? throw new ServiceNotFoundException
-            (
-                string.Format
+            AbstractServiceEntry? entry = self.SingleOrDefault(svc => svc.Interface == iface && svc.Name == name);
+            if (entry is null)
+            {
+                MissingServiceEntry missingService = new(iface, name);
+                throw new ServiceNotFoundException
                 (
-                    Resources.Culture,
-                    Resources.SERVICE_NOT_FOUND,
-                    new MissingServiceEntry(iface, name).ToString(shortForm: true)
-                )
-            );
+                    string.Format
+                    (
+                        Resources.Culture,
+                        Resources.SERVICE_NOT_FOUND,
+                        missingService.ToString(shortForm: true)
+                    ),
+                    null,
+                    missingService
+                );
+            }
+            return entry;
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Interfaces
         Soft,
 
         /// <summary>
-        /// The service gets disposed if it can be casted to <see cref="IDisposable"/> regardlesss its interfce.
+        /// The service gets disposed when the implementation is an <see cref="IDisposable"/> descendant.
         /// </summary>
         Force,
 

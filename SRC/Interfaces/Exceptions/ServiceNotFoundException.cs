@@ -15,22 +15,21 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="ServiceNotFoundException"/> instance.
         /// </summary>
-        public ServiceNotFoundException()
+        public ServiceNotFoundException(string message, AbstractServiceEntry? requestor, MissingServiceEntry requested) : base(message)
         {
+            Requestor = requestor;
+            Requested = requested ?? throw new ArgumentNullException(nameof(requested));
         }
 
         /// <summary>
-        /// Creates a new <see cref="ServiceNotFoundException"/> instance.
+        /// The dependant service which requested a missing service.
         /// </summary>
-        public ServiceNotFoundException(string message) : this(message, null!)
-        {
-        }
+        /// <remarks>This property is null if the request was initiated from user code: <code>scope.Get&lt;IMissingService&gt;()</code></remarks>
+        public AbstractServiceEntry? Requestor { get; }
 
         /// <summary>
-        /// Creates a new <see cref="ServiceNotFoundException"/> instance.
+        /// The requested service.
         /// </summary>
-        public ServiceNotFoundException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        public MissingServiceEntry Requested { get; }
     }
 }

@@ -8,29 +8,19 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// The exception that is thrown when a service has already been registered.
+    /// The exception that is thrown on duplicate service registration.
     /// </summary>
     public sealed class ServiceAlreadyRegisteredException: Exception
     {
         /// <summary>
         /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
         /// </summary>
-        public ServiceAlreadyRegisteredException()
-        {
-        }
+        public ServiceAlreadyRegisteredException(string message, AbstractServiceEntry entry) : base(message)
+            => Entry = entry;
 
         /// <summary>
-        /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
+        /// The service descriptor whose registration was failed.
         /// </summary>
-        public ServiceAlreadyRegisteredException(string message) : this(message, null!)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="ServiceAlreadyRegisteredException"/> instance.
-        /// </summary>
-        public ServiceAlreadyRegisteredException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        public AbstractServiceEntry Entry { get; }
     }
 }

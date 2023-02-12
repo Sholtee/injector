@@ -22,10 +22,7 @@ Solti.Utils.DI.Interfaces.AspectAttribute
 Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute() -> void
 Solti.Utils.DI.Interfaces.CircularReferenceException
 Solti.Utils.DI.Interfaces.CircularReferenceException.Circle.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry>
-Solti.Utils.DI.Interfaces.CircularReferenceException.Circle.init -> void
-Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException() -> void
-Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string message) -> void
-Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string message, System.Exception innerException) -> void
+Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string message, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry> circle) -> void
 Solti.Utils.DI.Interfaces.CreateServiceDelegate
 Solti.Utils.DI.Interfaces.DecoratorDelegate
 Solti.Utils.DI.Interfaces.DecoratorDelegate<TInterface>
@@ -95,7 +92,6 @@ Solti.Utils.DI.Interfaces.OptionsAttribute.Optional.get -> bool
 Solti.Utils.DI.Interfaces.OptionsAttribute.Optional.init -> void
 Solti.Utils.DI.Interfaces.OptionsAttribute.OptionsAttribute() -> void
 Solti.Utils.DI.Interfaces.RequestNotAllowedException
-Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException() -> void
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string message) -> void
 Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException(string message, System.Exception innerException) -> void
 Solti.Utils.DI.Interfaces.ScopeOptions
@@ -110,9 +106,8 @@ Solti.Utils.DI.Interfaces.ScopeOptions.SupportsServiceProvider.set -> void
 Solti.Utils.DI.Interfaces.ServiceActivatorAttribute
 Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.ServiceActivatorAttribute() -> void
 Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException
-Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException() -> void
-Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(string message) -> void
-Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(string message, System.Exception innerException) -> void
+Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry.get -> Solti.Utils.DI.Interfaces.AbstractServiceEntry
+Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(string message, Solti.Utils.DI.Interfaces.AbstractServiceEntry entry) -> void
 Solti.Utils.DI.Interfaces.ServiceDisposalMode
 Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force = 1 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
 Solti.Utils.DI.Interfaces.ServiceDisposalMode.Soft = 0 -> Solti.Utils.DI.Interfaces.ServiceDisposalMode
@@ -130,9 +125,9 @@ Solti.Utils.DI.Interfaces.ServiceEntryStates.Default = 0 -> Solti.Utils.DI.Inter
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated = 4 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated = 2 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceNotFoundException
-Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException() -> void
-Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string message) -> void
-Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string message, System.Exception innerException) -> void
+Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested.get -> Solti.Utils.DI.Interfaces.MissingServiceEntry
+Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor.get -> Solti.Utils.DI.Interfaces.AbstractServiceEntry
+Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string message, Solti.Utils.DI.Interfaces.AbstractServiceEntry requestor, Solti.Utils.DI.Interfaces.MissingServiceEntry requested) -> void
 Solti.Utils.DI.Interfaces.ServiceOptions
 Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver>
 Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers.set -> void

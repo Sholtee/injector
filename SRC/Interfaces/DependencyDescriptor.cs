@@ -38,12 +38,12 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// The type of the dependency (parameter or property).
+        /// The type of dependency (parameter or property).
         /// </summary>
         public Type Type { get; }
 
         /// <summary>
-        /// The name of the dependency (parameter or property).
+        /// The name of dependency (parameter or property).
         /// </summary>
         public string Name { get; }
 
@@ -53,7 +53,7 @@ namespace Solti.Utils.DI.Interfaces
         public OptionsAttribute? Options { get; }
 
         /// <summary>
-        /// The original member.
+        /// The original member (which is either a <see cref="PropertyInfo"/> or a <see cref="ParameterInfo"/>).
         /// </summary>
         public object Original { get; }
     }

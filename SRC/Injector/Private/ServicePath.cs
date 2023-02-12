@@ -51,11 +51,9 @@ namespace Solti.Utils.DI.Internals
                         Resources.Culture,
                         Resources.CIRCULAR_REFERENCE,
                         Format(circle)
-                    )
-                )
-                {
-                    Circle = circle
-                };
+                    ),
+                    circle
+                );
 
                 throw ex;
             }

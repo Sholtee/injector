@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Interfaces
         SupportsBuild = 1 << 2,
 
         /// <summary>
-        /// Proxying is supported via <see cref="AspectAttribute"/> class.
+        /// Proxying is supported via the <see cref="AspectAttribute"/> class.
         /// </summary>
         SupportsAspects = 1 << 3
 

@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Interfaces
     public static class ServiceEntryExtensions
     {
         /// <summary>
-        /// The service was registered via <see cref="IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, string, Type, LifetimeBase, ServiceOptions?)"/> call.
+        /// Returns true if the service was registered via <see cref="IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, string, Type, LifetimeBase, ServiceOptions?)"/> call.
         /// </summary>
         public static bool IsService(this AbstractServiceEntry self)
         {
@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Interfaces
             return self.Implementation is not null;
         }
         /// <summary>
-        /// The service was registered via <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, string, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> call.
+        /// Returns true if the service was registered via <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, string, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> call.
         /// </summary>
         public static bool IsFactory(this AbstractServiceEntry self)
         {

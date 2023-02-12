@@ -16,27 +16,12 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="CircularReferenceException"/> instance.
         /// </summary>
-        public CircularReferenceException()
-        {
-        }
+        public CircularReferenceException(string message, IReadOnlyList<AbstractServiceEntry> circle): base(message)
+            => Circle = circle ?? throw new ArgumentNullException(nameof(circle));
 
         /// <summary>
-        /// Creates a new <see cref="CircularReferenceException"/> instance.
+        /// The circle itself.
         /// </summary>
-        public CircularReferenceException(string message) : this(message, null!)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="CircularReferenceException"/> instance.
-        /// </summary>
-        public CircularReferenceException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        /// <summary>
-        /// The circle
-        /// </summary>
-        public IReadOnlyList<AbstractServiceEntry>? Circle { get; init; }
+        public IReadOnlyList<AbstractServiceEntry> Circle { get; }
     }
 }

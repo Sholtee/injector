@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
         public new void Add(AbstractServiceEntry item)
         {
             if (this.Contains(item ?? throw new ArgumentNullException(nameof(item)), ServiceIdComparer.Instance))
-                throw new ServiceAlreadyRegisteredException(Resources.SERVICE_ALREADY_REGISTERED);
+                throw new ServiceAlreadyRegisteredException(Resources.SERVICE_ALREADY_REGISTERED, item);
   
             base.Add(item);
         }

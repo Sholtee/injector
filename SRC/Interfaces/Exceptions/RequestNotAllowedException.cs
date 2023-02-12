@@ -8,17 +8,10 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// The exception that is thrown when a service request is not allowed.
+    /// The exception that is thrown when a service request is not allowed (for instance StrictDI violation).
     /// </summary>
-    public class RequestNotAllowedException: Exception
+    public sealed class RequestNotAllowedException: Exception
     {
-        /// <summary>
-        /// Creates a new <see cref="RequestNotAllowedException"/> instance.
-        /// </summary>
-        public RequestNotAllowedException()
-        {
-        }
-
         /// <summary>
         /// Creates a new <see cref="RequestNotAllowedException"/> instance.
         /// </summary>

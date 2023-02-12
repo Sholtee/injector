@@ -115,8 +115,8 @@ namespace Solti.Utils.DI.Tests
             {
                 var ex = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
 
-                Assert.That(ex.Data["requested"], Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)).Using(ServiceIdComparer.Instance));
-                Assert.That(ex.Data["requestor"], Is.EqualTo(new DummyServiceEntry(typeof(IInterface_7<IInterface_1>), null)).Using(ServiceIdComparer.Instance));
+                Assert.That(ex.Requested, Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)).Using(ServiceIdComparer.Instance));
+                Assert.That(ex.Requestor, Is.EqualTo(new DummyServiceEntry(typeof(IInterface_7<IInterface_1>), null)).Using(ServiceIdComparer.Instance));
             }
         }
 
