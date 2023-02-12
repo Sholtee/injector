@@ -96,6 +96,10 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_Default_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Modifying the <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_Default">Default</a> value will impact the whole system. Therefore it&apos;s recommended to use the <em>with</em> pattern to set options when registering a concrete service:</p>
+<pre><code>coll.Service&lt;IMyService, MyService>(Lifetime.Singleton, ServiceOptions.Default with { DisposalMode = ... });</code></pre>
+</div>
   <a id="Solti_Utils_DI_Interfaces_ServiceOptions_DependencyResolvers_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_DependencyResolvers" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers">DependencyResolvers</h4>
   <div class="markdown level1 summary"><p>User defined dependency resolvers. Leave blank to use the default ones.</p>
@@ -120,9 +124,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_DependencyResolvers_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A <a class="xref" href="Solti.Utils.DI.Interfaces.IDependencyResolver.html">IDependencyResolver</a> specifies how to resolve a particular dependency type (for instance a lazy dependency).
+Default resolvers (in order) are:
+<ul><li></li><li></li><li></li></ul></p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_ServiceOptions_DisposalMode_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_DisposalMode" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.DisposalMode">DisposalMode</h4>
-  <div class="markdown level1 summary"><p>Contains the method how to dispose the created service instances.</p>
+  <div class="markdown level1 summary"><p>Contains the descriptor how to dispose created service instances.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -168,6 +177,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_ProxyEngine_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default value for this property is provided by the <a href="https://github.com/Sholtee/proxygen">ProxyGen.NET</a> library.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects_" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects" data-uid="Solti.Utils.DI.Interfaces.ServiceOptions.SupportAspects">SupportAspects</h4>
   <div class="markdown level1 summary"><p>If set to true, the system tries to apply proxies defined via <a class="xref" href="Solti.Utils.DI.Interfaces.AspectAttribute.html">AspectAttribute</a> class.</p>
@@ -193,7 +205,8 @@
     </tbody>
   </table>
   <h5 id="Solti_Utils_DI_Interfaces_ServiceOptions_SupportAspects_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The default value for this property is <pre><code>true</code></pre></p>
+  <div class="markdown level1 remarks"><p>You may install interceptors directly by using the decorator recipe:</p>
+<pre><code>coll.Service&lt;IMyService, MyService>().Decorate((injector, iface, instance) => ...);</code></pre>
 </div>
   <h3 id="methods">Methods
   </h3>

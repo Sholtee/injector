@@ -340,24 +340,15 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.CircularReferenceException
   fullName: Solti.Utils.DI.Interfaces.CircularReferenceException
   nameWithType: CircularReferenceException
-- uid: Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor
-  name: CircularReferenceException()
-  href: Solti.Utils.DI.Interfaces.CircularReferenceException.html#Solti_Utils_DI_Interfaces_CircularReferenceException__ctor
-  commentId: M:Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor
-  fullName: Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException()
-  nameWithType: CircularReferenceException.CircularReferenceException()
-- uid: Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor(System.String)
-  name: CircularReferenceException(String)
-  href: Solti.Utils.DI.Interfaces.CircularReferenceException.html#Solti_Utils_DI_Interfaces_CircularReferenceException__ctor_System_String_
-  commentId: M:Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor(System.String)
-  fullName: Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(System.String)
-  nameWithType: CircularReferenceException.CircularReferenceException(String)
-- uid: Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor(System.String,System.Exception)
-  name: CircularReferenceException(String, Exception)
-  href: Solti.Utils.DI.Interfaces.CircularReferenceException.html#Solti_Utils_DI_Interfaces_CircularReferenceException__ctor_System_String_System_Exception_
-  commentId: M:Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor(System.String,System.Exception)
-  fullName: Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(System.String, System.Exception)
-  nameWithType: CircularReferenceException.CircularReferenceException(String, Exception)
+- uid: Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor(System.String,System.Collections.Generic.IReadOnlyList{Solti.Utils.DI.Interfaces.AbstractServiceEntry})
+  name: CircularReferenceException(String, IReadOnlyList<AbstractServiceEntry>)
+  href: Solti.Utils.DI.Interfaces.CircularReferenceException.html#Solti_Utils_DI_Interfaces_CircularReferenceException__ctor_System_String_System_Collections_Generic_IReadOnlyList_Solti_Utils_DI_Interfaces_AbstractServiceEntry__
+  commentId: M:Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor(System.String,System.Collections.Generic.IReadOnlyList{Solti.Utils.DI.Interfaces.AbstractServiceEntry})
+  name.vb: CircularReferenceException(String, IReadOnlyList(Of AbstractServiceEntry))
+  fullName: Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(System.String, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry>)
+  fullName.vb: Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(System.String, System.Collections.Generic.IReadOnlyList(Of Solti.Utils.DI.Interfaces.AbstractServiceEntry))
+  nameWithType: CircularReferenceException.CircularReferenceException(String, IReadOnlyList<AbstractServiceEntry>)
+  nameWithType.vb: CircularReferenceException.CircularReferenceException(String, IReadOnlyList(Of AbstractServiceEntry))
 - uid: Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor*
   name: CircularReferenceException
   href: Solti.Utils.DI.Interfaces.CircularReferenceException.html#Solti_Utils_DI_Interfaces_CircularReferenceException__ctor_
@@ -1870,12 +1861,6 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.RequestNotAllowedException
   fullName: Solti.Utils.DI.Interfaces.RequestNotAllowedException
   nameWithType: RequestNotAllowedException
-- uid: Solti.Utils.DI.Interfaces.RequestNotAllowedException.#ctor
-  name: RequestNotAllowedException()
-  href: Solti.Utils.DI.Interfaces.RequestNotAllowedException.html#Solti_Utils_DI_Interfaces_RequestNotAllowedException__ctor
-  commentId: M:Solti.Utils.DI.Interfaces.RequestNotAllowedException.#ctor
-  fullName: Solti.Utils.DI.Interfaces.RequestNotAllowedException.RequestNotAllowedException()
-  nameWithType: RequestNotAllowedException.RequestNotAllowedException()
 - uid: Solti.Utils.DI.Interfaces.RequestNotAllowedException.#ctor(System.String)
   name: RequestNotAllowedException(String)
   href: Solti.Utils.DI.Interfaces.RequestNotAllowedException.html#Solti_Utils_DI_Interfaces_RequestNotAllowedException__ctor_System_String_
@@ -2074,30 +2059,30 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException
   fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException
   nameWithType: ServiceAlreadyRegisteredException
-- uid: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor
-  name: ServiceAlreadyRegisteredException()
-  href: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor
-  fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException()
-  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException()
-- uid: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String)
-  name: ServiceAlreadyRegisteredException(String)
-  href: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_System_String_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String)
-  fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(System.String)
-  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(String)
-- uid: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String,System.Exception)
-  name: ServiceAlreadyRegisteredException(String, Exception)
-  href: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_System_String_System_Exception_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String,System.Exception)
-  fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(System.String, System.Exception)
-  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(String, Exception)
+- uid: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  name: ServiceAlreadyRegisteredException(String, AbstractServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_System_String_Solti_Utils_DI_Interfaces_AbstractServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String,Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(System.String, Solti.Utils.DI.Interfaces.AbstractServiceEntry)
+  nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException(String, AbstractServiceEntry)
 - uid: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor*
   name: ServiceAlreadyRegisteredException
   href: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor
   fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
   nameWithType: ServiceAlreadyRegisteredException.ServiceAlreadyRegisteredException
+- uid: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry
+  name: Entry
+  href: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException_Entry
+  commentId: P:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry
+  fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry
+  nameWithType: ServiceAlreadyRegisteredException.Entry
+- uid: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry*
+  name: Entry
+  href: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html#Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException_Entry_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry
+  fullName: Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry
+  nameWithType: ServiceAlreadyRegisteredException.Entry
 - uid: Solti.Utils.DI.Interfaces.ServiceDisposalMode
   name: ServiceDisposalMode
   href: Solti.Utils.DI.Interfaces.ServiceDisposalMode.html
@@ -2254,30 +2239,42 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.ServiceNotFoundException
   fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException
   nameWithType: ServiceNotFoundException
-- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor
-  name: ServiceNotFoundException()
-  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException__ctor
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor
-  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException()
-  nameWithType: ServiceNotFoundException.ServiceNotFoundException()
-- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor(System.String)
-  name: ServiceNotFoundException(String)
-  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException__ctor_System_String_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor(System.String)
-  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(System.String)
-  nameWithType: ServiceNotFoundException.ServiceNotFoundException(String)
-- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor(System.String,System.Exception)
-  name: ServiceNotFoundException(String, Exception)
-  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException__ctor_System_String_System_Exception_
-  commentId: M:Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor(System.String,System.Exception)
-  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(System.String, System.Exception)
-  nameWithType: ServiceNotFoundException.ServiceNotFoundException(String, Exception)
+- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor(System.String,Solti.Utils.DI.Interfaces.AbstractServiceEntry,Solti.Utils.DI.Interfaces.MissingServiceEntry)
+  name: ServiceNotFoundException(String, AbstractServiceEntry, MissingServiceEntry)
+  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException__ctor_System_String_Solti_Utils_DI_Interfaces_AbstractServiceEntry_Solti_Utils_DI_Interfaces_MissingServiceEntry_
+  commentId: M:Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor(System.String,Solti.Utils.DI.Interfaces.AbstractServiceEntry,Solti.Utils.DI.Interfaces.MissingServiceEntry)
+  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(System.String, Solti.Utils.DI.Interfaces.AbstractServiceEntry, Solti.Utils.DI.Interfaces.MissingServiceEntry)
+  nameWithType: ServiceNotFoundException.ServiceNotFoundException(String, AbstractServiceEntry, MissingServiceEntry)
 - uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor*
   name: ServiceNotFoundException
   href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException__ctor_
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceNotFoundException.#ctor
   fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException
   nameWithType: ServiceNotFoundException.ServiceNotFoundException
+- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested
+  name: Requested
+  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException_Requested
+  commentId: P:Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested
+  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested
+  nameWithType: ServiceNotFoundException.Requested
+- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested*
+  name: Requested
+  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException_Requested_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested
+  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested
+  nameWithType: ServiceNotFoundException.Requested
+- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor
+  name: Requestor
+  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException_Requestor
+  commentId: P:Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor
+  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor
+  nameWithType: ServiceNotFoundException.Requestor
+- uid: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor*
+  name: Requestor
+  href: Solti.Utils.DI.Interfaces.ServiceNotFoundException.html#Solti_Utils_DI_Interfaces_ServiceNotFoundException_Requestor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor
+  fullName: Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor
+  nameWithType: ServiceNotFoundException.Requestor
 - uid: Solti.Utils.DI.Interfaces.ServiceOptions
   name: ServiceOptions
   href: Solti.Utils.DI.Interfaces.ServiceOptions.html

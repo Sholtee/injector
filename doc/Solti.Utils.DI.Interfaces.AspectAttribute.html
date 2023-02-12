@@ -42,7 +42,70 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_AspectAttribute" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute" class="text-break">Class AspectAttribute
   </h1>
-  <div class="markdown level0 summary"><p>Defines an abstract aspect that can be applied against service interfaces or classes.</p>
+  <div class="markdown level0 summary"><p>Defines an abstract aspect that can be applied against service interfaces or classes. Aspects are the prefered way to decorate service instances.</p>
+<pre><code>// Base class of all the validator attributes
+public abstract class ParameterValidatorAttribute : Attribute
+{
+    public abstract void Validate(ParameterInfo param, object value);
+}
+...
+// Sample validator
+[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+public class NotNullAttribute : ParameterValidatorAttribute
+{
+    public override void Validate(ParameterInfo param, object value)
+    {
+        if (value is null)
+            throw new ArgumentNullException(param.Name);
+    }
+}
+...
+public class ParameterValidatorProxy : IInterfaceInterceptor
+{
+    public ParameterValidator(IDependency dependency) {...}
+
+    public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+    {
+        foreach (var descr in context.TargetMethod.GetParameters().Select
+        (
+            (p, i) => new
+            {
+                Parameter = p,
+                Value = context.Args[i],
+                Validators = p.GetCustomAttributes&lt;ParameterValidatorAttribute>()
+            }
+        ))
+        {
+            foreach (var validator in descr.Validators)
+            {
+                validator.Validate(descr.Parameter, descr.Value);
+            }
+        }
+        return callNext();
+    }
+}
+...
+// Define the comcrete aspect
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+public sealed class ParameterValidatorAspect : AspectAttribute
+{
+    public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+}
+// Then annotate the desired interface ...
+[ParameterValidatorAspect]
+public interface IService
+{
+void DoSomething([NotNull] object arg);
+}
+
+// ... OR class (recommended)
+
+[ParameterValidatorAspect]
+public class Service : IService
+{
+    // Only methods implementing the above declared interface can be annoteted 
+    void DoSomething([NotNull] object arg) { ...}
+}</code></pre>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -74,7 +137,7 @@
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor">UnderlyingInterceptor</h4>
-  <div class="markdown level1 summary"><p>See <a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_UnderlyingInterceptor">UnderlyingInterceptor</a></p>
+  <div class="markdown level1 summary"><p>The underlying interceptor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -96,6 +159,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This type must be a (instantiable) class implementing the <a class="xref" href="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html">IInterfaceInterceptor</a> interface.</p>
+</div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html">IAspect</a>

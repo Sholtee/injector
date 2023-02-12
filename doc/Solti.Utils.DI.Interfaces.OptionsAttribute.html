@@ -56,6 +56,9 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public sealed class OptionsAttribute : Attribute</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_Interfaces_OptionsAttribute_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><ul><li></li><li></li></ul>
+</div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_OptionsAttribute__ctor_" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.#ctor*"></a>
@@ -70,7 +73,13 @@
   </h3>
   <a id="Solti_Utils_DI_Interfaces_OptionsAttribute_Name_" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Name*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_OptionsAttribute_Name" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Name">Name</h4>
-  <div class="markdown level1 summary"><p>The name of the service.</p>
+  <div class="markdown level1 summary"><p>The (optional) service name. The value of this property will be passed to the corresponding scope invocation:</p>
+<pre><code>class MyService
+{
+    public MyService([Options(Name = &quot;...&quot;)] IDependency dependency) {...}
+}</code></pre>
+<p>translates to</p>
+<pre><code>scope => new MyService(scope.Get(typeof(IDependency), options.Name))</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -94,7 +103,20 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_OptionsAttribute_Optional_" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Optional*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_OptionsAttribute_Optional" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Optional">Optional</h4>
-  <div class="markdown level1 summary"><p>Indicates whether the service is optional or not.</p>
+  <div class="markdown level1 summary"><p>Indicates whether a dependency is optional or not. In practice:</p>
+<pre><code>class MyService
+{
+    public MyService([Options(Optional = true)] IDependency dependency) {...}
+}</code></pre>
+<p>translates to</p>
+<pre><code>scope => new MyService(scope.TryGet(typeof(IDependency), options.Name))</code></pre>
+<p>while</p>
+<pre><code>class MyService
+{
+    public MyService([Options(Optional = false)] IDependency dependency) {...}
+}</code></pre>
+<p>becomes</p>
+<pre><code>scope => new MyService(scope.Get(typeof(IDependency), options.Name))</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

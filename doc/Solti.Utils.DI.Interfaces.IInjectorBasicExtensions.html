@@ -60,7 +60,8 @@
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Get_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Get__1_Solti_Utils_DI_Interfaces_IInjector_System_String_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get``1(Solti.Utils.DI.Interfaces.IInjector,System.String)">Get&lt;TInterface&gt;(IInjector, String)</h4>
-  <div class="markdown level1 summary"><p>Gets the service instance associated with the given interface and (optional) name.</p>
+  <div class="markdown level1 summary"><p>Gets the service instance associated with the given interface and (optional) name:</p>
+<pre><code>IMyService svc = scope.Get&lt;IMyService>();</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -142,7 +143,8 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_TryGet_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_TryGet__1_Solti_Utils_DI_Interfaces_IInjector_System_String_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet``1(Solti.Utils.DI.Interfaces.IInjector,System.String)">TryGet&lt;TInterface&gt;(IInjector, String)</h4>
-  <div class="markdown level1 summary"><p>Tries to get the service instance associated with the given interface and (optional) name.</p>
+  <div class="markdown level1 summary"><p>Tries to get the service instance associated with the given interface and (optional) name:</p>
+<pre><code>IMyService? svc = scope.TryGet&lt;IMyService>();</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

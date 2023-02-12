@@ -42,7 +42,12 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_InjectAttribute" data-uid="Solti.Utils.DI.Interfaces.InjectAttribute" class="text-break">Class InjectAttribute
   </h1>
-  <div class="markdown level0 summary"><p>Marks a property to be resolved.</p>
+  <div class="markdown level0 summary"><p>Marks a property to be resolved:</p>
+<pre><code>class DependantService: IDependantService
+{
+    [Inject]
+    public IDependencyService Dependency { get; init; }
+}</code></pre>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">

@@ -96,6 +96,10 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ScopeOptions_Default_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Modifying the <a class="xref" href="Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_Default">Default</a> value will impact the whole system. Therefore it&apos;s recommended to use the <em>with</em> pattern to set options when creating a scope:</p>
+<pre><code>ScopeFactory.Create(svcs => { ... }, ScopeOptions.Default with { ServiceResolutionMode = ... });</code></pre>
+</div>
   <a id="Solti_Utils_DI_Interfaces_ScopeOptions_ResolutionLockTimeout_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_ScopeOptions_ResolutionLockTimeout" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.ResolutionLockTimeout">ResolutionLockTimeout</h4>
   <div class="markdown level1 summary"><p>Specifies the maximum amount of time to wait to acquire the resolution lock.</p>
@@ -120,6 +124,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ScopeOptions_ResolutionLockTimeout_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This property is introduced mostly for debug purposes, it&apos;s recommended not to change it.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_ScopeOptions_ServiceResolutionMode_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_ScopeOptions_ServiceResolutionMode" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.ServiceResolutionMode">ServiceResolutionMode</h4>
   <div class="markdown level1 summary"><p>Specifies the service resolution mode.</p>
@@ -144,9 +151,12 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ScopeOptions_ServiceResolutionMode_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It&apos;s recommended to use <em>Ahead Of Time</em> resolution because of its performance benefits, although <em>Just In Time</em> resolution is also useful when you want to mock the <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> invocations.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_ScopeOptions_StrictDI_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_ScopeOptions_StrictDI" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.StrictDI">StrictDI</h4>
-  <div class="markdown level1 summary"><p>Instructs the scope system to throw if 
+  <div class="markdown level1 summary"><p>Instructs the system to throw if 
 <ul><li></li><li></li></ul></p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -169,6 +179,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_ScopeOptions_StrictDI_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>By default, scopes are permissives.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_ScopeOptions_SupportsServiceProvider_" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.SupportsServiceProvider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_ScopeOptions_SupportsServiceProvider" data-uid="Solti.Utils.DI.Interfaces.ScopeOptions.SupportsServiceProvider">SupportsServiceProvider</h4>
   <div class="markdown level1 summary"><p>Specifies whether the created scopes should implement the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> interface.</p>

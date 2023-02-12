@@ -53,7 +53,70 @@
       <section><p>Contains some constants related to the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceActivator.html">IServiceActivator</a> interface.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.AspectAttribute.html">AspectAttribute</a></h4>
-      <section><p>Defines an abstract aspect that can be applied against service interfaces or classes.</p>
+      <section><p>Defines an abstract aspect that can be applied against service interfaces or classes. Aspects are the prefered way to decorate service instances.</p>
+<pre><code>// Base class of all the validator attributes
+public abstract class ParameterValidatorAttribute : Attribute
+{
+    public abstract void Validate(ParameterInfo param, object value);
+}
+...
+// Sample validator
+[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+public class NotNullAttribute : ParameterValidatorAttribute
+{
+    public override void Validate(ParameterInfo param, object value)
+    {
+        if (value is null)
+            throw new ArgumentNullException(param.Name);
+    }
+}
+...
+public class ParameterValidatorProxy : IInterfaceInterceptor
+{
+    public ParameterValidator(IDependency dependency) {...}
+
+    public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+    {
+        foreach (var descr in context.TargetMethod.GetParameters().Select
+        (
+            (p, i) => new
+            {
+                Parameter = p,
+                Value = context.Args[i],
+                Validators = p.GetCustomAttributes&lt;ParameterValidatorAttribute>()
+            }
+        ))
+        {
+            foreach (var validator in descr.Validators)
+            {
+                validator.Validate(descr.Parameter, descr.Value);
+            }
+        }
+        return callNext();
+    }
+}
+...
+// Define the comcrete aspect
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+public sealed class ParameterValidatorAspect : AspectAttribute
+{
+    public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+}
+// Then annotate the desired interface ...
+[ParameterValidatorAspect]
+public interface IService
+{
+void DoSomething([NotNull] object arg);
+}
+
+// ... OR class (recommended)
+
+[ParameterValidatorAspect]
+public class Service : IService
+{
+    // Only methods implementing the above declared interface can be annoteted 
+    void DoSomething([NotNull] object arg) { ...}
+}</code></pre>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.CircularReferenceException.html">CircularReferenceException</a></h4>
       <section><p>The exception that is thrown on circular reference.</p>
@@ -80,10 +143,15 @@
       <section><p>Defines basic extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> interface.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.InjectAttribute.html">InjectAttribute</a></h4>
-      <section><p>Marks a property to be resolved.</p>
+      <section><p>Marks a property to be resolved:</p>
+<pre><code>class DependantService: IDependantService
+{
+    [Inject]
+    public IDependencyService Dependency { get; init; }
+}</code></pre>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.html">IScopeFactoryExtensions</a></h4>
-      <section><p>Defines some extensions to the <a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactory.html">IScopeFactory</a> interface.</p>
+      <section><p>Defines some extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactory.html">IScopeFactory</a> interface.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.Consts.html">IServiceCollection.Consts</a></h4>
       <section><p>Contains some constants related to the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface.</p>
@@ -107,16 +175,22 @@
       <section><p>Controls the <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> during the dependency resolution.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.RequestNotAllowedException.html">RequestNotAllowedException</a></h4>
-      <section><p>The exception that is thrown when a service request is not allowed.</p>
+      <section><p>The exception that is thrown when a service request is not allowed (for instance StrictDI violation).</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ScopeOptions.html">ScopeOptions</a></h4>
       <section><p>Specifies the scope behavior.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute.html">ServiceActivatorAttribute</a></h4>
       <section><p>Marks a constructor to be used by the injector. Useful in case of multiple constructors.</p>
+<pre><code>class MyService
+{
+    [ServiceActivator]
+    public MyService(IDependency dep) : this(dep, 1986) {...}
+    public MyService(IDependency dep, int foo) {...}
+}</code></pre>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html">ServiceAlreadyRegisteredException</a></h4>
-      <section><p>The exception that is thrown when a service has already been registered.</p>
+      <section><p>The exception that is thrown on duplicate service registration.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceDisposalMode.html">ServiceDisposalMode</a></h4>
       <section><p>Contains the possible disposal modes.</p>

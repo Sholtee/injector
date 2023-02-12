@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException" class="text-break">Class ServiceAlreadyRegisteredException
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a service has already been registered.</p>
+  <div class="markdown level0 summary"><p>The exception that is thrown on duplicate service registration.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -59,22 +59,13 @@
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor">ServiceAlreadyRegisteredException()</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_System_String_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String,Solti.Utils.DI.Interfaces.AbstractServiceEntry)">ServiceAlreadyRegisteredException(String, AbstractServiceEntry)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html">ServiceAlreadyRegisteredException</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceAlreadyRegisteredException()</code></pre>
-  </div>
-  <a id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_System_String_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String)">ServiceAlreadyRegisteredException(String)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html">ServiceAlreadyRegisteredException</a> instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceAlreadyRegisteredException(string message)</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceAlreadyRegisteredException(string message, AbstractServiceEntry entry)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -89,37 +80,37 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">entry</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_System_String_System_Exception_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor(System.String,System.Exception)">ServiceAlreadyRegisteredException(String, Exception)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html">ServiceAlreadyRegisteredException</a> instance.</p>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException_Entry_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException_Entry" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.Entry">Entry</h4>
+  <div class="markdown level1 summary"><p>The service descriptor whose registration was failed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceAlreadyRegisteredException(string message, Exception innerException)</code></pre>
+    <pre><code class="lang-csharp hljs">public AbstractServiceEntry Entry { get; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">message</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
-        <td><span class="parametername">innerException</span></td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
         <td></td>
       </tr>
     </tbody>

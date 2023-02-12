@@ -43,6 +43,12 @@
   <h1 id="Solti_Utils_DI_Interfaces_ServiceActivatorAttribute" data-uid="Solti.Utils.DI.Interfaces.ServiceActivatorAttribute" class="text-break">Class ServiceActivatorAttribute
   </h1>
   <div class="markdown level0 summary"><p>Marks a constructor to be used by the injector. Useful in case of multiple constructors.</p>
+<pre><code>class MyService
+{
+    [ServiceActivator]
+    public MyService(IDependency dep) : this(dep, 1986) {...}
+    public MyService(IDependency dep, int foo) {...}
+}</code></pre>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
