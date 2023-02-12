@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives.Threading;
 
     internal sealed partial class PooledServiceEntry
     {  
@@ -21,11 +22,13 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static TInterface InvokePool<TInterface>(IInjector injector, string poolName, out object disposable) where TInterface : class
         {
-            IPoolItem<TInterface> instance = injector
+            IPoolItem<PoolScope<TInterface>> poolScope = injector
                 .Get<IPool<TInterface>>(poolName)
                 .Get();
-            disposable = instance;
-            return instance.Value;
+            disposable = poolScope;
+            return poolScope
+                .Value
+                .ServiceInstance;
         }
 
         public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => Expression.Condition

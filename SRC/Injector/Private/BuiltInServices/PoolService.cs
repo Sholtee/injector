@@ -13,41 +13,46 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PoolService<TInterface>: Disposable, IPool<TInterface> where TInterface: class
     {
-        private sealed class PoolItem : Disposable, IPoolItem<TInterface>
+        private sealed class PoolScopeLifetimeManager : ILifetimeManager<PoolScope<TInterface>>
         {
-            public PoolItem(PoolService<TInterface> owner)
+            public IScopeFactory ScopeFactory { get; }
+
+            public string? Name { get; }
+
+            public PoolScopeLifetimeManager(IScopeFactory scopeFactory, string? name)
             {
-                Scope = owner.ScopePool.Get(owner.CheckoutPolicy)!;
-                Value = Scope.Get<TInterface>(owner.Name);
-                Owner = owner;
+                ScopeFactory = scopeFactory;
+                Name = name;
             }
 
-            protected override void Dispose(bool disposeManaged)
-            {
-                if (Value is IResettable resettable && resettable.Dirty)
-                    resettable.Reset();
+            public void CheckIn(PoolScope<TInterface> item)
+                => (item.ServiceInstance as IResettable)?.Reset();
 
-                Owner.ScopePool.Return(Scope);
+            public void CheckOut(PoolScope<TInterface> item) { }
+
+            public PoolScope<TInterface> Create()
+            {
+                IInjector scope = ScopeFactory.CreateScope(tag: PooledLifetime.POOL_SCOPE);
+                return new PoolScope<TInterface>(scope, scope.Get<TInterface>(Name));
             }
 
-            public PoolService<TInterface> Owner { get; }
-
-            public IInjector Scope { get; }
-
-            public TInterface Value { get; }
+            public void Dispose(PoolScope<TInterface> item)
+                => item.Scope.Dispose();
         }
 
-        public CheckoutPolicy CheckoutPolicy { get; }
+        public ObjectPool<PoolScope<TInterface>> ScopePool { get; }
 
-        public string? Name { get; }
-
-        public ObjectPool<IInjector> ScopePool { get; }
-
-        public PoolService(IScopeFactory scopeFactory, PoolConfig config, string? name) 
+        public PoolService(IScopeFactory scopeFactory, DI.PoolConfig config, string? name) 
         {
-            ScopePool = new ObjectPool<IInjector>(() => scopeFactory.CreateScope(tag: PooledLifetime.POOL_SCOPE), config.Capacity);
-            CheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw;
-            Name = name;
+            ScopePool = new ObjectPool<PoolScope<TInterface>>
+            (
+                new PoolScopeLifetimeManager(scopeFactory, name),
+                PoolConfig.Default with 
+                {
+                    Capacity = config.Capacity,
+                    CheckoutPolicy = config.Blocking ? CheckoutPolicy.Block : CheckoutPolicy.Throw
+                }
+            );
 
             //                                            !!HACK!!
             //
@@ -65,6 +70,6 @@ namespace Solti.Utils.DI.Internals
 
         protected override ValueTask AsyncDispose() => ScopePool.DisposeAsync();
 
-        public IPoolItem<TInterface> Get() => new PoolItem(this);
+        public IPoolItem<PoolScope<TInterface>> Get() => ScopePool.Get()!;
     }
 }
