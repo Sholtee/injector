@@ -479,5 +479,6 @@ svcs.Factory<IMyService>(injector => MyServiceFactory(injector.Get<IDependency>(
 ```
 - `IServiceCollection(Basic|Advanced)Extensions.WithProxy()` has been renamed to `Decorate()`
 - Interceptors must implement the `IInterfaceInterceptor` interfacce (instead of descending from `InterfaceInterceptor<>` class directly)
+- `AspectAttribute` got a new layout. Now it returns the interceptor type via property.
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
