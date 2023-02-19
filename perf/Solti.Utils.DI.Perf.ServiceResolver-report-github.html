@@ -38,11 +38,11 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.4, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
+BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK=7.0.100
   [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
-  Job-DYDINF : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+  Job-DMRRSE : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 
 InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -63,9 +63,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>1</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>21.27 ns</strong></td>
-<td style="text-align:right"><strong>0.286 ns</strong></td>
-<td style="text-align:right"><strong>0.253 ns</strong></td>
+<td style="text-align:right"><strong>22.42 ns</strong></td>
+<td style="text-align:right"><strong>0.487 ns</strong></td>
+<td style="text-align:right"><strong>0.478 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -73,9 +73,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>1</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>37.88 ns</strong></td>
-<td style="text-align:right"><strong>0.543 ns</strong></td>
-<td style="text-align:right"><strong>0.508 ns</strong></td>
+<td style="text-align:right"><strong>38.92 ns</strong></td>
+<td style="text-align:right"><strong>0.199 ns</strong></td>
+<td style="text-align:right"><strong>0.166 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -83,9 +83,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>2</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>22.23 ns</strong></td>
-<td style="text-align:right"><strong>0.516 ns</strong></td>
-<td style="text-align:right"><strong>0.552 ns</strong></td>
+<td style="text-align:right"><strong>21.73 ns</strong></td>
+<td style="text-align:right"><strong>0.197 ns</strong></td>
+<td style="text-align:right"><strong>0.175 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -93,9 +93,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>2</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>38.51 ns</strong></td>
-<td style="text-align:right"><strong>0.355 ns</strong></td>
-<td style="text-align:right"><strong>0.314 ns</strong></td>
+<td style="text-align:right"><strong>37.09 ns</strong></td>
+<td style="text-align:right"><strong>0.210 ns</strong></td>
+<td style="text-align:right"><strong>0.186 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -103,9 +103,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>5</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>22.26 ns</strong></td>
-<td style="text-align:right"><strong>0.294 ns</strong></td>
-<td style="text-align:right"><strong>0.260 ns</strong></td>
+<td style="text-align:right"><strong>21.72 ns</strong></td>
+<td style="text-align:right"><strong>0.139 ns</strong></td>
+<td style="text-align:right"><strong>0.123 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -113,69 +113,69 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>5</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>39.42 ns</strong></td>
-<td style="text-align:right"><strong>0.491 ns</strong></td>
+<td style="text-align:right"><strong>37.35 ns</strong></td>
+<td style="text-align:right"><strong>0.336 ns</strong></td>
+<td style="text-align:right"><strong>0.315 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>10</strong></td>
+<td><strong>?</strong></td>
+<td style="text-align:right"><strong>22.36 ns</strong></td>
+<td style="text-align:right"><strong>0.086 ns</strong></td>
+<td style="text-align:right"><strong>0.072 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>10</strong></td>
+<td><strong>name</strong></td>
+<td style="text-align:right"><strong>39.04 ns</strong></td>
+<td style="text-align:right"><strong>0.319 ns</strong></td>
+<td style="text-align:right"><strong>0.282 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>20</strong></td>
+<td><strong>?</strong></td>
+<td style="text-align:right"><strong>23.76 ns</strong></td>
+<td style="text-align:right"><strong>0.175 ns</strong></td>
+<td style="text-align:right"><strong>0.155 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>20</strong></td>
+<td><strong>name</strong></td>
+<td style="text-align:right"><strong>44.63 ns</strong></td>
+<td style="text-align:right"><strong>0.357 ns</strong></td>
+<td style="text-align:right"><strong>0.298 ns</strong></td>
+<td style="text-align:right"><strong>0.0017</strong></td>
+<td style="text-align:right"><strong>32 B</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>50</strong></td>
+<td><strong>?</strong></td>
+<td style="text-align:right"><strong>25.09 ns</strong></td>
+<td style="text-align:right"><strong>0.177 ns</strong></td>
+<td style="text-align:right"><strong>0.148 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td><strong>Resolve</strong></td>
+<td><strong>50</strong></td>
+<td><strong>name</strong></td>
+<td style="text-align:right"><strong>41.49 ns</strong></td>
 <td style="text-align:right"><strong>0.435 ns</strong></td>
-<td style="text-align:right"><strong>0.0017</strong></td>
-<td style="text-align:right"><strong>32 B</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>10</strong></td>
-<td><strong>?</strong></td>
-<td style="text-align:right"><strong>22.17 ns</strong></td>
-<td style="text-align:right"><strong>0.134 ns</strong></td>
-<td style="text-align:right"><strong>0.118 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>10</strong></td>
-<td><strong>name</strong></td>
-<td style="text-align:right"><strong>42.91 ns</strong></td>
-<td style="text-align:right"><strong>0.288 ns</strong></td>
-<td style="text-align:right"><strong>0.255 ns</strong></td>
-<td style="text-align:right"><strong>0.0017</strong></td>
-<td style="text-align:right"><strong>32 B</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>20</strong></td>
-<td><strong>?</strong></td>
-<td style="text-align:right"><strong>24.48 ns</strong></td>
-<td style="text-align:right"><strong>0.252 ns</strong></td>
-<td style="text-align:right"><strong>0.223 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>20</strong></td>
-<td><strong>name</strong></td>
-<td style="text-align:right"><strong>39.39 ns</strong></td>
-<td style="text-align:right"><strong>0.483 ns</strong></td>
-<td style="text-align:right"><strong>0.452 ns</strong></td>
-<td style="text-align:right"><strong>0.0017</strong></td>
-<td style="text-align:right"><strong>32 B</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>50</strong></td>
-<td><strong>?</strong></td>
-<td style="text-align:right"><strong>24.98 ns</strong></td>
-<td style="text-align:right"><strong>0.290 ns</strong></td>
-<td style="text-align:right"><strong>0.257 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td><strong>Resolve</strong></td>
-<td><strong>50</strong></td>
-<td><strong>name</strong></td>
-<td style="text-align:right"><strong>45.35 ns</strong></td>
-<td style="text-align:right"><strong>0.835 ns</strong></td>
-<td style="text-align:right"><strong>0.781 ns</strong></td>
+<td style="text-align:right"><strong>0.407 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -183,9 +183,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>80</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>23.98 ns</strong></td>
-<td style="text-align:right"><strong>0.216 ns</strong></td>
-<td style="text-align:right"><strong>0.180 ns</strong></td>
+<td style="text-align:right"><strong>24.53 ns</strong></td>
+<td style="text-align:right"><strong>0.156 ns</strong></td>
+<td style="text-align:right"><strong>0.138 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -193,9 +193,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>80</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>40.79 ns</strong></td>
-<td style="text-align:right"><strong>0.566 ns</strong></td>
-<td style="text-align:right"><strong>0.502 ns</strong></td>
+<td style="text-align:right"><strong>40.99 ns</strong></td>
+<td style="text-align:right"><strong>0.299 ns</strong></td>
+<td style="text-align:right"><strong>0.233 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
