@@ -1470,6 +1470,15 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Of TInterface, TProvider)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
   nameWithType: IServiceCollectionBasicExtensions.Provider<TInterface, TProvider>(IServiceCollection, String, LifetimeBase, ServiceOptions)
   nameWithType.vb: IServiceCollectionBasicExtensions.Provider(Of TInterface, TProvider)(IServiceCollection, String, LifetimeBase, ServiceOptions)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: Provider<TInterface, TProvider>(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name.vb: Provider(Of TInterface, TProvider)(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider<TInterface, TProvider>(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Of TInterface, TProvider)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: IServiceCollectionBasicExtensions.Provider<TInterface, TProvider>(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Provider(Of TInterface, TProvider)(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Register(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.AbstractServiceEntry[])
   name: Register(IServiceCollection, AbstractServiceEntry[])
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_AbstractServiceEntry___

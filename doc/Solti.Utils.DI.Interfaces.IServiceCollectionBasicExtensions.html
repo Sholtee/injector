@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions" class="text-break">Class IServiceCollectionBasicExtensions
   </h1>
-  <div class="markdown level0 summary"><p>Defines extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface.</p>
+  <div class="markdown level0 summary"><p>Defines the basic extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -60,7 +60,16 @@
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate__" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.DecoratorDelegate})">Decorate(IServiceCollection, Expression&lt;DecoratorDelegate&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation):</p>
+<pre><code>using Solti.Utils.Proxy.Generators;
+...
+ScopeFactory.Create
+(
+    svcs => svcs
+        .Service&lt;IMyService, MyService>()
+        .Decorate((scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService>>.Activate(Tuple.Create(instance))),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -86,7 +95,7 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate.html">DecoratorDelegate</a>&gt;</td>
         <td><span class="parametername">decorator</span></td>
-        <td><p>The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</p>
+        <td><p>The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of decorator function.</p>
 </td>
       </tr>
     </tbody>
@@ -127,7 +136,16 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate__" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.DecoratorDelegate})">Decorate(IServiceCollection, Type, Expression&lt;DecoratorDelegate&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):</p>
+<pre><code>using Solti.Utils.Proxy.Generators;
+...
+ScopeFactory.Create
+(
+    svcs => svcs
+        .Service&lt;IMyService, MyService>()
+        .Decorate(typeof(IMyService), (scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService>>.Activate(Tuple.Create(instance))),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -200,7 +218,16 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate__" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.DecoratorDelegate})">Decorate(IServiceCollection, Type, String, Expression&lt;DecoratorDelegate&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):</p>
+<pre><code>using Solti.Utils.Proxy.Generators;
+...
+ScopeFactory.Create
+(
+    svcs => svcs
+        .Service&lt;IMyService, MyService>(&quot;svcName&quot;)
+        .Decorate(typeof(IMyService), &quot;svcName&quot;, (scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService>>.Activate(Tuple.Create(instance))),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -238,7 +265,7 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate.html">DecoratorDelegate</a>&gt;</td>
         <td><span class="parametername">decorator</span></td>
-        <td><p>The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</p>
+        <td><p>The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of decorator function.</p>
 </td>
       </tr>
     </tbody>
@@ -279,7 +306,16 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate___0___" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.DecoratorDelegate{``0}})">Decorate&lt;TInterface&gt;(IServiceCollection, Expression&lt;DecoratorDelegate&lt;TInterface&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):</p>
+<pre><code>using Solti.Utils.Proxy.Generators;
+...
+ScopeFactory.Create
+(
+    svcs => svcs
+        .Service&lt;IMyService, MyService>()
+        .Decorate&lt;IMyService>((scope, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService>>.Activate(Tuple.Create(instance))),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -362,7 +398,16 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Decorate__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate___0___" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.DecoratorDelegate{``0}})">Decorate&lt;TInterface&gt;(IServiceCollection, String, Expression&lt;DecoratorDelegate&lt;TInterface&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):</p>
+<pre><code>using Solti.Utils.Proxy.Generators;
+...
+ScopeFactory.Create
+(
+    svcs => svcs
+        .Service&lt;IMyService, MyService>(&quot;svcName&quot;)
+        .Decorate&lt;IMyService>(&quot;svcName&quot;, (scope, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService>>.Activate(Tuple.Create(instance))),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -451,7 +496,12 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Factory(IServiceCollection, Type, Expression&lt;FactoryDelegate&gt;, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
+  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Factory(typeof(IMyService), (scope, iface) => new MyService(...), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -520,7 +570,12 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Factory(IServiceCollection, Type, String, Expression&lt;FactoryDelegate&gt;, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
+  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Factory(typeof(IMyService), &quot;serviceName&quot;, (scope, iface) => new MyService(...), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -595,7 +650,12 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate{``0}},Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Factory&lt;TInterface&gt;(IServiceCollection, Expression&lt;FactoryDelegate&lt;TInterface&gt;&gt;, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
+  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Factory&lt;IMyService>(scope => new MyService(...), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -672,7 +732,12 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Factory__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate___0___Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Factory``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate{``0}},Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Factory&lt;TInterface&gt;(IServiceCollection, String, Expression&lt;FactoryDelegate&lt;TInterface&gt;&gt;, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.</p>
+  <div class="markdown level1 summary"><p>Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Factory&lt;IMyService>(&quot;serviceName&quot;, scope => new MyService(...), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -755,7 +820,7 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)">Find(IServiceCollection, Type)</h4>
-  <div class="markdown level1 summary"><p>Tries to find and service descriptor in the given collection.</p>
+  <div class="markdown level1 summary"><p>Tries to find a service descriptor (<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>) in the given collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -813,17 +878,19 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td></td>
+        <td><p>Some of the passed arguments is null.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
-        <td></td>
+        <td><p>When the requested service could not be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String)">Find(IServiceCollection, Type, String)</h4>
-  <div class="markdown level1 summary"><p>Tries to find and service descriptor in the given collection.</p>
+  <div class="markdown level1 summary"><p>Tries to find a service descriptor (<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>) in the given collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -887,17 +954,19 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td></td>
+        <td><p>Some of the passed arguments is null.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
-        <td></td>
+        <td><p>The requested service could not be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find__1_Solti_Utils_DI_Interfaces_IServiceCollection_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find``1(Solti.Utils.DI.Interfaces.IServiceCollection)">Find&lt;TInterface&gt;(IServiceCollection)</h4>
-  <div class="markdown level1 summary"><p>Tries to find and service descriptor in the given collection.</p>
+  <div class="markdown level1 summary"><p>Tries to find a service descriptor (<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>) in the given collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -965,17 +1034,19 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td></td>
+        <td><p>Some of the passed arguments is null.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
-        <td></td>
+        <td><p>When the requested service could not be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Find__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Find``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String)">Find&lt;TInterface&gt;(IServiceCollection, String)</h4>
-  <div class="markdown level1 summary"><p>Tries to find and service descriptor in the given collection.</p>
+  <div class="markdown level1 summary"><p>Tries to find a service descriptor (<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>) in the given collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1049,17 +1120,31 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td></td>
+        <td><p>Some of the passed arguments is null.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
-        <td></td>
+        <td><p>When the requested service could not be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider(IServiceCollection, Type, String, Type, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    [Inject]
+    public IDependency Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider(typeof(IMyService), &quot;serviceName&quot;, typeof(MyServiceProvider), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1134,7 +1219,18 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider(IServiceCollection, Type, String, Type, Object, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service provider having non-interface dependency. Providers are &quot;factory services&quot; responsible for creating the concrete service:</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    public int Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider(typeof(IMyService), &quot;serviceName&quot;, typeof(MyServiceProvider), new { Depdendency = 1986 }, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1215,7 +1311,19 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider(IServiceCollection, Type, Type, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service provider. Providers are &quot;factory services&quot; responsible for creating the concrete service:</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    [Inject]
+    public IDependency Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider(typeof(IMyService), typeof(MyServiceProvider), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1284,7 +1392,18 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider(IServiceCollection, Type, Type, Object, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service provider having non-interface dependency. Providers are &quot;factory services&quot; responsible for creating the concrete service:</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    public int Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider(typeof(IMyService), typeof(MyServiceProvider), new { Depdendency = 1986 }, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1359,7 +1478,19 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service provider. Providers are &quot;factory services&quot; responsible for creating the concrete service:</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    [Inject]
+    public IDependency Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider&lt;IMyService, MyServiceProvider>(Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1438,7 +1569,18 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, Object, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service provider having non-interface dependency. Providers are &quot;factory services&quot; responsible for creating the concrete service:</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    public int Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider&lt;IMyService, MyServiceProvider>(new { Depdendency = 1986 }, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1523,7 +1665,19 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, String, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new provider. Providers are &quot;factory services&quot; responsible for creating the concrete service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service provider. Providers are &quot;factory services&quot; responsible for creating the concrete service:</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    [Inject]
+    public IDependency Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider&lt;IMyService, MyServiceProvider>(&quot;serviceName&quot;, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1606,6 +1760,108 @@
   <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
 </div>
+  <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Provider``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Provider&lt;TInterface, TProvider&gt;(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)</h4>
+  <div class="markdown level1 summary"><p>Registers a new service provider having non-interface dependency. Providers are &quot;factory services&quot; responsible for creating the concrete service:</p>
+<pre><code>class MyServiceProvider: IServiceProvider
+{
+    public int Depdendency { get; init; }
+    public object GetService(Type iface) => ...;
+}
+...
+ScopeFactory.Create
+(
+    svcs => svcs.Provider&lt;IMyService, MyServiceProvider>(&quot;serviceName&quot;, new { Depdendency = 1986 }, Lifetime.Singleton),
+    ...
+)</code></pre>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Provider&lt;TInterface, TProvider&gt;(this IServiceCollection self, string name, object explicitArgs, LifetimeBase lifetime, ServiceOptions options = null)
+    where TInterface : class where TProvider : class, IServiceProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td><p>Explicit arguments, provided by the user.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>The lifetime of service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options to be assigned to the service being registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td><p>The interface of the service. It will be forwarded to the provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TProvider</span></td>
+        <td><p>The type of the provider. It may have dependencies and must implement the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> interface.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Provider__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The provided <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> implementation won&apos;t be disposed even if it implements the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> interface.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Register*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_AbstractServiceEntry___" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Register(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.AbstractServiceEntry[])">Register(IServiceCollection, AbstractServiceEntry[])</h4>
   <div class="markdown level1 summary"><p>Registers a set of services.</p>
@@ -1652,6 +1908,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_AbstractServiceEntry____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Using the recepie methods (Service, Factory, etc) is more convenient than registering services directly.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Register*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_Solti_Utils_DI_Interfaces_IServiceCollection_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Interfaces_AbstractServiceEntry__" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Register(Solti.Utils.DI.Interfaces.IServiceCollection,System.Collections.Generic.IEnumerable{Solti.Utils.DI.Interfaces.AbstractServiceEntry})">Register(IServiceCollection, IEnumerable&lt;AbstractServiceEntry&gt;)</h4>
   <div class="markdown level1 summary"><p>Registers a set of services.</p>
@@ -1698,6 +1957,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Register_Solti_Utils_DI_Interfaces_IServiceCollection_System_Collections_Generic_IEnumerable_Solti_Utils_DI_Interfaces_AbstractServiceEntry___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Using the recepie methods (Service, Factory, etc) is more convenient than registering services directly.</p>
+</div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Remove_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)">Remove(IServiceCollection, Type)</h4>
   <div class="markdown level1 summary"><p>Removes the <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> associated with the given <code data-dev-comment-type="paramref" class="paramref">iface</code>.</p>
@@ -1743,6 +2005,22 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
+        <td><p>The service could not be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1797,6 +2075,22 @@
       <tr>
         <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
+        <td><p>The service could not be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1855,6 +2149,22 @@
       <tr>
         <td><span class="parametername">TInterface</span></td>
         <td><p>The service interface.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
+        <td><p>The service could not be found.</p>
 </td>
       </tr>
     </tbody>
@@ -1924,9 +2234,30 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></td>
+        <td><p>The service could not be found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service(IServiceCollection, Type, String, Type, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service with the given implementation.</p>
+  <div class="markdown level1 summary"><p>Registers a new named service with the given implementation:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service(typeof(IMyService), &quot;serviceName&quot;, typeof(MyService), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2001,7 +2332,12 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service(IServiceCollection, Type, String, Type, Object, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a service <code data-dev-comment-type="paramref" class="paramref">implementation</code> using arbitrary constructor arguments.</p>
+  <div class="markdown level1 summary"><p>Registers a new named service using arbitrary constructor arguments:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service(typeof(IMyService), &quot;serviceName&quot;, typeof(MyService), new {ctorParam = ...}, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2082,7 +2418,12 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service(IServiceCollection, Type, Type, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service with the given implementation.</p>
+  <div class="markdown level1 summary"><p>Registers a new service with the given implementation:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service(typeof(IMyService), typeof(MyService), Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2151,7 +2492,12 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service(IServiceCollection, Type, Type, Object, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a service <code data-dev-comment-type="paramref" class="paramref">implementation</code> using arbitrary constructor arguments.</p>
+  <div class="markdown level1 summary"><p>Registers a new service using arbitrary constructor arguments:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service(typeof(IMyService), typeof(MyService), new {ctorParam = ...}, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2226,7 +2572,12 @@
 </div>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service.</p>
+  <div class="markdown level1 summary"><p>Registers a new service with the given implementation:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service&lt;IMyService, MyService>(Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2302,7 +2653,12 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, Object, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service using arbitrary constructor arguments.</p>
+  <div class="markdown level1 summary"><p>Registers a new service using arbitrary constructor arguments:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service&lt;IMyService, MyService>(new {ctorParam = ...}, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2384,7 +2740,12 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service.</p>
+  <div class="markdown level1 summary"><p>Registers a new named service with the given implementation:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service&lt;IMyService, MyService>(&quot;serviceName&quot;, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2466,7 +2827,12 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)">Service&lt;TInterface, TImplementation&gt;(IServiceCollection, String, Object, LifetimeBase, ServiceOptions)</h4>
-  <div class="markdown level1 summary"><p>Registers a new service using arbitrary constructor arguments.</p>
+  <div class="markdown level1 summary"><p>Registers a new named service using arbitrary constructor arguments:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service&lt;IMyService, MyService>(&quot;serviceName&quot;, new {ctorParam = ...}, Lifetime.Singleton),
+    ...
+)</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
