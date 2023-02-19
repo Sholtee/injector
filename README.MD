@@ -477,6 +477,7 @@ private static IMyService MyServiceFactory(IDependency dep)
 ...
 svcs.Factory<IMyService>(injector => MyServiceFactory(injector.Get<IDependency>()), ...);
 ```
-- `IServiceCollection(Basic|Advanced)Extensions.WithProxy()` has been renamed to `UsingProxy()` 
+- `IServiceCollection(Basic|Advanced)Extensions.WithProxy()` has been renamed to `Decorate()`
+- Interceptors must implement the `IInterfaceInterceptor` interfacce (instead of descending from `InterfaceInterceptor<>` class directly)
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
