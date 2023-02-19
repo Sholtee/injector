@@ -19,12 +19,12 @@ namespace Solti.Utils.DI.Interfaces
     public abstract class AbstractServiceEntry: IServiceId
     {
         /// <summary>
-        /// Contains some constants related to the <see cref="IServiceActivator"/> interface.
+        /// Contains some constants related to service resolution.
         /// </summary>
         public static class Consts
         {
             /// <summary>
-            /// Invalid slot..
+            /// Invalid slot. Use this value when you want to create a new service instance on each request.
             /// </summary>
             public const int INVALID_SLOT = -1;
         }
@@ -62,13 +62,13 @@ namespace Solti.Utils.DI.Interfaces
 
         #region Immutables
         /// <summary>
-        /// The interface of the service.
+        /// The service interface.
         /// </summary>
         /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
         public Type Interface { get; }
 
         /// <summary>
-        /// The (optional) name of the service.
+        /// The (optional) service name.
         /// </summary>
         /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
         public string? Name { get; }

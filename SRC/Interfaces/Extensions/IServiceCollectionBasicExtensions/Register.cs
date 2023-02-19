@@ -13,6 +13,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Registers a set of services.
         /// </summary>
+        /// <remarks>Using the recepie methods (Service, Factory, etc) is more convenient than registering services directly.</remarks>
         public static IServiceCollection Register(this IServiceCollection self, IEnumerable<AbstractServiceEntry> entries)
         {
             if (self is null)
@@ -32,6 +33,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Registers a set of services.
         /// </summary>
+        /// <remarks>Using the recepie methods (Service, Factory, etc) is more convenient than registering services directly.</remarks>
         public static IServiceCollection Register(this IServiceCollection self, params AbstractServiceEntry[] entries) => self.Register((IEnumerable<AbstractServiceEntry>) entries);
     }
 }

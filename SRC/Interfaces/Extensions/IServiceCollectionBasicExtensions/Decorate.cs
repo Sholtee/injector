@@ -12,10 +12,21 @@ namespace Solti.Utils.DI.Interfaces
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
-        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation):
+        /// <code>
+        /// using Solti.Utils.Proxy.Generators;
+        /// ...
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs
+        ///         .Service&lt;IMyService, MyService&gt;()
+        ///         .Decorate((scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
+        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of decorator function.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
         public static IServiceCollection Decorate(this IServiceCollection self, Expression<DecoratorDelegate> decorator)
@@ -31,12 +42,23 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):
+        /// <code>
+        /// using Solti.Utils.Proxy.Generators;
+        /// ...
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs
+        ///         .Service&lt;IMyService, MyService&gt;("svcName")
+        ///         .Decorate(typeof(IMyService), "svcName", (scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface.</param>
         /// <param name="name">The (optional) service name.</param>
-        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
+        /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of decorator function.</param>
         /// <remarks>You can't create proxies against instances and open generic services. A service can be decorated multiple times.</remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
         public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, Expression<DecoratorDelegate> decorator)
@@ -52,7 +74,18 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):
+        /// <code>
+        /// using Solti.Utils.Proxy.Generators;
+        /// ...
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs
+        ///         .Service&lt;IMyService, MyService&gt;()
+        ///         .Decorate(typeof(IMyService), (scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface.</param>
@@ -63,7 +96,18 @@ namespace Solti.Utils.DI.Interfaces
             self.Decorate(iface, null, decorator);
 
         /// <summary>
-        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):
+        /// <code>
+        /// using Solti.Utils.Proxy.Generators;
+        /// ...
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs
+        ///         .Service&lt;IMyService, MyService&gt;("svcName")
+        ///         .Decorate&lt;IMyService&gt;("svcName", (scope, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="name">The (optional) service name.</param>
@@ -74,7 +118,18 @@ namespace Solti.Utils.DI.Interfaces
             self.Decorate(typeof(TInterface), name, WrapToStandardDelegate(decorator));
 
         /// <summary>
-        /// Hooks into the instantiating process of last registered service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):
+        /// <code>
+        /// using Solti.Utils.Proxy.Generators;
+        /// ...
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs
+        ///         .Service&lt;IMyService, MyService&gt;()
+        ///         .Decorate&lt;IMyService&gt;((scope, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>

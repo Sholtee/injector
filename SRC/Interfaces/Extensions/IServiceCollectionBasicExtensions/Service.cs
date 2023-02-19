@@ -12,7 +12,14 @@ namespace Solti.Utils.DI.Interfaces
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
-        /// Registers a new service with the given implementation.
+        /// Registers a new named service with the given implementation:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service(typeof(IMyService), "serviceName", typeof(MyService), Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
@@ -42,7 +49,14 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Registers a service <paramref name="implementation"/> using arbitrary constructor arguments.
+        /// Registers a new named service using arbitrary constructor arguments:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service(typeof(IMyService), "serviceName", typeof(MyService), new {ctorParam = ...}, Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
@@ -76,7 +90,14 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Registers a new service with the given implementation.
+        /// Registers a new service with the given implementation:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service(typeof(IMyService), typeof(MyService), Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
@@ -88,7 +109,14 @@ namespace Solti.Utils.DI.Interfaces
             => self.Service(iface, null, implementation, lifetime, options);
 
         /// <summary>
-        /// Registers a service <paramref name="implementation"/> using arbitrary constructor arguments.
+        /// Registers a new service using arbitrary constructor arguments:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service(typeof(IMyService), typeof(MyService), new {ctorParam = ...}, Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
@@ -101,7 +129,14 @@ namespace Solti.Utils.DI.Interfaces
             => self.Service(iface, null, implementation, explicitArgs, lifetime, options);
 
         /// <summary>
-        /// Registers a new service.
+        /// Registers a new service with the given implementation:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service&lt;IMyService, MyService&gt;(Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TInterface}(IServiceCollection, Expression{FactoryDelegate{TInterface}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
@@ -112,7 +147,14 @@ namespace Solti.Utils.DI.Interfaces
             => self.Service(typeof(TInterface), typeof(TImplementation), lifetime, options);
 
         /// <summary>
-        /// Registers a new service using arbitrary constructor arguments.
+        /// Registers a new service using arbitrary constructor arguments:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service&lt;IMyService, MyService&gt;(new {ctorParam = ...}, Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TInterface}(IServiceCollection, Expression{FactoryDelegate{TInterface}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
@@ -124,7 +166,14 @@ namespace Solti.Utils.DI.Interfaces
             => self.Service(typeof(TInterface), typeof(TImplementation), explicitArgs, lifetime, options);
 
         /// <summary>
-        /// Registers a new service.
+        /// Registers a new named service with the given implementation:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service&lt;IMyService, MyService&gt;("serviceName", Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
         /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TInterface}(IServiceCollection, Expression{FactoryDelegate{TInterface}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
@@ -136,7 +185,14 @@ namespace Solti.Utils.DI.Interfaces
             => self.Service(typeof(TInterface), name, typeof(TImplementation), lifetime, options);
 
         /// <summary>
-        /// Registers a new service using arbitrary constructor arguments.
+        /// Registers a new named service using arbitrary constructor arguments:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Service&lt;IMyService, MyService&gt;("serviceName", new {ctorParam = ...}, Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
         /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TInterface}(IServiceCollection, Expression{FactoryDelegate{TInterface}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>

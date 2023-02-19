@@ -11,7 +11,14 @@ namespace Solti.Utils.DI.Interfaces
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
-        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
+        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Factory(typeof(IMyService), "serviceName", (scope, iface) => new MyService(...), Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
@@ -45,7 +52,14 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
+        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Factory(typeof(IMyService), (scope, iface) => new MyService(...), Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
@@ -57,7 +71,14 @@ namespace Solti.Utils.DI.Interfaces
             => self.Factory(iface, null, factory, lifetime, options);
 
         /// <summary>
-        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
+        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Factory&lt;IMyService&gt;("serviceName", scope => new MyService(...), Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
@@ -69,7 +90,14 @@ namespace Solti.Utils.DI.Interfaces
             => self.Factory(typeof(TInterface), name, WrapToStandardDelegate(factory), lifetime, options);
 
         /// <summary>
-        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor.
+        /// Registers a new service factory with the given type. Factories are also services except that the instantiating process is delegated to the caller. Useful if a service has more than one constructor:
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Factory&lt;IMyService&gt;(scope => new MyService(...), Lifetime.Singleton),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>

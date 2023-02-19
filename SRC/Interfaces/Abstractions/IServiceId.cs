@@ -8,8 +8,9 @@ using System;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Describes a service identifier.
+    /// Describes an abstract service identifier.
     /// </summary>
+    /// <remarks>A service can be identified uniquely by its <see cref="Interface"/> and <see cref="Name"/></remarks>
     public interface IServiceId
     {
         /// <summary>
