@@ -34,8 +34,10 @@ namespace Solti.Utils.DI
                 (
                     pse.Interface,
                     pse.Interface,
-                    new Type[] { interceptor },
-                    new object?[] { explicitArgs },
+                    new[]
+                    {
+                        (interceptor, explicitArgs)
+                    },
                     pse.Options.ProxyEngine ?? ProxyEngine.Instance
                 )
             );

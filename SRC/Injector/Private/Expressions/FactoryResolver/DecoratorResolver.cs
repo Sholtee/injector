@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public Expression<DecoratorDelegate> Resolve(Type iface, Type target, Type[] interceptorTypes, object?[] explicitArgs, IProxyEngine proxyEngine) => CreateActivator<DecoratorDelegate>
+        public Expression<DecoratorDelegate> Resolve(Type iface, Type target, (Type Interceptor, object? ExplicitArgs)[] interceptors, IProxyEngine proxyEngine) => CreateActivator<DecoratorDelegate>
         (
             paramz => proxyEngine.CreateActivatorExpression
             (
@@ -39,13 +39,13 @@ namespace Solti.Utils.DI.Internals
                 Expression.NewArrayInit
                 (
                     typeof(IInterfaceInterceptor),
-                    interceptorTypes.Select
+                    interceptors.Select
                     (
-                        (interceptorType, i) => ResolveService
+                        ctx => ResolveService
                         (
-                            interceptorType.GetApplicableConstructor(),
+                            ctx.Interceptor.GetApplicableConstructor(),
                             paramz[0],
-                            explicitArgs[i]
+                            ctx.ExplicitArgs
                         )
                     )
                 )
@@ -72,11 +72,10 @@ namespace Solti.Utils.DI.Internals
                 iface,
                 target,
                 aspects.Select(GetInterceptor).ToArray(),
-                aspects.Select(static aspect => aspect.ExplicitArgs).ToArray(),
                 proxyEngine
             );
 
-            static Type GetInterceptor(IAspect aspect)
+            static (Type Interceptor, object? ExplicitArgs) GetInterceptor(IAspect aspect)
             {
                 Type interceptor = aspect.UnderlyingInterceptor;
 
@@ -87,7 +86,7 @@ namespace Solti.Utils.DI.Internals
                 if (!typeof(IInterfaceInterceptor).IsAssignableFrom(interceptor))
                     throw new InvalidOperationException(Resources.NOT_AN_INTERCEPTOR);
 
-                return interceptor;
+                return (interceptor, aspect.ExplicitArgs);
             }
         }
 
