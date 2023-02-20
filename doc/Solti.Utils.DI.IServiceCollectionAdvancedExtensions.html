@@ -126,6 +126,79 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)">Decorate(IServiceCollection, Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type interceptor, object explicitArgs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interceptor</span></td>
+        <td><p>The interceptor type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td><p>Explicit arguments to be passed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>When proxying is not allowed (see remarks).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type)">Decorate(IServiceCollection, Type, String, Type)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
@@ -205,6 +278,91 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object)">Decorate(IServiceCollection, Type, String, Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string name, Type interceptor, object explicitArgs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The service interface.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) service name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interceptor</span></td>
+        <td><p>The interceptor type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td><p>Explicit arguments to be passed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>When proxying is not allowed (see remarks).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type)">Decorate(IServiceCollection, Type, Type)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
@@ -259,6 +417,85 @@
     </tbody>
   </table>
   <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>When proxying is not allowed (see remarks).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object)">Decorate(IServiceCollection, Type, Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Type interceptor, object explicitArgs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">iface</span></td>
+        <td><p>The service interface.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interceptor</span></td>
+        <td><p>The interceptor type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td><p>Explicit arguments to be passed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
@@ -436,6 +673,93 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)">Decorate&lt;TInterface, TInterceptor&gt;(IServiceCollection, Object)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TInterface, TInterceptor&gt;(this IServiceCollection self, object explicitArgs)
+    where TInterface : class where TInterceptor : IInterfaceInterceptor</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td><p>Explicit arguments to be passed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TInterceptor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>When proxying is not allowed (see remarks).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
   <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String)">Decorate&lt;TInterface, TInterceptor&gt;(IServiceCollection, String)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
@@ -504,6 +828,99 @@
     </tbody>
   </table>
   <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>When proxying is not allowed (see remarks).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object)">Decorate&lt;TInterface, TInterceptor&gt;(IServiceCollection, String, Object)</h4>
+  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TInterface, TInterceptor&gt;(this IServiceCollection self, string name, object explicitArgs)
+    where TInterface : class where TInterceptor : IInterfaceInterceptor</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The (optional) service name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td><p>Explicit arguments to be passed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TInterface</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TInterceptor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>You can&apos;t create proxies against instances and open generic services. A service can be decorated multiple times.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>

@@ -322,6 +322,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.#ctor
   fullName: Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute
   nameWithType: AspectAttribute.AspectAttribute
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_ExplicitArgs
+  commentId: P:Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs
+  nameWithType: AspectAttribute.ExplicitArgs
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs*
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_ExplicitArgs_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs
+  nameWithType: AspectAttribute.ExplicitArgs
 - uid: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
   name: UnderlyingInterceptor
   href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor
@@ -834,6 +846,18 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IAspect
   fullName: Solti.Utils.DI.Interfaces.IAspect
   nameWithType: IAspect
+- uid: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_ExplicitArgs
+  commentId: P:Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
+  fullName: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
+  nameWithType: IAspect.ExplicitArgs
+- uid: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs*
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_ExplicitArgs_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
+  fullName: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
+  nameWithType: IAspect.ExplicitArgs
 - uid: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
   name: UnderlyingInterceptor
   href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_UnderlyingInterceptor
@@ -2675,18 +2699,36 @@ references:
   commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)
   fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type)
   nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)
+  name: Decorate(IServiceCollection, Type, Object)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Object)
+  nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, Object)
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type)
   name: Decorate(IServiceCollection, Type, String, Type)
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_
   commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type)
   fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Type)
   nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, String, Type)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object)
+  name: Decorate(IServiceCollection, Type, String, Type, Object)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.String, System.Type, System.Object)
+  nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, String, Type, Object)
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type)
   name: Decorate(IServiceCollection, Type, Type)
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_
   commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type)
   fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Type)
   nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, Type)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object)
+  name: Decorate(IServiceCollection, Type, Type, Object)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Type,System.Object)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Type, System.Object)
+  nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, Type, Object)
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*
   name: Decorate
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_
@@ -2711,6 +2753,15 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(Solti.Utils.DI.Interfaces.IServiceCollection)
   nameWithType: IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(IServiceCollection)
   nameWithType.vb: IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(IServiceCollection)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)
+  name: Decorate<TInterface, TInterceptor>(IServiceCollection, Object)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)
+  name.vb: Decorate(Of TInterface, TInterceptor)(IServiceCollection, Object)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object)
+  fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object)
+  nameWithType: IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(IServiceCollection, Object)
+  nameWithType.vb: IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(IServiceCollection, Object)
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String)
   name: Decorate<TInterface, TInterceptor>(IServiceCollection, String)
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_
@@ -2720,6 +2771,15 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String)
   nameWithType: IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(IServiceCollection, String)
   nameWithType.vb: IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(IServiceCollection, String)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object)
+  name: Decorate<TInterface, TInterceptor>(IServiceCollection, String, Object)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object)
+  name.vb: Decorate(Of TInterface, TInterceptor)(IServiceCollection, String, Object)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Object)
+  fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(Solti.Utils.DI.Interfaces.IServiceCollection, System.String, System.Object)
+  nameWithType: IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(IServiceCollection, String, Object)
+  nameWithType.vb: IServiceCollectionAdvancedExtensions.Decorate(Of TInterface, TInterceptor)(IServiceCollection, String, Object)
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)
   name: Instance(IServiceCollection, Type, Object, ServiceOptions)
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_
