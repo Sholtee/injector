@@ -16,5 +16,11 @@ namespace Solti.Utils.DI.Interfaces
         /// The underlying interceptor <see cref="Type"/> that implements the <see cref="IInterfaceInterceptor"/> interface.
         /// </summary>
         Type UnderlyingInterceptor { get; }
+
+        /// <summary>
+        /// Explicit arguments to be passed:
+        /// <code>Explicitrgs = new {ctorParamName1 = ..., ctorParamName2 = ...}</code>
+        /// </summary>
+        object? ExplicitArgs { get; }
     }
 }

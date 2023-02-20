@@ -1,1 +1,7 @@
-﻿
+﻿Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs.get -> object? (forwarded, contained in Solti.Utils.DI.Interfaces)
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! iface, string? name, System.Type! interceptor, object? explicitArgs) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! iface, System.Type! interceptor, object? explicitArgs) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! interceptor, object? explicitArgs) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, object? explicitArgs) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate<TInterface, TInterceptor>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, string? name, object? explicitArgs) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+virtual Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs.get -> object? (forwarded, contained in Solti.Utils.DI.Interfaces)

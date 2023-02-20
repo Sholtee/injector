@@ -1,1 +1,2 @@
-﻿
+﻿Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs.get -> object?
+virtual Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs.get -> object?

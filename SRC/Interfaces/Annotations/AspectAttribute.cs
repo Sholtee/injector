@@ -83,5 +83,11 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <remarks>This type must be a (instantiable) class implementing the <see cref="IInterfaceInterceptor"/> interface.</remarks>
         public abstract Type UnderlyingInterceptor { get; }
+
+        /// <summary>
+        /// Explicit arguments to be passed:
+        /// <code>Explicitrgs = new {ctorParamName1 = ..., ctorParamName2 = ...}</code>
+        /// </summary>
+        public virtual object? ExplicitArgs { get; }  // NULL by default
     }
 }
