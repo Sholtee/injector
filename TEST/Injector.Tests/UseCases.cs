@@ -164,13 +164,8 @@ namespace Solti.Utils.DI.UseCases
         [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
         public sealed class MethodInvocationLoggerAspect : AspectAttribute
         {
-            public Type Logger { get; }
-
-            public override Type UnderlyingInterceptor => typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(Logger);
-
-            public MethodInvocationLoggerAspect(Type logger) 
+            public MethodInvocationLoggerAspect(Type logger): base(typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(logger))
             {
-                Logger = logger;
             }
         }
 
@@ -228,7 +223,7 @@ namespace Solti.Utils.DI.UseCases
         [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
         public sealed class ParameterValidatorAspect : AspectAttribute
         {
-            public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+            public ParameterValidatorAspect() : base(typeof(ParameterValidatorProxy)) { }
         }
     }
 }

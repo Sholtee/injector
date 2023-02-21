@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Interfaces
     /// [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
     /// public sealed class ParameterValidatorAspect : AspectAttribute
     /// {
-    ///     public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+    ///     public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
     /// }
     /// // Then annotate the desired interface ...
     /// [ParameterValidatorAspect]
@@ -79,15 +79,24 @@ namespace Solti.Utils.DI.Interfaces
     public abstract class AspectAttribute : Attribute, IAspect
     {
         /// <summary>
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
+        /// </summary>
+        protected AspectAttribute(Type underlyingInterceptor, object? explicitArgs = null)
+        {
+            UnderlyingInterceptor = underlyingInterceptor ?? throw new ArgumentNullException(nameof(underlyingInterceptor));
+            ExplicitArgs = explicitArgs;
+        }
+
+        /// <summary>
         /// The underlying interceptor.
         /// </summary>
         /// <remarks>This type must be a (instantiable) class implementing the <see cref="IInterfaceInterceptor"/> interface.</remarks>
-        public abstract Type UnderlyingInterceptor { get; }
+        public Type UnderlyingInterceptor { get; }
 
         /// <summary>
         /// Explicit arguments to be passed:
         /// <code>Explicitrgs = new {ctorParamName1 = ..., ctorParamName2 = ...}</code>
         /// </summary>
-        public virtual object? ExplicitArgs { get; }  // NULL by default
+        public object? ExplicitArgs { get; }
     }
 }

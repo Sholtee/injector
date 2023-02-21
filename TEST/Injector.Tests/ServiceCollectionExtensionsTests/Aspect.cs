@@ -341,7 +341,7 @@ namespace Solti.Utils.DI.Tests
             public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(DummyInterceptor);
+        public DummyAspectAttribute() : base(typeof(DummyInterceptor)) { }
     }
 
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
@@ -354,7 +354,7 @@ namespace Solti.Utils.DI.Tests
             public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(DummyInterceptorHavingDependency);
+        public DummyAspectHavingDependencyAttribute() : base(typeof(DummyInterceptorHavingDependency)) { }
     }
 
     public abstract class OrderInspectingInterceptorBase : IInterfaceInterceptor
@@ -379,7 +379,7 @@ namespace Solti.Utils.DI.Tests
             public OrderInspectingInterceptor() : base(nameof(OrderInspectingAspect1Attribute)) { }
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(OrderInspectingInterceptor);
+        public OrderInspectingAspect1Attribute() : base(typeof(OrderInspectingInterceptor)) { }
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -390,7 +390,7 @@ namespace Solti.Utils.DI.Tests
             public OrderInspectingInterceptor() : base(nameof(OrderInspectingAspect2Attribute)) { }
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(OrderInspectingInterceptor);
+        public OrderInspectingAspect2Attribute() : base(typeof(OrderInspectingInterceptor)) { }
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -401,7 +401,7 @@ namespace Solti.Utils.DI.Tests
             public OrderInspectingInterceptor() : base(nameof(OrderInspectingAspect3Attribute)) { }
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(OrderInspectingInterceptor);
+        public OrderInspectingAspect3Attribute() : base(typeof(OrderInspectingInterceptor)) { }
     }
 
     [OrderInspectingAspect1, OrderInspectingAspect2, OrderInspectingAspect3]
