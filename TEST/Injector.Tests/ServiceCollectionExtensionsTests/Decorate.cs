@@ -261,7 +261,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Decorate_ShouldThrowOnInvalidInterceptor()
         {
-            Assert.Throws<ArgumentException>
+            Assert.Throws<InvalidOperationException>
             (
                 () => Collection
                     .Service<IInterface_2, Implementation_2_IInterface_1_Dependant>(Lifetime.Scoped)
