@@ -17,12 +17,13 @@ Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.get -> Solti.Utils.DI.Inter
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString(bool shortForm) -> string
 Solti.Utils.DI.Interfaces.AspectAttribute
-Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Type underlyingInterceptor, object explicitArgs = null) -> void
-Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs.get -> object
-Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type
+Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute() -> void
+Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> factory) -> void
+Solti.Utils.DI.Interfaces.AspectAttribute.Factory.get -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate>
 Solti.Utils.DI.Interfaces.CircularReferenceException
 Solti.Utils.DI.Interfaces.CircularReferenceException.Circle.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry>
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string message, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry> circle) -> void
+Solti.Utils.DI.Interfaces.CreateInterceptorDelegate
 Solti.Utils.DI.Interfaces.CreateServiceDelegate
 Solti.Utils.DI.Interfaces.DecoratorDelegate
 Solti.Utils.DI.Interfaces.DecoratorDelegate<TInterface>
@@ -35,8 +36,7 @@ Solti.Utils.DI.Interfaces.DependencyDescriptor.Type.get -> System.Type
 Solti.Utils.DI.Interfaces.FactoryDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>
 Solti.Utils.DI.Interfaces.IAspect
-Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs.get -> object
-Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor.get -> System.Type
+Solti.Utils.DI.Interfaces.IAspect.GetFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry relatedEntry) -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate>
 Solti.Utils.DI.Interfaces.IBuildContext
 Solti.Utils.DI.Interfaces.IBuildContext.AssignSlot() -> int
 Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.DI.Interfaces.IDelegateCompiler
@@ -196,6 +196,7 @@ virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features.get -> Solti.Uti
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime.get -> Solti.Utils.DI.Interfaces.LifetimeBase
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(params System.Type[] genericArguments) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void
+virtual Solti.Utils.DI.Interfaces.AspectAttribute.GetFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry relatedEntry) -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate>
 virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type iface, string name, object value, Solti.Utils.DI.Interfaces.ServiceOptions serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry>
 virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type iface, string name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate> factory, Solti.Utils.DI.Interfaces.ServiceOptions serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry>
 virtual Solti.Utils.DI.Interfaces.LifetimeBase.CreateFrom(System.Type iface, string name, System.Type implementation, object explicitArgs, Solti.Utils.DI.Interfaces.ServiceOptions serviceOptions) -> System.Collections.Generic.IEnumerable<Solti.Utils.DI.Interfaces.AbstractServiceEntry>

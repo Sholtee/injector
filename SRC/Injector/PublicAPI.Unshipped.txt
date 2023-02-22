@@ -2,6 +2,7 @@
 const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string (forwarded, contained in Solti.Utils.DI.Interfaces)
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate>>
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void
+override Solti.Utils.DI.AspectAttributeEx.GetFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry relatedEntry) -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate>
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string (forwarded, contained in Solti.Utils.DI.Interfaces)
 override Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext context) -> object
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext context, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IFactoryVisitor> visitors) -> void
@@ -9,6 +10,12 @@ override Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager(S
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorate(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate> decorator) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Features.get -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures
 override Solti.Utils.DI.Lifetime.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase other) -> int
+Solti.Utils.DI.AspectAttributeEx
+Solti.Utils.DI.AspectAttributeEx.AspectAttributeEx(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> factory) -> void
+Solti.Utils.DI.AspectAttributeEx.AspectAttributeEx(System.Type interceptor) -> void
+Solti.Utils.DI.AspectAttributeEx.AspectAttributeEx(System.Type interceptor, object explicitArgs) -> void
+Solti.Utils.DI.AspectAttributeEx.ExplicitArgs.get -> object
+Solti.Utils.DI.AspectAttributeEx.Interceptor.get -> System.Type?
 Solti.Utils.DI.DefaultDependencyResolvers
 Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions
 Solti.Utils.DI.Interfaces.AbstractServiceEntry (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -26,15 +33,14 @@ Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.get -> Solti.Utils.DI.Inter
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.set -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString(bool shortForm) -> string (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AspectAttribute (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Type underlyingInterceptor, object explicitArgs = null) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs.get -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor.get -> System.Type (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> factory) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.AspectAttribute.Factory.get -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.CircularReferenceException (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.CircularReferenceException.Circle.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry> (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string message, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry> circle) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IAspect (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs.get -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor.get -> System.Type (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IAspect.GetFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry relatedEntry) -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjector (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjector.Get(System.Type iface, string name = null) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -190,3 +196,4 @@ virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Features.get -> Solti.Uti
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Lifetime.get -> Solti.Utils.DI.Interfaces.LifetimeBase (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(params System.Type[] genericArguments) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry (forwarded, contained in Solti.Utils.DI.Interfaces)
 virtual Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
+virtual Solti.Utils.DI.Interfaces.AspectAttribute.GetFactory(Solti.Utils.DI.Interfaces.AbstractServiceEntry relatedEntry) -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> (forwarded, contained in Solti.Utils.DI.Interfaces)

@@ -162,7 +162,7 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
-        public sealed class MethodInvocationLoggerAspect : AspectAttribute
+        public sealed class MethodInvocationLoggerAspect : AspectAttributeEx
         {
             public MethodInvocationLoggerAspect(Type logger): base(typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(logger))
             {
@@ -223,7 +223,7 @@ namespace Solti.Utils.DI.UseCases
         [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
         public sealed class ParameterValidatorAspect : AspectAttribute
         {
-            public ParameterValidatorAspect() : base(typeof(ParameterValidatorProxy)) { }
+            public ParameterValidatorAspect() : base(static _ => new ParameterValidatorProxy()) { }
         }
     }
 }

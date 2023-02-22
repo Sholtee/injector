@@ -3,7 +3,7 @@
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -13,14 +13,8 @@ namespace Solti.Utils.DI.Interfaces
     public interface IAspect
     {
         /// <summary>
-        /// The underlying interceptor <see cref="Type"/> that implements the <see cref="IInterfaceInterceptor"/> interface.
+        /// Gets the concrete factory responsible for creating the interceptor instance.
         /// </summary>
-        Type UnderlyingInterceptor { get; }
-
-        /// <summary>
-        /// Explicit arguments to be passed:
-        /// <code>Explicitrgs = new {ctorParamName1 = ..., ctorParamName2 = ...}</code>
-        /// </summary>
-        object? ExplicitArgs { get; }
+        Expression<CreateInterceptorDelegate> GetFactory(AbstractServiceEntry relatedEntry);
     }
 }

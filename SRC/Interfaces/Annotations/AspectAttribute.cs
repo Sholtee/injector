@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -56,7 +57,7 @@ namespace Solti.Utils.DI.Interfaces
     /// [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
     /// public sealed class ParameterValidatorAspect : AspectAttribute
     /// {
-    ///     public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
+    ///     public ParameterValidatorAspect(): base(_ => new ParameterValidatorProxy()) { }
     /// }
     /// // Then annotate the desired interface ...
     /// [ParameterValidatorAspect]
@@ -76,27 +77,28 @@ namespace Solti.Utils.DI.Interfaces
     /// </code>
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
-    public abstract class AspectAttribute : Attribute, IAspect
+    public class AspectAttribute : Attribute, IAspect
     {
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
-        protected AspectAttribute(Type underlyingInterceptor, object? explicitArgs = null)
-        {
-            UnderlyingInterceptor = underlyingInterceptor ?? throw new ArgumentNullException(nameof(underlyingInterceptor));
-            ExplicitArgs = explicitArgs;
-        }
+        public AspectAttribute() { }
 
         /// <summary>
-        /// The underlying interceptor.
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
-        /// <remarks>This type must be a (instantiable) class implementing the <see cref="IInterfaceInterceptor"/> interface.</remarks>
-        public Type UnderlyingInterceptor { get; }
+        public AspectAttribute(Expression<CreateInterceptorDelegate> factory)
+            => Factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
         /// <summary>
-        /// Explicit arguments to be passed:
-        /// <code>Explicitrgs = new {ctorParamName1 = ..., ctorParamName2 = ...}</code>
+        /// Gets the concrete factory responsible for creating the interceptor instance.
         /// </summary>
-        public object? ExplicitArgs { get; }
+        public virtual Expression<CreateInterceptorDelegate> GetFactory(AbstractServiceEntry relatedEntry)
+            => Factory ?? throw new NotSupportedException();
+
+        /// <summary>
+        /// Factory function responsible for creating the concrete interceptor. 
+        /// </summary>
+        public Expression<CreateInterceptorDelegate>? Factory { get; }
     }
 }

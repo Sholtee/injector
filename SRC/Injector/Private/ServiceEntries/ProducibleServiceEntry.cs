@@ -42,18 +42,18 @@ namespace Solti.Utils.DI.Internals
             Options = options;
             if (Options.SupportAspects)
             {
+                //
+                // Since aspects may target the implementation itself, they must be applied first
+                //
+
                 Debug.Assert(Decorators.Count is 0, "Aspects must be applied first");
                 Features = ServiceEntryFeatures.SupportsAspects;
                 if (Factory is not null)
                 {
-                    Expression<DecoratorDelegate>? decorator = new DecoratorResolver(Options.DependencyResolvers).ResolveForAspects
-                    (
-                        Interface,
-                        Implementation ?? Interface,
-                        Options.ProxyEngine ?? ProxyEngine.Instance
-                    );
-                    if (decorator is not null)
+                    foreach (Expression<DecoratorDelegate> decorator in DecoratorResolver.ResolveForAspects(this, Options.ProxyEngine))
+                    {
                         Decorate(decorator);
+                    }
                 }
             }
         }

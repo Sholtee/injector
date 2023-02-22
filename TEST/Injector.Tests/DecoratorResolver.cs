@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using Moq;
 using NUnit.Framework;
@@ -17,7 +18,7 @@ namespace Solti.Utils.DI.Internals.Tests
     [TestFixture]
     public class DecoratorResolverTests
     {
-        private sealed class AspectExposingInvalidInterceptor : AspectAttribute
+        private sealed class AspectExposingInvalidInterceptor : AspectAttributeEx
         {
             public AspectExposingInvalidInterceptor() : base(typeof(object)) { }
         }
@@ -29,13 +30,11 @@ namespace Solti.Utils.DI.Internals.Tests
         {
         }
 
-        private static DecoratorResolver DecoratorResolver { get; } = new DecoratorResolver(null);
-
         [Test]
         public void ResolveForAspects_ShouldThrowOnInvalidInterceptor() =>
-            Assert.Throws<InvalidOperationException>(() => DecoratorResolver.ResolveForAspects(typeof(IMyService), typeof(MyServiceUsingInvalidAspect), ProxyEngine.Instance));
+            Assert.Throws<InvalidOperationException>(() => DecoratorResolver.ResolveForAspects(new TransientServiceEntry(typeof(IMyService), null, typeof(MyServiceUsingInvalidAspect), ServiceOptions.Default), ProxyEngine.Instance));
 
-        private sealed class MyAspect : AspectAttribute
+        private sealed class MyAspect : AspectAttributeEx
         {
             public sealed class MyInterceptor : IInterfaceInterceptor
             {
@@ -63,7 +62,8 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns(new List<object>());
 
             DecoratorDelegate decorator = DecoratorResolver
-                .ResolveForAspects(typeof(IMyService), typeof(MyService), ProxyEngine.Instance)
+                .ResolveForAspects(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default), ProxyEngine.Instance)
+                .Single()
                 .Compile();
             AspectAggregator<IMyService, MyService> proxy = (AspectAggregator<IMyService, MyService>) decorator
             (
@@ -75,7 +75,7 @@ namespace Solti.Utils.DI.Internals.Tests
             mockInjector.Verify(i => i.Get(typeof(IList), null), Times.Once);
         }
 
-        private sealed class MyAspectUsingExplicitArg : AspectAttribute
+        private sealed class MyAspectUsingExplicitArg : AspectAttributeEx
         {
             public sealed class MyInterceptor : IInterfaceInterceptor
             {
@@ -109,7 +109,8 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Returns(new List<object>());
 
             DecoratorDelegate decorator = DecoratorResolver
-                .ResolveForAspects(typeof(IMyService), typeof(MyService2), ProxyEngine.Instance)
+                .ResolveForAspects(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService2), ServiceOptions.Default), ProxyEngine.Instance)
+                .Single()
                 .Compile();
             AspectAggregator<IMyService, MyService2> proxy = (AspectAggregator<IMyService, MyService2>) decorator
             (

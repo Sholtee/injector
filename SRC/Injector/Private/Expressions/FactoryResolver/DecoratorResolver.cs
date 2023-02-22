@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Internals
     {
         /// <summary>
         /// <code>
-        /// (injector, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
+        /// (injector, iface, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
         /// (
         ///   (TTarget) current,
         ///   new IInterfaceInterceptor[]
@@ -29,68 +29,59 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public Expression<DecoratorDelegate> Resolve(Type iface, Type target, (Type Interceptor, object? ExplicitArgs)[] interceptors, IProxyEngine proxyEngine) => CreateActivator<DecoratorDelegate>
-        (
-            paramz => proxyEngine.CreateActivatorExpression
+        public static Expression<DecoratorDelegate> Resolve(Type iface, Type target, IProxyEngine? proxyEngine, params Expression<CreateInterceptorDelegate>[] factories)
+        {
+            proxyEngine ??= ProxyEngine.Instance;
+
+            return CreateActivator<DecoratorDelegate>
             (
-                proxyEngine.CreateProxy(iface, target),
-                paramz[0],
-                Expression.Convert(paramz[2], target),
-                Expression.NewArrayInit
+                paramz => proxyEngine.CreateActivatorExpression
                 (
-                    typeof(IInterfaceInterceptor),
-                    interceptors.Select
+                    proxyEngine.CreateProxy(iface, target),
+                    paramz[0], // scope
+                    Expression.Convert(paramz[2], target),  // current
+                    Expression.NewArrayInit
                     (
-                        ctx => ResolveService
+                        typeof(IInterfaceInterceptor),
+                        factories.Select
                         (
-                            ctx.Interceptor.GetApplicableConstructor(),
-                            paramz[0],
-                            ctx.ExplicitArgs
+                            fact => UnfoldLambdaExpressionVisitor.Unfold
+                            (
+                                fact,
+                                paramz[0]  // scope
+                            )
                         )
                     )
                 )
-            )
-        );
-
-        /// <summary>
-        /// <code>
-        /// (injector, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
-        /// (
-        ///   (TTarget) current,
-        ///   new IInterfaceInterceptor[]
-        ///   {
-        ///     new Interceptor_1(injector.Get&lt;IDep_1&gt;(), injector.Get&lt;IDep_2&gt;()),
-        ///     new Interceptor_2(injector.Get&lt;IDep_3&gt;())
-        ///   }
-        /// ); 
-        /// </code>
-        /// </summary>
-        public Expression<DecoratorDelegate> Resolve(Type iface, Type target, IEnumerable<IAspect> aspects, IProxyEngine proxyEngine)
-        {
-            return Resolve
-            (
-                iface,
-                target,
-                aspects.Select(GetInterceptor).ToArray(),
-                proxyEngine
             );
-
-            static (Type Interceptor, object? ExplicitArgs) GetInterceptor(IAspect aspect)
-            {
-                Type interceptor = aspect.UnderlyingInterceptor;
-
-                //
-                // GetApplicableContructor() will do the rest of validations
-                //
-
-                if (!typeof(IInterfaceInterceptor).IsAssignableFrom(interceptor))
-                    throw new InvalidOperationException(Resources.NOT_AN_INTERCEPTOR);
-
-                return (interceptor, aspect.ExplicitArgs);
-            }
         }
 
         /// <summary>
+        /// <code>injector => new Interceptor(injector.Get(...), ...)</code>
+        /// </summary>
+        public Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs)
+        {
+            //
+            // GetApplicableContructor() will do the rest of validations
+            //
+
+            if (!typeof(IInterfaceInterceptor).IsAssignableFrom(interceptor))
+                throw new InvalidOperationException(string.Format(Resources.NOT_AN_INTERCEPTOR, interceptor));
+
+            return CreateActivator<CreateInterceptorDelegate>
+            (
+                interceptor.GetApplicableConstructor(),
+                explicitArgs
+            );
+        }
+
+        /// <summary>
+        /// <code>injector => new Interceptor(injector.Get(...), ...)</code>
+        /// </summary>
+        public static Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs, IReadOnlyList<IDependencyResolver>? dependencyResolvers) =>
+            new DecoratorResolver(dependencyResolvers).ResolveInterceptorFactory(interceptor, explicitArgs);
+
+        /// <summary>
         /// <code>
         /// (injector, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
         /// (
@@ -103,25 +94,32 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public Expression<DecoratorDelegate>? ResolveForAspects(Type iface, Type target, IProxyEngine proxyEngine)
+        public static IEnumerable<Expression<DecoratorDelegate>> ResolveForAspects(AbstractServiceEntry entry, IProxyEngine? proxyEngine)
         {
-            IEnumerable<IAspect> aspects = GetAspects(iface);
-            if (target != iface)
-                aspects = aspects.Union(GetAspects(target));
+            return entry.Implementation is not null  
+                //
+                // Return implementation targeting interceptors first
+                //
 
-            return aspects.Any()
-                ? Resolve
-                (
-                    iface,
-                    target,
-                    aspects,
-                    proxyEngine
-                )
-                : null;
+                ? ResolveForAspects(entry.Implementation, entry.Interface)
+                : ResolveForAspects(entry.Interface);
 
-            static IEnumerable<IAspect> GetAspects(Type type) => type
-                .GetCustomAttributes()
-                .OfType<IAspect>();
+
+            IEnumerable<Expression<DecoratorDelegate>> ResolveForAspects(params Type[] targets)
+            {
+                foreach (Type target in targets)
+                {           
+                    IEnumerable<IAspect> aspects = target.GetCustomAttributes().OfType<IAspect>();
+                    if (aspects.Any())
+                        yield return Resolve
+                        (
+                            entry.Interface,
+                            target,
+                            proxyEngine,
+                            aspects.Select(aspect => aspect.GetFactory(entry)).ToArray()
+                        );
+                }
+            }
         }
 
         public DecoratorResolver(IReadOnlyList<IDependencyResolver>? resolvers) : base(resolvers) { }
