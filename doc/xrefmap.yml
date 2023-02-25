@@ -70,15 +70,15 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.AbstractServiceEntry
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry
   nameWithType: AbstractServiceEntry
-- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
-  name: AbstractServiceEntry(Type, String, Type, Expression<FactoryDelegate>)
-  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__
-  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})
-  name.vb: AbstractServiceEntry(Type, String, Type, Expression(Of FactoryDelegate))
-  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>)
-  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate))
-  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression<FactoryDelegate>)
-  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression(Of FactoryDelegate))
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: AbstractServiceEntry(Type, String, Type, Expression<FactoryDelegate>, Object, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name.vb: AbstractServiceEntry(Type, String, Type, Expression(Of FactoryDelegate), Object, ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>, System.Object, Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName.vb: Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type, System.String, System.Type, System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.FactoryDelegate), System.Object, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression<FactoryDelegate>, Object, ServiceOptions)
+  nameWithType.vb: AbstractServiceEntry.AbstractServiceEntry(Type, String, Type, Expression(Of FactoryDelegate), Object, ServiceOptions)
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*
   name: AbstractServiceEntry
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_
@@ -175,6 +175,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorators
   nameWithType: AbstractServiceEntry.Decorators
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ExplicitArgs
+  commentId: P:Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs
+  nameWithType: AbstractServiceEntry.ExplicitArgs
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs*
+  name: ExplicitArgs
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_ExplicitArgs_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs
+  nameWithType: AbstractServiceEntry.ExplicitArgs
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory
   name: Factory
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Factory
@@ -247,6 +259,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Name
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Name
   nameWithType: AbstractServiceEntry.Name
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options
+  name: Options
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Options
+  commentId: P:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options
+  nameWithType: AbstractServiceEntry.Options
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options*
+  name: Options
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Options_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options
+  nameWithType: AbstractServiceEntry.Options
 - uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.Specialize(System.Type[])
   name: Specialize(Type[])
   href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Specialize_System_Type___
@@ -310,12 +334,27 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.AspectAttribute
   fullName: Solti.Utils.DI.Interfaces.AspectAttribute
   nameWithType: AspectAttribute
-- uid: Solti.Utils.DI.Interfaces.AspectAttribute.#ctor
-  name: AspectAttribute()
-  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute__ctor
-  commentId: M:Solti.Utils.DI.Interfaces.AspectAttribute.#ctor
-  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute()
-  nameWithType: AspectAttribute.AspectAttribute()
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.CreateInterceptorDelegate})
+  name: AspectAttribute(Expression<CreateInterceptorDelegate>)
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute__ctor_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_CreateInterceptorDelegate__
+  commentId: M:Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.CreateInterceptorDelegate})
+  name.vb: AspectAttribute(Expression(Of CreateInterceptorDelegate))
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate>)
+  fullName.vb: Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Linq.Expressions.Expression(Of Solti.Utils.DI.Interfaces.CreateInterceptorDelegate))
+  nameWithType: AspectAttribute.AspectAttribute(Expression<CreateInterceptorDelegate>)
+  nameWithType.vb: AspectAttribute.AspectAttribute(Expression(Of CreateInterceptorDelegate))
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Type)
+  name: AspectAttribute(Type)
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute__ctor_System_Type_
+  commentId: M:Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Type)
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Type)
+  nameWithType: AspectAttribute.AspectAttribute(Type)
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Type,System.Object)
+  name: AspectAttribute(Type, Object)
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute__ctor_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Type,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Type, System.Object)
+  nameWithType: AspectAttribute.AspectAttribute(Type, Object)
 - uid: Solti.Utils.DI.Interfaces.AspectAttribute.#ctor*
   name: AspectAttribute
   href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute__ctor_
@@ -334,18 +373,30 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs
   fullName: Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs
   nameWithType: AspectAttribute.ExplicitArgs
-- uid: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
-  name: UnderlyingInterceptor
-  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor
-  commentId: P:Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
-  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
-  nameWithType: AspectAttribute.UnderlyingInterceptor
-- uid: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor*
-  name: UnderlyingInterceptor
-  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor_
-  commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
-  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor
-  nameWithType: AspectAttribute.UnderlyingInterceptor
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.Factory
+  name: Factory
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_Factory
+  commentId: P:Solti.Utils.DI.Interfaces.AspectAttribute.Factory
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.Factory
+  nameWithType: AspectAttribute.Factory
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.Factory*
+  name: Factory
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_Factory_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.Factory
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.Factory
+  nameWithType: AspectAttribute.Factory
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor
+  name: Interceptor
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_Interceptor
+  commentId: P:Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor
+  nameWithType: AspectAttribute.Interceptor
+- uid: Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor*
+  name: Interceptor
+  href: Solti.Utils.DI.Interfaces.AspectAttribute.html#Solti_Utils_DI_Interfaces_AspectAttribute_Interceptor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor
+  fullName: Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor
+  nameWithType: AspectAttribute.Interceptor
 - uid: Solti.Utils.DI.Interfaces.CircularReferenceException
   name: CircularReferenceException
   href: Solti.Utils.DI.Interfaces.CircularReferenceException.html
@@ -379,6 +430,60 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.CircularReferenceException.Circle
   fullName: Solti.Utils.DI.Interfaces.CircularReferenceException.Circle
   nameWithType: CircularReferenceException.Circle
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate
+  name: CreateInterceptorDelegate
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html
+  commentId: T:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate
+  nameWithType: CreateInterceptorDelegate
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.#ctor(System.Object,System.IntPtr)
+  name: CreateInterceptorDelegate(Object, IntPtr)
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.CreateInterceptorDelegate(System.Object, System.IntPtr)
+  nameWithType: CreateInterceptorDelegate.CreateInterceptorDelegate(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.#ctor*
+  name: CreateInterceptorDelegate
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.#ctor
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.CreateInterceptorDelegate
+  nameWithType: CreateInterceptorDelegate.CreateInterceptorDelegate
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.AsyncCallback,System.Object)
+  name: BeginInvoke(IInjector, AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate_BeginInvoke_Solti_Utils_DI_Interfaces_IInjector_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector, System.AsyncCallback, System.Object)
+  nameWithType: CreateInterceptorDelegate.BeginInvoke(IInjector, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.BeginInvoke*
+  name: BeginInvoke
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.BeginInvoke
+  nameWithType: CreateInterceptorDelegate.BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.EndInvoke(System.IAsyncResult)
+  name: EndInvoke(IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.EndInvoke(System.IAsyncResult)
+  nameWithType: CreateInterceptorDelegate.EndInvoke(IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.EndInvoke*
+  name: EndInvoke
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.EndInvoke
+  nameWithType: CreateInterceptorDelegate.EndInvoke
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector)
+  name: Invoke(IInjector)
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate_Invoke_Solti_Utils_DI_Interfaces_IInjector_
+  commentId: M:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector)
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.Invoke(Solti.Utils.DI.Interfaces.IInjector)
+  nameWithType: CreateInterceptorDelegate.Invoke(IInjector)
+- uid: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.Invoke*
+  name: Invoke
+  href: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html#Solti_Utils_DI_Interfaces_CreateInterceptorDelegate_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.Invoke
+  fullName: Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.Invoke
+  nameWithType: CreateInterceptorDelegate.Invoke
 - uid: Solti.Utils.DI.Interfaces.CreateServiceDelegate
   name: CreateServiceDelegate
   href: Solti.Utils.DI.Interfaces.CreateServiceDelegate.html
@@ -840,36 +945,6 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.FactoryDelegate(Of TInterface).Invoke
   nameWithType: FactoryDelegate<TInterface>.Invoke
   nameWithType.vb: FactoryDelegate(Of TInterface).Invoke
-- uid: Solti.Utils.DI.Interfaces.IAspect
-  name: IAspect
-  href: Solti.Utils.DI.Interfaces.IAspect.html
-  commentId: T:Solti.Utils.DI.Interfaces.IAspect
-  fullName: Solti.Utils.DI.Interfaces.IAspect
-  nameWithType: IAspect
-- uid: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
-  name: ExplicitArgs
-  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_ExplicitArgs
-  commentId: P:Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
-  fullName: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
-  nameWithType: IAspect.ExplicitArgs
-- uid: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs*
-  name: ExplicitArgs
-  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_ExplicitArgs_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
-  fullName: Solti.Utils.DI.Interfaces.IAspect.ExplicitArgs
-  nameWithType: IAspect.ExplicitArgs
-- uid: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
-  name: UnderlyingInterceptor
-  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_UnderlyingInterceptor
-  commentId: P:Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
-  fullName: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
-  nameWithType: IAspect.UnderlyingInterceptor
-- uid: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor*
-  name: UnderlyingInterceptor
-  href: Solti.Utils.DI.Interfaces.IAspect.html#Solti_Utils_DI_Interfaces_IAspect_UnderlyingInterceptor_
-  commentId: Overload:Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
-  fullName: Solti.Utils.DI.Interfaces.IAspect.UnderlyingInterceptor
-  nameWithType: IAspect.UnderlyingInterceptor
 - uid: Solti.Utils.DI.Interfaces.IBuildContext
   name: IBuildContext
   href: Solti.Utils.DI.Interfaces.IBuildContext.html
@@ -2639,18 +2714,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators
   fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators
   nameWithType: ProducibleServiceEntry.Decorators
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
-  name: ExplicitArgs
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ExplicitArgs
-  commentId: P:Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
-  nameWithType: ProducibleServiceEntry.ExplicitArgs
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs*
-  name: ExplicitArgs
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_ExplicitArgs_
-  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.ExplicitArgs
-  nameWithType: ProducibleServiceEntry.ExplicitArgs
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Features
   name: Features
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Features
@@ -2663,18 +2726,6 @@ references:
   commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.Features
   fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Features
   nameWithType: ProducibleServiceEntry.Features
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Options
-  name: Options
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Options
-  commentId: P:Solti.Utils.DI.Internals.ProducibleServiceEntry.Options
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Options
-  nameWithType: ProducibleServiceEntry.Options
-- uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.Options*
-  name: Options
-  href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_Options_
-  commentId: Overload:Solti.Utils.DI.Internals.ProducibleServiceEntry.Options
-  fullName: Solti.Utils.DI.Internals.ProducibleServiceEntry.Options
-  nameWithType: ProducibleServiceEntry.Options
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates)
   name: UpdateState(ServiceEntryStates)
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html#Solti_Utils_DI_Internals_ProducibleServiceEntry_UpdateState_Solti_Utils_DI_Interfaces_ServiceEntryStates_

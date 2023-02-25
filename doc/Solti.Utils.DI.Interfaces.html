@@ -100,7 +100,7 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
 public sealed class ParameterValidatorAspect : AspectAttribute
 {
-    public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+    public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
 }
 // Then annotate the desired interface ...
 [ParameterValidatorAspect]
@@ -120,6 +120,9 @@ public class Service : IService
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.CircularReferenceException.html">CircularReferenceException</a></h4>
       <section><p>The exception that is thrown on circular reference.</p>
+</section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html">CreateInterceptorDelegate</a></h4>
+      <section><p>Factory responsible for create interceptors.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.CreateServiceDelegate.html">CreateServiceDelegate</a></h4>
       <section><p>Unconditionaly creates a particular service.</p>
@@ -215,9 +218,6 @@ public class Service : IService
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html">IAspect</a></h4>
-      <section><p>Defines the contract of aspects.</p>
-</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IBuildContext.html">IBuildContext</a></h4>
       <section><p>Context used during the build phase.</p>
 </section>

@@ -89,7 +89,7 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
 public sealed class ParameterValidatorAspect : AspectAttribute
 {
-    public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+    public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
 }
 // Then annotate the desired interface ...
 [ParameterValidatorAspect]
@@ -113,37 +113,108 @@ public class Service : IService
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">AspectAttribute</span></div>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html">IAspect</a></div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_AspectAttribute_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class AspectAttribute : Attribute, IAspect</code></pre>
+    <pre><code class="lang-csharp hljs">public class AspectAttribute : Attribute</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor">AspectAttribute()</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_CreateInterceptorDelegate__" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.CreateInterceptorDelegate})">AspectAttribute(Expression&lt;CreateInterceptorDelegate&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AspectAttribute()</code></pre>
+    <pre><code class="lang-csharp hljs">public AspectAttribute(Expression&lt;CreateInterceptorDelegate&gt; factory)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html">CreateInterceptorDelegate</a>&gt;</td>
+        <td><span class="parametername">factory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor_System_Type_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Type)">AspectAttribute(Type)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AspectAttribute(Type interceptor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interceptor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute__ctor_System_Type_System_Object_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.#ctor(System.Type,System.Object)">AspectAttribute(Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AspectAttribute(Type interceptor, object explicitArgs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">interceptor</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AspectAttribute_ExplicitArgs_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_ExplicitArgs" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs">ExplicitArgs</h4>
   <div class="markdown level1 summary"><p>Explicit arguments to be passed:</p>
-<pre><code>Explicitrgs = new {ctorParamName1 = ..., ctorParamName2 = ...}</code></pre>
+<pre><code>new {ctorParamName1 = ..., ctorParamName2 = ...}</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual object ExplicitArgs { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public object ExplicitArgs { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,14 +231,38 @@ public class Service : IService
       </tr>
     </tbody>
   </table>
-  <a id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.UnderlyingInterceptor">UnderlyingInterceptor</h4>
+  <a id="Solti_Utils_DI_Interfaces_AspectAttribute_Factory_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.Factory*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_Factory" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.Factory">Factory</h4>
+  <div class="markdown level1 summary"><p>Factory function responsible for creating the concrete interceptor. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Expression&lt;CreateInterceptorDelegate&gt; Factory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.CreateInterceptorDelegate.html">CreateInterceptorDelegate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AspectAttribute_Interceptor_" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AspectAttribute_Interceptor" data-uid="Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor">Interceptor</h4>
   <div class="markdown level1 summary"><p>The underlying interceptor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Type UnderlyingInterceptor { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Type Interceptor { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -184,13 +279,9 @@ public class Service : IService
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_AspectAttribute_UnderlyingInterceptor_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This type must be a (instantiable) class implementing the <a class="xref" href="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html">IInterfaceInterceptor</a> interface.</p>
+  <h5 id="Solti_Utils_DI_Interfaces_AspectAttribute_Interceptor_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This type must be an -instantiable- class implementing the <a class="xref" href="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html">IInterfaceInterceptor</a> interface.</p>
 </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Solti.Utils.DI.Interfaces.IAspect.html">IAspect</a>
-  </div>
 </article>
           </div>
           

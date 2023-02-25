@@ -65,13 +65,13 @@
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate})">AbstractServiceEntry(Type, String, Type, Expression&lt;FactoryDelegate&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_System_Type_System_String_System_Type_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_FactoryDelegate__System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor(System.Type,System.String,System.Type,System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.FactoryDelegate},System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)">AbstractServiceEntry(Type, String, Type, Expression&lt;FactoryDelegate&gt;, Object, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation, Expression&lt;FactoryDelegate&gt; factory)</code></pre>
+    <pre><code class="lang-csharp hljs">protected AbstractServiceEntry(Type interface, string name, Type implementation, Expression&lt;FactoryDelegate&gt; factory, object explicitArgs, ServiceOptions options)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -105,6 +105,18 @@
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.FactoryDelegate.html">FactoryDelegate</a>&gt;</td>
         <td><span class="parametername">factory</span></td>
         <td><p>The (optional) factory of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">explicitArgs</span></td>
+        <td><p>Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Implementation">Implementation</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Options to be assigned to this instance.</p>
 </td>
       </tr>
     </tbody>
@@ -206,6 +218,30 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate.html">DecoratorDelegate</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ExplicitArgs_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ExplicitArgs" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs">ExplicitArgs</h4>
+  <div class="markdown level1 summary"><p>Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Implementation">Implementation</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object ExplicitArgs { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -360,6 +396,30 @@
   <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A service is identified by its <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Name">Name</a>.</p>
 </div>
+  <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Options_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Options" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options">Options</h4>
+  <div class="markdown level1 summary"><p>Options assigned to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ServiceOptions Options { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceOptions.html">ServiceOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_State" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.State">State</h4>
   <div class="markdown level1 summary"><p>Current state of this entry.</p>
