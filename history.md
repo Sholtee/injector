@@ -274,3 +274,5 @@
   - *introduced:* `ServiceOptions` class
   - *introduced:* `ServiceDisposalMode` enum
   - *fixed:* Services having `Instance` lifetime should not be disposed by the root container
+- 8.0.0:
+  - *breaking:* `AspectAttribute` got a new layout, now it supports both "factory" and "service" recipes too
