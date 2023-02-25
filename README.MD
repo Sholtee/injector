@@ -12,10 +12,9 @@
 ## Key features
 - Dependency injection via [constructor parameters](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection ) or [setters](https://en.wikipedia.org/wiki/Dependency_injection#Setter_injection )
 - [Lazy dependency resolution](https://www.quickdevnotes.com/lazy-initialization/ )
-- Custom service decoration (using [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) or proxies)
-- [Duck typing](https://en.wikipedia.org/wiki/Duck_typing ) (using proxies)
+- Custom service decoration (using [AOP](https://en.wikipedia.org/wiki/Aspect-oriented_programming ) or interceptors)
 - Generic service support
-- All well known service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Pooled`, `Instance`
+- All well-known service lifecycles are supported: `Singleton`, `Transient`, `Scoped`, `Pooled`, `Instance`
 - Configurable constructor selection (using attributes)
 - Extensible
 - and many more...
