@@ -42,7 +42,7 @@ BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/R
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK=7.0.100
   [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
-  Job-DMRRSE : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+  Job-GRXXIX : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 
 InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -54,6 +54,7 @@ InvocationCount=10000000  RunStrategy=Throughput
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
+<th style="text-align:right">Median</th>
 <th style="text-align:right">Gen0</th>
 <th style="text-align:right">Allocated</th>
 </tr>
@@ -63,9 +64,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Force</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>7.115 ns</strong></td>
-<td style="text-align:right"><strong>0.1154 ns</strong></td>
-<td style="text-align:right"><strong>0.0963 ns</strong></td>
+<td style="text-align:right"><strong>8.870 ns</strong></td>
+<td style="text-align:right"><strong>0.1410 ns</strong></td>
+<td style="text-align:right"><strong>0.1178 ns</strong></td>
+<td style="text-align:right"><strong>8.864 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -73,9 +75,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaResolver</td>
 <td>Force</td>
 <td>Scoped</td>
-<td style="text-align:right">5.522 ns</td>
-<td style="text-align:right">0.0744 ns</td>
-<td style="text-align:right">0.0621 ns</td>
+<td style="text-align:right">6.594 ns</td>
+<td style="text-align:right">0.2007 ns</td>
+<td style="text-align:right">0.2061 ns</td>
+<td style="text-align:right">6.542 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -83,9 +86,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Force</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>7.020 ns</strong></td>
-<td style="text-align:right"><strong>0.2003 ns</strong></td>
-<td style="text-align:right"><strong>0.2057 ns</strong></td>
+<td style="text-align:right"><strong>9.083 ns</strong></td>
+<td style="text-align:right"><strong>0.2606 ns</strong></td>
+<td style="text-align:right"><strong>0.2176 ns</strong></td>
+<td style="text-align:right"><strong>9.046 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -93,9 +97,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaResolver</td>
 <td>Force</td>
 <td>Singleton</td>
-<td style="text-align:right">9.708 ns</td>
-<td style="text-align:right">0.0652 ns</td>
-<td style="text-align:right">0.0545 ns</td>
+<td style="text-align:right">11.840 ns</td>
+<td style="text-align:right">0.3054 ns</td>
+<td style="text-align:right">0.2857 ns</td>
+<td style="text-align:right">11.746 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -103,9 +108,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Force</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>7.098 ns</strong></td>
-<td style="text-align:right"><strong>0.1052 ns</strong></td>
-<td style="text-align:right"><strong>0.0879 ns</strong></td>
+<td style="text-align:right"><strong>9.153 ns</strong></td>
+<td style="text-align:right"><strong>0.2149 ns</strong></td>
+<td style="text-align:right"><strong>0.1794 ns</strong></td>
+<td style="text-align:right"><strong>9.121 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -113,9 +119,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaResolver</td>
 <td>Force</td>
 <td>Transient</td>
-<td style="text-align:right">31.163 ns</td>
-<td style="text-align:right">0.2550 ns</td>
-<td style="text-align:right">0.2260 ns</td>
+<td style="text-align:right">36.687 ns</td>
+<td style="text-align:right">0.3094 ns</td>
+<td style="text-align:right">0.2742 ns</td>
+<td style="text-align:right">36.599 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -123,9 +130,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Suppress</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>7.032 ns</strong></td>
-<td style="text-align:right"><strong>0.1908 ns</strong></td>
-<td style="text-align:right"><strong>0.1691 ns</strong></td>
+<td style="text-align:right"><strong>8.995 ns</strong></td>
+<td style="text-align:right"><strong>0.2191 ns</strong></td>
+<td style="text-align:right"><strong>0.1942 ns</strong></td>
+<td style="text-align:right"><strong>8.963 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -133,9 +141,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaResolver</td>
 <td>Suppress</td>
 <td>Scoped</td>
-<td style="text-align:right">5.503 ns</td>
-<td style="text-align:right">0.0790 ns</td>
-<td style="text-align:right">0.0660 ns</td>
+<td style="text-align:right">6.389 ns</td>
+<td style="text-align:right">0.0962 ns</td>
+<td style="text-align:right">0.0803 ns</td>
+<td style="text-align:right">6.373 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -143,9 +152,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Suppress</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>7.006 ns</strong></td>
-<td style="text-align:right"><strong>0.1662 ns</strong></td>
-<td style="text-align:right"><strong>0.1473 ns</strong></td>
+<td style="text-align:right"><strong>9.100 ns</strong></td>
+<td style="text-align:right"><strong>0.2160 ns</strong></td>
+<td style="text-align:right"><strong>0.1804 ns</strong></td>
+<td style="text-align:right"><strong>9.053 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -153,9 +163,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaResolver</td>
 <td>Suppress</td>
 <td>Singleton</td>
-<td style="text-align:right">9.828 ns</td>
-<td style="text-align:right">0.1010 ns</td>
-<td style="text-align:right">0.0896 ns</td>
+<td style="text-align:right">11.216 ns</td>
+<td style="text-align:right">0.3051 ns</td>
+<td style="text-align:right">0.4473 ns</td>
+<td style="text-align:right">10.939 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -163,9 +174,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Suppress</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>7.109 ns</strong></td>
-<td style="text-align:right"><strong>0.1753 ns</strong></td>
-<td style="text-align:right"><strong>0.1554 ns</strong></td>
+<td style="text-align:right"><strong>8.965 ns</strong></td>
+<td style="text-align:right"><strong>0.2127 ns</strong></td>
+<td style="text-align:right"><strong>0.1886 ns</strong></td>
+<td style="text-align:right"><strong>8.925 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -173,9 +185,10 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaResolver</td>
 <td>Suppress</td>
 <td>Transient</td>
-<td style="text-align:right">30.969 ns</td>
-<td style="text-align:right">0.2779 ns</td>
-<td style="text-align:right">0.2320 ns</td>
+<td style="text-align:right">36.748 ns</td>
+<td style="text-align:right">0.2454 ns</td>
+<td style="text-align:right">0.2049 ns</td>
+<td style="text-align:right">36.685 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>

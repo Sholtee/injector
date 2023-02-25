@@ -42,7 +42,7 @@ BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/R
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK=7.0.100
   [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
-  Job-VTKREV : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+  Job-FAGOLB : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 
 InvocationCount=100000  RunStrategy=Throughput  
 </code></pre><table>
@@ -57,6 +57,7 @@ InvocationCount=100000  RunStrategy=Throughput
 <th style="text-align:right">Median</th>
 <th style="text-align:right">Gen0</th>
 <th style="text-align:right">Gen1</th>
+<th style="text-align:right">Gen2</th>
 <th style="text-align:right">Allocated</th>
 </tr>
 </thead>
@@ -65,11 +66,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>0</strong></td>
 <td><strong>Autofac</strong></td>
-<td style="text-align:right"><strong>444.97 ns</strong></td>
-<td style="text-align:right"><strong>8.929 ns</strong></td>
-<td style="text-align:right"><strong>15.638 ns</strong></td>
-<td style="text-align:right"><strong>438.36 ns</strong></td>
+<td style="text-align:right"><strong>575.19 ns</strong></td>
+<td style="text-align:right"><strong>11.023 ns</strong></td>
+<td style="text-align:right"><strong>9.205 ns</strong></td>
+<td style="text-align:right"><strong>578.40 ns</strong></td>
 <td style="text-align:right"><strong>0.0900</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>1704 B</strong></td>
 </tr>
@@ -77,11 +79,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>0</td>
 <td>Autofac</td>
-<td style="text-align:right">427.60 ns</td>
-<td style="text-align:right">7.603 ns</td>
-<td style="text-align:right">7.808 ns</td>
-<td style="text-align:right">426.27 ns</td>
+<td style="text-align:right">560.27 ns</td>
+<td style="text-align:right">8.086 ns</td>
+<td style="text-align:right">6.752 ns</td>
+<td style="text-align:right">561.96 ns</td>
 <td style="text-align:right">0.0900</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1704 B</td>
 </tr>
@@ -89,11 +92,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>0</td>
 <td>Autofac</td>
-<td style="text-align:right">437.23 ns</td>
-<td style="text-align:right">8.699 ns</td>
-<td style="text-align:right">12.750 ns</td>
-<td style="text-align:right">433.21 ns</td>
+<td style="text-align:right">586.53 ns</td>
+<td style="text-align:right">11.124 ns</td>
+<td style="text-align:right">10.405 ns</td>
+<td style="text-align:right">587.35 ns</td>
 <td style="text-align:right">0.0900</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1704 B</td>
 </tr>
@@ -101,11 +105,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>0</strong></td>
 <td><strong>DryIoc</strong></td>
-<td style="text-align:right"><strong>108.76 ns</strong></td>
-<td style="text-align:right"><strong>2.204 ns</strong></td>
-<td style="text-align:right"><strong>3.682 ns</strong></td>
-<td style="text-align:right"><strong>108.87 ns</strong></td>
+<td style="text-align:right"><strong>136.97 ns</strong></td>
+<td style="text-align:right"><strong>2.727 ns</strong></td>
+<td style="text-align:right"><strong>3.545 ns</strong></td>
+<td style="text-align:right"><strong>137.25 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>312 B</strong></td>
 </tr>
@@ -113,11 +118,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>0</td>
 <td>DryIoc</td>
-<td style="text-align:right">107.25 ns</td>
-<td style="text-align:right">2.090 ns</td>
-<td style="text-align:right">1.955 ns</td>
-<td style="text-align:right">107.67 ns</td>
+<td style="text-align:right">137.64 ns</td>
+<td style="text-align:right">2.783 ns</td>
+<td style="text-align:right">2.324 ns</td>
+<td style="text-align:right">137.38 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">312 B</td>
 </tr>
@@ -125,11 +131,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>0</td>
 <td>DryIoc</td>
-<td style="text-align:right">110.30 ns</td>
-<td style="text-align:right">2.131 ns</td>
-<td style="text-align:right">4.940 ns</td>
-<td style="text-align:right">109.04 ns</td>
+<td style="text-align:right">131.19 ns</td>
+<td style="text-align:right">2.630 ns</td>
+<td style="text-align:right">2.460 ns</td>
+<td style="text-align:right">131.16 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">312 B</td>
 </tr>
@@ -137,11 +144,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>0</strong></td>
 <td><strong>InjectorDotNet</strong></td>
-<td style="text-align:right"><strong>92.84 ns</strong></td>
-<td style="text-align:right"><strong>1.887 ns</strong></td>
-<td style="text-align:right"><strong>2.454 ns</strong></td>
-<td style="text-align:right"><strong>92.86 ns</strong></td>
+<td style="text-align:right"><strong>64.10 ns</strong></td>
+<td style="text-align:right"><strong>1.312 ns</strong></td>
+<td style="text-align:right"><strong>3.341 ns</strong></td>
+<td style="text-align:right"><strong>64.03 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>200 B</strong></td>
 </tr>
@@ -149,11 +157,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>0</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">94.63 ns</td>
-<td style="text-align:right">1.924 ns</td>
-<td style="text-align:right">2.939 ns</td>
-<td style="text-align:right">94.03 ns</td>
+<td style="text-align:right">65.07 ns</td>
+<td style="text-align:right">1.330 ns</td>
+<td style="text-align:right">2.747 ns</td>
+<td style="text-align:right">64.96 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">200 B</td>
 </tr>
@@ -161,11 +170,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>0</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">91.35 ns</td>
-<td style="text-align:right">1.576 ns</td>
-<td style="text-align:right">2.157 ns</td>
-<td style="text-align:right">91.11 ns</td>
+<td style="text-align:right">73.88 ns</td>
+<td style="text-align:right">6.352 ns</td>
+<td style="text-align:right">18.729 ns</td>
+<td style="text-align:right">65.05 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">184 B</td>
 </tr>
@@ -173,46 +183,50 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>0</strong></td>
 <td><strong>Lamar</strong></td>
-<td style="text-align:right"><strong>797.67 ns</strong></td>
-<td style="text-align:right"><strong>15.718 ns</strong></td>
-<td style="text-align:right"><strong>15.437 ns</strong></td>
-<td style="text-align:right"><strong>794.94 ns</strong></td>
+<td style="text-align:right"><strong>1,206.10 ns</strong></td>
+<td style="text-align:right"><strong>28.418 ns</strong></td>
+<td style="text-align:right"><strong>83.346 ns</strong></td>
+<td style="text-align:right"><strong>1,200.90 ns</strong></td>
 <td style="text-align:right"><strong>0.0200</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>432 B</strong></td>
 </tr>
 <tr>
 <td>ScopedService</td>
 <td>0</td>
 <td>Lamar</td>
-<td style="text-align:right">830.18 ns</td>
-<td style="text-align:right">15.881 ns</td>
-<td style="text-align:right">18.289 ns</td>
-<td style="text-align:right">827.88 ns</td>
+<td style="text-align:right">1,070.12 ns</td>
+<td style="text-align:right">21.541 ns</td>
+<td style="text-align:right">62.151 ns</td>
+<td style="text-align:right">1,052.12 ns</td>
 <td style="text-align:right">0.0200</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">432 B</td>
 </tr>
 <tr>
 <td>TransientService</td>
 <td>0</td>
 <td>Lamar</td>
-<td style="text-align:right">860.95 ns</td>
-<td style="text-align:right">15.449 ns</td>
-<td style="text-align:right">24.948 ns</td>
-<td style="text-align:right">863.02 ns</td>
+<td style="text-align:right">1,068.86 ns</td>
+<td style="text-align:right">21.363 ns</td>
+<td style="text-align:right">41.667 ns</td>
+<td style="text-align:right">1,061.43 ns</td>
 <td style="text-align:right">0.0200</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">432 B</td>
 </tr>
 <tr>
 <td><strong>SingletonService</strong></td>
 <td><strong>0</strong></td>
 <td><strong>MsExtensionsDI</strong></td>
-<td style="text-align:right"><strong>84.00 ns</strong></td>
-<td style="text-align:right"><strong>1.709 ns</strong></td>
-<td style="text-align:right"><strong>4.127 ns</strong></td>
-<td style="text-align:right"><strong>84.31 ns</strong></td>
+<td style="text-align:right"><strong>98.17 ns</strong></td>
+<td style="text-align:right"><strong>1.978 ns</strong></td>
+<td style="text-align:right"><strong>3.716 ns</strong></td>
+<td style="text-align:right"><strong>99.61 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -221,10 +235,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>0</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">82.47 ns</td>
-<td style="text-align:right">1.683 ns</td>
-<td style="text-align:right">2.812 ns</td>
-<td style="text-align:right">83.14 ns</td>
+<td style="text-align:right">98.89 ns</td>
+<td style="text-align:right">2.022 ns</td>
+<td style="text-align:right">3.697 ns</td>
+<td style="text-align:right">98.18 ns</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">128 B</td>
@@ -233,10 +248,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>0</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">81.89 ns</td>
-<td style="text-align:right">1.640 ns</td>
-<td style="text-align:right">3.160 ns</td>
-<td style="text-align:right">82.07 ns</td>
+<td style="text-align:right">98.77 ns</td>
+<td style="text-align:right">2.001 ns</td>
+<td style="text-align:right">3.997 ns</td>
+<td style="text-align:right">99.16 ns</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">128 B</td>
@@ -245,10 +261,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>0</strong></td>
 <td><strong>Stashbox</strong></td>
-<td style="text-align:right"><strong>53.47 ns</strong></td>
-<td style="text-align:right"><strong>4.621 ns</strong></td>
-<td style="text-align:right"><strong>13.625 ns</strong></td>
-<td style="text-align:right"><strong>46.40 ns</strong></td>
+<td style="text-align:right"><strong>70.01 ns</strong></td>
+<td style="text-align:right"><strong>5.264 ns</strong></td>
+<td style="text-align:right"><strong>15.520 ns</strong></td>
+<td style="text-align:right"><strong>77.67 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -257,10 +274,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>0</td>
 <td>Stashbox</td>
-<td style="text-align:right">60.41 ns</td>
-<td style="text-align:right">4.549 ns</td>
-<td style="text-align:right">13.413 ns</td>
-<td style="text-align:right">68.07 ns</td>
+<td style="text-align:right">63.18 ns</td>
+<td style="text-align:right">4.807 ns</td>
+<td style="text-align:right">14.174 ns</td>
+<td style="text-align:right">56.55 ns</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">128 B</td>
@@ -269,10 +287,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>0</td>
 <td>Stashbox</td>
-<td style="text-align:right">52.50 ns</td>
-<td style="text-align:right">4.322 ns</td>
-<td style="text-align:right">12.743 ns</td>
-<td style="text-align:right">45.97 ns</td>
+<td style="text-align:right">71.75 ns</td>
+<td style="text-align:right">5.034 ns</td>
+<td style="text-align:right">14.842 ns</td>
+<td style="text-align:right">77.90 ns</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">128 B</td>
@@ -281,11 +300,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>1</strong></td>
 <td><strong>Autofac</strong></td>
-<td style="text-align:right"><strong>757.99 ns</strong></td>
-<td style="text-align:right"><strong>12.493 ns</strong></td>
-<td style="text-align:right"><strong>10.432 ns</strong></td>
-<td style="text-align:right"><strong>756.07 ns</strong></td>
+<td style="text-align:right"><strong>928.51 ns</strong></td>
+<td style="text-align:right"><strong>13.439 ns</strong></td>
+<td style="text-align:right"><strong>11.913 ns</strong></td>
+<td style="text-align:right"><strong>928.98 ns</strong></td>
 <td style="text-align:right"><strong>0.1300</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>2496 B</strong></td>
 </tr>
@@ -293,11 +313,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>1</td>
 <td>Autofac</td>
-<td style="text-align:right">1,557.96 ns</td>
-<td style="text-align:right">14.054 ns</td>
-<td style="text-align:right">11.736 ns</td>
-<td style="text-align:right">1,557.75 ns</td>
+<td style="text-align:right">1,879.48 ns</td>
+<td style="text-align:right">26.219 ns</td>
+<td style="text-align:right">23.242 ns</td>
+<td style="text-align:right">1,877.03 ns</td>
 <td style="text-align:right">0.1700</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">3288 B</td>
 </tr>
@@ -305,11 +326,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>1</td>
 <td>Autofac</td>
-<td style="text-align:right">1,308.94 ns</td>
-<td style="text-align:right">25.951 ns</td>
-<td style="text-align:right">35.523 ns</td>
-<td style="text-align:right">1,297.05 ns</td>
+<td style="text-align:right">1,530.54 ns</td>
+<td style="text-align:right">9.576 ns</td>
+<td style="text-align:right">7.477 ns</td>
+<td style="text-align:right">1,530.37 ns</td>
 <td style="text-align:right">0.1600</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">3048 B</td>
 </tr>
@@ -317,11 +339,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>1</strong></td>
 <td><strong>DryIoc</strong></td>
-<td style="text-align:right"><strong>140.10 ns</strong></td>
-<td style="text-align:right"><strong>2.198 ns</strong></td>
-<td style="text-align:right"><strong>2.531 ns</strong></td>
-<td style="text-align:right"><strong>139.55 ns</strong></td>
+<td style="text-align:right"><strong>165.50 ns</strong></td>
+<td style="text-align:right"><strong>2.816 ns</strong></td>
+<td style="text-align:right"><strong>2.892 ns</strong></td>
+<td style="text-align:right"><strong>165.01 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>312 B</strong></td>
 </tr>
@@ -329,11 +352,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>1</td>
 <td>DryIoc</td>
-<td style="text-align:right">210.79 ns</td>
-<td style="text-align:right">3.540 ns</td>
-<td style="text-align:right">4.076 ns</td>
-<td style="text-align:right">209.53 ns</td>
+<td style="text-align:right">254.26 ns</td>
+<td style="text-align:right">5.098 ns</td>
+<td style="text-align:right">7.936 ns</td>
+<td style="text-align:right">251.92 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">424 B</td>
 </tr>
@@ -341,11 +365,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>1</td>
 <td>DryIoc</td>
-<td style="text-align:right">150.02 ns</td>
-<td style="text-align:right">1.768 ns</td>
-<td style="text-align:right">1.381 ns</td>
-<td style="text-align:right">150.01 ns</td>
+<td style="text-align:right">177.46 ns</td>
+<td style="text-align:right">3.451 ns</td>
+<td style="text-align:right">4.108 ns</td>
+<td style="text-align:right">177.58 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">360 B</td>
 </tr>
@@ -353,11 +378,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>1</strong></td>
 <td><strong>InjectorDotNet</strong></td>
-<td style="text-align:right"><strong>107.70 ns</strong></td>
-<td style="text-align:right"><strong>1.913 ns</strong></td>
-<td style="text-align:right"><strong>2.488 ns</strong></td>
-<td style="text-align:right"><strong>107.77 ns</strong></td>
+<td style="text-align:right"><strong>131.51 ns</strong></td>
+<td style="text-align:right"><strong>2.629 ns</strong></td>
+<td style="text-align:right"><strong>3.129 ns</strong></td>
+<td style="text-align:right"><strong>130.72 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>200 B</strong></td>
 </tr>
@@ -365,11 +391,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>1</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">187.58 ns</td>
-<td style="text-align:right">3.706 ns</td>
-<td style="text-align:right">3.467 ns</td>
-<td style="text-align:right">186.36 ns</td>
+<td style="text-align:right">223.19 ns</td>
+<td style="text-align:right">4.400 ns</td>
+<td style="text-align:right">4.518 ns</td>
+<td style="text-align:right">222.34 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">248 B</td>
 </tr>
@@ -377,11 +404,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>1</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">175.67 ns</td>
-<td style="text-align:right">2.999 ns</td>
-<td style="text-align:right">4.003 ns</td>
-<td style="text-align:right">174.68 ns</td>
+<td style="text-align:right">208.12 ns</td>
+<td style="text-align:right">4.095 ns</td>
+<td style="text-align:right">4.716 ns</td>
+<td style="text-align:right">207.88 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">232 B</td>
 </tr>
@@ -389,46 +417,50 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>1</strong></td>
 <td><strong>Lamar</strong></td>
-<td style="text-align:right"><strong>852.60 ns</strong></td>
-<td style="text-align:right"><strong>17.083 ns</strong></td>
-<td style="text-align:right"><strong>15.144 ns</strong></td>
-<td style="text-align:right"><strong>848.20 ns</strong></td>
+<td style="text-align:right"><strong>1,100.76 ns</strong></td>
+<td style="text-align:right"><strong>21.018 ns</strong></td>
+<td style="text-align:right"><strong>45.244 ns</strong></td>
+<td style="text-align:right"><strong>1,097.84 ns</strong></td>
 <td style="text-align:right"><strong>0.0200</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>472 B</strong></td>
 </tr>
 <tr>
 <td>ScopedService</td>
 <td>1</td>
 <td>Lamar</td>
-<td style="text-align:right">985.80 ns</td>
-<td style="text-align:right">18.405 ns</td>
-<td style="text-align:right">18.076 ns</td>
-<td style="text-align:right">982.48 ns</td>
+<td style="text-align:right">1,333.49 ns</td>
+<td style="text-align:right">26.313 ns</td>
+<td style="text-align:right">54.925 ns</td>
+<td style="text-align:right">1,335.47 ns</td>
 <td style="text-align:right">0.0300</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">616 B</td>
 </tr>
 <tr>
 <td>TransientService</td>
 <td>1</td>
 <td>Lamar</td>
-<td style="text-align:right">810.58 ns</td>
-<td style="text-align:right">16.244 ns</td>
-<td style="text-align:right">27.140 ns</td>
-<td style="text-align:right">810.38 ns</td>
+<td style="text-align:right">1,188.53 ns</td>
+<td style="text-align:right">24.770 ns</td>
+<td style="text-align:right">71.467 ns</td>
+<td style="text-align:right">1,176.68 ns</td>
 <td style="text-align:right">0.0200</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">520 B</td>
 </tr>
 <tr>
 <td><strong>SingletonService</strong></td>
 <td><strong>1</strong></td>
 <td><strong>MsExtensionsDI</strong></td>
-<td style="text-align:right"><strong>117.74 ns</strong></td>
-<td style="text-align:right"><strong>2.185 ns</strong></td>
-<td style="text-align:right"><strong>2.764 ns</strong></td>
-<td style="text-align:right"><strong>117.81 ns</strong></td>
+<td style="text-align:right"><strong>139.83 ns</strong></td>
+<td style="text-align:right"><strong>2.813 ns</strong></td>
+<td style="text-align:right"><strong>2.196 ns</strong></td>
+<td style="text-align:right"><strong>139.41 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -437,11 +469,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>1</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">238.78 ns</td>
-<td style="text-align:right">3.980 ns</td>
-<td style="text-align:right">3.528 ns</td>
-<td style="text-align:right">238.24 ns</td>
+<td style="text-align:right">296.53 ns</td>
+<td style="text-align:right">4.566 ns</td>
+<td style="text-align:right">7.374 ns</td>
+<td style="text-align:right">295.43 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">336 B</td>
 </tr>
@@ -449,10 +482,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>1</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">121.24 ns</td>
-<td style="text-align:right">2.221 ns</td>
-<td style="text-align:right">1.855 ns</td>
-<td style="text-align:right">121.16 ns</td>
+<td style="text-align:right">148.19 ns</td>
+<td style="text-align:right">1.243 ns</td>
+<td style="text-align:right">1.038 ns</td>
+<td style="text-align:right">148.32 ns</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">176 B</td>
@@ -461,10 +495,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>1</strong></td>
 <td><strong>Stashbox</strong></td>
-<td style="text-align:right"><strong>97.35 ns</strong></td>
-<td style="text-align:right"><strong>6.793 ns</strong></td>
-<td style="text-align:right"><strong>20.028 ns</strong></td>
-<td style="text-align:right"><strong>104.62 ns</strong></td>
+<td style="text-align:right"><strong>79.15 ns</strong></td>
+<td style="text-align:right"><strong>2.409 ns</strong></td>
+<td style="text-align:right"><strong>6.176 ns</strong></td>
+<td style="text-align:right"><strong>77.70 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -473,11 +508,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>1</td>
 <td>Stashbox</td>
-<td style="text-align:right">192.71 ns</td>
-<td style="text-align:right">3.854 ns</td>
-<td style="text-align:right">4.123 ns</td>
-<td style="text-align:right">192.61 ns</td>
+<td style="text-align:right">241.98 ns</td>
+<td style="text-align:right">4.885 ns</td>
+<td style="text-align:right">5.815 ns</td>
+<td style="text-align:right">241.10 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">408 B</td>
 </tr>
@@ -485,10 +521,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>1</td>
 <td>Stashbox</td>
-<td style="text-align:right">86.59 ns</td>
-<td style="text-align:right">7.997 ns</td>
-<td style="text-align:right">23.579 ns</td>
-<td style="text-align:right">73.84 ns</td>
+<td style="text-align:right">91.75 ns</td>
+<td style="text-align:right">1.880 ns</td>
+<td style="text-align:right">3.292 ns</td>
+<td style="text-align:right">92.55 ns</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">176 B</td>
@@ -497,11 +534,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>5</strong></td>
 <td><strong>Autofac</strong></td>
-<td style="text-align:right"><strong>1,969.29 ns</strong></td>
-<td style="text-align:right"><strong>38.545 ns</strong></td>
-<td style="text-align:right"><strong>36.055 ns</strong></td>
-<td style="text-align:right"><strong>1,955.48 ns</strong></td>
+<td style="text-align:right"><strong>2,599.01 ns</strong></td>
+<td style="text-align:right"><strong>51.933 ns</strong></td>
+<td style="text-align:right"><strong>109.544 ns</strong></td>
+<td style="text-align:right"><strong>2,583.24 ns</strong></td>
 <td style="text-align:right"><strong>0.3000</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>5664 B</strong></td>
 </tr>
@@ -509,11 +547,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>5</td>
 <td>Autofac</td>
-<td style="text-align:right">2,782.47 ns</td>
-<td style="text-align:right">20.381 ns</td>
-<td style="text-align:right">18.067 ns</td>
-<td style="text-align:right">2,784.41 ns</td>
+<td style="text-align:right">3,535.51 ns</td>
+<td style="text-align:right">45.100 ns</td>
+<td style="text-align:right">37.661 ns</td>
+<td style="text-align:right">3,533.80 ns</td>
 <td style="text-align:right">0.3500</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">6456 B</td>
 </tr>
@@ -521,11 +560,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>5</td>
 <td>Autofac</td>
-<td style="text-align:right">4,432.30 ns</td>
-<td style="text-align:right">51.424 ns</td>
-<td style="text-align:right">48.102 ns</td>
-<td style="text-align:right">4,436.86 ns</td>
+<td style="text-align:right">5,560.01 ns</td>
+<td style="text-align:right">67.994 ns</td>
+<td style="text-align:right">60.275 ns</td>
+<td style="text-align:right">5,547.59 ns</td>
 <td style="text-align:right">0.4600</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">8424 B</td>
 </tr>
@@ -533,11 +573,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>5</strong></td>
 <td><strong>DryIoc</strong></td>
-<td style="text-align:right"><strong>247.83 ns</strong></td>
-<td style="text-align:right"><strong>4.722 ns</strong></td>
-<td style="text-align:right"><strong>3.943 ns</strong></td>
-<td style="text-align:right"><strong>248.56 ns</strong></td>
+<td style="text-align:right"><strong>298.20 ns</strong></td>
+<td style="text-align:right"><strong>5.620 ns</strong></td>
+<td style="text-align:right"><strong>11.094 ns</strong></td>
+<td style="text-align:right"><strong>293.72 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>312 B</strong></td>
 </tr>
@@ -545,11 +586,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>5</td>
 <td>DryIoc</td>
-<td style="text-align:right">365.82 ns</td>
-<td style="text-align:right">4.191 ns</td>
-<td style="text-align:right">3.500 ns</td>
-<td style="text-align:right">365.40 ns</td>
+<td style="text-align:right">427.08 ns</td>
+<td style="text-align:right">7.987 ns</td>
+<td style="text-align:right">7.081 ns</td>
+<td style="text-align:right">427.09 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">424 B</td>
 </tr>
@@ -557,11 +599,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>5</td>
 <td>DryIoc</td>
-<td style="text-align:right">285.98 ns</td>
-<td style="text-align:right">5.384 ns</td>
-<td style="text-align:right">5.761 ns</td>
-<td style="text-align:right">283.85 ns</td>
+<td style="text-align:right">349.76 ns</td>
+<td style="text-align:right">5.967 ns</td>
+<td style="text-align:right">5.582 ns</td>
+<td style="text-align:right">348.75 ns</td>
 <td style="text-align:right">0.0300</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">552 B</td>
 </tr>
@@ -569,11 +612,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>5</strong></td>
 <td><strong>InjectorDotNet</strong></td>
-<td style="text-align:right"><strong>280.03 ns</strong></td>
-<td style="text-align:right"><strong>5.444 ns</strong></td>
-<td style="text-align:right"><strong>5.590 ns</strong></td>
-<td style="text-align:right"><strong>277.98 ns</strong></td>
+<td style="text-align:right"><strong>374.79 ns</strong></td>
+<td style="text-align:right"><strong>7.377 ns</strong></td>
+<td style="text-align:right"><strong>10.341 ns</strong></td>
+<td style="text-align:right"><strong>370.31 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>200 B</strong></td>
 </tr>
@@ -581,11 +625,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>5</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">343.17 ns</td>
-<td style="text-align:right">4.626 ns</td>
-<td style="text-align:right">4.101 ns</td>
-<td style="text-align:right">342.67 ns</td>
+<td style="text-align:right">399.99 ns</td>
+<td style="text-align:right">7.921 ns</td>
+<td style="text-align:right">13.014 ns</td>
+<td style="text-align:right">394.64 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">248 B</td>
 </tr>
@@ -593,11 +638,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>5</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">601.28 ns</td>
-<td style="text-align:right">11.796 ns</td>
-<td style="text-align:right">15.748 ns</td>
-<td style="text-align:right">595.98 ns</td>
+<td style="text-align:right">717.73 ns</td>
+<td style="text-align:right">14.106 ns</td>
+<td style="text-align:right">18.832 ns</td>
+<td style="text-align:right">713.87 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">424 B</td>
 </tr>
@@ -605,46 +651,50 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>5</strong></td>
 <td><strong>Lamar</strong></td>
-<td style="text-align:right"><strong>987.92 ns</strong></td>
-<td style="text-align:right"><strong>18.365 ns</strong></td>
-<td style="text-align:right"><strong>16.280 ns</strong></td>
-<td style="text-align:right"><strong>983.11 ns</strong></td>
+<td style="text-align:right"><strong>1,322.97 ns</strong></td>
+<td style="text-align:right"><strong>25.746 ns</strong></td>
+<td style="text-align:right"><strong>29.649 ns</strong></td>
+<td style="text-align:right"><strong>1,324.61 ns</strong></td>
 <td style="text-align:right"><strong>0.0300</strong></td>
 <td style="text-align:right"><strong>0.0200</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>632 B</strong></td>
 </tr>
 <tr>
 <td>ScopedService</td>
 <td>5</td>
 <td>Lamar</td>
-<td style="text-align:right">1,244.39 ns</td>
-<td style="text-align:right">20.852 ns</td>
-<td style="text-align:right">19.505 ns</td>
-<td style="text-align:right">1,246.63 ns</td>
+<td style="text-align:right">1,603.59 ns</td>
+<td style="text-align:right">31.406 ns</td>
+<td style="text-align:right">83.830 ns</td>
+<td style="text-align:right">1,584.23 ns</td>
 <td style="text-align:right">0.0400</td>
 <td style="text-align:right">0.0300</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">776 B</td>
 </tr>
 <tr>
 <td>TransientService</td>
 <td>5</td>
 <td>Lamar</td>
-<td style="text-align:right">1,067.40 ns</td>
-<td style="text-align:right">19.658 ns</td>
-<td style="text-align:right">16.415 ns</td>
-<td style="text-align:right">1,065.90 ns</td>
+<td style="text-align:right">1,460.33 ns</td>
+<td style="text-align:right">27.910 ns</td>
+<td style="text-align:right">71.039 ns</td>
+<td style="text-align:right">1,448.74 ns</td>
 <td style="text-align:right">0.0400</td>
 <td style="text-align:right">0.0300</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">872 B</td>
 </tr>
 <tr>
 <td><strong>SingletonService</strong></td>
 <td><strong>5</strong></td>
 <td><strong>MsExtensionsDI</strong></td>
-<td style="text-align:right"><strong>261.92 ns</strong></td>
-<td style="text-align:right"><strong>4.715 ns</strong></td>
-<td style="text-align:right"><strong>3.681 ns</strong></td>
-<td style="text-align:right"><strong>261.96 ns</strong></td>
+<td style="text-align:right"><strong>281.05 ns</strong></td>
+<td style="text-align:right"><strong>4.756 ns</strong></td>
+<td style="text-align:right"><strong>3.971 ns</strong></td>
+<td style="text-align:right"><strong>279.66 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -653,11 +703,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>5</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">499.43 ns</td>
-<td style="text-align:right">9.739 ns</td>
-<td style="text-align:right">11.216 ns</td>
-<td style="text-align:right">499.80 ns</td>
+<td style="text-align:right">580.21 ns</td>
+<td style="text-align:right">6.172 ns</td>
+<td style="text-align:right">5.154 ns</td>
+<td style="text-align:right">579.36 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">336 B</td>
 </tr>
@@ -665,11 +716,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>5</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">314.39 ns</td>
-<td style="text-align:right">6.201 ns</td>
-<td style="text-align:right">7.615 ns</td>
-<td style="text-align:right">312.24 ns</td>
+<td style="text-align:right">355.81 ns</td>
+<td style="text-align:right">6.542 ns</td>
+<td style="text-align:right">5.107 ns</td>
+<td style="text-align:right">354.46 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">368 B</td>
 </tr>
@@ -677,10 +729,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>5</strong></td>
 <td><strong>Stashbox</strong></td>
-<td style="text-align:right"><strong>129.98 ns</strong></td>
-<td style="text-align:right"><strong>1.794 ns</strong></td>
-<td style="text-align:right"><strong>2.066 ns</strong></td>
-<td style="text-align:right"><strong>129.62 ns</strong></td>
+<td style="text-align:right"><strong>150.97 ns</strong></td>
+<td style="text-align:right"><strong>1.683 ns</strong></td>
+<td style="text-align:right"><strong>1.314 ns</strong></td>
+<td style="text-align:right"><strong>150.53 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -689,11 +742,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>5</td>
 <td>Stashbox</td>
-<td style="text-align:right">302.43 ns</td>
-<td style="text-align:right">5.859 ns</td>
-<td style="text-align:right">7.821 ns</td>
-<td style="text-align:right">300.84 ns</td>
+<td style="text-align:right">356.42 ns</td>
+<td style="text-align:right">6.941 ns</td>
+<td style="text-align:right">6.153 ns</td>
+<td style="text-align:right">356.06 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">408 B</td>
 </tr>
@@ -701,11 +755,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>5</td>
 <td>Stashbox</td>
-<td style="text-align:right">187.46 ns</td>
-<td style="text-align:right">3.722 ns</td>
-<td style="text-align:right">3.823 ns</td>
-<td style="text-align:right">186.62 ns</td>
+<td style="text-align:right">226.62 ns</td>
+<td style="text-align:right">4.521 ns</td>
+<td style="text-align:right">8.153 ns</td>
+<td style="text-align:right">224.52 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">368 B</td>
 </tr>
@@ -713,11 +768,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>20</strong></td>
 <td><strong>Autofac</strong></td>
-<td style="text-align:right"><strong>6,439.36 ns</strong></td>
-<td style="text-align:right"><strong>83.115 ns</strong></td>
-<td style="text-align:right"><strong>77.746 ns</strong></td>
-<td style="text-align:right"><strong>6,423.02 ns</strong></td>
+<td style="text-align:right"><strong>8,306.53 ns</strong></td>
+<td style="text-align:right"><strong>139.774 ns</strong></td>
+<td style="text-align:right"><strong>130.745 ns</strong></td>
+<td style="text-align:right"><strong>8,269.99 ns</strong></td>
 <td style="text-align:right"><strong>0.9500</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>17544 B</strong></td>
 </tr>
@@ -725,11 +781,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>20</td>
 <td>Autofac</td>
-<td style="text-align:right">7,187.99 ns</td>
-<td style="text-align:right">83.554 ns</td>
-<td style="text-align:right">78.156 ns</td>
-<td style="text-align:right">7,196.84 ns</td>
+<td style="text-align:right">9,317.02 ns</td>
+<td style="text-align:right">153.021 ns</td>
+<td style="text-align:right">143.136 ns</td>
+<td style="text-align:right">9,328.33 ns</td>
 <td style="text-align:right">1.0000</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">18336 B</td>
 </tr>
@@ -737,23 +794,25 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>20</td>
 <td>Autofac</td>
-<td style="text-align:right">16,199.66 ns</td>
-<td style="text-align:right">139.141 ns</td>
-<td style="text-align:right">130.153 ns</td>
-<td style="text-align:right">16,223.04 ns</td>
+<td style="text-align:right">19,901.02 ns</td>
+<td style="text-align:right">223.193 ns</td>
+<td style="text-align:right">197.855 ns</td>
+<td style="text-align:right">19,888.87 ns</td>
 <td style="text-align:right">1.5600</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">28584 B</td>
 </tr>
 <tr>
 <td><strong>SingletonService</strong></td>
 <td><strong>20</strong></td>
 <td><strong>DryIoc</strong></td>
-<td style="text-align:right"><strong>630.45 ns</strong></td>
-<td style="text-align:right"><strong>9.198 ns</strong></td>
-<td style="text-align:right"><strong>7.681 ns</strong></td>
-<td style="text-align:right"><strong>627.85 ns</strong></td>
+<td style="text-align:right"><strong>730.79 ns</strong></td>
+<td style="text-align:right"><strong>13.050 ns</strong></td>
+<td style="text-align:right"><strong>11.569 ns</strong></td>
+<td style="text-align:right"><strong>727.90 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>312 B</strong></td>
 </tr>
@@ -761,11 +820,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>20</td>
 <td>DryIoc</td>
-<td style="text-align:right">832.39 ns</td>
-<td style="text-align:right">6.732 ns</td>
-<td style="text-align:right">5.621 ns</td>
-<td style="text-align:right">833.52 ns</td>
+<td style="text-align:right">981.14 ns</td>
+<td style="text-align:right">11.246 ns</td>
+<td style="text-align:right">9.391 ns</td>
+<td style="text-align:right">980.23 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">424 B</td>
 </tr>
@@ -773,11 +833,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>20</td>
 <td>DryIoc</td>
-<td style="text-align:right">804.12 ns</td>
-<td style="text-align:right">12.153 ns</td>
-<td style="text-align:right">10.149 ns</td>
-<td style="text-align:right">800.19 ns</td>
+<td style="text-align:right">964.06 ns</td>
+<td style="text-align:right">16.559 ns</td>
+<td style="text-align:right">14.679 ns</td>
+<td style="text-align:right">957.11 ns</td>
 <td style="text-align:right">0.0600</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1272 B</td>
 </tr>
@@ -785,11 +846,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>20</strong></td>
 <td><strong>InjectorDotNet</strong></td>
-<td style="text-align:right"><strong>888.43 ns</strong></td>
-<td style="text-align:right"><strong>11.120 ns</strong></td>
-<td style="text-align:right"><strong>9.286 ns</strong></td>
-<td style="text-align:right"><strong>886.47 ns</strong></td>
+<td style="text-align:right"><strong>1,150.27 ns</strong></td>
+<td style="text-align:right"><strong>20.493 ns</strong></td>
+<td style="text-align:right"><strong>18.167 ns</strong></td>
+<td style="text-align:right"><strong>1,148.15 ns</strong></td>
 <td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>200 B</strong></td>
 </tr>
@@ -797,11 +859,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>20</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">896.33 ns</td>
-<td style="text-align:right">10.577 ns</td>
-<td style="text-align:right">8.833 ns</td>
-<td style="text-align:right">893.22 ns</td>
+<td style="text-align:right">1,034.86 ns</td>
+<td style="text-align:right">19.897 ns</td>
+<td style="text-align:right">23.686 ns</td>
+<td style="text-align:right">1,024.59 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">248 B</td>
 </tr>
@@ -809,11 +872,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>20</td>
 <td>InjectorDotNet</td>
-<td style="text-align:right">2,189.27 ns</td>
-<td style="text-align:right">33.269 ns</td>
-<td style="text-align:right">29.492 ns</td>
-<td style="text-align:right">2,185.56 ns</td>
+<td style="text-align:right">2,511.32 ns</td>
+<td style="text-align:right">48.637 ns</td>
+<td style="text-align:right">47.768 ns</td>
+<td style="text-align:right">2,488.66 ns</td>
 <td style="text-align:right">0.0600</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1144 B</td>
 </tr>
@@ -821,46 +885,50 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>20</strong></td>
 <td><strong>Lamar</strong></td>
-<td style="text-align:right"><strong>1,520.50 ns</strong></td>
-<td style="text-align:right"><strong>30.395 ns</strong></td>
-<td style="text-align:right"><strong>35.002 ns</strong></td>
-<td style="text-align:right"><strong>1,518.06 ns</strong></td>
+<td style="text-align:right"><strong>1,865.10 ns</strong></td>
+<td style="text-align:right"><strong>31.792 ns</strong></td>
+<td style="text-align:right"><strong>28.183 ns</strong></td>
+<td style="text-align:right"><strong>1,866.09 ns</strong></td>
 <td style="text-align:right"><strong>0.0600</strong></td>
 <td style="text-align:right"><strong>0.0500</strong></td>
-<td style="text-align:right"><strong>1232 B</strong></td>
+<td style="text-align:right"><strong>0.0100</strong></td>
+<td style="text-align:right"><strong>1236 B</strong></td>
 </tr>
 <tr>
 <td>ScopedService</td>
 <td>20</td>
 <td>Lamar</td>
-<td style="text-align:right">1,748.40 ns</td>
-<td style="text-align:right">25.557 ns</td>
-<td style="text-align:right">22.655 ns</td>
-<td style="text-align:right">1,748.11 ns</td>
+<td style="text-align:right">2,266.82 ns</td>
+<td style="text-align:right">44.772 ns</td>
+<td style="text-align:right">74.804 ns</td>
+<td style="text-align:right">2,247.32 ns</td>
 <td style="text-align:right">0.0700</td>
 <td style="text-align:right">0.0600</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">1376 B</td>
 </tr>
 <tr>
 <td>TransientService</td>
 <td>20</td>
 <td>Lamar</td>
-<td style="text-align:right">1,678.58 ns</td>
-<td style="text-align:right">32.215 ns</td>
-<td style="text-align:right">40.742 ns</td>
-<td style="text-align:right">1,683.35 ns</td>
+<td style="text-align:right">2,179.29 ns</td>
+<td style="text-align:right">43.127 ns</td>
+<td style="text-align:right">88.097 ns</td>
+<td style="text-align:right">2,171.19 ns</td>
 <td style="text-align:right">0.1100</td>
 <td style="text-align:right">0.1000</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">2192 B</td>
 </tr>
 <tr>
 <td><strong>SingletonService</strong></td>
 <td><strong>20</strong></td>
 <td><strong>MsExtensionsDI</strong></td>
-<td style="text-align:right"><strong>738.50 ns</strong></td>
-<td style="text-align:right"><strong>10.225 ns</strong></td>
-<td style="text-align:right"><strong>8.539 ns</strong></td>
-<td style="text-align:right"><strong>736.17 ns</strong></td>
+<td style="text-align:right"><strong>834.24 ns</strong></td>
+<td style="text-align:right"><strong>15.057 ns</strong></td>
+<td style="text-align:right"><strong>12.574 ns</strong></td>
+<td style="text-align:right"><strong>830.88 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -869,11 +937,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>20</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">1,352.06 ns</td>
-<td style="text-align:right">12.609 ns</td>
-<td style="text-align:right">11.177 ns</td>
-<td style="text-align:right">1,349.62 ns</td>
+<td style="text-align:right">1,619.99 ns</td>
+<td style="text-align:right">15.177 ns</td>
+<td style="text-align:right">13.454 ns</td>
+<td style="text-align:right">1,618.33 ns</td>
 <td style="text-align:right">0.0100</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">336 B</td>
 </tr>
@@ -881,11 +950,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>20</td>
 <td>MsExtensionsDI</td>
-<td style="text-align:right">958.61 ns</td>
-<td style="text-align:right">6.979 ns</td>
-<td style="text-align:right">5.827 ns</td>
-<td style="text-align:right">956.40 ns</td>
+<td style="text-align:right">1,062.04 ns</td>
+<td style="text-align:right">20.475 ns</td>
+<td style="text-align:right">17.098 ns</td>
+<td style="text-align:right">1,058.59 ns</td>
 <td style="text-align:right">0.0500</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1088 B</td>
 </tr>
@@ -893,10 +963,11 @@ InvocationCount=100000  RunStrategy=Throughput
 <td><strong>SingletonService</strong></td>
 <td><strong>20</strong></td>
 <td><strong>Stashbox</strong></td>
-<td style="text-align:right"><strong>371.54 ns</strong></td>
-<td style="text-align:right"><strong>3.346 ns</strong></td>
-<td style="text-align:right"><strong>2.613 ns</strong></td>
-<td style="text-align:right"><strong>371.76 ns</strong></td>
+<td style="text-align:right"><strong>432.39 ns</strong></td>
+<td style="text-align:right"><strong>8.550 ns</strong></td>
+<td style="text-align:right"><strong>11.986 ns</strong></td>
+<td style="text-align:right"><strong>428.95 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>128 B</strong></td>
@@ -905,11 +976,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>ScopedService</td>
 <td>20</td>
 <td>Stashbox</td>
-<td style="text-align:right">668.97 ns</td>
-<td style="text-align:right">12.997 ns</td>
-<td style="text-align:right">12.157 ns</td>
-<td style="text-align:right">663.94 ns</td>
+<td style="text-align:right">774.40 ns</td>
+<td style="text-align:right">8.150 ns</td>
+<td style="text-align:right">7.225 ns</td>
+<td style="text-align:right">773.38 ns</td>
 <td style="text-align:right">0.0200</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">408 B</td>
 </tr>
@@ -917,11 +989,12 @@ InvocationCount=100000  RunStrategy=Throughput
 <td>TransientService</td>
 <td>20</td>
 <td>Stashbox</td>
-<td style="text-align:right">550.30 ns</td>
-<td style="text-align:right">10.236 ns</td>
-<td style="text-align:right">8.547 ns</td>
-<td style="text-align:right">546.73 ns</td>
+<td style="text-align:right">691.01 ns</td>
+<td style="text-align:right">12.990 ns</td>
+<td style="text-align:right">12.757 ns</td>
+<td style="text-align:right">688.20 ns</td>
 <td style="text-align:right">0.0500</td>
+<td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">1088 B</td>
 </tr>
