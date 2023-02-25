@@ -36,4 +36,9 @@ namespace Solti.Utils.DI.Interfaces
     /// Invokes the next member of chained items.
     /// </summary>
     public delegate T Next<T>();
+
+    /// <summary>
+    /// Factory responsible for create interceptors.
+    /// </summary>
+    public delegate IInterfaceInterceptor CreateInterceptorDelegate(IInjector scope);
 }

@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
         /// <inheritdoc/>
         public override Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable)
         {
-            switch (Options.DisposalMode)
+            switch (Options!.DisposalMode)
             {
                 case ServiceDisposalMode.Soft:
                     if (typeof(IDisposable).IsAssignableFrom(Interface) || typeof(IAsyncDisposable).IsAssignableFrom(Interface))

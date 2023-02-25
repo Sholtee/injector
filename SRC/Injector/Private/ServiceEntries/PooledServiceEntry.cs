@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    Options,
+                    Options!,
                     PoolName
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
                     Name,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
-                    Options,
+                    Options!,
                     PoolName
                 ),
                 _ when Factory is not null => new PooledServiceEntry
@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Factory,
-                    Options,
+                    Options!,
                     PoolName
                 ),
                 _ => throw new NotSupportedException()

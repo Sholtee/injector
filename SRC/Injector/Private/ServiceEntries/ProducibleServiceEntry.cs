@@ -37,24 +37,18 @@ namespace Solti.Utils.DI.Internals
                 : null;
         }
 
-        private ProducibleServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, ServiceOptions options) : base(@interface, name, implementation, factory)
+        private ProducibleServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions options) : base(@interface, name, implementation, factory, explicitArgs, options)
         {
-            Options = options;
-            if (Options.SupportAspects)
+            if (Options!.SupportAspects)
             {
+                //
+                // Since aspects may target the implementation itself, they must be applied first
+                //
+
                 Debug.Assert(Decorators.Count is 0, "Aspects must be applied first");
                 Features = ServiceEntryFeatures.SupportsAspects;
                 if (Factory is not null)
-                {
-                    Expression<DecoratorDelegate>? decorator = new DecoratorResolver(Options.DependencyResolvers).ResolveForAspects
-                    (
-                        Interface,
-                        Implementation ?? Interface,
-                        Options.ProxyEngine ?? ProxyEngine.Instance
-                    );
-                    if (decorator is not null)
-                        Decorate(decorator);
-                }
+                    this.ApplyAspects();
             }
         }
         #endregion
@@ -69,6 +63,7 @@ namespace Solti.Utils.DI.Internals
             name,
             null,
             factory ?? throw new ArgumentNullException(nameof(factory)),
+            null,
             options ?? throw new ArgumentNullException(nameof(options))
         ) {}
 
@@ -87,6 +82,7 @@ namespace Solti.Utils.DI.Internals
                 null,
                 options ?? throw new ArgumentNullException(nameof(options))
             ),
+            null,
             options
         ) {}
 
@@ -97,7 +93,7 @@ namespace Solti.Utils.DI.Internals
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
-            implementation ?? throw new ArgumentNullException(nameof(implementation)), 
+            implementation ?? throw new ArgumentNullException(nameof(implementation)),
             GetFactory
             (
                 @interface,
@@ -105,13 +101,9 @@ namespace Solti.Utils.DI.Internals
                 explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
                 options ?? throw new ArgumentNullException(nameof(options))
             ),
+            explicitArgs,
             options
-        )
-            //
-            // Ancestor does the rest of validation
-            //
-
-            => ExplicitArgs = explicitArgs;
+        ) {}
         #endregion
 
         /// <inheritdoc/>
@@ -162,16 +154,6 @@ namespace Solti.Utils.DI.Internals
 
             FDecorators.Add(decorator ?? throw new ArgumentNullException(nameof(decorator)));
         }
-
-        /// <summary>
-        /// Explicit argument, applied on service instantiation.
-        /// </summary>
-        public object? ExplicitArgs { get; }
-
-        /// <summary>
-        /// Options assigned to this instance.
-        /// </summary>
-        public ServiceOptions Options { get; }
 
         /// <summary>
         /// Bound decorators.

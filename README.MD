@@ -6,7 +6,7 @@
 |**Injector.NET**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net)](https://www.nuget.org/packages/injector.net )|
 |**Injector.NET.Interfaces**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.interfaces)](https://www.nuget.org/packages/injector.net.interfaces )|
 
-**This documentation refers the version 7.X of the library (which is a complete reimplementation of the library)**
+**This documentation refers the version 8.X of the library (which is a complete reimplementation of the library)**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests.
 ## Key features
@@ -267,7 +267,7 @@ Decorating services can be done using attributes as well. In this case we declar
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
 public sealed class ParameterValidatorAspect : AspectAttribute
 {
-  public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+  public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
 }
 ...
 // Then annotate the desired interface ...
@@ -480,5 +480,22 @@ svcs.Factory<IMyService>(injector => MyServiceFactory(injector.Get<IDependency>(
 - `IServiceCollection(Basic|Advanced)Extensions.WithProxy()` has been renamed to `Decorate()`
 - Interceptors must implement the `IInterfaceInterceptor` interfacce (instead of descending from `InterfaceInterceptor<>` class directly)
 - `AspectAttribute` got a new layout. Now it returns the interceptor type via property.
+## Migrating from version 7.X
+- `AspectAttribute` got a new layout. Interceptors now shall be passed as constructor parameters. So refactor this
+```csharp
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+public sealed class ParameterValidatorAspect : AspectAttribute
+{
+  public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+}
+```
+to
+```csharp
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+public sealed class ParameterValidatorAspect : AspectAttribute
+{
+  public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
+}
+```
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )

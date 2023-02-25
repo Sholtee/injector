@@ -103,9 +103,9 @@ namespace Solti.Utils.DI.Tests
                 .CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyServiceHavingAspect, MyService>>());
+            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>>());
 
-            instance = ((AspectAggregator<IMyServiceHavingAspect, MyService>) instance).Target;
+            instance = ((AspectAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -225,9 +225,9 @@ namespace Solti.Utils.DI.Tests
             IMyGenericServiceHavingAspect<int> instance = (IMyGenericServiceHavingAspect<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyGenericServiceHavingAspect<int>, MyGenericService<int>>>());
+            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>>());
 
-            instance = ((AspectAggregator<IMyGenericServiceHavingAspect<int>, MyGenericService<int>>) instance).Target;
+            instance = ((AspectAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -341,7 +341,7 @@ namespace Solti.Utils.DI.Tests
             public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(DummyInterceptor);
+        public DummyAspectAttribute() : base(typeof(DummyInterceptor)) { }
     }
 
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
@@ -354,7 +354,7 @@ namespace Solti.Utils.DI.Tests
             public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(DummyInterceptorHavingDependency);
+        public DummyAspectHavingDependencyAttribute() : base(typeof(DummyInterceptorHavingDependency)) { }
     }
 
     public abstract class OrderInspectingInterceptorBase : IInterfaceInterceptor
@@ -379,7 +379,7 @@ namespace Solti.Utils.DI.Tests
             public OrderInspectingInterceptor() : base(nameof(OrderInspectingAspect1Attribute)) { }
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(OrderInspectingInterceptor);
+        public OrderInspectingAspect1Attribute() : base(typeof(OrderInspectingInterceptor)) { }
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -390,7 +390,7 @@ namespace Solti.Utils.DI.Tests
             public OrderInspectingInterceptor() : base(nameof(OrderInspectingAspect2Attribute)) { }
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(OrderInspectingInterceptor);
+        public OrderInspectingAspect2Attribute() : base(typeof(OrderInspectingInterceptor)) { }
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -401,7 +401,7 @@ namespace Solti.Utils.DI.Tests
             public OrderInspectingInterceptor() : base(nameof(OrderInspectingAspect3Attribute)) { }
         }
 
-        public override Type UnderlyingInterceptor { get; } = typeof(OrderInspectingInterceptor);
+        public OrderInspectingAspect3Attribute() : base(typeof(OrderInspectingInterceptor)) { }
     }
 
     [OrderInspectingAspect1, OrderInspectingAspect2, OrderInspectingAspect3]

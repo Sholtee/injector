@@ -91,10 +91,11 @@ namespace Solti.Utils.DI.Internals
 
         protected static Expression<TDelegate> CreateActivator<TDelegate>(Func<IReadOnlyList<ParameterExpression>, Expression> createInstance, params ParameterExpression[] variables) where TDelegate : Delegate
         {
+            MethodInfo invoke = typeof(TDelegate).GetMethod(nameof(Action.Invoke));
+
             List<ParameterExpression> paramz = new
             (
-                typeof(TDelegate)
-                    .GetMethod(nameof(Action.Invoke))
+                invoke
                     .GetParameters()
                     .Select(static para => Expression.Parameter(para.ParameterType, para.Name))
             );
@@ -107,7 +108,7 @@ namespace Solti.Utils.DI.Internals
                     Expression.Convert
                     (
                         createInstance(paramz),
-                        typeof(object)
+                        invoke.ReturnType
                     )
                 ),
                 paramz

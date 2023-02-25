@@ -25,7 +25,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void IsService_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => ServiceEntryExtensions.IsService(null));
+            Assert.Throws<ArgumentNullException>(() => Interfaces.ServiceEntryExtensions.IsService(null));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void IsFactory_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => ServiceEntryExtensions.IsFactory(null));
+            Assert.Throws<ArgumentNullException>(() => Interfaces.ServiceEntryExtensions.IsFactory(null));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void IsInternal_ShouldBeNullChecked()
         {
-            Assert.Throws<ArgumentNullException>(() => ServiceEntryExtensions.IsInternal(null));
+            Assert.Throws<ArgumentNullException>(() => Interfaces.ServiceEntryExtensions.IsInternal(null));
         }
 
         [Test]

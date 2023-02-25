@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -56,7 +57,7 @@ namespace Solti.Utils.DI.Interfaces
     /// [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
     /// public sealed class ParameterValidatorAspect : AspectAttribute
     /// {
-    ///     public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+    ///     public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
     /// }
     /// // Then annotate the desired interface ...
     /// [ParameterValidatorAspect]
@@ -76,18 +77,41 @@ namespace Solti.Utils.DI.Interfaces
     /// </code>
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
-    public abstract class AspectAttribute : Attribute, IAspect
+    public class AspectAttribute : Attribute
     {
+        /// <summary>
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
+        /// </summary>
+        public AspectAttribute(Type interceptor)
+            => Interceptor = interceptor ?? throw new ArgumentNullException(nameof(interceptor));
+
+        /// <summary>
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
+        /// </summary>
+        public AspectAttribute(Type interceptor, object explicitArgs): this(interceptor)
+            => ExplicitArgs = explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs));
+
+        /// <summary>
+        /// Creates a new <see cref="AbstractServiceEntry"/> instance.
+        /// </summary>
+        public AspectAttribute(Expression<CreateInterceptorDelegate> factory)
+            => Factory = factory ?? throw new ArgumentNullException(nameof(factory));
+
+        /// <summary>
+        /// Factory function responsible for creating the concrete interceptor. 
+        /// </summary>
+        public Expression<CreateInterceptorDelegate>? Factory { get; }
+
         /// <summary>
         /// The underlying interceptor.
         /// </summary>
-        /// <remarks>This type must be a (instantiable) class implementing the <see cref="IInterfaceInterceptor"/> interface.</remarks>
-        public abstract Type UnderlyingInterceptor { get; }
+        /// <remarks>This type must be an -instantiable- class implementing the <see cref="IInterfaceInterceptor"/> interface.</remarks>
+        public Type? Interceptor { get; }
 
         /// <summary>
         /// Explicit arguments to be passed:
-        /// <code>Explicitrgs = new {ctorParamName1 = ..., ctorParamName2 = ...}</code>
+        /// <code>new {ctorParamName1 = ..., ctorParamName2 = ...}</code>
         /// </summary>
-        public virtual object? ExplicitArgs { get; }  // NULL by default
+        public object? ExplicitArgs { get; }
     }
 }

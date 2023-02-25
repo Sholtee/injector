@@ -36,9 +36,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="factory">The (optional) factory of the service.</param>
+        /// <param name="explicitArgs">Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <see cref="Implementation"/>.</param>
+        /// <param name="options">Options to be assigned to this instance.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> is not a class.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory)
+        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions? options)
         {
             if (@interface is null)
                 throw new ArgumentNullException(nameof(@interface));
@@ -57,7 +59,9 @@ namespace Solti.Utils.DI.Interfaces
             Interface = @interface;
             Name = name;
             Implementation = implementation;
+            ExplicitArgs = explicitArgs;
             Factory = factory;
+            Options = options;
         }
 
         #region Immutables
@@ -92,6 +96,16 @@ namespace Solti.Utils.DI.Interfaces
         /// Features related to this entry.
         /// </summary>
         public virtual ServiceEntryFeatures Features { get; }
+
+        /// <summary>
+        /// Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <see cref="Implementation"/>.
+        /// </summary>
+        public object? ExplicitArgs { get; }
+
+        /// <summary>
+        /// Options assigned to this instance.
+        /// </summary>
+        public ServiceOptions? Options { get; }
         #endregion
 
         #region Mutables
