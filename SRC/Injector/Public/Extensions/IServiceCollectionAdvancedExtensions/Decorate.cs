@@ -11,28 +11,28 @@ namespace Solti.Utils.DI
     using Interfaces;
     using Internals;
 
-    using static Interfaces.Properties.Resources;
-
     public static partial class IServiceCollectionAdvancedExtensions
     {
         private static void Decorate(this AbstractServiceEntry entry, Type interceptor, object? explicitArgs)
         {
-            if (entry is not ProducibleServiceEntry pse)
-                throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
+            if (entry is null)
+                throw new ArgumentNullException(nameof(entry));
 
-            pse.Decorate
+            ServiceOptions options = entry.Options ?? ServiceOptions.Default;
+
+            entry.Decorate
             (
                 DecoratorResolver.Resolve
                 (
-                    pse.Interface,
+                    entry.Interface,
 
                     //
                     // Proxies registered by this way always target the service interface.
                     //
 
-                    pse.Interface,
-                    pse.Options.ProxyEngine,
-                    DecoratorResolver.ResolveInterceptorFactory(interceptor, explicitArgs, pse.Options.DependencyResolvers)
+                    entry.Interface,
+                    options.ProxyEngine,
+                    DecoratorResolver.ResolveInterceptorFactory(interceptor, explicitArgs, options.DependencyResolvers)
                 )
             );
         }

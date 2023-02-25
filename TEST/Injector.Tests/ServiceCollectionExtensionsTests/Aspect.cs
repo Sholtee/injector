@@ -334,7 +334,7 @@ namespace Solti.Utils.DI.Tests
     public class MyGenericServiceHavingAspect<T> : IMyGenericService<T> { }
 
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
-    public class DummyAspectAttribute : AspectAttributeEx
+    public class DummyAspectAttribute : AspectAttribute
     {
         private sealed class DummyInterceptor : IInterfaceInterceptor
         {
@@ -345,7 +345,7 @@ namespace Solti.Utils.DI.Tests
     }
 
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
-    public class DummyAspectHavingDependencyAttribute : AspectAttributeEx
+    public class DummyAspectHavingDependencyAttribute : AspectAttribute
     {
         private sealed class DummyInterceptorHavingDependency : IInterfaceInterceptor
         {
@@ -372,7 +372,7 @@ namespace Solti.Utils.DI.Tests
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class OrderInspectingAspect1Attribute : AspectAttributeEx
+    public class OrderInspectingAspect1Attribute : AspectAttribute
     {
         private sealed class OrderInspectingInterceptor : OrderInspectingInterceptorBase
         {
@@ -383,7 +383,7 @@ namespace Solti.Utils.DI.Tests
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class OrderInspectingAspect2Attribute : AspectAttributeEx
+    public class OrderInspectingAspect2Attribute : AspectAttribute
     {
         private sealed class OrderInspectingInterceptor : OrderInspectingInterceptorBase
         {
@@ -394,7 +394,7 @@ namespace Solti.Utils.DI.Tests
     }
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class OrderInspectingAspect3Attribute : AspectAttributeEx
+    public class OrderInspectingAspect3Attribute : AspectAttribute
     {
         private sealed class OrderInspectingInterceptor : OrderInspectingInterceptorBase
         {

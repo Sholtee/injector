@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Implementation.MakeGenericType(genericArguments),
-                    Options
+                    Options!
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new SingletonServiceEntry
                 (
@@ -51,14 +51,14 @@ namespace Solti.Utils.DI.Internals
                     Name,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
-                    Options
+                    Options!
                 ),
                 _ when Factory is not null => new SingletonServiceEntry
                 (
                     Interface.MakeGenericType(genericArguments),
                     Name,
                     Factory,
-                    Options
+                    Options!
                 ),
                 _ => throw new NotSupportedException()
             };

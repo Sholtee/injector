@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -67,7 +68,7 @@ namespace Solti.Utils.DI.Interfaces
             // Provider cannot have aspects (as it doesn't implement the service interface directly).
             //
 
-            if (provider.GetCustomAttributes(true).OfType<IAspect>().Any())
+            if (provider.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
                 throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
             return self
@@ -127,7 +128,7 @@ namespace Solti.Utils.DI.Interfaces
             // Provider cannot have aspects (as it doesn't implement the service interface directly).
             //
 
-            if (provider.GetCustomAttributes(true).OfType<IAspect>().Any())
+            if (provider.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
                 throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
             return self

@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Interfaces.Tests
         private AbstractServiceEntry Entry { get; set; }
 
         [OneTimeSetUp]
-        public void SetupFixture() => Entry = new Mock<AbstractServiceEntry>(typeof(IDisposable), null, null, null) { CallBase = true }.Object;
+        public void SetupFixture() => Entry = new Mock<AbstractServiceEntry>(typeof(IDisposable), null, null, null, null, null) { CallBase = true }.Object;
 
         [Test]
         public void Specialize_ShouldNotBeSupportedByDefault()

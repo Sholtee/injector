@@ -162,7 +162,7 @@ namespace Solti.Utils.DI.UseCases
         }
 
         [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true)]
-        public sealed class MethodInvocationLoggerAspect : AspectAttributeEx
+        public sealed class MethodInvocationLoggerAspect : AspectAttribute
         {
             public MethodInvocationLoggerAspect(Type logger): base(typeof(MethodInvocationLoggerInterceptor<>).MakeGenericType(logger))
             {
