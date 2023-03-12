@@ -276,3 +276,5 @@
   - *fixed:* Services having `Instance` lifetime should not be disposed by the root container
 - 8.0.0:
   - *breaking:* `AspectAttribute` got a new layout, now it supports both "factory" and "service" recipes too
+- 8.0.1:
+  - *updated:* ProxyGen.NET to v8.2.0
