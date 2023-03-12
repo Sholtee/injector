@@ -1,7 +1,6 @@
 {
   "bin": "\\BIN",
   "solution": "\\Injector.sln",
-  "commonprops": "\\SRC\\Common\\Common.targets",
   "app": "\\SRC\\Injector\\Injector.csproj",
   "vendor": "\\Vendor",
   "tests": "\\Test\\*\\*.Tests.csproj",
