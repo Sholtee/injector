@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Internals
                 (
                     FCompilations.Select
                     (
-                        compilation => Expression.Invoke
+                        static compilation => Expression.Invoke
                         (
                             compilation.Callback,
                             compilation.LambdaExpression

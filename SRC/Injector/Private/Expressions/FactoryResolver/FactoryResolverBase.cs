@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
             constructor
                 .ReflectedType
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.FlattenHierarchy)
-                .Where(property => property.GetCustomAttribute<InjectAttribute>() is not null)
+                .Where(static property => property.GetCustomAttribute<InjectAttribute>() is not null)
                 .Select
                 (
                     property => Expression.Bind
@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Internals
             (
                 invoke
                     .GetParameters()
-                    .Select(static para => Expression.Parameter(para.ParameterType, para.Name))
+                    .Select(static param => Expression.Parameter(param.ParameterType, param.Name))
             );
 
             Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
