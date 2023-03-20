@@ -29,11 +29,5 @@ namespace Solti.Utils.DI.Perf
 
         [Benchmark]
         public void IsAssignableFrom() => FList.IsAssignableFrom(FArray);
-
-        [Benchmark]
-        public void Lock()
-        {
-            lock (this) { }
-        }
     }
 }
