@@ -2323,6 +2323,12 @@ references:
   commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
   fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.Default
   nameWithType: ServiceEntryStates.Default
+- uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.GarbageCollected
+  name: GarbageCollected
+  href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_GarbageCollected
+  commentId: F:Solti.Utils.DI.Interfaces.ServiceEntryStates.GarbageCollected
+  fullName: Solti.Utils.DI.Interfaces.ServiceEntryStates.GarbageCollected
+  nameWithType: ServiceEntryStates.GarbageCollected
 - uid: Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated
   name: Instantiated
   href: Solti.Utils.DI.Interfaces.ServiceEntryStates.html#Solti_Utils_DI_Interfaces_ServiceEntryStates_Instantiated
