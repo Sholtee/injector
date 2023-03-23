@@ -153,7 +153,7 @@ namespace Solti.Utils.DI.Interfaces
         public virtual Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
 
         /// <summary>
-        /// If supported, sets the <see cref="State"/> of this entry to <see cref="ServiceEntryStates.Validated"/>.
+        /// If supported, updates the <see cref="State"/> of this entry.
         /// </summary>
         public virtual void UpdateState(ServiceEntryStates newState) => throw new NotSupportedException();
 
