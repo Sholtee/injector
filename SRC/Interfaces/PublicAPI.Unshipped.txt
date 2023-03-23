@@ -1,1 +1,1 @@
-﻿
+﻿Solti.Utils.DI.Interfaces.ServiceEntryStates.GarbageCollected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates

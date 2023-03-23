@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
 
         //
         // "volatile" is required as slots can be accessed parallelly in the root scope
-        // (a thread may read FSlots while the other may try to lenghen it).
+        // (a thread may read FSlots while the other may try to lengthen it).
         //
 
         private volatile object?[] FSlots;
@@ -56,8 +56,13 @@ namespace Solti.Utils.DI.Internals
             get => FPath ??= new ServicePath();
         }
 
+#if DEBUG
+        internal virtual
+#else
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private object CreateInstance(AbstractServiceEntry requested)
+        private
+#endif
+        object CreateInstance(AbstractServiceEntry requested)
         {
             object? instance, disposable;
 
@@ -75,6 +80,8 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(requested.State.HasFlag(ServiceEntryStates.Built), "The requested service must be built");
 
+            ServiceEntryStates newState = requested.State; 
+
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
                 //
@@ -91,13 +98,10 @@ namespace Solti.Utils.DI.Internals
                     Path.Pop();
                 }
 
-                requested.UpdateState(ServiceEntryStates.Validated);
+                newState |= ServiceEntryStates.Validated;
             }
             else
                 instance = requested.CreateInstance!(this, out disposable);
-
-            if (disposable is not null)
-                DisposableStore.Capture(disposable);
 
             if (!requested.State.HasFlag(ServiceEntryStates.Instantiated))
             {
@@ -111,8 +115,22 @@ namespace Solti.Utils.DI.Internals
                 if (!requested.Interface.IsInstanceOfType(instance))  // according to perf tests this check is quite slow
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Interface));
 
-                requested.UpdateState(ServiceEntryStates.Instantiated);
+                newState |= ServiceEntryStates.Instantiated;
             }
+
+            if (disposable is not null)
+            {
+                DisposableStore.Capture(disposable);
+                newState |= ServiceEntryStates.GarbageCollected;
+            }
+
+            //
+            // Set new states at once (it's important in mult-threaded scenarios, for instance in scoped service
+            // instantiation shortcut).
+            //
+
+            if (newState != requested.State)
+                requested.UpdateState(newState);
 
             return instance;
         }
@@ -165,6 +183,15 @@ namespace Solti.Utils.DI.Internals
             int slot = requested.AssignedSlot;
             if (features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) && slot < FSlots.Length && FSlots[slot] is not null)
                 return FSlots[slot]!;
+
+            //
+            // If the requested service had already been instantiated and it's not a disposable means 
+            // no lock required
+            //
+
+            ServiceEntryStates state = requested.State;
+            if (!features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) && state.HasFlag(ServiceEntryStates.Instantiated) && !state.HasFlag(ServiceEntryStates.GarbageCollected))
+                return requested.CreateInstance!(this, out _);
 
             if (FInstantiationLock is not null)
             {

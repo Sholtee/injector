@@ -68,6 +68,10 @@ namespace Solti.Utils.DI.Tests
         {
         }
 
+        public class Implementation_1_No_Dep_Disposable : Disposable, IInterface_1
+        {
+        }
+
         public class Implementation_1_Non_Interface_Dep : IInterface_1
         {
             public Implementation_1_Non_Interface_Dep(int invalidArg)

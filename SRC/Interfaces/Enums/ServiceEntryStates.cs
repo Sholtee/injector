@@ -32,6 +32,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Indicates that the service had already been instantiated.
         /// </summary>
-        Instantiated = 1 << 2
+        Instantiated = 1 << 2,
+
+        /// <summary>
+        /// The created instances are supposed to be disposed by the system.
+        /// </summary>
+        GarbageCollected = 1 << 3
     }
 }

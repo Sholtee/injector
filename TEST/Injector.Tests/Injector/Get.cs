@@ -653,5 +653,34 @@ namespace Solti.Utils.DI.Tests
                 Assert.That(entry.State.HasFlag(ServiceEntryStates.Instantiated));
             }
         }
+
+        [Test]
+        public void Injector_Get_ShouldUseShortcutForInstantiation([Values(true, false)]bool disposable, [Values(ServiceResolutionMode.AOT, ServiceResolutionMode.JIT)]ServiceResolutionMode resolutionMode)
+        {
+            IServiceCollection coll = new ServiceCollection().Service
+            (
+                typeof(IInterface_1),
+                disposable
+                    ? typeof(Implementation_1_No_Dep_Disposable)
+                    : typeof(Implementation_1_No_Dep),
+                Lifetime.Transient
+            );
+
+            Mock<Injector> mockInjector = new
+            (
+                coll,
+                ScopeOptions.Default with { ServiceResolutionMode = resolutionMode },
+                null
+            );
+            mockInjector
+                .Setup(i => i.CreateInstance(coll.Single()))
+                .CallBase();
+            mockInjector
+                .Setup(i => i.Get(typeof(IInterface_1), null))
+                .CallBase();
+
+            Assert.AreNotSame(mockInjector.Object.Get<IInterface_1>(), mockInjector.Object.Get<IInterface_1>());
+            mockInjector.Verify(i => i.CreateInstance(coll.Single()), Times.Exactly(disposable ? 2 : 1));
+        }
     }
 }
