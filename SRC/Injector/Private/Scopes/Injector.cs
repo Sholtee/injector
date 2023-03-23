@@ -186,21 +186,28 @@ namespace Solti.Utils.DI.Internals
 
             //
             // If the requested service had already been instantiated and it's not a disposable means 
-            // no lock required
+            // no lock required.
+            // Lock required to:
+            //   - Set the belonging slot as an atomic operation
+            //   - Build the service path
+            //   - Extend the disposable store
             //
 
             ServiceEntryStates state = requested.State;
             if (!features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) && state.HasFlag(ServiceEntryStates.Instantiated) && !state.HasFlag(ServiceEntryStates.GarbageCollected))
                 return requested.CreateInstance!(this, out _);
 
-            if (FInstantiationLock is not null)
-            {
-                //
-                // The same thread may acquire the lock more times so this approach supports
-                // recursion.
-                //
+            //
+            // Entering to lock is a quite expensive operation (regardless the lock was held or not)
+            // so try to enter only once
+            // (according to perf tests Monitor.IsEntered() much faster than Monitor.TryEnter())
+            //
 
-                if (!Monitor.TryEnter(FInstantiationLock, Options.ResolutionLockTimeout))
+            bool lockTaken = false;
+            if (FInstantiationLock is not null && !Monitor.IsEntered(FInstantiationLock))
+            {
+                Monitor.TryEnter(FInstantiationLock, Options.ResolutionLockTimeout, ref lockTaken);
+                if (!lockTaken)  // We must grab the lock here
                     throw new TimeoutException();
             }
             try
@@ -225,11 +232,7 @@ namespace Solti.Utils.DI.Internals
             }
             finally
             {
-                if (FInstantiationLock is not null)
-                    //
-                    // This won't release the lock when called in a recursion.
-                    //
-
+                if (lockTaken)
                     Monitor.Exit(FInstantiationLock);
             }
         }
