@@ -247,7 +247,12 @@ namespace Solti.Utils.DI.Internals
         {
             object? instance = TryGet(iface, name);
             if (instance is null)
-                ServiceErrors.NotFound(iface, name, FPath?.Last);
+                //
+                // Cannot provide requestor (FPath.Last) here as Injector.Get() may be called from
+                // different threads parallelly.
+                //
+
+                ServiceErrors.NotFound(iface, name, requestor: null);
 
             return instance!;
         }
