@@ -121,7 +121,7 @@ namespace Solti.Utils.DI.Internals
             if (disposable is not null)
             {
                 DisposableStore.Capture(disposable);
-                newState |= ServiceEntryStates.GarbageCollected;
+                newState |= ServiceEntryStates.Collected;
             }
 
             //
@@ -194,7 +194,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             ServiceEntryStates state = requested.State;
-            if (!features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) && state.HasFlag(ServiceEntryStates.Instantiated) && !state.HasFlag(ServiceEntryStates.GarbageCollected))
+            if (!features.HasFlag(ServiceEntryFeatures.CreateSingleInstance) && state.HasFlag(ServiceEntryStates.Instantiated) && !state.HasFlag(ServiceEntryStates.Collected))
                 return requested.CreateInstance!(this, out _);
 
             //

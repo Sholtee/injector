@@ -37,6 +37,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The created instances are supposed to be disposed by the system.
         /// </summary>
-        GarbageCollected = 1 << 3
+        Collected = 1 << 3
     }
 }
