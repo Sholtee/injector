@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="iface">The service interface.</param>
         /// <param name="name">The (optional) service name.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static IServiceCollection Remove(this IServiceCollection self, Type iface, string? name)
         {
             if (self is null)
@@ -40,6 +41,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="iface">The service interface.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static IServiceCollection Remove(this IServiceCollection self, Type iface) => self.Remove(iface, null);
 
         /// <summary>
@@ -49,6 +51,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="name">The (optional) service name.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static IServiceCollection Remove<TInterface>(this IServiceCollection self, string? name) where TInterface : class => self.Remove(typeof(TInterface), name);
 
         /// <summary>
@@ -57,6 +60,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <typeparam name="TInterface">The service interface.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static IServiceCollection Remove<TInterface>(this IServiceCollection self) where TInterface : class => self.Remove(typeof(TInterface));
     }
 }

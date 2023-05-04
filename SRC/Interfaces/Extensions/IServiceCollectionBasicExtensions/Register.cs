@@ -12,6 +12,19 @@ namespace Solti.Utils.DI.Interfaces
     {
         /// <summary>
         /// Registers a set of services.
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Register
+        ///     (
+        ///         new List&lt;AbstractServiceEntry&gt;
+        ///         {
+        ///             new SingletonServiceEntry(...)
+        ///         }
+        ///     ),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <remarks>Using the recepie methods (Service, Factory, etc) is more convenient than registering services directly.</remarks>
         public static IServiceCollection Register(this IServiceCollection self, IEnumerable<AbstractServiceEntry> entries)
@@ -32,6 +45,16 @@ namespace Solti.Utils.DI.Interfaces
 
         /// <summary>
         /// Registers a set of services.
+        /// <code>
+        /// ScopeFactory.Create
+        /// (
+        ///     svcs => svcs.Register
+        ///     (
+        ///         new SingletonServiceEntry(...)
+        ///     ),
+        ///     ...
+        /// )
+        /// </code>
         /// </summary>
         /// <remarks>Using the recepie methods (Service, Factory, etc) is more convenient than registering services directly.</remarks>
         public static IServiceCollection Register(this IServiceCollection self, params AbstractServiceEntry[] entries) => self.Register((IEnumerable<AbstractServiceEntry>) entries);

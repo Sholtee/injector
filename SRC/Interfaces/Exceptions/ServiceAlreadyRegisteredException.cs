@@ -10,6 +10,16 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// The exception that is thrown on duplicate service registration.
     /// </summary>
+    /// <remarks>
+    /// To bind multiple services to the same interface, consider naming them:
+    /// <code>
+    /// ScopeFactory.Create
+    /// (
+    ///     svcs => svcs.Service&lt;IMyService, MyService&gt;("serviceName", Lifetime.Singleton),
+    ///     ...
+    /// )
+    /// </code>
+    /// </remarks>
     public sealed class ServiceAlreadyRegisteredException: Exception
     {
         /// <summary>

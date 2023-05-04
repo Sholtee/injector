@@ -11,13 +11,13 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes a dependency (a property or parameter).
     /// </summary>
+    /// <remarks>This class is required as there is no common base class for <see cref="ParameterInfo"/> and <see cref="PropertyInfo"/>.</remarks>
     public sealed record DependencyDescriptor
     {
         /// <summary>
         /// Creates a new <see cref="DependencyDescriptor"/> instance.
         /// </summary>
-        /// <param name="original">The original member.</param>
-        /// <remarks>This class is required as there is no common base class for <see cref="ParameterInfo"/> and <see cref="PropertyInfo"/>.</remarks>
+        /// <param name="original">The original member which should be either a <see cref="ParameterInfo"/> or a <see cref="PropertyInfo"/> instance.</param>
         public DependencyDescriptor(object original)
         {
             switch (original)

@@ -10,6 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// The exception that is thrown when a service could not be found.
     /// </summary>
+    /// <remarks>If the requested service is optional, consider using the <see cref="IInjector.TryGet(Type, string?)"/> method in order to avoid this error.</remarks>
     public sealed class ServiceNotFoundException : Exception
     {
         /// <summary>
@@ -22,9 +23,9 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// The dependant service which requested a missing service.
+        /// The dependant service which requested the missing service.
         /// </summary>
-        /// <remarks>This property is null if the request was initiated from user code: <code>scope.Get&lt;IMissingService&gt;()</code></remarks>
+        /// <remarks>This property may be null if the request was initiated from user code: <code>scope.Get&lt;IMissingService&gt;()</code></remarks>
         public AbstractServiceEntry? Requestor { get; }
 
         /// <summary>

@@ -21,6 +21,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">The requested service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static AbstractServiceEntry Find(this IServiceCollection self, Type iface, string? name)
         {
             if (self is null)
@@ -56,6 +57,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">When the requested service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static AbstractServiceEntry Find(this IServiceCollection self, Type iface) =>
             self.Find(iface, null);
 
@@ -67,6 +69,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">When the requested service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static AbstractServiceEntry Find<TInterface>(this IServiceCollection self, string? name) where TInterface : class =>
             self.Find(typeof(TInterface), name);
 
@@ -77,6 +80,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">When the requested service could not be found.</exception>
+        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
         public static AbstractServiceEntry Find<TInterface>(this IServiceCollection self) where TInterface : class =>
             self.Find<TInterface>(null);
     }
