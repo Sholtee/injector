@@ -56,6 +56,13 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public sealed class CircularReferenceException : Exception</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_Interfaces_CircularReferenceException_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Circular reference is the state when there is a circle in the dependency graph. For instance:
+<br>
+Svc_1 ⭢ Svc_2 ⭢ Svc_1
+<br>
+Depending on the <a class="xref" href="Solti.Utils.DI.Interfaces.ScopeOptions.html#Solti_Utils_DI_Interfaces_ScopeOptions_ServiceResolutionMode">ServiceResolutionMode</a> property this exception can be thrown either in compilation time or on service request.</p>
+</div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_CircularReferenceException__ctor_" data-uid="Solti.Utils.DI.Interfaces.CircularReferenceException.#ctor*"></a>

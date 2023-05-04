@@ -60,6 +60,9 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public sealed class DependencyDescriptor : Object</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_Interfaces_DependencyDescriptor_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>This class is required as there is no common base class for <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a> and <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a>.</p>
+</div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor__ctor_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.#ctor*"></a>
@@ -84,14 +87,11 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">original</span></td>
-        <td><p>The original member.</p>
+        <td><p>The original member which should be either a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a> or a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a> instance.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_DependencyDescriptor__ctor_System_Object__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This class is required as there is no common base class for <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a> and <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a>.</p>
-</div>
   <h3 id="properties">Properties
   </h3>
   <a id="Solti_Utils_DI_Interfaces_DependencyDescriptor_Name_" data-uid="Solti.Utils.DI.Interfaces.DependencyDescriptor.Name*"></a>

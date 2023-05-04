@@ -56,6 +56,14 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public sealed class ServiceAlreadyRegisteredException : Exception</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>To bind multiple services to the same interface, consider naming them:</p>
+<pre><code>ScopeFactory.Create
+(
+    svcs => svcs.Service&lt;IMyService, MyService>(&quot;serviceName&quot;, Lifetime.Singleton),
+    ...
+)</code></pre>
+</div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_ServiceAlreadyRegisteredException__ctor_" data-uid="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.#ctor*"></a>
