@@ -37,6 +37,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The created instances are supposed to be disposed by the system.
         /// </summary>
+        /// <remarks>You may change collection behavior via the <see cref="ServiceOptions.DisposalMode"/> property.</remarks>
         Collected = 1 << 3
     }
 }

@@ -10,6 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Contains the possible disposal modes.
     /// </summary>
+    /// <remarks>This enum is used by the <see cref="ServiceOptions.DisposalMode"/> property.</remarks>
     public enum ServiceDisposalMode
     {
         /// <summary>

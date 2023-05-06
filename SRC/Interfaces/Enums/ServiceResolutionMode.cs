@@ -13,12 +13,24 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Just In Time
         /// </summary>
-        /// <remarks>Useful if you're planning to mock the <see cref="IInjector"/> invocations.</remarks>
+        /// <remarks>
+        /// The assembled resolver function roughly looks like this:
+        /// <code>
+        /// new Dependant(scope.Get(typeof(Dependency)))
+        /// </code>
+        /// This approach is useful when you're planning to mock the <see cref="IInjector"/> invocations but not recommended in production due to its performance impact.
+        /// </remarks>
         JIT,
 
         /// <summary>
         /// Ahead Of Time
         /// </summary>
+        /// <remarks>
+        /// The assembled resolver function roughly looks like this:
+        /// <code>
+        /// new Dependant(new Dependency())
+        /// </code>
+        /// </remarks>
         AOT
     }
 }
