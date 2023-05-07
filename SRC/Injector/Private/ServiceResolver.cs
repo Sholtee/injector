@@ -75,6 +75,9 @@ namespace Solti.Utils.DI.Internals
                 name = null;
             }
 
+            if (!iface.IsInterface)
+                throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(key));
+
             if (!iface.IsConstructedGenericType)
                 return null;
 
@@ -188,8 +191,6 @@ namespace Solti.Utils.DI.Internals
 
         public AbstractServiceEntry? Resolve(Type iface, string? name)
         {
-            Debug.Assert(!iface.IsGenericTypeDefinition, "Open generic types cannot be resolved");
-
             AbstractServiceEntry? entry = FEntries.GetOrAdd(GetKey(iface, name), FValueFactory);
             if (entry is not null && !FInitialized)
                 //
@@ -198,7 +199,6 @@ namespace Solti.Utils.DI.Internals
 
                 FEntryBuilder.Build(entry);
 
-            Debug.Assert(entry?.State.HasFlag(ServiceEntryStates.Built) is not false, "Returned entry must be built");
             return entry;
         }
 

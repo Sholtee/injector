@@ -261,19 +261,31 @@ namespace Solti.Utils.DI.Internals
         {
             CheckNotDisposed();
 
+            //
+            // Do NOT exemine the interface deeper here as it has performance costs and we don't want
+            // to pay it on each requests.
+            //
+
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(iface));
-
-            if (iface.IsGenericTypeDefinition)
-                throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
-
             AbstractServiceEntry? entry = FServiceResolver.Resolve(iface, name);
-            return entry is not null
-                ? GetOrCreateInstance(entry)
-                : null;
+            if (entry is null)
+                return null;
+
+            if (!entry.State.HasFlag(ServiceEntryStates.Built))
+            {
+                //
+                // Since the entry is supposed to be built here, something must be wrong with it
+                //
+
+                if (iface.IsGenericTypeDefinition)
+                    throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
+
+                Debug.Fail("Entry must be built");
+            }
+
+            return GetOrCreateInstance(entry);
         }
         #endregion
 
