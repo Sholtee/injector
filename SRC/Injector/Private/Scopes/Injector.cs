@@ -262,7 +262,7 @@ namespace Solti.Utils.DI.Internals
             CheckNotDisposed();
 
             //
-            // Do NOT exemine the interface deeper here as it has performance costs and we don't want
+            // Do NOT examine the interface deeper here as it has performance costs and we don't want
             // to pay it on each requests.
             //
 
