@@ -54,13 +54,14 @@ namespace Solti.Utils.DI.Internals
                 }
             );
 
-            //                                            !!HACK!!
             //
-            // Az egyes pool elemekhez tartozo dedikalt scope-ok felszabaditasa a pool szerviz felszabaditasakor tortenik.
-            // Igy viszont ha a pool elemnek megosztott (Singleton) fuggosege van (ami meg korabban meg nem vt igenyelve)
-            // az elobb kerulne feszabaditasra mint a pool elem maga.
-            // Ezert meg a pool szerviz peldanyositasakor elkerunk egy pool elemet (amit egybol vissza is rakunk) hogy az
-            // esetleges megosztott fuggosegek mar peldanyositasra keruljenek.
+            // The pool service is instantiated in the root scope -obviously- before any of the pool items.
+            // Therefore all the non-instantiated singleton dependencies would be released before the pool
+            // item, which is not acceptable. To avoid this situation force a pool item to be created ahead
+            // of time.
+            //
+            // This workaround won't imply any performance impact as the pool item would be created anyway
+            // at first checkout.
             //
 
             Get().Dispose();
