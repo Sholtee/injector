@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <remarks>
     /// <list type="bullet">
     /// <item>
-    /// It's safe to ommit this annotation. The default behaviour is:
+    /// It's safe to omit this annotation. The default behaviour is:
     /// <code>scope.Get(typeof(TParameterType|TPropertyType), null)</code>
     /// </item>
     /// <item>

@@ -15,6 +15,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new slot and return its ID
         /// </summary>
+        /// <remarks>Calling this method is required to store scoped service instances.</remarks>
         int AssignSlot();
 
         /// <summary>

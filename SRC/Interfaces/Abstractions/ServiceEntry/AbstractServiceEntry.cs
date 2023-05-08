@@ -16,10 +16,11 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes an abstract service entry.
     /// </summary>
+    /// <remarks>Service entry specifies how to store, identify and instantiate a particular service.</remarks>
     public abstract class AbstractServiceEntry: IServiceId
     {
         /// <summary>
-        /// Contains some constants related to service resolution.
+        /// Contains some constants regarding service resolution.
         /// </summary>
         public static class Consts
         {
@@ -98,7 +99,8 @@ namespace Solti.Utils.DI.Interfaces
         public virtual ServiceEntryFeatures Features { get; }
 
         /// <summary>
-        /// Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <see cref="Implementation"/>.
+        /// Optional explicit arguments to be passed to the constructor of <see cref="Implementation"/>. It is supposed to be either a dictionary or an anonymous object:
+        /// <code>{ctorArg1 = ..., ctorArg2 = ...}</code>
         /// </summary>
         public object? ExplicitArgs { get; }
 
@@ -150,6 +152,10 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates the lifetime manager expression.
         /// </summary>
+        /// <remarks>
+        /// Lifetime manager instructs the system how to dispose a particular service instance. In most of cases it's just a simple cast:
+        /// <code>disposable = getService() as IDisposable</code>
+        /// </remarks>
         public virtual Expression CreateLifetimeManager(Expression getService, ParameterExpression scope, ParameterExpression disposable) => throw new NotSupportedException();
 
         /// <summary>
