@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Interfaces
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions) => throw NotSupported;
 
         /// <summary>
-        /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor argument.
+        /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor arguments.
         /// </summary>
         public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions) => throw NotSupported;
 
