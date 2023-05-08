@@ -12,6 +12,15 @@ namespace Solti.Utils.DI.Internals
     using Interfaces;
     using Proxy;
 
+    //                                        !!!ATTENTION!!!
+    //
+    // This class is a critical component therefore every modification should be done carefully, with
+    // performance in mind.
+    // - NO Sysmte.Linq
+    // - NO System.Reflection
+    // - After ANY modifications, run the unit & performance tests to verify there is no regression
+    //
+
     /// <summary>
     /// Aggregates <typeparamref name="TTarget"/> (class or interface) aspects to reduce the number of interceptors to be built.
     /// </summary>
