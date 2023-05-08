@@ -62,6 +62,9 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class AbstractServiceEntry : Object, IServiceId</code></pre>
   </div>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Service entry specifies how to store, identify and instantiate a particular service.</p>
+</div>
   <h3 id="constructors">Constructors
   </h3>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry__ctor_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.#ctor*"></a>
@@ -224,7 +227,8 @@
   </table>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ExplicitArgs_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_ExplicitArgs" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs">ExplicitArgs</h4>
-  <div class="markdown level1 summary"><p>Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Implementation">Implementation</a>.</p>
+  <div class="markdown level1 summary"><p>Optional explicit arguments to be passed to the constructor of <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_Implementation">Implementation</a>. It is supposed to be either a dictionary or an anonymous object:</p>
+<pre><code>{ctorArg1 = ..., ctorArg2 = ...}</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -528,6 +532,10 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_CreateLifetimeManager_System_Linq_Expressions_Expression_System_Linq_Expressions_ParameterExpression_System_Linq_Expressions_ParameterExpression__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Lifetime manager instructs the system how to dispose a particular service instance. In most of cases it&apos;s just a simple cast:</p>
+<pre><code>disposable = getService() as IDisposable</code></pre>
+</div>
   <a id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Decorate_" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate*"></a>
   <h4 id="Solti_Utils_DI_Interfaces_AbstractServiceEntry_Decorate_System_Linq_Expressions_Expression_Solti_Utils_DI_Interfaces_DecoratorDelegate__" data-uid="Solti.Utils.DI.Interfaces.AbstractServiceEntry.Decorate(System.Linq.Expressions.Expression{Solti.Utils.DI.Interfaces.DecoratorDelegate})">Decorate(Expression&lt;DecoratorDelegate&gt;)</h4>
   <div class="markdown level1 summary"><p>If implemented, alters the service instantiation process in order to wrap the original service into a proxy.</p>
