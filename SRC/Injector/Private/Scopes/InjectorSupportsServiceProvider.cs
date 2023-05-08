@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     //
     // This class is a critical component therefore every modification should be done carefully, with
     // performance in mind.
-    // - NO Sysmte.Linq
+    // - NO System.Linq
     // - NO System.Reflection
     // - After ANY modifications, run the unit & performance tests to verify there is no regression
     //
