@@ -9,9 +9,9 @@ using System.Diagnostics.CodeAnalysis;
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
-    /// Specifies the contract for an <see cref="AbstractServiceEntry"/> set.
+    /// Specifies the contract of service entry sets.
     /// </summary>
-    /// <remarks>Only one entry can be registered with a given <see cref="AbstractServiceEntry.Interface"/> and <see cref="AbstractServiceEntry.Name"/> pair.</remarks>
+    /// <remarks>Only one entry can be registered with a particular <see cref="AbstractServiceEntry.Interface"/> and <see cref="AbstractServiceEntry.Name"/> pair.</remarks>
     public interface IServiceCollection : ICollection<AbstractServiceEntry>
     {
         /// <summary>
