@@ -78,7 +78,7 @@ namespace Solti.Utils.DI.Internals
 
             return request.Method.ReturnType != iface
                 //
-                // Cast already in the expression since the replaced IInjector.[Try]Get() method is not typed
+                // Cast was already done in the expression since the replaced IInjector.[Try]Get() method is not typed
                 //
 
                 ? resolve

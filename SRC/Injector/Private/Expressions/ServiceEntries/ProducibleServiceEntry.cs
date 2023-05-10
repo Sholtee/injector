@@ -18,10 +18,24 @@ namespace Solti.Utils.DI.Internals
             switch (Options!.DisposalMode)
             {
                 case ServiceDisposalMode.Soft:
+                {
                     if (typeof(IDisposable).IsAssignableFrom(Interface) || typeof(IAsyncDisposable).IsAssignableFrom(Interface))
-                        goto case ServiceDisposalMode.Force;
-                    return getService;
+                    {
+                        ParameterExpression service = Expression.Parameter(getService.Type, nameof(service));
+
+                        return Expression.Block
+                        (
+                            type: typeof(object),
+                            variables: new[] { service },
+                            Expression.Assign(service, getService),
+                            Expression.Assign(disposable, service),
+                            service
+                        );
+                    }
+                    goto case ServiceDisposalMode.Suppress;
+                }
                 case ServiceDisposalMode.Force:
+                {
                     //
                     // disposable = service as IDisposable ?? (object?) (service as IAsyncDisposable);
                     // return service;
@@ -51,6 +65,7 @@ namespace Solti.Utils.DI.Internals
                         ),
                         service
                     );
+                }
                 case ServiceDisposalMode.Suppress:
                     return getService;
                 default:
