@@ -65,6 +65,15 @@ namespace Solti.Utils.DI.Internals
             get => FPath ??= new ServicePath();
         }
 
+        private Injector(IServiceResolver resolver, ScopeOptions options, object? tag, object? instantiationLock)
+        {
+            FServiceResolver = resolver;
+            FSlots = Array<object>.Create(resolver.Slots);
+            FInstantiationLock = instantiationLock;
+            Options = options;
+            Tag = tag;
+        }
+
 #if DEBUG
         internal virtual
 #else
@@ -320,14 +329,13 @@ namespace Solti.Utils.DI.Internals
         public object? Tag { get; }
         #endregion
 
-        public Injector(IServiceResolver resolver, ScopeOptions options, object? tag)
-        {
-            FServiceResolver   = resolver;
-            FSlots             = Array<object>.Create(resolver.Slots);
-            FInstantiationLock = new object();  // lock required in the root scope only
-            Options            = options;
-            Tag                = tag;
-        }
+        public Injector(IServiceResolver resolver, ScopeOptions options, object? tag): this
+        (
+            resolver,
+            options,
+            tag,
+            instantiationLock: new object() // lock required in the root scope only
+        ) {}
 
         public Injector(IServiceCollection services, ScopeOptions options, object? tag): this
         (
@@ -340,7 +348,7 @@ namespace Solti.Utils.DI.Internals
             tag
         ) {}
 
-        public Injector(Injector super, object? tag): this(super.FServiceResolver, super.Options, tag)
+        public Injector(Injector super, object? tag): this(super.FServiceResolver, super.Options, tag, instantiationLock: null)
             => FSuper = super;
     }
 }
