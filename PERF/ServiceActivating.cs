@@ -61,6 +61,8 @@ namespace Solti.Utils.DI.Perf
 
         private AbstractServiceEntry Entry { get; set; }
 
+        private FactoryDelegate Factory { get; set; }
+
         public static IEnumerable<Lifetime> Lifetimes
         {
             get
@@ -84,13 +86,17 @@ namespace Solti.Utils.DI.Perf
                 .Service<IService, MyService>(Lifetime, ServiceOptions.Default with { DisposalMode = DisposalMode });
 
             Entry = coll.Last();
+            Factory = Entry.Factory.Compile();
             Injector = (IServiceActivator) ScopeFactory.Create(coll).CreateScope();
         }
 
         [Benchmark]
-        public object ViaFactory() => Entry.CreateInstance(Injector, out _);
+        public object ViaFactory() => Factory(Injector, typeof(IService));
 
         [Benchmark]
-        public object ViaResolver() => Injector.GetOrCreateInstance(Entry);
+        public object ViaCreateInstance() => Entry.CreateInstance(Injector, out _);
+
+        [Benchmark]
+        public object ViaGetOrCreateInstance() => Injector.GetOrCreateInstance(Entry);
     }
 }
