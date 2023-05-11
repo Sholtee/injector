@@ -328,6 +328,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState
   fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateState
   nameWithType: AbstractServiceEntry.UpdateState
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  name: UpdateStateInternal(ServiceEntryStates)
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_UpdateStateInternal_Solti_Utils_DI_Interfaces_ServiceEntryStates_
+  commentId: M:Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates)
+  nameWithType: AbstractServiceEntry.UpdateStateInternal(ServiceEntryStates)
+- uid: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal*
+  name: UpdateStateInternal
+  href: Solti.Utils.DI.Interfaces.AbstractServiceEntry.html#Solti_Utils_DI_Interfaces_AbstractServiceEntry_UpdateStateInternal_
+  commentId: Overload:Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal
+  fullName: Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal
+  nameWithType: AbstractServiceEntry.UpdateStateInternal
 - uid: Solti.Utils.DI.Interfaces.AspectAttribute
   name: AspectAttribute
   href: Solti.Utils.DI.Interfaces.AspectAttribute.html
