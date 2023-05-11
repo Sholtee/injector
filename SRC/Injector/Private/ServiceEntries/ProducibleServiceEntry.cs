@@ -140,19 +140,7 @@ namespace Solti.Utils.DI.Internals
         public sealed override void UpdateState(ServiceEntryStates newState)
         {
             Debug.WriteLineIf(newState < State, $"Downgrading state of {this}");
-
-            //
-            // As entries are shered between scopes, so this method might be invoked parallelly
-            // (by the GetOrCreateInstance() method).
-            //
-            // Remark:
-            //   We cannot use Interlocked method here as State is a property not a field
-            //
-
-            lock (this)
-            {
-                State |= newState;
-            }
+            UpdateStateInternal(newState);
         }
 
         /// <inheritdoc/>

@@ -6,11 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Solti.Utils.DI.Interfaces
 {
     using Primitives;
+    using Primitives.Threading;
     using Properties;
 
     /// <summary>
@@ -19,6 +21,8 @@ namespace Solti.Utils.DI.Interfaces
     /// <remarks>Service entry specifies how to store, identify and instantiate a particular service.</remarks>
     public abstract class AbstractServiceEntry: IServiceId
     {
+        private int FState;
+
         /// <summary>
         /// Contains some constants regarding service resolution.
         /// </summary>
@@ -29,6 +33,19 @@ namespace Solti.Utils.DI.Interfaces
             /// </summary>
             public const int INVALID_SLOT = -1;
         }
+
+        /// <summary>
+        /// Provides the default implementation for the <see cref="UpdateState(ServiceEntryStates)"/> method.
+        /// </summary>
+        /// <returns>The original state that had been updated.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected ServiceEntryStates UpdateStateInternal(ServiceEntryStates newState) =>
+            //
+            // As entries are shared between scopes, this method might be invoked parallelly
+            // (by the GetOrCreateInstance() method) -> Interlocked.
+            //
+
+            (ServiceEntryStates) InterlockedExtensions.Or(ref FState, (int) newState);
 
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
@@ -114,7 +131,11 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Current state of this entry.
         /// </summary>
-        public ServiceEntryStates State { get; protected set; }
+        public ServiceEntryStates State
+        {
+            get => (ServiceEntryStates) FState;
+            protected set => FState = (int) value;
+        }
 
         /// <summary>
         /// The assigned slot (in case of scoped services).
