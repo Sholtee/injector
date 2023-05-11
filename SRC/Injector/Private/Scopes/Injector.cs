@@ -98,8 +98,6 @@ namespace Solti.Utils.DI.Internals
 
             Debug.Assert(requested.State.HasFlag(ServiceEntryStates.Built), "The requested service must be built");
 
-            ServiceEntryStates newState = requested.State; 
-
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
                 //
@@ -116,7 +114,7 @@ namespace Solti.Utils.DI.Internals
                     Path.Pop();
                 }
 
-                newState |= ServiceEntryStates.Validated;
+                requested.UpdateState(ServiceEntryStates.Validated);
             }
             else
                 instance = requested.CreateInstance!(this, out disposable);
@@ -133,22 +131,21 @@ namespace Solti.Utils.DI.Internals
                 if (!requested.Interface.IsInstanceOfType(instance))  // according to perf tests this check is quite slow
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Interface));
 
-                newState |= ServiceEntryStates.Instantiated;
+                ServiceEntryStates newState = ServiceEntryStates.Instantiated;
+
+                //
+                // Set the "Collected" state here, at once with "Instantiated" to not deceive instantiation shortcut
+                // in GetOrCreateInstance()
+                //
+
+                if (disposable is not null)
+                    newState |= ServiceEntryStates.Collected;
+
+                requested.UpdateState(newState);
             }
 
             if (disposable is not null)
-            {
                 DisposableStore.Capture(disposable);
-                newState |= ServiceEntryStates.Collected;
-            }
-
-            //
-            // Set new states at once (it's important in mult-threaded scenarios, for instance in scoped service
-            // instantiation shortcut).
-            //
-
-            if (newState != requested.State)
-                requested.UpdateState(newState);
 
             return instance;
         }
