@@ -7,6 +7,7 @@
 - [LockHeldBench](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.LockHeldBench-report-github.html )
 - [Scope Creation](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ScopeCreation-report-github.html )
 - [ServiceActivating](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceActivating-report-github.html )
+- [ServiceActivating (decorated)](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.DecoratedServiceActivating-report-github.html )
 - [ServicePath](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServicePath-report-github.html )
 - [ServiceResolver](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceResolver-report-github.html )
 - [TypeBench](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.TypeBench-report-github.html )

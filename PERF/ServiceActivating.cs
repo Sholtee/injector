@@ -55,6 +55,37 @@ namespace Solti.Utils.DI.Perf
 
     [MemoryDiagnoser]
     [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
+    public class DecoratedServiceActivating
+    {
+        private sealed class DummyInterceptor : IInterfaceInterceptor
+        {
+            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+        }
+
+        private IServiceActivator Injector { get; set; }
+
+        private AbstractServiceEntry Entry { get; set; }
+
+        [GlobalSetup]
+        public void Setup()
+        {
+            IServiceCollection coll = DI.ServiceCollection.Create()
+                .Service<IService, MyService>(Lifetime.Transient)
+                .Decorate<DummyInterceptor>();
+
+            Entry = coll.Last();
+            Injector = (IServiceActivator) ScopeFactory.Create(coll).CreateScope();
+        }
+
+        [Benchmark]
+        public object ViaCreateInstance() => Entry.CreateInstance(Injector, out _);
+
+        [Benchmark]
+        public object ViaGetOrCreateInstance() => Injector.GetOrCreateInstance(Entry);
+    }
+
+    [MemoryDiagnoser]
+    [SimpleJob(RunStrategy.Throughput, invocationCount: 10000000)]
     public class ServiceActivating
     {
         private IServiceActivator Injector { get; set; }
