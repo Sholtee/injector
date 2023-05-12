@@ -66,12 +66,19 @@ namespace Solti.Utils.DI.Perf
 
         private AbstractServiceEntry Entry { get; set; }
 
+        [Params(true, false)]
+        public bool SimpleDecorate { get; set; }
+
         [GlobalSetup]
         public void Setup()
         {
             IServiceCollection coll = DI.ServiceCollection.Create()
-                .Service<IService, MyService>(Lifetime.Transient)
-                .Decorate<DummyInterceptor>();
+                .Service<IService, MyService>(Lifetime.Transient);
+
+            if (SimpleDecorate)
+                coll.Decorate((_, _, inst) => inst);
+            else
+                coll.Decorate<DummyInterceptor>();
 
             Entry = coll.Last();
             Injector = (IServiceActivator) ScopeFactory.Create(coll).CreateScope();
