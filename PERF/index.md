@@ -5,6 +5,7 @@
 - [LazyActivating](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.LazyActivating-report-github.html )
 - [LockBench](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.LockBench-report-github.html )
 - [LockHeldBench](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.LockHeldBench-report-github.html )
+- [Proxy Invocation](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ProxyInvocation-report-github.html )
 - [Scope Creation](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ScopeCreation-report-github.html )
 - [ServiceActivating](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.ServiceActivating-report-github.html )
 - [ServiceActivating (decorated)](https://sholtee.github.io/injector/perf/Solti.Utils.DI.Perf.DecoratedServiceActivating-report-github.html )
