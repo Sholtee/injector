@@ -76,6 +76,11 @@ namespace Solti.Utils.DI.Interfaces
     /// }
     /// </code>
     /// </summary>
+    /// <remarks>
+    /// <list type="bullet">
+    /// <item>Wrapping a service into an interceptor implies that it cannot be disposed unless the service interface itself implements the <see cref="IDisposable"/>.</item>
+    /// </list>
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public class AspectAttribute : Attribute
     {
