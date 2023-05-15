@@ -1,9 +1,9 @@
 /********************************************************************************
-* IInterfaceInterceptor.cs                                                      *
+* InterfaceInterceptor.cs                                                       *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using Solti.Utils.DI.Interfaces;
 using System.Runtime.CompilerServices;
 
-[assembly: TypeForwardedTo(typeof(IInterfaceInterceptor))]
+[assembly: TypeForwardedTo(typeof(InterfaceInterceptor))]
