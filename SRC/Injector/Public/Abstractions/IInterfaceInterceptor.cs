@@ -7,3 +7,4 @@ using Solti.Utils.DI.Interfaces;
 using System.Runtime.CompilerServices;
 
 [assembly: TypeForwardedTo(typeof(IInterfaceInterceptor))]
+[assembly: TypeForwardedTo(typeof(IInterfaceInterceptor2))]
