@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<DecoratorDelegate> Resolve(Type iface, Type target, IProxyEngine? proxyEngine, params Expression<CreateInterceptorDelegate>[] factories)
+        public static Expression<DecoratorDelegate> Resolve(Type iface, Type target, IProxyEngine? proxyEngine, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
         {
             proxyEngine ??= ProxyEngine.Instance;
 

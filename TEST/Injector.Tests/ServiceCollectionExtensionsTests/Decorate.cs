@@ -26,7 +26,6 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.Decorate<IInterfaceInterceptor>(null));
             Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.Decorate(null, typeof(IInterface_1), "name", typeof(IInterfaceInterceptor)));
             Assert.Throws<ArgumentNullException>(() => Collection.Decorate(null, "name", typeof(IInterfaceInterceptor)));
-            Assert.Throws<ArgumentNullException>(() => Collection.Decorate(typeof(IInterface_1), "name", interceptor: null));
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
