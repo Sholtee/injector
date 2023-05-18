@@ -62,5 +62,10 @@ namespace Solti.Utils.DI.Interfaces
         /// The member (property, event or method) that is being targeted.
         /// </summary>    
         public MemberInfo TargetMember { get; }
+
+        /// <summary>
+        /// Custom user data meant to share state among interceptors in the invocation chain.
+        /// </summary>
+        public object? UserData { get; set; }
     }
 }

@@ -35,6 +35,8 @@ namespace Solti.Utils.DI.Internals
             }
 
             public object ProxyInstance { get; }
+
+            public object? UserData { get; set; }
         }
 
         private readonly IInterfaceInterceptor[] FInterceptors;
