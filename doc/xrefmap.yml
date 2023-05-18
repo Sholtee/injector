@@ -1242,6 +1242,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod
   fullName: Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod
   nameWithType: IInvocationContext.TargetMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.UserData
+  name: UserData
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_UserData
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.UserData
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.UserData
+  nameWithType: IInvocationContext.UserData
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.UserData*
+  name: UserData
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_UserData_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.UserData
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.UserData
+  nameWithType: IInvocationContext.UserData
 - uid: Solti.Utils.DI.Interfaces.InjectAttribute
   name: InjectAttribute
   href: Solti.Utils.DI.Interfaces.InjectAttribute.html
