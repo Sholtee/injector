@@ -1,10 +1,8 @@
 ﻿/********************************************************************************
-* InterfaceInterceptor.cs                                                       *
+* IInterfaceInterceptor.cs                                                      *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
-using System;
-
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
@@ -13,15 +11,17 @@ namespace Solti.Utils.DI.Interfaces
     /// <remarks>
     /// Interceptors are used to hook into method invocations e.g. for logging:
     /// <code>
-    /// public sealed class LoggerInterceptor : InterfaceInterceptor
+    /// public sealed class LoggerInterceptor : IInterfaceInterceptor
     /// {
-    ///     public LoggerInterceptor(IDependency dependency, InterfaceInterceptor next) : base(next) {...}
+    ///     public LoggerInterceptor(IDependency dependency) {...}
     ///     
-    ///     public override object Invoke(IInvocationContext context)
+    ///     public object Invoke(IInvocationContext context)
     ///     {
     ///         Console.WriteLine(context.InterfaceMethod);
     ///         return Next.Invoke(context);
     ///     }
+    ///     
+    ///     public IInterfaceInterceptor2? Next { get; set; }
     /// }
     /// ...
     /// ScopeFactory.Create
@@ -33,20 +33,8 @@ namespace Solti.Utils.DI.Interfaces
     /// )
     /// </code>
     /// </remarks>
-    public abstract class InterfaceInterceptor
+    public interface IInterfaceInterceptor2
     {
-        /// <summary>
-        /// Creates a new <see cref="InterfaceInterceptor"/> instance.
-        /// </summary>
-        /// <param name="next">The next interceptor, passed by the system</param>
-        protected InterfaceInterceptor(InterfaceInterceptor next)
-            => Next = next ?? throw new ArgumentNullException(nameof(next));
-
-        /// <summary>
-        /// Creates a new <see cref="InterfaceInterceptor"/> instance.
-        /// </summary>
-        protected InterfaceInterceptor() { }
-
         /// <summary>
         /// Contains the interception logic.
         /// </summary>
@@ -68,12 +56,12 @@ namespace Solti.Utils.DI.Interfaces
         /// }
         /// </code>
         /// </remarks>
-        public abstract object? Invoke(IInvocationContext context);
+        object? Invoke(IInvocationContext context);
 
         /// <summary>
         /// The next interceptor in the invocation chain.
         /// </summary>
         /// <remarks>The value of this property is assigned by the system during the instantiation process.</remarks>
-        public InterfaceInterceptor? Next { get; }
+        IInterfaceInterceptor2? Next { get; set; }
     }
 }

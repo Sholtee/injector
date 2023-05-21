@@ -1,7 +1,6 @@
-﻿abstract Solti.Utils.DI.Interfaces.InterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context) -> object?
-Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates
-Solti.Utils.DI.Interfaces.InterfaceInterceptor
-Solti.Utils.DI.Interfaces.InterfaceInterceptor.InterfaceInterceptor() -> void
-Solti.Utils.DI.Interfaces.InterfaceInterceptor.InterfaceInterceptor(Solti.Utils.DI.Interfaces.InterfaceInterceptor! next) -> void
-Solti.Utils.DI.Interfaces.InterfaceInterceptor.Next.get -> Solti.Utils.DI.Interfaces.InterfaceInterceptor?
+﻿Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor2
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor2.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context) -> object?
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor2.Next.get -> Solti.Utils.DI.Interfaces.IInterfaceInterceptor2?
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor2.Next.set -> void
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
