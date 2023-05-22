@@ -1,6 +1,8 @@
 ﻿Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates
+Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression! injector, Solti.Utils.DI.Interfaces.DependencyDescriptor! dependency, object? userData, object? context, Solti.Utils.DI.Interfaces.Next<object?, System.Linq.Expressions.Expression!>! next) -> System.Linq.Expressions.Expression!
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor2
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor2.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context) -> object?
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor2.Next.get -> Solti.Utils.DI.Interfaces.IInterfaceInterceptor2?
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor2.Next.set -> void
+Solti.Utils.DI.Interfaces.Next<TConext, TResult>
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates

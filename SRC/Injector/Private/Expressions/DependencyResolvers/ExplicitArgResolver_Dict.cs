@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ExplicitArgResolver_Dict : Singleton<ExplicitArgResolver_Dict>, IDependencyResolver
     {
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
         {
             if (userData is IReadOnlyDictionary<string, object?> explicitArgs && explicitArgs.TryGetValue(dependency.Name, out object? val))
             {
@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
                     return Expression.Convert(Expression.Constant(val, typeof(object)), dependency.Type);
                 }
             }
-            return next();
+            return next(context);
         }
     }
 }

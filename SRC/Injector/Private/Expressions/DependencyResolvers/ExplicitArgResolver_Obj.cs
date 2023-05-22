@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ExplicitArgResolver_Obj : Singleton<ExplicitArgResolver_Obj>, IDependencyResolver
     {
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
         {
             if (userData is object explicitArgs)
             {
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
                     );
                 }
             }
-            return next();
+            return next(context);
         }
     }
 }

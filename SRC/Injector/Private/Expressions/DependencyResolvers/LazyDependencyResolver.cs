@@ -76,7 +76,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>new Lazy&lt;TInterface&gt;(() => (TInterface) injector.[Try]Get(typeof(TInterface), options?.Name))</code>
         /// </summary>
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
         {
             Type type = dependency.Type;
             if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>))
@@ -87,7 +87,7 @@ namespace Solti.Utils.DI.Internals
                     return ResolveLazyService(injector, type, dependency.Options);
                 }
             }
-            return next();
+            return next(context);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>(TInterface) injector.[Try]Get(typeof(TInterface), options?.Name)</code>
         /// </summary>
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
         {
             if (dependency.Type.IsInterface)
             {
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
                     dependency.Type
                 );
             }
-            return next();
+            return next(context);
         }
     }
 }
