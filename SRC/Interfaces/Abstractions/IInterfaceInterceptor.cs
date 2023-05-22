@@ -57,6 +57,6 @@ namespace Solti.Utils.DI.Interfaces
         /// }
         /// </code>
         /// </remarks>
-        object? Invoke(IInvocationContext context, Next<object?> callNext);
+        object? Invoke(IInvocationContext context, Next<IInvocationContext, object?> callNext);
     }
 }

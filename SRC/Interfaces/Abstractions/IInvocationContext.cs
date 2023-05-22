@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Contains the related context of a perticular method invocation
     /// </summary>
-    /// <remarks>This context is used during interface interception in <see cref="IInterfaceInterceptor.Invoke(IInvocationContext, Next{object?})"/> method.</remarks>
+    /// <remarks>This context is used during interface interception in <see cref="IInterfaceInterceptor.Invoke(IInvocationContext, Next{IInvocationContext, object?})"/> method.</remarks>
     public interface IInvocationContext
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Interfaces
         /// }
         /// </code>
         /// </remarks>
-        public object?[] Args { get; }
+        object?[] Args { get; }
 
         /// <summary>
         /// The underlying proxy instance. It's safe to cast it to the actual interface.
@@ -41,26 +41,37 @@ namespace Solti.Utils.DI.Interfaces
         /// }
         /// </code>
         /// </remarks>
-        public object ProxyInstance { get; }
+        object ProxyInstance { get; }
 
         /// <summary>
         /// The concrete method behind the <see cref="InterfaceMember"/>.
         /// </summary>
-        public MethodInfo InterfaceMethod { get; }
+        MethodInfo InterfaceMethod { get; }
 
         /// <summary>
         /// The member (property, event or method) that is being invoked.
         /// </summary> 
-        public MemberInfo InterfaceMember { get; }
+        MemberInfo InterfaceMember { get; }
 
         /// <summary>
         /// The concrete method behind the <see cref="TargetMember"/>.
         /// </summary>  
-        public MethodInfo TargetMethod { get; }
+        MethodInfo TargetMethod { get; }
 
         /// <summary>
         /// The member (property, event or method) that is being targeted.
         /// </summary>    
-        public MemberInfo TargetMember { get; }
+        MemberInfo TargetMember { get; }
+
+        /// <summary>
+        /// Context belonging to the next interceptor.
+        /// </summary>
+        IInvocationContext Next { get; }
+
+        /// <summary>
+        /// Invokes the actual interceptor. Meant for private use only.
+        /// </summary>
+        /// <returns></returns>
+        object? InvokeInterceptor();
     }
 }

@@ -28,39 +28,48 @@ namespace Solti.Utils.DI.Internals
     {
         private sealed class InvocationContextEx : InvocationContext, IInvocationContext
         {
-            public InvocationContextEx(InvocationContext original, object proxyInstance) : base(original.Args, original)
+            private InvocationContextEx(InvocationContext original, AspectAggregator<TInterface, TTarget> parent, int index) : base(original.Args, original)
             {
-                Debug.Assert(proxyInstance is TInterface, "Got a proxy not implementing the service interface");
-                ProxyInstance = proxyInstance;
+                Debug.Assert(parent is TInterface, "Got a proxy not implementing the service interface");
+                Parent = parent;
+                Index = index;
             }
 
-            public object ProxyInstance { get; }
+            public InvocationContextEx(InvocationContext original, AspectAggregator<TInterface, TTarget> parent) : this(original, parent, parent.Interceptors.Count - 1)
+            {
+            }
+
+            public object ProxyInstance => Parent;
+
+            public AspectAggregator<TInterface, TTarget> Parent { get; }
+
+            public int Index { get; }
+
+            public IInvocationContext Next => Index > 0
+                ? new InvocationContextEx(this, Parent, Index - 1)
+                : throw new IndexOutOfRangeException();
+
+            public object? InvokeInterceptor() => Index > 0
+                ? Parent.Interceptors[Index].Invoke(this, static ctx => ctx.Next.InvokeInterceptor())
+                : Parent.CallTarget(this);
         }
 
-        private readonly IInterfaceInterceptor[] FInterceptors;
-
-        private object? Invoke(InvocationContextEx ctx, int index) => index > 0
-            ? FInterceptors[index - 1].Invoke(ctx, () => Invoke(ctx, index - 1))
-            : base.Invoke(ctx);
+        private object? CallTarget(InvocationContext ctx) => base.Invoke(ctx);
 
         /// <summary>
         /// Creates a new <see cref="AspectAggregator{TInterface, TTarget}"/> instance.
         /// </summary>
         public AspectAggregator(TTarget target, params IInterfaceInterceptor[] interceptors) : base(target) =>
-            FInterceptors = interceptors ?? throw new ArgumentNullException(nameof(interceptors));
+            Interceptors = interceptors ?? throw new ArgumentNullException(nameof(interceptors));
 
         /// <summary>
         /// Dispatches the invocation to the corresponding aspects
         /// </summary>
-        public override object? Invoke(InvocationContext context) => Invoke
-        (
-            new InvocationContextEx(context, this),
-            FInterceptors.Length
-        );
+        public override object? Invoke(InvocationContext context) => new InvocationContextEx(context, this).InvokeInterceptor();
 
         /// <summary>
         /// Returns the bound interceptors.
         /// </summary>
-        public IReadOnlyList<IInterfaceInterceptor> Interceptors => FInterceptors;
+        public IReadOnlyList<IInterfaceInterceptor> Interceptors { get; }
     }
 }
