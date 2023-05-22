@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Perf
     {
         private sealed class DummyInterceptor : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
         }
 
         private IServiceActivator Injector { get; set; }

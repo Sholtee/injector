@@ -1,2 +1,3 @@
-﻿Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
+﻿Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.Next<Solti.Utils.DI.Interfaces.IInvocationContext!, object?>! callNext) -> object? (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)

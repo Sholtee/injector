@@ -231,7 +231,7 @@ namespace Solti.Utils.DI.Tests
 
             public IInterface_3<int> Dependency { get; }
 
-            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
         }
 
         [TestCaseSource(nameof(ScopeControlledLifetimes))]
@@ -295,7 +295,7 @@ namespace Solti.Utils.DI.Tests
 
         private sealed class DummyInterceptor : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
         }
 
         [Test]

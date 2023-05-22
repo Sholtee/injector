@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
                 Index = index;
             }
 
-            public InvocationContextEx(InvocationContext original, AspectAggregator<TInterface, TTarget> parent) : this(original, parent, parent.Interceptors.Count - 1)
+            public InvocationContextEx(InvocationContext original, AspectAggregator<TInterface, TTarget> parent) : this(original, parent, 0)
             {
             }
 
@@ -45,11 +45,11 @@ namespace Solti.Utils.DI.Internals
 
             public int Index { get; }
 
-            public IInvocationContext Next => Index > 0
-                ? new InvocationContextEx(this, Parent, Index - 1)
+            public IInvocationContext Next => Index < Parent.Interceptors.Count
+                ? new InvocationContextEx(this, Parent, Index + 1)
                 : throw new IndexOutOfRangeException();
 
-            public object? InvokeInterceptor() => Index > 0
+            public object? InvokeInterceptor() => Index < Parent.Interceptors.Count
                 ? Parent.Interceptors[Index].Invoke(this, static ctx => ctx.Next.InvokeInterceptor())
                 : Parent.CallTarget(this);
         }

@@ -338,7 +338,7 @@ namespace Solti.Utils.DI.Tests
     {
         private sealed class DummyInterceptor : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
         }
 
         public DummyAspectAttribute() : base(typeof(DummyInterceptor)) { }
@@ -351,7 +351,7 @@ namespace Solti.Utils.DI.Tests
         {
             public DummyInterceptorHavingDependency(IDisposable dep) { }
 
-            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
         }
 
         public DummyAspectHavingDependencyAttribute() : base(typeof(DummyInterceptorHavingDependency)) { }
@@ -363,11 +363,19 @@ namespace Solti.Utils.DI.Tests
 
         public OrderInspectingInterceptorBase(string name) => Name = name;
 
-        public object Invoke(IInvocationContext context, Next<object> callNext)
+        public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
         {
-            IEnumerable<string> result = (IEnumerable<string>) callNext();
+            return GetNames();
 
-            return result.Append(Name);
+            IEnumerable<string> GetNames()
+            {
+                yield return Name;
+
+                foreach (string name in (IEnumerable<string>) callNext(context))
+                {
+                    yield return name;
+                }
+            }
         }
     }
 
