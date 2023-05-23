@@ -103,9 +103,9 @@ namespace Solti.Utils.DI.Tests
                 .CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>>());
 
-            instance = ((AspectAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>) instance).Target;
+            instance = ((InterceptorAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -134,9 +134,9 @@ namespace Solti.Utils.DI.Tests
                 .CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyService, MyServiceHavingAspect>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyService, MyServiceHavingAspect>>());
 
-            instance = ((AspectAggregator<IMyService, MyServiceHavingAspect>)instance).Target;
+            instance = ((InterceptorAggregator<IMyService, MyServiceHavingAspect>)instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -225,9 +225,9 @@ namespace Solti.Utils.DI.Tests
             IMyGenericServiceHavingAspect<int> instance = (IMyGenericServiceHavingAspect<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>>());
 
-            instance = ((AspectAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>) instance).Target;
+            instance = ((InterceptorAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -258,9 +258,9 @@ namespace Solti.Utils.DI.Tests
             IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>>());
 
-            instance = ((AspectAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>) instance).Target;
+            instance = ((InterceptorAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 

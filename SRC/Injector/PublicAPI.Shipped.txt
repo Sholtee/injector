@@ -4,7 +4,6 @@ const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate>>
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string (forwarded, contained in Solti.Utils.DI.Interfaces)
-override Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext context) -> object
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Build(Solti.Utils.DI.Interfaces.IBuildContext context, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IFactoryVisitor> visitors) -> void
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.CreateLifetimeManager(System.Linq.Expressions.Expression getService, System.Linq.Expressions.ParameterExpression scope, System.Linq.Expressions.ParameterExpression disposable) -> System.Linq.Expressions.Expression
 override Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorate(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate> decorator) -> void
@@ -95,9 +94,6 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(stri
 Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.AOT = 1 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT = 0 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>
-Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.AspectAggregator(TTarget target, params Solti.Utils.DI.Interfaces.IInterfaceInterceptor[] interceptors) -> void
-Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Interceptors.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IInterfaceInterceptor>
 Solti.Utils.DI.Internals.ProducibleServiceEntry
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type interface, string name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate> factory, Solti.Utils.DI.Interfaces.ServiceOptions options) -> void
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type interface, string name, System.Type implementation, object explicitArgs, Solti.Utils.DI.Interfaces.ServiceOptions options) -> void

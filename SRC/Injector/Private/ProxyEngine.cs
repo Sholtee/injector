@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
         public Type CreateProxy(Type iface, Type target) => new ProxyGenerator
         (
             iface,
-            typeof(AspectAggregator<,>).MakeGenericType(iface, target)
+            typeof(InterceptorAggregator<,>).MakeGenericType(iface, target)
         ).GetGeneratedType();
     }
 }

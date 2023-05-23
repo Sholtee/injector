@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .ResolveDecorators()
                 .Single()
                 .Compile();
-            AspectAggregator<IMyService, MyService> proxy = (AspectAggregator<IMyService, MyService>) decorator
+            IInterceptorAggregator proxy = (IInterceptorAggregator) decorator
             (
                 mockInjector.Object, typeof(IMyService), new MyService()
             );
@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .ResolveDecorators()
                 .Single()
                 .Compile();
-            AspectAggregator<IMyService, MyService2> proxy = (AspectAggregator<IMyService, MyService2>) decorator
+            IInterceptorAggregator proxy = (IInterceptorAggregator) decorator
             (
                 mockInjector.Object, typeof(IMyService), new MyService2()
             );

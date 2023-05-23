@@ -10,6 +10,8 @@ using BenchmarkDotNet.Attributes;
 
 namespace Solti.Utils.DI.Perf
 {
+    using Proxy;
+
     //
     // Nem tudtam h a Type.GUID property-t hasznalo resolver-ek miert kibaszott lassuak... Mar tudom...
     //
@@ -17,17 +19,23 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class TypeBench
     {
-        [Benchmark]
+        //[Benchmark]
         public Guid GetGuid() => typeof(TypeBench).GUID;
 
-        [Benchmark]
+        //[Benchmark]
         public IntPtr GetHandle() => typeof(TypeBench).TypeHandle.Value;
 
         private readonly Type
             FList = typeof(IList),
             FArray = typeof(Array);
 
-        [Benchmark]
+       // [Benchmark]
         public void IsAssignableFrom() => FList.IsAssignableFrom(FArray);
+
+
+        private static readonly InvocationContext FInitialContext = new(new object[0], new MethodContext(static (o, args) => ((IDictionary) o).Contains(args[0]), null));
+
+        [Benchmark]
+        public InvocationContext CopyContext() => new InvocationContext(FInitialContext.Args, FInitialContext);
     }
 }

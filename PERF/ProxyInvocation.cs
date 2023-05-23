@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Perf
 
         [GlobalSetup(Target = nameof(UsingInterceptor))]
         public void SetupInterceptor() =>
-            Service = ProxyGenerator<IService, AspectAggregator<IService, MyService>>.Activate(Tuple.Create(new MyService(), new IInterfaceInterceptor[] { new DummyInterceptor() }));
+            Service = ProxyGenerator<IService, InterceptorAggregator<IService, MyService>>.Activate(Tuple.Create(new MyService(), new IInterfaceInterceptor[] { new DummyInterceptor() }));
 
         [Benchmark]
         public void UsingInterceptor() => Service.Foo();

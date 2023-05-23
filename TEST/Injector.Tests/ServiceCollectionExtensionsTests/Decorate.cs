@@ -208,8 +208,8 @@ namespace Solti.Utils.DI.Tests
             Collection.Last().Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
             object instance = Collection.Last().CreateInstance(mockInjector.Object, out _);
 
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IInterface_2, IInterface_2>>());
-            var proxy = (AspectAggregator<IInterface_2, IInterface_2>) instance;
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IInterface_2, IInterface_2>>());
+            var proxy = (IInterceptorAggregator) instance;
             Assert.That(proxy.Interceptors.Count, Is.EqualTo(1));
             Assert.That(proxy.Interceptors[0], Is.InstanceOf<MyInterceptorHavingDependency>());
             var interceptor = (MyInterceptorHavingDependency) proxy.Interceptors[0];
