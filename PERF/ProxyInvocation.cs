@@ -12,6 +12,7 @@ namespace Solti.Utils.DI.Perf
 {
     using Interfaces;
     using Internals;
+    using Proxy;
     using Proxy.Generators;
 
     [MemoryDiagnoser]
@@ -20,14 +21,14 @@ namespace Solti.Utils.DI.Perf
     {
         public interface IService
         {
-            void Foo();
+            object Foo();
         }
 
         public class MyService : IService
         {
             public MyService() { }
 
-            public void Foo() { }
+            public object Foo() => null;
         }
 
         private sealed class DummyInterceptor : IInterfaceInterceptor
@@ -45,10 +46,44 @@ namespace Solti.Utils.DI.Perf
         public void UsingInterceptor() => Service.Foo();
 
         [GlobalSetup(Target = nameof(Baseline))]
-        public void SetupBaseline() =>
-            Service = new MyService();
+        public void SetupBaseline() => Service = new MyService();
 
         [Benchmark(Baseline = true)]
         public void Baseline() => Service.Foo();
+
+        private InvocationContextWrapper Context { get; set; }
+
+        private void SetupContext()
+        {
+            Context = new InvocationContextWrapper
+            (
+                new InvocationContext
+                (
+                    Array.Empty<object>(),
+                    new MethodContext
+                    (
+                        (instance, args) => ((IService) instance).Foo(),
+                        null
+                    )
+                ),
+                new InterceptorAggregator<IService, IService>
+                (
+                    new MyService(),
+                    new DummyInterceptor()
+                )
+            );
+        }
+
+        [GlobalSetup(Target = nameof(InvokeSingleInterceptor))]
+        public void SetupInvokeSingleInterceptor() => SetupContext();
+
+        [Benchmark]
+        public object InvokeSingleInterceptor() => Context.InvokeInterceptor();
+
+        [GlobalSetup(Target = nameof(JumpToNextInterceptor))]
+        public void SetupJumpToNextInterceptor() => SetupContext();
+
+        [Benchmark]
+        public object JumpToNextInterceptor() => Context.Next;
     }
 }
