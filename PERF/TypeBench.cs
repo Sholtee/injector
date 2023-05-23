@@ -19,23 +19,17 @@ namespace Solti.Utils.DI.Perf
     [MemoryDiagnoser]
     public class TypeBench
     {
-        //[Benchmark]
+        [Benchmark]
         public Guid GetGuid() => typeof(TypeBench).GUID;
 
-        //[Benchmark]
+        [Benchmark]
         public IntPtr GetHandle() => typeof(TypeBench).TypeHandle.Value;
 
         private readonly Type
             FList = typeof(IList),
             FArray = typeof(Array);
 
-       // [Benchmark]
-        public void IsAssignableFrom() => FList.IsAssignableFrom(FArray);
-
-
-        private static readonly InvocationContext FInitialContext = new(new object[0], new MethodContext(static (o, args) => ((IDictionary) o).Contains(args[0]), null));
-
         [Benchmark]
-        public InvocationContext CopyContext() => new InvocationContext(FInitialContext.Args, FInitialContext);
+        public void IsAssignableFrom() => FList.IsAssignableFrom(FArray);
     }
 }
