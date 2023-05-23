@@ -1,4 +1,7 @@
 ﻿Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.IInvocationContext.UserData.get -> object?
 Solti.Utils.DI.Interfaces.IInvocationContext.UserData.set -> void
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates

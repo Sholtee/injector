@@ -1,4 +1,7 @@
-﻿Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
+﻿Solti.Utils.DI.Interfaces.ILazy<TInterfce> (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, params (System.Type! Interceptor, object? ExplicitArg)[]! interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, params System.Type![]! interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection!

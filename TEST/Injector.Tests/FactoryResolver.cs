@@ -554,6 +554,33 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.That(obj.Int, Is.EqualTo(TEN));
         }
 
+        [TestCase(null)]
+        [TestCase("cica")]
+        public void ResolveRegularLazyService_ShouldReturnProperLazyInstance(string svcName)
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
+                .Returns<Type, string>((type, name) => new Disposable());
+
+            ParameterExpression injector = Expression.Parameter(typeof(IInjector));
+
+            Func<IInjector, Lazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, Lazy<IDisposable>>>
+            (
+                new RegularLazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                injector
+            ).Compile();
+
+            Lazy<IDisposable> lazy = factory(mockInjector.Object);
+            Assert.That(lazy, Is.Not.Null);
+
+            mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
+
+            IDisposable retval = lazy.Value;
+            Assert.That(retval, Is.InstanceOf<Disposable>());
+
+            mockInjector.Verify(i => i.Get(It.Is<Type>(t => t == typeof(IDisposable)), It.Is<string>(s => s == svcName)), Times.Once);
+        }
 
         [TestCase(null)]
         [TestCase("cica")]
@@ -566,13 +593,13 @@ namespace Solti.Utils.DI.Internals.Tests
 
             ParameterExpression injector = Expression.Parameter(typeof(IInjector));
 
-            Func<IInjector, Lazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, Lazy<IDisposable>>>
+            Func<IInjector, ILazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, ILazy<IDisposable>>>
             (
-                LazyDependencyResolver.ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                new LazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
                 injector
             ).Compile();
 
-            Lazy<IDisposable> lazy = factory(mockInjector.Object);
+            ILazy<IDisposable> lazy = factory(mockInjector.Object);
             Assert.That(lazy, Is.Not.Null);
 
             mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);

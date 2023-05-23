@@ -41,13 +41,24 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(Baseline = true)]
         public object InstantiateDirectly() => new Lazy<IInjector>(() => (IInjector) Injector.Get(typeof(IInjector)));
 
-        private static Func<IInjector, Lazy<IInjector>> CreateFactory()
+        private static Func<IInjector, Lazy<IInjector>> CreateFactory_Regular()
         {
             ParameterExpression injector = Expression.Parameter(typeof(IInjector));
-            return Expression.Lambda<Func<IInjector, Lazy<IInjector>>>(LazyDependencyResolver.ResolveLazyService(injector, typeof(IInjector), null), injector).Compile();
+            return Expression.Lambda<Func<IInjector, Lazy<IInjector>>>(new RegularLazyDependencyResolver().ResolveLazyService(injector, typeof(IInjector), null), injector).Compile();
         }
 
-        private static readonly Func<IInjector, Lazy<IInjector>> Factory = CreateFactory();
+        private static readonly Func<IInjector, Lazy<IInjector>> RegularFactory = CreateFactory_Regular();
+
+        [Benchmark]
+        public object ViaActivator_Regular() => RegularFactory(Injector);
+
+        private static Func<IInjector, ILazy<IInjector>> CreateFactory()
+        {
+            ParameterExpression injector = Expression.Parameter(typeof(IInjector));
+            return Expression.Lambda<Func<IInjector, ILazy<IInjector>>>(new LazyDependencyResolver().ResolveLazyService(injector, typeof(IInjector), null), injector).Compile();
+        }
+
+        private static readonly Func<IInjector, Lazy<IInjector>> Factory = CreateFactory_Regular();
 
         [Benchmark]
         public object ViaActivator() => Factory(Injector);

@@ -9,9 +9,8 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Patterns;
 
-    internal sealed class ExplicitArgResolver_Obj : Singleton<ExplicitArgResolver_Obj>, IDependencyResolver
+    internal sealed class ExplicitArgResolver_Obj : IDependencyResolver
     {
         public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
         {
