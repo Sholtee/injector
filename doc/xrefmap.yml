@@ -1254,6 +1254,47 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.UserData
   fullName: Solti.Utils.DI.Interfaces.IInvocationContext.UserData
   nameWithType: IInvocationContext.UserData
+- uid: Solti.Utils.DI.Interfaces.ILazy`1
+  name: ILazy<TInterfce>
+  href: Solti.Utils.DI.Interfaces.ILazy-1.html
+  commentId: T:Solti.Utils.DI.Interfaces.ILazy`1
+  name.vb: ILazy(Of TInterfce)
+  fullName: Solti.Utils.DI.Interfaces.ILazy<TInterfce>
+  fullName.vb: Solti.Utils.DI.Interfaces.ILazy(Of TInterfce)
+  nameWithType: ILazy<TInterfce>
+  nameWithType.vb: ILazy(Of TInterfce)
+- uid: Solti.Utils.DI.Interfaces.ILazy`1.IsValueCreated
+  name: IsValueCreated
+  href: Solti.Utils.DI.Interfaces.ILazy-1.html#Solti_Utils_DI_Interfaces_ILazy_1_IsValueCreated
+  commentId: P:Solti.Utils.DI.Interfaces.ILazy`1.IsValueCreated
+  fullName: Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated
+  fullName.vb: Solti.Utils.DI.Interfaces.ILazy(Of TInterfce).IsValueCreated
+  nameWithType: ILazy<TInterfce>.IsValueCreated
+  nameWithType.vb: ILazy(Of TInterfce).IsValueCreated
+- uid: Solti.Utils.DI.Interfaces.ILazy`1.IsValueCreated*
+  name: IsValueCreated
+  href: Solti.Utils.DI.Interfaces.ILazy-1.html#Solti_Utils_DI_Interfaces_ILazy_1_IsValueCreated_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ILazy`1.IsValueCreated
+  fullName: Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated
+  fullName.vb: Solti.Utils.DI.Interfaces.ILazy(Of TInterfce).IsValueCreated
+  nameWithType: ILazy<TInterfce>.IsValueCreated
+  nameWithType.vb: ILazy(Of TInterfce).IsValueCreated
+- uid: Solti.Utils.DI.Interfaces.ILazy`1.Value
+  name: Value
+  href: Solti.Utils.DI.Interfaces.ILazy-1.html#Solti_Utils_DI_Interfaces_ILazy_1_Value
+  commentId: P:Solti.Utils.DI.Interfaces.ILazy`1.Value
+  fullName: Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value
+  fullName.vb: Solti.Utils.DI.Interfaces.ILazy(Of TInterfce).Value
+  nameWithType: ILazy<TInterfce>.Value
+  nameWithType.vb: ILazy(Of TInterfce).Value
+- uid: Solti.Utils.DI.Interfaces.ILazy`1.Value*
+  name: Value
+  href: Solti.Utils.DI.Interfaces.ILazy-1.html#Solti_Utils_DI_Interfaces_ILazy_1_Value_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ILazy`1.Value
+  fullName: Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value
+  fullName.vb: Solti.Utils.DI.Interfaces.ILazy(Of TInterfce).Value
+  nameWithType: ILazy<TInterfce>.Value
+  nameWithType.vb: ILazy(Of TInterfce).Value
 - uid: Solti.Utils.DI.Interfaces.InjectAttribute
   name: InjectAttribute
   href: Solti.Utils.DI.Interfaces.InjectAttribute.html
