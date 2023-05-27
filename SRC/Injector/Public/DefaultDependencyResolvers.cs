@@ -22,10 +22,11 @@ namespace Solti.Utils.DI
         /// </summary>
         public static IReadOnlyList<IDependencyResolver> Value { get; } = ImmutableArray.Create<IDependencyResolver>
         (
-            ExplicitArgResolver_Dict.Instance,
-            ExplicitArgResolver_Obj.Instance,
-            LazyDependencyResolver.Instance,
-            RegularDependencyResolver.Instance
+            new ExplicitArgResolver_Dict(),
+            new ExplicitArgResolver_Obj(),
+            new RegularLazyDependencyResolver(),
+            new LazyDependencyResolver(),
+            new RegularDependencyResolver()
         );
     }
 }
