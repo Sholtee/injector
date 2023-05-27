@@ -88,7 +88,7 @@ Registering a service may be done via several patterns (I name them recipes):
 	  ```csharp 
       public class MyService: IMyService
       {
-        public MyService(Lazy<IService_1> dep1, Lazy<IService_2> dep2) {...}
+        public MyService(ILazy<IService_1> /*or Lazy<IService_1>*/ dep1, ILazy<IService_2> dep2) {...}
       }
       ```
     - You can mark the requested dependency as optional. In this case the system won't throw if the dependency cannot be found:
