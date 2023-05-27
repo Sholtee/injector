@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Perf
             return Expression.Lambda<Func<IInjector, ILazy<IInjector>>>(new LazyDependencyResolver().ResolveLazyService(injector, typeof(IInjector), null), injector).Compile();
         }
 
-        private static readonly Func<IInjector, Lazy<IInjector>> Factory = CreateFactory_Regular();
+        private static readonly Func<IInjector, ILazy<IInjector>> Factory = CreateFactory();
 
         [Benchmark]
         public object ViaActivator() => Factory(Injector);

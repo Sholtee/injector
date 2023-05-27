@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Internals
         private readonly Func<TContext, T> FFactory;
         private T? FValue;
 
-        public LazyHavingContext(Func<TContext, T> factory, TContext context)
+        public LazyHavingContext(Func<TContext, T> factory, in TContext context)
         {
             FFactory = factory;
             FContext = context;

@@ -15,25 +15,32 @@ namespace Solti.Utils.DI.Internals
     {
         protected override MethodInfo CreateLazy { get; } = MethodInfoExtractor.Extract(static () => CreateLazyImpl<object>(null!, null)).GetGenericMethodDefinition();
 
-        protected override MethodInfo CreateLazyOpt { get; }= MethodInfoExtractor.Extract(static () => CreateLazyOptImpl<object>(null!, null)).GetGenericMethodDefinition();
+        protected override MethodInfo CreateLazyOpt { get; } = MethodInfoExtractor.Extract(static () => CreateLazyOptImpl<object>(null!, null)).GetGenericMethodDefinition();
 
-        //
-        // This methods are more performant since the factory function is static (there is no need for
-        // instantiating a new lambda on each invocation).
-        //
+        private static class Factories<TService>
+        {
+            //
+            // Converting methods to delegates may take a while, so do it only once
+            //
+
+            public static readonly Func<(IInjector Injector, string? Name), TService> Factory =
+                static ctx => (TService) ctx.Injector.Get(typeof(TService), ctx.Name);
+            public static readonly Func<(IInjector Injector, string? Name), TService> FactoryOpt =
+                static ctx => (TService) ctx.Injector.TryGet(typeof(TService), ctx.Name)!;
+        }
 
         private static ILazy<TService> CreateLazyImpl<TService>(IInjector injector, string? name) =>
-            new LazyHavingContext<TService, Tuple<IInjector, string?>>
+            new LazyHavingContext<TService, (IInjector, string?)>
             (
-                static ctx => (TService)ctx.Item1.Get(typeof(TService), ctx.Item2),
-                Tuple.Create(injector, name)
+                Factories<TService>.Factory,
+                (injector, name)
             );
 
         private static ILazy<TService> CreateLazyOptImpl<TService>(IInjector injector, string? name) =>
-            new LazyHavingContext<TService, Tuple<IInjector, string?>>
+            new LazyHavingContext<TService, (IInjector, string?)>
             (
-                static ctx => (TService)ctx.Item1.TryGet(typeof(TService), ctx.Item2)!,
-                Tuple.Create(injector, name)
+                Factories<TService>.FactoryOpt,
+                (injector, name)
             );
 
         public override Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
