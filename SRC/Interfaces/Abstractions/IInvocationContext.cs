@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Context belonging to the next interceptor.
         /// </summary>
-        IInvocationContext Next { get; }
+        IInvocationContext? Next { get; }
 
         /// <summary>
         /// Invokes the actual interceptor. Meant for private use only.

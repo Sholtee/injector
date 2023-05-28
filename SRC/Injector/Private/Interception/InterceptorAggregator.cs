@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Aggregates <typeparamref name="TTarget"/> (class or interface) aspects to reduce the number of interceptors to be built.
     /// </summary>
-    public class InterceptorAggregator<TInterface, TTarget>: InterfaceInterceptor<TInterface, TTarget>, IInterceptorAggregator where TTarget: class, TInterface where TInterface : class
+    public class InterceptorAggregator<TInterface, TTarget> : InterfaceInterceptor<TInterface, TTarget>, IInterceptorAggregator where TTarget : class, TInterface where TInterface : class
     {
         private readonly IInterfaceInterceptor[] FInterceptors;
 
@@ -35,7 +35,9 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Dispatches the invocation to the corresponding aspects
         /// </summary>
-        public sealed override object? Invoke(InvocationContext context) => new InvocationContextWrapper(context, this).InvokeInterceptor();
+        public sealed override object? Invoke(InvocationContext context) => IInvocationContextFactory
+            .Create(context, this)
+            .InvokeInterceptor();
 
         /// <summary>
         /// Returns the bound interceptors.
