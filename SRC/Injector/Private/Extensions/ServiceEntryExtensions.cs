@@ -12,6 +12,7 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Properties;
 
     internal static class ServiceEntryExtensions
     {
@@ -31,19 +32,21 @@ namespace Solti.Utils.DI.Internals
             {
                 foreach (Type target in targets)
                 {
-                    Expression<CreateInterceptorDelegate>[] delegates = target
+                    IEnumerable<Expression<CreateInterceptorDelegate>> delegates = target
                         .GetCustomAttributes<AspectAttribute>(inherit: true)
                         .Select
                         (
                             aspect => aspect.Factory ?? DecoratorResolver.ResolveInterceptorFactory
                             (
-                                aspect.Interceptor!,
+                                aspect.Interceptor ?? throw new InvalidOperationException
+                                (
+                                    string.Format(Resources.Culture, Resources.NOT_NULL, nameof(aspect.Interceptor))
+                                ),
                                 aspect.ExplicitArgs,
                                 options.DependencyResolvers
                             )
-                        )
-                        .ToArray();
-                    if (delegates.Length is 0)
+                        );
+                    if (!delegates.Any())
                         continue;
 
                     //
@@ -61,14 +64,43 @@ namespace Solti.Utils.DI.Internals
             }
         }
 
+        internal static void ApplyInterceptors(this AbstractServiceEntry entry, IEnumerable<(Type Interceptor, object? ExplicitArgs)> interceptors)
+        {
+            ServiceOptions options = entry.Options ?? ServiceOptions.Default;
+
+            entry.Decorate
+            (
+                DecoratorResolver.Resolve
+                (
+                    entry.Interface,
+
+                    //
+                    // Proxies registered by this way always target the service interface.
+                    //
+
+                    entry.Interface,
+                    options.ProxyEngine,
+                    interceptors.Select
+                    (
+                        i => DecoratorResolver.ResolveInterceptorFactory
+                        (
+                            i.Interceptor ?? throw new InvalidOperationException
+                            (
+                                string.Format(Resources.Culture, Resources.NOT_NULL, nameof(i.Interceptor))
+                            ),
+                            i.ExplicitArgs,
+                            options.DependencyResolvers
+                        )
+                    )
+                )
+            );
+        }
+
         /// <summary>
         /// Applies the aspects defined on service interface and implementation even if the <see cref="ServiceEntryFeatures.SupportsAspects"/> is not defined in <see cref="AbstractServiceEntry.Features"/>.
         /// </summary>
-        internal static void ApplyAspects(this AbstractServiceEntry self)  // Since implementation targeting aspects must be registered first, this method can be called only
+        internal static void ApplyAspects(this AbstractServiceEntry self)  // Since implementation targeting aspects must be registered first, this method can be called only once,
         {                                                                  // right after the entry construction -> do NOT expose it!
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
-
             foreach (Expression<DecoratorDelegate> decorator in self.ResolveDecorators())
             {
                 self.Decorate(decorator);

@@ -4,90 +4,57 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Patterns;
 
-    internal sealed class LazyDependencyResolver: Singleton<LazyDependencyResolver>, IDependencyResolver
+    internal sealed class LazyDependencyResolver : RegularLazyDependencyResolver
     {
-        private static readonly MethodInfo
-            FCreateLazy    = MethodInfoExtractor.Extract(static () => CreateLazy<object>(null!, null)).GetGenericMethodDefinition(),
-            FCreateLazyOpt = MethodInfoExtractor.Extract(static () => CreateLazyOpt<object>(null!, null)).GetGenericMethodDefinition();
+        protected override MethodInfo CreateLazy { get; } = MethodInfoExtractor.Extract(static () => CreateLazyImpl<object>(null!, null)).GetGenericMethodDefinition();
 
-        private static Lazy<TService> CreateLazy<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService) injector.Get(typeof(TService), name));
+        protected override MethodInfo CreateLazyOpt { get; } = MethodInfoExtractor.Extract(static () => CreateLazyOptImpl<object>(null!, null)).GetGenericMethodDefinition();
 
-        private static Lazy<TService> CreateLazyOpt<TService>(IInjector injector, string? name) => new Lazy<TService>(() => (TService) injector.TryGet(typeof(TService), name)!);
-
-        internal static Expression ResolveLazyService(ParameterExpression injector, Type iface, OptionsAttribute? options)
+        private static class Factories<TService>
         {
             //
-            // According to tests, runtime built lambdas containing a nested function are ridiculously slow
-            // (I suspect the nested lambda is instantiated by an Activator.CreateInstance call).
+            // Converting methods to delegates may take a while, so do it only once
             //
 
-            /*
-            Type delegateType = typeof(Func<>).MakeGenericType(iface);
-
-            //
-            // () => (iface) injector.[Try]Get(iface, svcName)
-            //
-
-            LambdaExpression valueFactory = Expression.Lambda
-            (
-                delegateType,
-                next()
-            );
-
-            //
-            // new Lazy<iface>(() => (iface) injector.[Try]Get(iface, svcName))
-            //
-
-            Type lazyType = typeof(Lazy<>).MakeGenericType(iface);
-
-            return Expression.New
-            (
-                lazyType.GetConstructor(new[] { delegateType }) ?? throw new MissingMethodException(lazyType.Name, ConstructorInfo.ConstructorName),
-                valueFactory
-            );
-            */
-
-            //
-            // This workaround solves the above mentioned issue but suppresses the ServiceRequestReplacerVisitor.
-            // Altough it shouldn't matter as Lazy pattern is for services having considerable instatiation time.
-            //
-
-            MethodInfo createLazy = options?.Optional is true
-                ? FCreateLazyOpt
-                : FCreateLazy;
-
-            return Expression.Call
-            (
-                createLazy.MakeGenericMethod(iface),
-                injector,
-                Expression.Constant(options?.Name, typeof(string))
-            );
+            public static readonly Func<(IInjector Injector, string? Name), TService> Factory =
+                static ctx => (TService) ctx.Injector.Get(typeof(TService), ctx.Name);
+            public static readonly Func<(IInjector Injector, string? Name), TService> FactoryOpt =
+                static ctx => (TService) ctx.Injector.TryGet(typeof(TService), ctx.Name)!;
         }
 
-        /// <summary>
-        /// <code>new Lazy&lt;TInterface&gt;(() => (TInterface) injector.[Try]Get(typeof(TInterface), options?.Name))</code>
-        /// </summary>
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
+        private static ILazy<TService> CreateLazyImpl<TService>(IInjector injector, string? name) =>
+            new LazyHavingContext<TService, (IInjector, string?)>
+            (
+                Factories<TService>.Factory,
+                (injector, name)
+            );
+
+        private static ILazy<TService> CreateLazyOptImpl<TService>(IInjector injector, string? name) =>
+            new LazyHavingContext<TService, (IInjector, string?)>
+            (
+                Factories<TService>.FactoryOpt,
+                (injector, name)
+            );
+
+        public override Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
         {
-            Type type = dependency.Type;
-            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>))
-            {
-                type = type.GetGenericArguments().Single();
-                if (type.IsInterface)
-                {
-                    return ResolveLazyService(injector, type, dependency.Options);
-                }
-            }
-            return next(context);
+            Type? iface = ParseDependency(dependency, typeof(ILazy<>));
+            if (iface is null)
+                return next(context);
+
+            return ResolveLazyService
+            (
+                injector,
+                iface,
+                dependency.Options
+            );
         }
     }
 }

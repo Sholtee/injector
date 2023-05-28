@@ -4,4 +4,9 @@ Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces
 Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor() -> object?
 Solti.Utils.DI.Interfaces.IInvocationContext.Next.get -> Solti.Utils.DI.Interfaces.IInvocationContext?
 Solti.Utils.DI.Interfaces.Next<TConext, TResult>
+Solti.Utils.DI.Interfaces.IInvocationContext.UserData.get -> object?
+Solti.Utils.DI.Interfaces.IInvocationContext.UserData.set -> void
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates

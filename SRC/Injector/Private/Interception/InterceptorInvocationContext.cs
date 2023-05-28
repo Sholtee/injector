@@ -41,6 +41,8 @@ namespace Solti.Utils.DI.Internals
 
         public MemberInfo TargetMember => Original.TargetMember;
 
+        public object? UserData { get; set; }
+
         public virtual IInvocationContext? Next => IInvocationContextFactory.Create(Original, Parent, Index + 1);
 
         public virtual object? InvokeInterceptor() => Parent.Interceptors[Index].Invoke

@@ -73,5 +73,10 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         /// <returns></returns>
         object? InvokeInterceptor();
+        
+        /// <summary>
+        /// Custom user data meant to share state among interceptors in the invocation chain.
+        /// </summary>
+        public object? UserData { get; set; }
     }
 }

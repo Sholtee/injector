@@ -9,9 +9,8 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Primitives.Patterns;
 
-    internal sealed class RegularDependencyResolver: Singleton<RegularDependencyResolver>, IDependencyResolver
+    internal sealed class RegularDependencyResolver: IDependencyResolver
     {
         private static readonly MethodInfo
             FInjectorGet = MethodInfoExtractor.Extract<IInjector>(static i => i.Get(null!, null)),
