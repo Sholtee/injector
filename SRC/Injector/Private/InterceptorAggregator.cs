@@ -41,7 +41,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Returns the bound interceptors.
         /// </summary>
-        IReadOnlyList<IInterfaceInterceptor> IInterceptorAggregator.Interceptors => FInterceptors;
+        IInterfaceInterceptor[] IInterceptorAggregator.Interceptors => FInterceptors;
 
         object? IInterceptorAggregator.Target => Target;
 

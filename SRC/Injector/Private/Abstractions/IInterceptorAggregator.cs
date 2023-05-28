@@ -16,6 +16,6 @@ namespace Solti.Utils.DI.Internals
 
         object? Target { get; }
 
-        IReadOnlyList<IInterfaceInterceptor> Interceptors { get; }
+        IInterfaceInterceptor[] Interceptors { get; }
     }
 }

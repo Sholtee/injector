@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Internals
 
         public int Index { get; }
 
-        public IInvocationContext Next => Index < Parent.Interceptors.Count
+        public IInvocationContext Next => Index < Parent.Interceptors.Length
             ? new InvocationContextWrapper(Original, Parent, Index + 1)
             : throw new IndexOutOfRangeException();
 
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Internals
 
         public MemberInfo TargetMember => Original.TargetMember;
 
-        public object? InvokeInterceptor() => Index < Parent.Interceptors.Count
+        public object? InvokeInterceptor() => Index < Parent.Interceptors.Length
             ? Parent.Interceptors[Index].Invoke(this, static ctx => ctx.Next.InvokeInterceptor())
             : Parent.CallTarget(Original);
     }
