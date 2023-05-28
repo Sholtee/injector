@@ -1014,15 +1014,15 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IDependencyResolver
   fullName: Solti.Utils.DI.Interfaces.IDependencyResolver
   nameWithType: IDependencyResolver
-- uid: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,Solti.Utils.DI.Interfaces.Next{System.Linq.Expressions.Expression})
-  name: Resolve(ParameterExpression, DependencyDescriptor, Object, Next<Expression>)
-  href: Solti.Utils.DI.Interfaces.IDependencyResolver.html#Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_System_Linq_Expressions_ParameterExpression_Solti_Utils_DI_Interfaces_DependencyDescriptor_System_Object_Solti_Utils_DI_Interfaces_Next_System_Linq_Expressions_Expression__
-  commentId: M:Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,Solti.Utils.DI.Interfaces.Next{System.Linq.Expressions.Expression})
-  name.vb: Resolve(ParameterExpression, DependencyDescriptor, Object, Next(Of Expression))
-  fullName: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression, Solti.Utils.DI.Interfaces.DependencyDescriptor, System.Object, Solti.Utils.DI.Interfaces.Next<System.Linq.Expressions.Expression>)
-  fullName.vb: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression, Solti.Utils.DI.Interfaces.DependencyDescriptor, System.Object, Solti.Utils.DI.Interfaces.Next(Of System.Linq.Expressions.Expression))
-  nameWithType: IDependencyResolver.Resolve(ParameterExpression, DependencyDescriptor, Object, Next<Expression>)
-  nameWithType.vb: IDependencyResolver.Resolve(ParameterExpression, DependencyDescriptor, Object, Next(Of Expression))
+- uid: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,System.Object,Solti.Utils.DI.Interfaces.Next{System.Object,System.Linq.Expressions.Expression})
+  name: Resolve(ParameterExpression, DependencyDescriptor, Object, Object, Next<Object, Expression>)
+  href: Solti.Utils.DI.Interfaces.IDependencyResolver.html#Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_System_Linq_Expressions_ParameterExpression_Solti_Utils_DI_Interfaces_DependencyDescriptor_System_Object_System_Object_Solti_Utils_DI_Interfaces_Next_System_Object_System_Linq_Expressions_Expression__
+  commentId: M:Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression,Solti.Utils.DI.Interfaces.DependencyDescriptor,System.Object,System.Object,Solti.Utils.DI.Interfaces.Next{System.Object,System.Linq.Expressions.Expression})
+  name.vb: Resolve(ParameterExpression, DependencyDescriptor, Object, Object, Next(Of Object, Expression))
+  fullName: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression, Solti.Utils.DI.Interfaces.DependencyDescriptor, System.Object, System.Object, Solti.Utils.DI.Interfaces.Next<System.Object, System.Linq.Expressions.Expression>)
+  fullName.vb: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression, Solti.Utils.DI.Interfaces.DependencyDescriptor, System.Object, System.Object, Solti.Utils.DI.Interfaces.Next(Of System.Object, System.Linq.Expressions.Expression))
+  nameWithType: IDependencyResolver.Resolve(ParameterExpression, DependencyDescriptor, Object, Object, Next<Object, Expression>)
+  nameWithType.vb: IDependencyResolver.Resolve(ParameterExpression, DependencyDescriptor, Object, Object, Next(Of Object, Expression))
 - uid: Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve*
   name: Resolve
   href: Solti.Utils.DI.Interfaces.IDependencyResolver.html#Solti_Utils_DI_Interfaces_IDependencyResolver_Resolve_
@@ -1149,15 +1149,15 @@ references:
   commentId: T:Solti.Utils.DI.Interfaces.IInterfaceInterceptor
   fullName: Solti.Utils.DI.Interfaces.IInterfaceInterceptor
   nameWithType: IInterfaceInterceptor
-- uid: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.Next{System.Object})
-  name: Invoke(IInvocationContext, Next<Object>)
-  href: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html#Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_Next_System_Object__
-  commentId: M:Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.Next{System.Object})
-  name.vb: Invoke(IInvocationContext, Next(Of Object))
-  fullName: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext, Solti.Utils.DI.Interfaces.Next<System.Object>)
-  fullName.vb: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext, Solti.Utils.DI.Interfaces.Next(Of System.Object))
-  nameWithType: IInterfaceInterceptor.Invoke(IInvocationContext, Next<Object>)
-  nameWithType.vb: IInterfaceInterceptor.Invoke(IInvocationContext, Next(Of Object))
+- uid: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.Next{Solti.Utils.DI.Interfaces.IInvocationContext,System.Object})
+  name: Invoke(IInvocationContext, Next<IInvocationContext, Object>)
+  href: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html#Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_Next_Solti_Utils_DI_Interfaces_IInvocationContext_System_Object__
+  commentId: M:Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.Next{Solti.Utils.DI.Interfaces.IInvocationContext,System.Object})
+  name.vb: Invoke(IInvocationContext, Next(Of IInvocationContext, Object))
+  fullName: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext, Solti.Utils.DI.Interfaces.Next<Solti.Utils.DI.Interfaces.IInvocationContext, System.Object>)
+  fullName.vb: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext, Solti.Utils.DI.Interfaces.Next(Of Solti.Utils.DI.Interfaces.IInvocationContext, System.Object))
+  nameWithType: IInterfaceInterceptor.Invoke(IInvocationContext, Next<IInvocationContext, Object>)
+  nameWithType.vb: IInterfaceInterceptor.Invoke(IInvocationContext, Next(Of IInvocationContext, Object))
 - uid: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke*
   name: Invoke
   href: Solti.Utils.DI.Interfaces.IInterfaceInterceptor.html#Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_
@@ -1206,6 +1206,30 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
   fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod
   nameWithType: IInvocationContext.InterfaceMethod
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor
+  name: InvokeInterceptor()
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_InvokeInterceptor
+  commentId: M:Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor()
+  nameWithType: IInvocationContext.InvokeInterceptor()
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor*
+  name: InvokeInterceptor
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_InvokeInterceptor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor
+  nameWithType: IInvocationContext.InvokeInterceptor
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.Next
+  name: Next
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_Next
+  commentId: P:Solti.Utils.DI.Interfaces.IInvocationContext.Next
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.Next
+  nameWithType: IInvocationContext.Next
+- uid: Solti.Utils.DI.Interfaces.IInvocationContext.Next*
+  name: Next
+  href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_Next_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IInvocationContext.Next
+  fullName: Solti.Utils.DI.Interfaces.IInvocationContext.Next
+  nameWithType: IInvocationContext.Next
 - uid: Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance
   name: ProxyInstance
   href: Solti.Utils.DI.Interfaces.IInvocationContext.html#Solti_Utils_DI_Interfaces_IInvocationContext_ProxyInstance
@@ -1913,79 +1937,79 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.MissingServiceEntry.#ctor
   fullName: Solti.Utils.DI.Interfaces.MissingServiceEntry.MissingServiceEntry
   nameWithType: MissingServiceEntry.MissingServiceEntry
-- uid: Solti.Utils.DI.Interfaces.Next`1
-  name: Next<T>
-  href: Solti.Utils.DI.Interfaces.Next-1.html
-  commentId: T:Solti.Utils.DI.Interfaces.Next`1
-  name.vb: Next(Of T)
-  fullName: Solti.Utils.DI.Interfaces.Next<T>
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T)
-  nameWithType: Next<T>
-  nameWithType.vb: Next(Of T)
-- uid: Solti.Utils.DI.Interfaces.Next`1.#ctor(System.Object,System.IntPtr)
+- uid: Solti.Utils.DI.Interfaces.Next`2
+  name: Next<TConext, TResult>
+  href: Solti.Utils.DI.Interfaces.Next-2.html
+  commentId: T:Solti.Utils.DI.Interfaces.Next`2
+  name.vb: Next(Of TConext, TResult)
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult)
+  nameWithType: Next<TConext, TResult>
+  nameWithType.vb: Next(Of TConext, TResult)
+- uid: Solti.Utils.DI.Interfaces.Next`2.#ctor(System.Object,System.IntPtr)
   name: Next(Object, IntPtr)
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1__ctor_System_Object_System_IntPtr_
-  commentId: M:Solti.Utils.DI.Interfaces.Next`1.#ctor(System.Object,System.IntPtr)
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.Next(System.Object, System.IntPtr)
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).Next(System.Object, System.IntPtr)
-  nameWithType: Next<T>.Next(Object, IntPtr)
-  nameWithType.vb: Next(Of T).Next(Object, IntPtr)
-- uid: Solti.Utils.DI.Interfaces.Next`1.#ctor*
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2__ctor_System_Object_System_IntPtr_
+  commentId: M:Solti.Utils.DI.Interfaces.Next`2.#ctor(System.Object,System.IntPtr)
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.Next(System.Object, System.IntPtr)
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).Next(System.Object, System.IntPtr)
+  nameWithType: Next<TConext, TResult>.Next(Object, IntPtr)
+  nameWithType.vb: Next(Of TConext, TResult).Next(Object, IntPtr)
+- uid: Solti.Utils.DI.Interfaces.Next`2.#ctor*
   name: Next
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1__ctor_
-  commentId: Overload:Solti.Utils.DI.Interfaces.Next`1.#ctor
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.Next
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).Next
-  nameWithType: Next<T>.Next
-  nameWithType.vb: Next(Of T).Next
-- uid: Solti.Utils.DI.Interfaces.Next`1.BeginInvoke(System.AsyncCallback,System.Object)
-  name: BeginInvoke(AsyncCallback, Object)
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1_BeginInvoke_System_AsyncCallback_System_Object_
-  commentId: M:Solti.Utils.DI.Interfaces.Next`1.BeginInvoke(System.AsyncCallback,System.Object)
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.BeginInvoke(System.AsyncCallback, System.Object)
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).BeginInvoke(System.AsyncCallback, System.Object)
-  nameWithType: Next<T>.BeginInvoke(AsyncCallback, Object)
-  nameWithType.vb: Next(Of T).BeginInvoke(AsyncCallback, Object)
-- uid: Solti.Utils.DI.Interfaces.Next`1.BeginInvoke*
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2__ctor_
+  commentId: Overload:Solti.Utils.DI.Interfaces.Next`2.#ctor
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.Next
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).Next
+  nameWithType: Next<TConext, TResult>.Next
+  nameWithType.vb: Next(Of TConext, TResult).Next
+- uid: Solti.Utils.DI.Interfaces.Next`2.BeginInvoke(`0,System.AsyncCallback,System.Object)
+  name: BeginInvoke(TConext, AsyncCallback, Object)
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2_BeginInvoke__0_System_AsyncCallback_System_Object_
+  commentId: M:Solti.Utils.DI.Interfaces.Next`2.BeginInvoke(`0,System.AsyncCallback,System.Object)
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.BeginInvoke(TConext, System.AsyncCallback, System.Object)
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).BeginInvoke(TConext, System.AsyncCallback, System.Object)
+  nameWithType: Next<TConext, TResult>.BeginInvoke(TConext, AsyncCallback, Object)
+  nameWithType.vb: Next(Of TConext, TResult).BeginInvoke(TConext, AsyncCallback, Object)
+- uid: Solti.Utils.DI.Interfaces.Next`2.BeginInvoke*
   name: BeginInvoke
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1_BeginInvoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.Next`1.BeginInvoke
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.BeginInvoke
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).BeginInvoke
-  nameWithType: Next<T>.BeginInvoke
-  nameWithType.vb: Next(Of T).BeginInvoke
-- uid: Solti.Utils.DI.Interfaces.Next`1.EndInvoke(System.IAsyncResult)
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2_BeginInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.Next`2.BeginInvoke
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.BeginInvoke
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).BeginInvoke
+  nameWithType: Next<TConext, TResult>.BeginInvoke
+  nameWithType.vb: Next(Of TConext, TResult).BeginInvoke
+- uid: Solti.Utils.DI.Interfaces.Next`2.EndInvoke(System.IAsyncResult)
   name: EndInvoke(IAsyncResult)
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1_EndInvoke_System_IAsyncResult_
-  commentId: M:Solti.Utils.DI.Interfaces.Next`1.EndInvoke(System.IAsyncResult)
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.EndInvoke(System.IAsyncResult)
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).EndInvoke(System.IAsyncResult)
-  nameWithType: Next<T>.EndInvoke(IAsyncResult)
-  nameWithType.vb: Next(Of T).EndInvoke(IAsyncResult)
-- uid: Solti.Utils.DI.Interfaces.Next`1.EndInvoke*
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2_EndInvoke_System_IAsyncResult_
+  commentId: M:Solti.Utils.DI.Interfaces.Next`2.EndInvoke(System.IAsyncResult)
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.EndInvoke(System.IAsyncResult)
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).EndInvoke(System.IAsyncResult)
+  nameWithType: Next<TConext, TResult>.EndInvoke(IAsyncResult)
+  nameWithType.vb: Next(Of TConext, TResult).EndInvoke(IAsyncResult)
+- uid: Solti.Utils.DI.Interfaces.Next`2.EndInvoke*
   name: EndInvoke
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1_EndInvoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.Next`1.EndInvoke
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.EndInvoke
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).EndInvoke
-  nameWithType: Next<T>.EndInvoke
-  nameWithType.vb: Next(Of T).EndInvoke
-- uid: Solti.Utils.DI.Interfaces.Next`1.Invoke
-  name: Invoke()
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1_Invoke
-  commentId: M:Solti.Utils.DI.Interfaces.Next`1.Invoke
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.Invoke()
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).Invoke()
-  nameWithType: Next<T>.Invoke()
-  nameWithType.vb: Next(Of T).Invoke()
-- uid: Solti.Utils.DI.Interfaces.Next`1.Invoke*
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2_EndInvoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.Next`2.EndInvoke
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.EndInvoke
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).EndInvoke
+  nameWithType: Next<TConext, TResult>.EndInvoke
+  nameWithType.vb: Next(Of TConext, TResult).EndInvoke
+- uid: Solti.Utils.DI.Interfaces.Next`2.Invoke(`0)
+  name: Invoke(TConext)
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2_Invoke__0_
+  commentId: M:Solti.Utils.DI.Interfaces.Next`2.Invoke(`0)
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.Invoke(TConext)
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).Invoke(TConext)
+  nameWithType: Next<TConext, TResult>.Invoke(TConext)
+  nameWithType.vb: Next(Of TConext, TResult).Invoke(TConext)
+- uid: Solti.Utils.DI.Interfaces.Next`2.Invoke*
   name: Invoke
-  href: Solti.Utils.DI.Interfaces.Next-1.html#Solti_Utils_DI_Interfaces_Next_1_Invoke_
-  commentId: Overload:Solti.Utils.DI.Interfaces.Next`1.Invoke
-  fullName: Solti.Utils.DI.Interfaces.Next<T>.Invoke
-  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of T).Invoke
-  nameWithType: Next<T>.Invoke
-  nameWithType.vb: Next(Of T).Invoke
+  href: Solti.Utils.DI.Interfaces.Next-2.html#Solti_Utils_DI_Interfaces_Next_2_Invoke_
+  commentId: Overload:Solti.Utils.DI.Interfaces.Next`2.Invoke
+  fullName: Solti.Utils.DI.Interfaces.Next<TConext, TResult>.Invoke
+  fullName.vb: Solti.Utils.DI.Interfaces.Next(Of TConext, TResult).Invoke
+  nameWithType: Next<TConext, TResult>.Invoke
+  nameWithType.vb: Next(Of TConext, TResult).Invoke
 - uid: Solti.Utils.DI.Interfaces.OptionsAttribute
   name: OptionsAttribute
   href: Solti.Utils.DI.Interfaces.OptionsAttribute.html
@@ -2640,64 +2664,48 @@ references:
   commentId: N:Solti.Utils.DI.Internals
   fullName: Solti.Utils.DI.Internals
   nameWithType: Solti.Utils.DI.Internals
-- uid: Solti.Utils.DI.Internals.AspectAggregator`2
-  name: AspectAggregator<TInterface, TTarget>
-  href: Solti.Utils.DI.Internals.AspectAggregator-2.html
-  commentId: T:Solti.Utils.DI.Internals.AspectAggregator`2
-  name.vb: AspectAggregator(Of TInterface, TTarget)
-  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>
-  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget)
-  nameWithType: AspectAggregator<TInterface, TTarget>
-  nameWithType.vb: AspectAggregator(Of TInterface, TTarget)
-- uid: Solti.Utils.DI.Internals.AspectAggregator`2.#ctor(`1,Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
-  name: AspectAggregator(TTarget, IInterfaceInterceptor[])
-  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2__ctor__1_Solti_Utils_DI_Interfaces_IInterfaceInterceptor___
-  commentId: M:Solti.Utils.DI.Internals.AspectAggregator`2.#ctor(`1,Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
-  name.vb: AspectAggregator(TTarget, IInterfaceInterceptor())
-  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.AspectAggregator(TTarget, Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
-  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).AspectAggregator(TTarget, Solti.Utils.DI.Interfaces.IInterfaceInterceptor())
-  nameWithType: AspectAggregator<TInterface, TTarget>.AspectAggregator(TTarget, IInterfaceInterceptor[])
-  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).AspectAggregator(TTarget, IInterfaceInterceptor())
-- uid: Solti.Utils.DI.Internals.AspectAggregator`2.#ctor*
-  name: AspectAggregator
-  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2__ctor_
-  commentId: Overload:Solti.Utils.DI.Internals.AspectAggregator`2.#ctor
-  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.AspectAggregator
-  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).AspectAggregator
-  nameWithType: AspectAggregator<TInterface, TTarget>.AspectAggregator
-  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).AspectAggregator
-- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors
-  name: Interceptors
-  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Interceptors
-  commentId: P:Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors
-  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Interceptors
-  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Interceptors
-  nameWithType: AspectAggregator<TInterface, TTarget>.Interceptors
-  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Interceptors
-- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors*
-  name: Interceptors
-  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Interceptors_
-  commentId: Overload:Solti.Utils.DI.Internals.AspectAggregator`2.Interceptors
-  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Interceptors
-  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Interceptors
-  nameWithType: AspectAggregator<TInterface, TTarget>.Interceptors
-  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Interceptors
-- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Invoke(Solti.Utils.Proxy.InvocationContext)
+- uid: Solti.Utils.DI.Internals.InterceptorAggregator`2
+  name: InterceptorAggregator<TInterface, TTarget>
+  href: Solti.Utils.DI.Internals.InterceptorAggregator-2.html
+  commentId: T:Solti.Utils.DI.Internals.InterceptorAggregator`2
+  name.vb: InterceptorAggregator(Of TInterface, TTarget)
+  fullName: Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>
+  fullName.vb: Solti.Utils.DI.Internals.InterceptorAggregator(Of TInterface, TTarget)
+  nameWithType: InterceptorAggregator<TInterface, TTarget>
+  nameWithType.vb: InterceptorAggregator(Of TInterface, TTarget)
+- uid: Solti.Utils.DI.Internals.InterceptorAggregator`2.#ctor(`1,Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
+  name: InterceptorAggregator(TTarget, IInterfaceInterceptor[])
+  href: Solti.Utils.DI.Internals.InterceptorAggregator-2.html#Solti_Utils_DI_Internals_InterceptorAggregator_2__ctor__1_Solti_Utils_DI_Interfaces_IInterfaceInterceptor___
+  commentId: M:Solti.Utils.DI.Internals.InterceptorAggregator`2.#ctor(`1,Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
+  name.vb: InterceptorAggregator(TTarget, IInterfaceInterceptor())
+  fullName: Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.InterceptorAggregator(TTarget, Solti.Utils.DI.Interfaces.IInterfaceInterceptor[])
+  fullName.vb: Solti.Utils.DI.Internals.InterceptorAggregator(Of TInterface, TTarget).InterceptorAggregator(TTarget, Solti.Utils.DI.Interfaces.IInterfaceInterceptor())
+  nameWithType: InterceptorAggregator<TInterface, TTarget>.InterceptorAggregator(TTarget, IInterfaceInterceptor[])
+  nameWithType.vb: InterceptorAggregator(Of TInterface, TTarget).InterceptorAggregator(TTarget, IInterfaceInterceptor())
+- uid: Solti.Utils.DI.Internals.InterceptorAggregator`2.#ctor*
+  name: InterceptorAggregator
+  href: Solti.Utils.DI.Internals.InterceptorAggregator-2.html#Solti_Utils_DI_Internals_InterceptorAggregator_2__ctor_
+  commentId: Overload:Solti.Utils.DI.Internals.InterceptorAggregator`2.#ctor
+  fullName: Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.InterceptorAggregator
+  fullName.vb: Solti.Utils.DI.Internals.InterceptorAggregator(Of TInterface, TTarget).InterceptorAggregator
+  nameWithType: InterceptorAggregator<TInterface, TTarget>.InterceptorAggregator
+  nameWithType.vb: InterceptorAggregator(Of TInterface, TTarget).InterceptorAggregator
+- uid: Solti.Utils.DI.Internals.InterceptorAggregator`2.Invoke(Solti.Utils.Proxy.InvocationContext)
   name: Invoke(InvocationContext)
-  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Invoke_Solti_Utils_Proxy_InvocationContext_
-  commentId: M:Solti.Utils.DI.Internals.AspectAggregator`2.Invoke(Solti.Utils.Proxy.InvocationContext)
-  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext)
-  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Invoke(Solti.Utils.Proxy.InvocationContext)
-  nameWithType: AspectAggregator<TInterface, TTarget>.Invoke(InvocationContext)
-  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Invoke(InvocationContext)
-- uid: Solti.Utils.DI.Internals.AspectAggregator`2.Invoke*
+  href: Solti.Utils.DI.Internals.InterceptorAggregator-2.html#Solti_Utils_DI_Internals_InterceptorAggregator_2_Invoke_Solti_Utils_Proxy_InvocationContext_
+  commentId: M:Solti.Utils.DI.Internals.InterceptorAggregator`2.Invoke(Solti.Utils.Proxy.InvocationContext)
+  fullName: Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext)
+  fullName.vb: Solti.Utils.DI.Internals.InterceptorAggregator(Of TInterface, TTarget).Invoke(Solti.Utils.Proxy.InvocationContext)
+  nameWithType: InterceptorAggregator<TInterface, TTarget>.Invoke(InvocationContext)
+  nameWithType.vb: InterceptorAggregator(Of TInterface, TTarget).Invoke(InvocationContext)
+- uid: Solti.Utils.DI.Internals.InterceptorAggregator`2.Invoke*
   name: Invoke
-  href: Solti.Utils.DI.Internals.AspectAggregator-2.html#Solti_Utils_DI_Internals_AspectAggregator_2_Invoke_
-  commentId: Overload:Solti.Utils.DI.Internals.AspectAggregator`2.Invoke
-  fullName: Solti.Utils.DI.Internals.AspectAggregator<TInterface, TTarget>.Invoke
-  fullName.vb: Solti.Utils.DI.Internals.AspectAggregator(Of TInterface, TTarget).Invoke
-  nameWithType: AspectAggregator<TInterface, TTarget>.Invoke
-  nameWithType.vb: AspectAggregator(Of TInterface, TTarget).Invoke
+  href: Solti.Utils.DI.Internals.InterceptorAggregator-2.html#Solti_Utils_DI_Internals_InterceptorAggregator_2_Invoke_
+  commentId: Overload:Solti.Utils.DI.Internals.InterceptorAggregator`2.Invoke
+  fullName: Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.Invoke
+  fullName.vb: Solti.Utils.DI.Internals.InterceptorAggregator(Of TInterface, TTarget).Invoke
+  nameWithType: InterceptorAggregator<TInterface, TTarget>.Invoke
+  nameWithType.vb: InterceptorAggregator(Of TInterface, TTarget).Invoke
 - uid: Solti.Utils.DI.Internals.ProducibleServiceEntry
   name: ProducibleServiceEntry
   href: Solti.Utils.DI.Internals.ProducibleServiceEntry.html

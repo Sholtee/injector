@@ -62,6 +62,8 @@
         Console.WriteLine(context.InterfaceMethod);
         return callNext();
     }
+
+    public IInterfaceInterceptor2? Next { get; set; }
 }
 ...
 ScopeFactory.Create
@@ -75,13 +77,13 @@ ScopeFactory.Create
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_" data-uid="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_Next_System_Object__" data-uid="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.Next{System.Object})">Invoke(IInvocationContext, Next&lt;Object&gt;)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_Next_Solti_Utils_DI_Interfaces_IInvocationContext_System_Object__" data-uid="Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext,Solti.Utils.DI.Interfaces.Next{Solti.Utils.DI.Interfaces.IInvocationContext,System.Object})">Invoke(IInvocationContext, Next&lt;IInvocationContext, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Contains the interception logic.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object Invoke(IInvocationContext context, Next&lt;object&gt; callNext)</code></pre>
+    <pre><code class="lang-csharp hljs">object Invoke(IInvocationContext context, Next&lt;IInvocationContext, object&gt; callNext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -100,7 +102,7 @@ ScopeFactory.Create
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Next-1.html">Next</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.Next-2.html">Next</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.IInvocationContext.html">IInvocationContext</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">callNext</span></td>
         <td><p>Calls the next interceptor in the invocation chain.</p>
 </td>
@@ -123,7 +125,7 @@ ScopeFactory.Create
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_Next_System_Object___remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_Next_Solti_Utils_DI_Interfaces_IInvocationContext_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Interceptors may modify the input and output parameters or alter the result itself:</p>
 <pre><code>// Invoking the generated proxy instance will trigger this method
 object IInterfaceInterceptor.Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
