@@ -20,15 +20,12 @@ namespace Solti.Utils.DI.Internals
 
         public InterceptorInvocationContext(InvocationContext original, IInterceptorAggregator parent, int index): this(original, parent)
         {
-            RelatedInterceptor = parent.Interceptors[index];
             Index = index;
         }
 
         public object ProxyInstance => Parent;
 
         public IInterceptorAggregator Parent { get; }
-
-        public IInterfaceInterceptor? RelatedInterceptor { get; }
 
         public InvocationContext Original { get; }
 
@@ -46,7 +43,7 @@ namespace Solti.Utils.DI.Internals
 
         public virtual IInvocationContext? Next => IInvocationContextFactory.Create(Original, Parent, Index + 1);
 
-        public virtual object? InvokeInterceptor() => RelatedInterceptor!.Invoke
+        public virtual object? InvokeInterceptor() => Parent.Interceptors[Index].Invoke
         (
             this,
             static ctx => ctx.Next!.InvokeInterceptor()
