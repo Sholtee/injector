@@ -4,8 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -24,45 +22,30 @@ namespace Solti.Utils.DI.Internals
     /// <summary>
     /// Aggregates <typeparamref name="TTarget"/> (class or interface) aspects to reduce the number of interceptors to be built.
     /// </summary>
-    public class AspectAggregator<TInterface, TTarget>: InterfaceInterceptor<TInterface, TTarget> where TTarget: class, TInterface where TInterface : class
+    public class InterceptorAggregator<TInterface, TTarget> : InterfaceInterceptor<TInterface, TTarget>, IInterceptorAggregator where TTarget : class, TInterface where TInterface : class
     {
-        private sealed class InvocationContextEx : InvocationContext, IInvocationContext
-        {
-            public InvocationContextEx(InvocationContext original, object proxyInstance) : base(original.Args, original)
-            {
-                Debug.Assert(proxyInstance is TInterface, "Got a proxy not implementing the service interface");
-                ProxyInstance = proxyInstance;
-            }
-
-            public object ProxyInstance { get; }
-
-            public object? UserData { get; set; }
-        }
-
         private readonly IInterfaceInterceptor[] FInterceptors;
 
-        private object? Invoke(InvocationContextEx ctx, int index) => index > 0
-            ? FInterceptors[index - 1].Invoke(ctx, () => Invoke(ctx, index - 1))
-            : base.Invoke(ctx);
-
         /// <summary>
-        /// Creates a new <see cref="AspectAggregator{TInterface, TTarget}"/> instance.
+        /// Creates a new <see cref="InterceptorAggregator{TInterface, TTarget}"/> instance.
         /// </summary>
-        public AspectAggregator(TTarget target, params IInterfaceInterceptor[] interceptors) : base(target) =>
+        public InterceptorAggregator(TTarget target, params IInterfaceInterceptor[] interceptors) : base(target) =>
             FInterceptors = interceptors ?? throw new ArgumentNullException(nameof(interceptors));
 
         /// <summary>
         /// Dispatches the invocation to the corresponding aspects
         /// </summary>
-        public override object? Invoke(InvocationContext context) => Invoke
-        (
-            new InvocationContextEx(context, this),
-            FInterceptors.Length
-        );
+        public sealed override object? Invoke(InvocationContext context) => IInvocationContextFactory
+            .Create(context, this)
+            .InvokeInterceptor();
 
         /// <summary>
         /// Returns the bound interceptors.
         /// </summary>
-        public IReadOnlyList<IInterfaceInterceptor> Interceptors => FInterceptors;
+        IInterfaceInterceptor[] IInterceptorAggregator.Interceptors => FInterceptors;
+
+        object? IInterceptorAggregator.Target => Target;
+
+        object? IInterceptorAggregator.CallTarget(InvocationContext ctx) => base.Invoke(ctx);
     }
 }

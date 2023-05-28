@@ -1,4 +1,8 @@
-﻿Solti.Utils.DI.Interfaces.ILazy<TInterfce> (forwarded, contained in Solti.Utils.DI.Interfaces)
+﻿override sealed Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext! context) -> object?
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.Next<Solti.Utils.DI.Interfaces.IInvocationContext!, object?>! callNext) -> object? (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>
+Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.InterceptorAggregator(TTarget! target, params Solti.Utils.DI.Interfaces.IInterfaceInterceptor![]! interceptors) -> void
+Solti.Utils.DI.Interfaces.ILazy<TInterfce> (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)

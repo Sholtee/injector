@@ -47,7 +47,6 @@ Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.DI.Interface
 Solti.Utils.DI.Interfaces.IDelegateCompiler
 Solti.Utils.DI.Interfaces.IDelegateCompiler.Compile<TDelegate>(System.Linq.Expressions.Expression<TDelegate> expression, System.Action<TDelegate> completionCallback) -> void
 Solti.Utils.DI.Interfaces.IDependencyResolver
-Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression injector, Solti.Utils.DI.Interfaces.DependencyDescriptor dependency, object userData, Solti.Utils.DI.Interfaces.Next<System.Linq.Expressions.Expression> next) -> System.Linq.Expressions.Expression
 Solti.Utils.DI.Interfaces.IFactoryVisitor
 Solti.Utils.DI.Interfaces.IFactoryVisitor.Visit(System.Linq.Expressions.LambdaExpression factory, Solti.Utils.DI.Interfaces.AbstractServiceEntry entry) -> System.Linq.Expressions.LambdaExpression
 Solti.Utils.DI.Interfaces.IHasTag
@@ -58,7 +57,6 @@ Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.Sco
 Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type iface, string name = null) -> object
 Solti.Utils.DI.Interfaces.IInjectorBasicExtensions
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor
-Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext context, Solti.Utils.DI.Interfaces.Next<object> callNext) -> object
 Solti.Utils.DI.Interfaces.IInvocationContext
 Solti.Utils.DI.Interfaces.IInvocationContext.Args.get -> object[]
 Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember.get -> System.Reflection.MemberInfo
@@ -89,7 +87,6 @@ Solti.Utils.DI.Interfaces.LifetimeBase
 Solti.Utils.DI.Interfaces.LifetimeBase.LifetimeBase() -> void
 Solti.Utils.DI.Interfaces.MissingServiceEntry
 Solti.Utils.DI.Interfaces.MissingServiceEntry.MissingServiceEntry(System.Type interface, string name) -> void
-Solti.Utils.DI.Interfaces.Next<T>
 Solti.Utils.DI.Interfaces.OptionsAttribute
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.get -> string
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.init -> void

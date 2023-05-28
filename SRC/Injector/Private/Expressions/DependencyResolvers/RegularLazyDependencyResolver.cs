@@ -91,11 +91,11 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>new Lazy&lt;TInterface&gt;(() => (TInterface) injector.[Try]Get(typeof(TInterface), options?.Name))</code>
         /// </summary>
-        public virtual Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, Next<Expression> next)
+        public virtual Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
         {
             Type? iface = ParseDependency(dependency, typeof(Lazy<>));
             if (iface is null)
-                return next();
+                return next(context);
 
             return ResolveLazyService
             (

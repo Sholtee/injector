@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 public IList Dependency { get; }
 
-                public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+                public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
             }
 
             public MyAspect() : base(typeof(MyInterceptor)) { }
@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .ResolveDecorators()
                 .Single()
                 .Compile();
-            AspectAggregator<IMyService, MyService> proxy = (AspectAggregator<IMyService, MyService>) decorator
+            IInterceptorAggregator proxy = (IInterceptorAggregator) decorator
             (
                 mockInjector.Object, typeof(IMyService), new MyService()
             );
@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
                 public int Dependency2 { get; }
 
-                public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+                public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
             }
 
             public MyAspectUsingExplicitArg() : base(typeof(MyInterceptor), new { dependency2 = 1986 }) { }
@@ -112,7 +112,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .ResolveDecorators()
                 .Single()
                 .Compile();
-            AspectAggregator<IMyService, MyService2> proxy = (AspectAggregator<IMyService, MyService2>) decorator
+            IInterceptorAggregator proxy = (IInterceptorAggregator) decorator
             (
                 mockInjector.Object, typeof(IMyService), new MyService2()
             );

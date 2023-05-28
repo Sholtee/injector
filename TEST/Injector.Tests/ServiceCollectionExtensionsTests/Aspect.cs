@@ -103,9 +103,9 @@ namespace Solti.Utils.DI.Tests
                 .CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>>());
 
-            instance = ((AspectAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>) instance).Target;
+            instance = ((InterceptorAggregator<IMyServiceHavingAspect, IMyServiceHavingAspect>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -134,9 +134,9 @@ namespace Solti.Utils.DI.Tests
                 .CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyService, MyServiceHavingAspect>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyService, MyServiceHavingAspect>>());
 
-            instance = ((AspectAggregator<IMyService, MyServiceHavingAspect>)instance).Target;
+            instance = ((InterceptorAggregator<IMyService, MyServiceHavingAspect>)instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -225,9 +225,9 @@ namespace Solti.Utils.DI.Tests
             IMyGenericServiceHavingAspect<int> instance = (IMyGenericServiceHavingAspect<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>>());
 
-            instance = ((AspectAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>) instance).Target;
+            instance = ((InterceptorAggregator<IMyGenericServiceHavingAspect<int>, IMyGenericServiceHavingAspect<int>>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -258,9 +258,9 @@ namespace Solti.Utils.DI.Tests
             IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
             Assert.That(instance, Is.Not.Null);
-            Assert.That(instance, Is.InstanceOf<AspectAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>>());
+            Assert.That(instance, Is.InstanceOf<InterceptorAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>>());
 
-            instance = ((AspectAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>) instance).Target;
+            instance = ((InterceptorAggregator<IMyGenericService<int>, MyGenericServiceHavingAspect<int>>) instance).Target;
             Assert.That(instance, Is.Not.Null);
         }
 
@@ -338,7 +338,7 @@ namespace Solti.Utils.DI.Tests
     {
         private sealed class DummyInterceptor : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
         }
 
         public DummyAspectAttribute() : base(typeof(DummyInterceptor)) { }
@@ -351,7 +351,7 @@ namespace Solti.Utils.DI.Tests
         {
             public DummyInterceptorHavingDependency(IDisposable dep) { }
 
-            public object Invoke(IInvocationContext context, Next<object> callNext) => callNext();
+            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
         }
 
         public DummyAspectHavingDependencyAttribute() : base(typeof(DummyInterceptorHavingDependency)) { }
@@ -363,11 +363,19 @@ namespace Solti.Utils.DI.Tests
 
         public OrderInspectingInterceptorBase(string name) => Name = name;
 
-        public object Invoke(IInvocationContext context, Next<object> callNext)
+        public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
         {
-            IEnumerable<string> result = (IEnumerable<string>) callNext();
+            return GetNames();
 
-            return result.Append(Name);
+            IEnumerable<string> GetNames()
+            {
+                yield return Name;
+
+                foreach (string name in (IEnumerable<string>) callNext(context))
+                {
+                    yield return name;
+                }
+            }
         }
     }
 

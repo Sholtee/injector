@@ -20,6 +20,8 @@ namespace Solti.Utils.DI.Interfaces
     ///         Console.WriteLine(context.InterfaceMethod);
     ///         return callNext();
     ///     }
+    ///     
+    ///     public IInterfaceInterceptor2? Next { get; set; }
     /// }
     /// ...
     /// ScopeFactory.Create
@@ -55,6 +57,6 @@ namespace Solti.Utils.DI.Interfaces
         /// }
         /// </code>
         /// </remarks>
-        object? Invoke(IInvocationContext context, Next<object?> callNext);
+        object? Invoke(IInvocationContext context, Next<IInvocationContext, object?> callNext);
     }
 }

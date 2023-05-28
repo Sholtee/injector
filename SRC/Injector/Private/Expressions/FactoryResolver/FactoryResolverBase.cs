@@ -37,11 +37,11 @@ namespace Solti.Utils.DI.Internals
 
         protected virtual Expression ResolveDependency(ParameterExpression injector, DependencyDescriptor dependency, object? userData)
         {
-            return Resolve(0);
+            return Resolve(0, null);
 
-            Expression Resolve(int i) => i == FResolvers.Count
+            Expression Resolve(int i, object? context) => i == FResolvers.Count
                 ? throw new ArgumentException(Resources.INVALID_DEPENDENCY, dependency.Name)
-                : FResolvers[i].Resolve(injector, dependency, userData, () => Resolve(i + 1));
+                : FResolvers[i].Resolve(injector, dependency, userData, context, context => Resolve(i + 1, context));
         }
 
         /// <summary>
