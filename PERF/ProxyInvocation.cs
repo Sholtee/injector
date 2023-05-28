@@ -51,11 +51,11 @@ namespace Solti.Utils.DI.Perf
         [Benchmark(Baseline = true)]
         public void Baseline() => Service.Foo();
 
-        private InvocationContextWrapper Context { get; set; }
+        private IInvocationContext Context { get; set; }
 
         private void SetupContext()
         {
-            Context = new InvocationContextWrapper
+            Context = IInvocationContextFactory.Create
             (
                 new InvocationContext
                 (
