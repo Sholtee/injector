@@ -15,13 +15,11 @@ namespace Solti.Utils.DI.Interfaces
     /// {
     ///     public LoggerInterceptor(IDependency dependency) {...}
     ///     
-    ///     public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+    ///     public object Invoke(IInvocationContext context, Next&lt;IInvocationContext, object?&gt; callNext)
     ///     {
     ///         Console.WriteLine(context.InterfaceMethod);
-    ///         return callNext();
+    ///         return callNext(context);
     ///     }
-    ///     
-    ///     public IInterfaceInterceptor2? Next { get; set; }
     /// }
     /// ...
     /// ScopeFactory.Create
@@ -45,7 +43,7 @@ namespace Solti.Utils.DI.Interfaces
         /// Interceptors may modify the input and output parameters or alter the result itself:
         /// <code>
         /// // Invoking the generated proxy instance will trigger this method
-        /// object IInterfaceInterceptor.Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+        /// object IInterfaceInterceptor.Invoke(IInvocationContext context, Next&lt;IInvocationContext, object?&gt; callNext)
         /// {
         ///     if (suppressOriginalMethod)
         ///     {
@@ -53,7 +51,7 @@ namespace Solti.Utils.DI.Interfaces
         ///         // ref|out parameters can be assigned by setting the corresponding "context.Args[]" item 
         ///     }
         ///     context.Args[0] = someNewVal; // "someNewVal" will be forwarded to the original method 
-        ///     return callNext(); // Let the original method do its work
+        ///     return callNext(context); // Let the original method do its work
         /// }
         /// </code>
         /// </remarks>

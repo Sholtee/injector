@@ -496,5 +496,28 @@ public sealed class ParameterValidatorAspect : AspectAttribute
   public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
 }
 ```
+## Migrating from version 8.X
+- `IInterfaceInterceptor.Invoke()` layout has been altered (`next()` now requires the context to be passed), so refactor this
+```csharp
+public class LoggerInterceptor : IInterfaceInterceptor
+{   
+    public object Invoke(IInvocationContext context, Next<object> callNext)
+    {
+        Console.WriteLine(context.InterfaceMethod);
+        return callNext();
+    }
+}
+```
+to
+```csharp
+public class LoggerInterceptor : IInterfaceInterceptor
+{
+    public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
+    {
+        Console.WriteLine(context.InterfaceMethod);
+        return callNext(context);
+    }
+}
+```
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )

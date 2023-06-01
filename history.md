@@ -278,3 +278,10 @@
   - *breaking:* `AspectAttribute` got a new layout, now it supports both "factory" and "service" recipes too
 - 8.0.1:
   - *updated:* ProxyGen.NET to v8.2.0
+- 9.0.0:
+  - *breaking:* New `IInterfaceInterceptor.Invoke()` layout (`next()` now requires the context to be passed)
+  - *introduced:* `ServiceEntryStates.Collected` member
+  - *introduced:* `Transient` service resolution shortcut
+  - *introduced:* `ILazy` interface 
+  - *improved:* Proxy/Aspect invocation performance
+  - *improved:* Eliminated unnecessary type checkings 
