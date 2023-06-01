@@ -57,13 +57,11 @@
 {
     public LoggerInterceptor(IDependency dependency) {...}
 
-    public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+    public object Invoke(IInvocationContext context, Next&lt;IInvocationContext, object?> callNext)
     {
         Console.WriteLine(context.InterfaceMethod);
-        return callNext();
+        return callNext(context);
     }
-
-    public IInterfaceInterceptor2? Next { get; set; }
 }
 ...
 ScopeFactory.Create
@@ -128,7 +126,7 @@ ScopeFactory.Create
   <h5 id="Solti_Utils_DI_Interfaces_IInterfaceInterceptor_Invoke_Solti_Utils_DI_Interfaces_IInvocationContext_Solti_Utils_DI_Interfaces_Next_Solti_Utils_DI_Interfaces_IInvocationContext_System_Object___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Interceptors may modify the input and output parameters or alter the result itself:</p>
 <pre><code>// Invoking the generated proxy instance will trigger this method
-object IInterfaceInterceptor.Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+object IInterfaceInterceptor.Invoke(IInvocationContext context, Next&lt;IInvocationContext, object?> callNext)
 {
     if (suppressOriginalMethod)
     {
@@ -136,7 +134,7 @@ object IInterfaceInterceptor.Invoke(IInvocationContext context, InvokeIntercepto
         // ref|out parameters can be assigned by setting the corresponding &quot;context.Args[]&quot; item 
     }
     context.Args[0] = someNewVal; // &quot;someNewVal&quot; will be forwarded to the original method 
-    return callNext(); // Let the original method do its work
+    return callNext(context); // Let the original method do its work
 }</code></pre>
 </div>
 </article>
