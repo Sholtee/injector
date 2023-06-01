@@ -497,7 +497,7 @@ public sealed class ParameterValidatorAspect : AspectAttribute
 }
 ```
 ## Migrating from version 8.X
-- `IInterfaceInterceptor.Invoke()` layout has been altered (`next()` now requires the context to be passed), so refactor this
+- `IInterfaceInterceptor.Invoke()` layout has been altered (`next()` now requires the `context` to be passed), so refactor this
 ```csharp
 public class LoggerInterceptor : IInterfaceInterceptor
 {   
