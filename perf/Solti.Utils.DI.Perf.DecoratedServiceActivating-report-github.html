@@ -42,39 +42,62 @@ BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.4010/1809/October2018Update/R
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK=7.0.203
   [Host]     : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
-  Job-DOSRVM : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
+  Job-UTAKUP : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
 
-InvocationCount=2000000  RunStrategy=Throughput  
+InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
 <thead>
 <tr>
 <th>Method</th>
-<th>ResolutionMode</th>
+<th>SimpleDecorate</th>
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
+<th style="text-align:right">Median</th>
 <th style="text-align:right">Gen0</th>
 <th style="text-align:right">Allocated</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>CreateAndDisposeScope</strong></td>
-<td><strong>JIT</strong></td>
-<td style="text-align:right"><strong>42.24 ns</strong></td>
-<td style="text-align:right"><strong>0.868 ns</strong></td>
-<td style="text-align:right"><strong>1.352 ns</strong></td>
-<td style="text-align:right"><strong>0.0085</strong></td>
-<td style="text-align:right"><strong>160 B</strong></td>
+<td><strong>ViaCreateInstance</strong></td>
+<td><strong>False</strong></td>
+<td style="text-align:right"><strong>41.216 ns</strong></td>
+<td style="text-align:right"><strong>3.2620 ns</strong></td>
+<td style="text-align:right"><strong>9.6180 ns</strong></td>
+<td style="text-align:right"><strong>36.786 ns</strong></td>
+<td style="text-align:right"><strong>0.0061</strong></td>
+<td style="text-align:right"><strong>112 B</strong></td>
 </tr>
 <tr>
-<td><strong>CreateAndDisposeScope</strong></td>
-<td><strong>AOT</strong></td>
-<td style="text-align:right"><strong>43.22 ns</strong></td>
-<td style="text-align:right"><strong>0.899 ns</strong></td>
-<td style="text-align:right"><strong>1.373 ns</strong></td>
-<td style="text-align:right"><strong>0.0085</strong></td>
-<td style="text-align:right"><strong>160 B</strong></td>
+<td>ViaGetOrCreateInstance</td>
+<td>False</td>
+<td style="text-align:right">39.268 ns</td>
+<td style="text-align:right">0.8464 ns</td>
+<td style="text-align:right">0.8313 ns</td>
+<td style="text-align:right">39.301 ns</td>
+<td style="text-align:right">0.0061</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td><strong>ViaCreateInstance</strong></td>
+<td><strong>True</strong></td>
+<td style="text-align:right"><strong>9.153 ns</strong></td>
+<td style="text-align:right"><strong>0.2319 ns</strong></td>
+<td style="text-align:right"><strong>0.1936 ns</strong></td>
+<td style="text-align:right"><strong>9.112 ns</strong></td>
+<td style="text-align:right"><strong>0.0013</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>ViaGetOrCreateInstance</td>
+<td>True</td>
+<td style="text-align:right">15.028 ns</td>
+<td style="text-align:right">0.3712 ns</td>
+<td style="text-align:right">0.4419 ns</td>
+<td style="text-align:right">15.011 ns</td>
+<td style="text-align:right">0.0013</td>
+<td style="text-align:right">24 B</td>
 </tr>
 </tbody>
 </table>

@@ -38,11 +38,11 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
+BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.4010/1809/October2018Update/Redstone5), VM=Hyper-V
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK=7.0.100
-  [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+.NET SDK=7.0.203
+  [Host]     : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
+  DefaultJob : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
 
 </code></pre><table>
 <thead>
@@ -57,30 +57,23 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <tbody>
 <tr>
 <td>GetGuid</td>
-<td style="text-align:right">1,429.791 ns</td>
-<td style="text-align:right">12.7441 ns</td>
-<td style="text-align:right">10.6419 ns</td>
+<td style="text-align:right">1,448.361 ns</td>
+<td style="text-align:right">18.9893 ns</td>
+<td style="text-align:right">15.8569 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>GetHandle</td>
-<td style="text-align:right">1.633 ns</td>
-<td style="text-align:right">0.0128 ns</td>
-<td style="text-align:right">0.0120 ns</td>
+<td style="text-align:right">1.690 ns</td>
+<td style="text-align:right">0.0771 ns</td>
+<td style="text-align:right">0.0722 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>IsAssignableFrom</td>
-<td style="text-align:right">11.163 ns</td>
-<td style="text-align:right">0.1199 ns</td>
-<td style="text-align:right">0.1122 ns</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lock</td>
-<td style="text-align:right">21.852 ns</td>
-<td style="text-align:right">0.4655 ns</td>
-<td style="text-align:right">0.4354 ns</td>
+<td style="text-align:right">11.756 ns</td>
+<td style="text-align:right">0.2199 ns</td>
+<td style="text-align:right">0.1950 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 </tbody>

@@ -38,17 +38,18 @@
             <article class="content wrap" id="_content" data-uid="">
 
 <pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.2366/1809/October2018Update/Redstone5), VM=Hyper-V
+BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.4010/1809/October2018Update/Redstone5), VM=Hyper-V
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK=7.0.100
-  [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
-  Job-DWWJHJ : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+.NET SDK=7.0.203
+  [Host]     : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
+  Job-DOSRVM : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
 
 InvocationCount=2000000  RunStrategy=Throughput  
 </code></pre><table>
 <thead>
 <tr>
 <th>Method</th>
+<th>RootScope</th>
 <th>ResolutionMode</th>
 <th>DependencyLifetime</th>
 <th>DependantLifetime</th>
@@ -63,1921 +64,4161 @@ InvocationCount=2000000  RunStrategy=Throughput
 <tbody>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>JIT</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>44.54 ns</strong></td>
-<td style="text-align:right"><strong>0.870 ns</strong></td>
-<td style="text-align:right"><strong>1.591 ns</strong></td>
-<td style="text-align:right"><strong>44.19 ns</strong></td>
+<td style="text-align:right"><strong>37.89 ns</strong></td>
+<td style="text-align:right"><strong>0.823 ns</strong></td>
+<td style="text-align:right"><strong>1.010 ns</strong></td>
+<td style="text-align:right"><strong>37.87 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">50.89 ns</td>
-<td style="text-align:right">1.112 ns</td>
-<td style="text-align:right">2.870 ns</td>
-<td style="text-align:right">50.93 ns</td>
+<td style="text-align:right">37.15 ns</td>
+<td style="text-align:right">0.793 ns</td>
+<td style="text-align:right">0.913 ns</td>
+<td style="text-align:right">37.07 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>JIT</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">49.13 ns</td>
-<td style="text-align:right">1.059 ns</td>
-<td style="text-align:right">1.552 ns</td>
-<td style="text-align:right">48.97 ns</td>
+<td style="text-align:right">35.19 ns</td>
+<td style="text-align:right">0.776 ns</td>
+<td style="text-align:right">1.359 ns</td>
+<td style="text-align:right">35.38 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">94.21 ns</td>
-<td style="text-align:right">5.093 ns</td>
-<td style="text-align:right">15.018 ns</td>
-<td style="text-align:right">98.22 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Pooled</td>
-<td style="text-align:right">87.99 ns</td>
-<td style="text-align:right">8.677 ns</td>
-<td style="text-align:right">25.584 ns</td>
-<td style="text-align:right">101.99 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Pooled</strong></td>
-<td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>40.24 ns</strong></td>
-<td style="text-align:right"><strong>0.875 ns</strong></td>
-<td style="text-align:right"><strong>0.937 ns</strong></td>
-<td style="text-align:right"><strong>40.18 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">42.77 ns</td>
-<td style="text-align:right">0.725 ns</td>
-<td style="text-align:right">0.643 ns</td>
-<td style="text-align:right">42.79 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">44.04 ns</td>
-<td style="text-align:right">0.968 ns</td>
-<td style="text-align:right">1.817 ns</td>
-<td style="text-align:right">43.48 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">42.29 ns</td>
-<td style="text-align:right">0.918 ns</td>
-<td style="text-align:right">1.482 ns</td>
-<td style="text-align:right">42.16 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">44.14 ns</td>
-<td style="text-align:right">0.918 ns</td>
-<td style="text-align:right">1.632 ns</td>
-<td style="text-align:right">44.18 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Pooled</strong></td>
-<td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>47.36 ns</strong></td>
-<td style="text-align:right"><strong>1.018 ns</strong></td>
-<td style="text-align:right"><strong>1.672 ns</strong></td>
-<td style="text-align:right"><strong>47.23 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">46.77 ns</td>
-<td style="text-align:right">1.022 ns</td>
-<td style="text-align:right">1.679 ns</td>
-<td style="text-align:right">46.74 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">46.17 ns</td>
-<td style="text-align:right">0.991 ns</td>
-<td style="text-align:right">1.709 ns</td>
-<td style="text-align:right">45.92 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">47.66 ns</td>
-<td style="text-align:right">1.024 ns</td>
-<td style="text-align:right">2.046 ns</td>
-<td style="text-align:right">47.62 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">44.73 ns</td>
-<td style="text-align:right">0.932 ns</td>
-<td style="text-align:right">1.336 ns</td>
-<td style="text-align:right">44.57 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Pooled</strong></td>
-<td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>144.77 ns</strong></td>
-<td style="text-align:right"><strong>1.768 ns</strong></td>
-<td style="text-align:right"><strong>1.567 ns</strong></td>
-<td style="text-align:right"><strong>144.77 ns</strong></td>
-<td style="text-align:right"><strong>0.0010</strong></td>
-<td style="text-align:right"><strong>24 B</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Transient</td>
-<td style="text-align:right">174.97 ns</td>
-<td style="text-align:right">3.528 ns</td>
-<td style="text-align:right">5.281 ns</td>
-<td style="text-align:right">175.50 ns</td>
-<td style="text-align:right">0.0060</td>
-<td style="text-align:right">112 B</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Transient</td>
-<td style="text-align:right">147.76 ns</td>
-<td style="text-align:right">2.935 ns</td>
-<td style="text-align:right">3.604 ns</td>
-<td style="text-align:right">148.68 ns</td>
-<td style="text-align:right">0.0010</td>
-<td style="text-align:right">24 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Transient</td>
-<td style="text-align:right">118.71 ns</td>
-<td style="text-align:right">2.237 ns</td>
-<td style="text-align:right">1.868 ns</td>
-<td style="text-align:right">119.04 ns</td>
-<td style="text-align:right">0.0100</td>
-<td style="text-align:right">192 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Pooled</td>
-<td>Transient</td>
-<td style="text-align:right">41.08 ns</td>
-<td style="text-align:right">0.837 ns</td>
-<td style="text-align:right">0.742 ns</td>
-<td style="text-align:right">40.94 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Scoped</strong></td>
-<td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>40.52 ns</strong></td>
-<td style="text-align:right"><strong>0.874 ns</strong></td>
-<td style="text-align:right"><strong>1.105 ns</strong></td>
-<td style="text-align:right"><strong>40.86 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Pooled</td>
-<td style="text-align:right">41.96 ns</td>
-<td style="text-align:right">0.909 ns</td>
-<td style="text-align:right">1.182 ns</td>
-<td style="text-align:right">41.50 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Pooled</td>
-<td style="text-align:right">41.29 ns</td>
-<td style="text-align:right">0.856 ns</td>
-<td style="text-align:right">0.879 ns</td>
-<td style="text-align:right">41.40 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Pooled</td>
-<td style="text-align:right">41.79 ns</td>
-<td style="text-align:right">0.707 ns</td>
-<td style="text-align:right">0.590 ns</td>
-<td style="text-align:right">41.76 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Pooled</td>
-<td style="text-align:right">44.69 ns</td>
-<td style="text-align:right">0.860 ns</td>
-<td style="text-align:right">0.763 ns</td>
-<td style="text-align:right">44.67 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Scoped</strong></td>
-<td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>41.11 ns</strong></td>
-<td style="text-align:right"><strong>0.882 ns</strong></td>
-<td style="text-align:right"><strong>0.906 ns</strong></td>
-<td style="text-align:right"><strong>41.11 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">42.02 ns</td>
-<td style="text-align:right">0.868 ns</td>
-<td style="text-align:right">1.066 ns</td>
-<td style="text-align:right">42.05 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">41.63 ns</td>
-<td style="text-align:right">0.800 ns</td>
-<td style="text-align:right">0.748 ns</td>
-<td style="text-align:right">41.42 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">40.78 ns</td>
-<td style="text-align:right">0.881 ns</td>
-<td style="text-align:right">0.942 ns</td>
-<td style="text-align:right">40.72 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">43.76 ns</td>
-<td style="text-align:right">0.860 ns</td>
-<td style="text-align:right">1.261 ns</td>
-<td style="text-align:right">43.88 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Scoped</strong></td>
-<td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>63.04 ns</strong></td>
-<td style="text-align:right"><strong>5.812 ns</strong></td>
-<td style="text-align:right"><strong>17.137 ns</strong></td>
-<td style="text-align:right"><strong>68.52 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">47.90 ns</td>
-<td style="text-align:right">0.751 ns</td>
-<td style="text-align:right">0.666 ns</td>
-<td style="text-align:right">47.88 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">44.74 ns</td>
-<td style="text-align:right">0.969 ns</td>
-<td style="text-align:right">1.936 ns</td>
-<td style="text-align:right">44.24 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">45.15 ns</td>
-<td style="text-align:right">0.915 ns</td>
-<td style="text-align:right">2.066 ns</td>
-<td style="text-align:right">45.08 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">44.40 ns</td>
-<td style="text-align:right">0.918 ns</td>
-<td style="text-align:right">0.901 ns</td>
-<td style="text-align:right">44.29 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Scoped</strong></td>
-<td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>132.36 ns</strong></td>
-<td style="text-align:right"><strong>2.620 ns</strong></td>
-<td style="text-align:right"><strong>2.690 ns</strong></td>
-<td style="text-align:right"><strong>131.60 ns</strong></td>
-<td style="text-align:right"><strong>0.0010</strong></td>
-<td style="text-align:right"><strong>24 B</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">294.46 ns</td>
-<td style="text-align:right">20.022 ns</td>
-<td style="text-align:right">59.034 ns</td>
-<td style="text-align:right">320.88 ns</td>
-<td style="text-align:right">0.0060</td>
-<td style="text-align:right">112 B</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">119.06 ns</td>
-<td style="text-align:right">2.337 ns</td>
-<td style="text-align:right">2.296 ns</td>
-<td style="text-align:right">118.28 ns</td>
-<td style="text-align:right">0.0010</td>
-<td style="text-align:right">24 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">121.57 ns</td>
-<td style="text-align:right">2.383 ns</td>
-<td style="text-align:right">2.341 ns</td>
-<td style="text-align:right">121.35 ns</td>
-<td style="text-align:right">0.0100</td>
-<td style="text-align:right">192 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">39.63 ns</td>
-<td style="text-align:right">0.614 ns</td>
-<td style="text-align:right">0.603 ns</td>
-<td style="text-align:right">39.46 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Singleton</strong></td>
-<td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>38.25 ns</strong></td>
-<td style="text-align:right"><strong>0.798 ns</strong></td>
-<td style="text-align:right"><strong>0.746 ns</strong></td>
-<td style="text-align:right"><strong>38.12 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">39.93 ns</td>
-<td style="text-align:right">0.823 ns</td>
-<td style="text-align:right">0.915 ns</td>
-<td style="text-align:right">39.72 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">37.99 ns</td>
-<td style="text-align:right">0.809 ns</td>
-<td style="text-align:right">0.794 ns</td>
+<td style="text-align:right">37.97 ns</td>
+<td style="text-align:right">0.787 ns</td>
+<td style="text-align:right">0.842 ns</td>
 <td style="text-align:right">37.78 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">39.05 ns</td>
-<td style="text-align:right">0.766 ns</td>
-<td style="text-align:right">1.321 ns</td>
-<td style="text-align:right">38.58 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
 <td>Pooled</td>
-<td style="text-align:right">37.24 ns</td>
-<td style="text-align:right">0.739 ns</td>
-<td style="text-align:right">0.691 ns</td>
-<td style="text-align:right">37.26 ns</td>
+<td>Pooled</td>
+<td style="text-align:right">38.41 ns</td>
+<td style="text-align:right">0.805 ns</td>
+<td style="text-align:right">1.074 ns</td>
+<td style="text-align:right">38.29 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>JIT</strong></td>
-<td><strong>Singleton</strong></td>
+<td><strong>Pooled</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>39.08 ns</strong></td>
-<td style="text-align:right"><strong>0.835 ns</strong></td>
-<td style="text-align:right"><strong>1.086 ns</strong></td>
-<td style="text-align:right"><strong>38.61 ns</strong></td>
+<td style="text-align:right"><strong>37.10 ns</strong></td>
+<td style="text-align:right"><strong>0.785 ns</strong></td>
+<td style="text-align:right"><strong>0.771 ns</strong></td>
+<td style="text-align:right"><strong>37.15 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
+<td>Pooled</td>
 <td>Scoped</td>
-<td style="text-align:right">39.13 ns</td>
-<td style="text-align:right">0.838 ns</td>
-<td style="text-align:right">0.743 ns</td>
-<td style="text-align:right">39.15 ns</td>
+<td style="text-align:right">34.38 ns</td>
+<td style="text-align:right">0.660 ns</td>
+<td style="text-align:right">0.585 ns</td>
+<td style="text-align:right">34.51 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
+<td>Pooled</td>
 <td>Scoped</td>
-<td style="text-align:right">39.28 ns</td>
-<td style="text-align:right">0.747 ns</td>
-<td style="text-align:right">0.662 ns</td>
-<td style="text-align:right">39.06 ns</td>
+<td style="text-align:right">36.66 ns</td>
+<td style="text-align:right">0.805 ns</td>
+<td style="text-align:right">1.277 ns</td>
+<td style="text-align:right">36.43 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
+<td>Pooled</td>
 <td>Scoped</td>
+<td style="text-align:right">35.43 ns</td>
+<td style="text-align:right">0.703 ns</td>
+<td style="text-align:right">0.587 ns</td>
+<td style="text-align:right">35.48 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.03 ns</td>
+<td style="text-align:right">0.738 ns</td>
+<td style="text-align:right">0.790 ns</td>
+<td style="text-align:right">34.97 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>37.97 ns</strong></td>
+<td style="text-align:right"><strong>0.769 ns</strong></td>
+<td style="text-align:right"><strong>0.720 ns</strong></td>
+<td style="text-align:right"><strong>37.97 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">39.48 ns</td>
+<td style="text-align:right">0.827 ns</td>
+<td style="text-align:right">1.016 ns</td>
+<td style="text-align:right">39.44 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">42.33 ns</td>
+<td style="text-align:right">0.898 ns</td>
+<td style="text-align:right">1.288 ns</td>
+<td style="text-align:right">42.20 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">38.66 ns</td>
+<td style="text-align:right">0.687 ns</td>
+<td style="text-align:right">0.573 ns</td>
 <td style="text-align:right">38.73 ns</td>
-<td style="text-align:right">0.809 ns</td>
-<td style="text-align:right">0.757 ns</td>
-<td style="text-align:right">38.42 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>JIT</td>
+<td>Pooled</td>
 <td>Singleton</td>
-<td>Scoped</td>
-<td style="text-align:right">40.67 ns</td>
-<td style="text-align:right">0.832 ns</td>
-<td style="text-align:right">1.052 ns</td>
-<td style="text-align:right">40.42 ns</td>
+<td style="text-align:right">37.01 ns</td>
+<td style="text-align:right">0.780 ns</td>
+<td style="text-align:right">1.281 ns</td>
+<td style="text-align:right">36.89 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>JIT</strong></td>
-<td><strong>Singleton</strong></td>
-<td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>43.54 ns</strong></td>
-<td style="text-align:right"><strong>0.904 ns</strong></td>
-<td style="text-align:right"><strong>0.802 ns</strong></td>
-<td style="text-align:right"><strong>43.60 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>JIT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">43.96 ns</td>
-<td style="text-align:right">0.953 ns</td>
-<td style="text-align:right">1.059 ns</td>
-<td style="text-align:right">43.71 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>JIT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">42.82 ns</td>
-<td style="text-align:right">0.759 ns</td>
-<td style="text-align:right">0.592 ns</td>
-<td style="text-align:right">42.89 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>JIT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">42.40 ns</td>
-<td style="text-align:right">0.900 ns</td>
-<td style="text-align:right">0.884 ns</td>
-<td style="text-align:right">42.35 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>JIT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">40.08 ns</td>
-<td style="text-align:right">0.561 ns</td>
-<td style="text-align:right">0.983 ns</td>
-<td style="text-align:right">40.03 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>JIT</strong></td>
-<td><strong>Singleton</strong></td>
+<td><strong>Pooled</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>141.82 ns</strong></td>
-<td style="text-align:right"><strong>2.645 ns</strong></td>
-<td style="text-align:right"><strong>4.563 ns</strong></td>
-<td style="text-align:right"><strong>140.16 ns</strong></td>
+<td style="text-align:right"><strong>113.15 ns</strong></td>
+<td style="text-align:right"><strong>2.299 ns</strong></td>
+<td style="text-align:right"><strong>2.737 ns</strong></td>
+<td style="text-align:right"><strong>112.51 ns</strong></td>
 <td style="text-align:right"><strong>0.0010</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
+<td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">170.17 ns</td>
-<td style="text-align:right">3.429 ns</td>
-<td style="text-align:right">3.207 ns</td>
-<td style="text-align:right">170.46 ns</td>
+<td style="text-align:right">110.16 ns</td>
+<td style="text-align:right">1.976 ns</td>
+<td style="text-align:right">3.134 ns</td>
+<td style="text-align:right">109.14 ns</td>
 <td style="text-align:right">0.0060</td>
 <td style="text-align:right">112 B</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
+<td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">127.21 ns</td>
-<td style="text-align:right">2.592 ns</td>
-<td style="text-align:right">6.059 ns</td>
-<td style="text-align:right">126.76 ns</td>
+<td style="text-align:right">107.41 ns</td>
+<td style="text-align:right">2.168 ns</td>
+<td style="text-align:right">2.581 ns</td>
+<td style="text-align:right">107.08 ns</td>
 <td style="text-align:right">0.0010</td>
 <td style="text-align:right">24 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
+<td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">127.43 ns</td>
-<td style="text-align:right">2.603 ns</td>
-<td style="text-align:right">5.713 ns</td>
-<td style="text-align:right">126.46 ns</td>
+<td style="text-align:right">84.96 ns</td>
+<td style="text-align:right">1.292 ns</td>
+<td style="text-align:right">1.146 ns</td>
+<td style="text-align:right">85.04 ns</td>
 <td style="text-align:right">0.0100</td>
 <td style="text-align:right">192 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>JIT</td>
-<td>Singleton</td>
+<td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">43.07 ns</td>
-<td style="text-align:right">0.885 ns</td>
-<td style="text-align:right">1.428 ns</td>
-<td style="text-align:right">43.09 ns</td>
+<td style="text-align:right">39.21 ns</td>
+<td style="text-align:right">0.808 ns</td>
+<td style="text-align:right">0.794 ns</td>
+<td style="text-align:right">39.24 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>35.70 ns</strong></td>
+<td style="text-align:right"><strong>0.767 ns</strong></td>
+<td style="text-align:right"><strong>0.640 ns</strong></td>
+<td style="text-align:right"><strong>35.98 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">36.40 ns</td>
+<td style="text-align:right">0.805 ns</td>
+<td style="text-align:right">1.322 ns</td>
+<td style="text-align:right">36.20 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">35.71 ns</td>
+<td style="text-align:right">0.791 ns</td>
+<td style="text-align:right">0.846 ns</td>
+<td style="text-align:right">35.43 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">36.42 ns</td>
+<td style="text-align:right">0.702 ns</td>
+<td style="text-align:right">0.622 ns</td>
+<td style="text-align:right">36.19 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">50.17 ns</td>
+<td style="text-align:right">3.400 ns</td>
+<td style="text-align:right">10.026 ns</td>
+<td style="text-align:right">53.85 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>33.26 ns</strong></td>
+<td style="text-align:right"><strong>0.733 ns</strong></td>
+<td style="text-align:right"><strong>1.003 ns</strong></td>
+<td style="text-align:right"><strong>32.95 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">32.29 ns</td>
+<td style="text-align:right">0.693 ns</td>
+<td style="text-align:right">0.995 ns</td>
+<td style="text-align:right">32.20 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">33.85 ns</td>
+<td style="text-align:right">0.741 ns</td>
+<td style="text-align:right">1.297 ns</td>
+<td style="text-align:right">33.68 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">34.18 ns</td>
+<td style="text-align:right">0.741 ns</td>
+<td style="text-align:right">1.445 ns</td>
+<td style="text-align:right">33.78 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">36.32 ns</td>
+<td style="text-align:right">0.753 ns</td>
+<td style="text-align:right">1.338 ns</td>
+<td style="text-align:right">36.11 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>40.11 ns</strong></td>
+<td style="text-align:right"><strong>0.860 ns</strong></td>
+<td style="text-align:right"><strong>2.190 ns</strong></td>
+<td style="text-align:right"><strong>39.31 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">88.36 ns</td>
+<td style="text-align:right">3.122 ns</td>
+<td style="text-align:right">9.008 ns</td>
+<td style="text-align:right">91.37 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">64.34 ns</td>
+<td style="text-align:right">7.301 ns</td>
+<td style="text-align:right">21.526 ns</td>
+<td style="text-align:right">74.41 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">40.13 ns</td>
+<td style="text-align:right">0.881 ns</td>
+<td style="text-align:right">0.904 ns</td>
+<td style="text-align:right">39.79 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">37.64 ns</td>
+<td style="text-align:right">0.748 ns</td>
+<td style="text-align:right">1.249 ns</td>
+<td style="text-align:right">37.46 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>114.57 ns</strong></td>
+<td style="text-align:right"><strong>1.959 ns</strong></td>
+<td style="text-align:right"><strong>1.636 ns</strong></td>
+<td style="text-align:right"><strong>114.25 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">138.42 ns</td>
+<td style="text-align:right">2.828 ns</td>
+<td style="text-align:right">3.256 ns</td>
+<td style="text-align:right">138.87 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">87.50 ns</td>
+<td style="text-align:right">1.843 ns</td>
+<td style="text-align:right">2.815 ns</td>
+<td style="text-align:right">86.89 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">87.89 ns</td>
+<td style="text-align:right">1.797 ns</td>
+<td style="text-align:right">3.002 ns</td>
+<td style="text-align:right">86.84 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">35.32 ns</td>
+<td style="text-align:right">0.729 ns</td>
+<td style="text-align:right">0.716 ns</td>
+<td style="text-align:right">35.30 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>35.55 ns</strong></td>
+<td style="text-align:right"><strong>0.784 ns</strong></td>
+<td style="text-align:right"><strong>1.373 ns</strong></td>
+<td style="text-align:right"><strong>35.01 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">35.80 ns</td>
+<td style="text-align:right">0.794 ns</td>
+<td style="text-align:right">1.411 ns</td>
+<td style="text-align:right">35.80 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">34.74 ns</td>
+<td style="text-align:right">0.761 ns</td>
+<td style="text-align:right">1.092 ns</td>
+<td style="text-align:right">34.74 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">36.84 ns</td>
+<td style="text-align:right">0.805 ns</td>
+<td style="text-align:right">1.047 ns</td>
+<td style="text-align:right">36.63 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">37.30 ns</td>
+<td style="text-align:right">0.771 ns</td>
+<td style="text-align:right">1.540 ns</td>
+<td style="text-align:right">37.28 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>34.94 ns</strong></td>
+<td style="text-align:right"><strong>0.762 ns</strong></td>
+<td style="text-align:right"><strong>0.782 ns</strong></td>
+<td style="text-align:right"><strong>34.91 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">38.46 ns</td>
+<td style="text-align:right">0.705 ns</td>
+<td style="text-align:right">0.589 ns</td>
+<td style="text-align:right">38.49 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">34.79 ns</td>
+<td style="text-align:right">0.773 ns</td>
+<td style="text-align:right">1.032 ns</td>
+<td style="text-align:right">34.65 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">34.96 ns</td>
+<td style="text-align:right">0.768 ns</td>
+<td style="text-align:right">1.636 ns</td>
+<td style="text-align:right">34.50 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">36.00 ns</td>
+<td style="text-align:right">0.644 ns</td>
+<td style="text-align:right">0.538 ns</td>
+<td style="text-align:right">35.84 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>41.85 ns</strong></td>
+<td style="text-align:right"><strong>0.871 ns</strong></td>
+<td style="text-align:right"><strong>0.855 ns</strong></td>
+<td style="text-align:right"><strong>41.75 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">40.98 ns</td>
+<td style="text-align:right">0.813 ns</td>
+<td style="text-align:right">0.720 ns</td>
+<td style="text-align:right">40.76 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">39.99 ns</td>
+<td style="text-align:right">0.862 ns</td>
+<td style="text-align:right">1.121 ns</td>
+<td style="text-align:right">40.08 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">39.50 ns</td>
+<td style="text-align:right">0.841 ns</td>
+<td style="text-align:right">0.863 ns</td>
+<td style="text-align:right">39.58 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">37.98 ns</td>
+<td style="text-align:right">0.727 ns</td>
+<td style="text-align:right">1.755 ns</td>
+<td style="text-align:right">37.52 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>118.30 ns</strong></td>
+<td style="text-align:right"><strong>2.379 ns</strong></td>
+<td style="text-align:right"><strong>3.176 ns</strong></td>
+<td style="text-align:right"><strong>119.26 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">144.54 ns</td>
+<td style="text-align:right">2.483 ns</td>
+<td style="text-align:right">2.323 ns</td>
+<td style="text-align:right">143.97 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">95.43 ns</td>
+<td style="text-align:right">1.925 ns</td>
+<td style="text-align:right">1.977 ns</td>
+<td style="text-align:right">96.02 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">91.95 ns</td>
+<td style="text-align:right">1.887 ns</td>
+<td style="text-align:right">2.318 ns</td>
+<td style="text-align:right">92.28 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">36.65 ns</td>
+<td style="text-align:right">0.744 ns</td>
+<td style="text-align:right">0.660 ns</td>
+<td style="text-align:right">36.59 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>JIT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>42.50 ns</strong></td>
-<td style="text-align:right"><strong>0.893 ns</strong></td>
-<td style="text-align:right"><strong>0.792 ns</strong></td>
-<td style="text-align:right"><strong>42.45 ns</strong></td>
+<td style="text-align:right"><strong>38.56 ns</strong></td>
+<td style="text-align:right"><strong>0.768 ns</strong></td>
+<td style="text-align:right"><strong>1.345 ns</strong></td>
+<td style="text-align:right"><strong>38.76 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">43.99 ns</td>
-<td style="text-align:right">0.932 ns</td>
-<td style="text-align:right">0.957 ns</td>
-<td style="text-align:right">43.70 ns</td>
+<td style="text-align:right">37.16 ns</td>
+<td style="text-align:right">0.817 ns</td>
+<td style="text-align:right">1.145 ns</td>
+<td style="text-align:right">37.31 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">45.21 ns</td>
-<td style="text-align:right">0.962 ns</td>
-<td style="text-align:right">0.853 ns</td>
-<td style="text-align:right">44.86 ns</td>
+<td style="text-align:right">34.85 ns</td>
+<td style="text-align:right">0.776 ns</td>
+<td style="text-align:right">1.398 ns</td>
+<td style="text-align:right">34.94 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">42.52 ns</td>
-<td style="text-align:right">0.930 ns</td>
-<td style="text-align:right">1.476 ns</td>
-<td style="text-align:right">42.04 ns</td>
+<td style="text-align:right">36.36 ns</td>
+<td style="text-align:right">0.714 ns</td>
+<td style="text-align:right">0.929 ns</td>
+<td style="text-align:right">36.40 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">41.00 ns</td>
-<td style="text-align:right">0.861 ns</td>
-<td style="text-align:right">1.485 ns</td>
-<td style="text-align:right">40.56 ns</td>
+<td style="text-align:right">37.90 ns</td>
+<td style="text-align:right">0.734 ns</td>
+<td style="text-align:right">0.651 ns</td>
+<td style="text-align:right">37.85 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>JIT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>42.90 ns</strong></td>
-<td style="text-align:right"><strong>0.917 ns</strong></td>
-<td style="text-align:right"><strong>1.126 ns</strong></td>
-<td style="text-align:right"><strong>42.68 ns</strong></td>
+<td style="text-align:right"><strong>36.34 ns</strong></td>
+<td style="text-align:right"><strong>0.710 ns</strong></td>
+<td style="text-align:right"><strong>1.063 ns</strong></td>
+<td style="text-align:right"><strong>36.19 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">45.19 ns</td>
-<td style="text-align:right">0.978 ns</td>
-<td style="text-align:right">1.464 ns</td>
-<td style="text-align:right">44.82 ns</td>
+<td style="text-align:right">41.01 ns</td>
+<td style="text-align:right">0.898 ns</td>
+<td style="text-align:right">0.922 ns</td>
+<td style="text-align:right">40.73 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">42.27 ns</td>
-<td style="text-align:right">0.843 ns</td>
-<td style="text-align:right">1.126 ns</td>
-<td style="text-align:right">42.43 ns</td>
+<td style="text-align:right">43.48 ns</td>
+<td style="text-align:right">1.249 ns</td>
+<td style="text-align:right">3.643 ns</td>
+<td style="text-align:right">44.88 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">41.98 ns</td>
-<td style="text-align:right">0.889 ns</td>
-<td style="text-align:right">0.788 ns</td>
-<td style="text-align:right">41.78 ns</td>
+<td style="text-align:right">37.08 ns</td>
+<td style="text-align:right">0.793 ns</td>
+<td style="text-align:right">0.703 ns</td>
+<td style="text-align:right">37.18 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">47.86 ns</td>
-<td style="text-align:right">0.909 ns</td>
-<td style="text-align:right">0.850 ns</td>
-<td style="text-align:right">48.03 ns</td>
+<td style="text-align:right">38.22 ns</td>
+<td style="text-align:right">0.793 ns</td>
+<td style="text-align:right">1.324 ns</td>
+<td style="text-align:right">38.03 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>JIT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>47.53 ns</strong></td>
-<td style="text-align:right"><strong>1.027 ns</strong></td>
-<td style="text-align:right"><strong>1.598 ns</strong></td>
-<td style="text-align:right"><strong>46.97 ns</strong></td>
+<td style="text-align:right"><strong>41.47 ns</strong></td>
+<td style="text-align:right"><strong>0.849 ns</strong></td>
+<td style="text-align:right"><strong>0.833 ns</strong></td>
+<td style="text-align:right"><strong>41.33 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">48.19 ns</td>
-<td style="text-align:right">1.031 ns</td>
-<td style="text-align:right">1.227 ns</td>
-<td style="text-align:right">47.94 ns</td>
+<td style="text-align:right">40.26 ns</td>
+<td style="text-align:right">0.854 ns</td>
+<td style="text-align:right">0.757 ns</td>
+<td style="text-align:right">40.25 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">47.30 ns</td>
-<td style="text-align:right">1.022 ns</td>
-<td style="text-align:right">1.708 ns</td>
-<td style="text-align:right">47.23 ns</td>
+<td style="text-align:right">40.62 ns</td>
+<td style="text-align:right">0.863 ns</td>
+<td style="text-align:right">0.807 ns</td>
+<td style="text-align:right">40.41 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">48.01 ns</td>
-<td style="text-align:right">0.990 ns</td>
-<td style="text-align:right">0.972 ns</td>
-<td style="text-align:right">47.98 ns</td>
+<td style="text-align:right">41.55 ns</td>
+<td style="text-align:right">0.462 ns</td>
+<td style="text-align:right">0.386 ns</td>
+<td style="text-align:right">41.66 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">44.92 ns</td>
-<td style="text-align:right">0.895 ns</td>
-<td style="text-align:right">0.879 ns</td>
-<td style="text-align:right">44.84 ns</td>
+<td style="text-align:right">39.01 ns</td>
+<td style="text-align:right">0.806 ns</td>
+<td style="text-align:right">1.513 ns</td>
+<td style="text-align:right">38.81 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>JIT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>153.82 ns</strong></td>
-<td style="text-align:right"><strong>2.676 ns</strong></td>
-<td style="text-align:right"><strong>2.372 ns</strong></td>
-<td style="text-align:right"><strong>153.58 ns</strong></td>
+<td style="text-align:right"><strong>114.29 ns</strong></td>
+<td style="text-align:right"><strong>1.549 ns</strong></td>
+<td style="text-align:right"><strong>1.449 ns</strong></td>
+<td style="text-align:right"><strong>113.61 ns</strong></td>
 <td style="text-align:right"><strong>0.0025</strong></td>
 <td style="text-align:right"><strong>48 B</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">219.26 ns</td>
-<td style="text-align:right">4.382 ns</td>
-<td style="text-align:right">5.216 ns</td>
-<td style="text-align:right">219.93 ns</td>
+<td style="text-align:right">159.89 ns</td>
+<td style="text-align:right">3.232 ns</td>
+<td style="text-align:right">6.456 ns</td>
+<td style="text-align:right">157.89 ns</td>
 <td style="text-align:right">0.0120</td>
 <td style="text-align:right">224 B</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">156.19 ns</td>
-<td style="text-align:right">1.651 ns</td>
-<td style="text-align:right">1.463 ns</td>
-<td style="text-align:right">155.89 ns</td>
+<td style="text-align:right">93.73 ns</td>
+<td style="text-align:right">1.903 ns</td>
+<td style="text-align:right">1.955 ns</td>
+<td style="text-align:right">93.11 ns</td>
 <td style="text-align:right">0.0025</td>
 <td style="text-align:right">48 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">128.29 ns</td>
-<td style="text-align:right">2.552 ns</td>
-<td style="text-align:right">2.387 ns</td>
-<td style="text-align:right">127.76 ns</td>
+<td style="text-align:right">89.59 ns</td>
+<td style="text-align:right">1.873 ns</td>
+<td style="text-align:right">2.300 ns</td>
+<td style="text-align:right">89.66 ns</td>
 <td style="text-align:right">0.0100</td>
 <td style="text-align:right">192 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>JIT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">42.55 ns</td>
-<td style="text-align:right">0.872 ns</td>
-<td style="text-align:right">0.969 ns</td>
-<td style="text-align:right">42.24 ns</td>
+<td style="text-align:right">37.25 ns</td>
+<td style="text-align:right">0.622 ns</td>
+<td style="text-align:right">0.519 ns</td>
+<td style="text-align:right">37.27 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>44.73 ns</strong></td>
-<td style="text-align:right"><strong>0.533 ns</strong></td>
-<td style="text-align:right"><strong>0.445 ns</strong></td>
-<td style="text-align:right"><strong>44.86 ns</strong></td>
+<td style="text-align:right"><strong>38.23 ns</strong></td>
+<td style="text-align:right"><strong>0.830 ns</strong></td>
+<td style="text-align:right"><strong>1.786 ns</strong></td>
+<td style="text-align:right"><strong>37.76 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">44.28 ns</td>
-<td style="text-align:right">0.943 ns</td>
-<td style="text-align:right">0.926 ns</td>
-<td style="text-align:right">43.91 ns</td>
+<td style="text-align:right">35.59 ns</td>
+<td style="text-align:right">0.737 ns</td>
+<td style="text-align:right">1.330 ns</td>
+<td style="text-align:right">35.74 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
 <td>Pooled</td>
 <td>Pooled</td>
-<td style="text-align:right">41.65 ns</td>
-<td style="text-align:right">0.330 ns</td>
-<td style="text-align:right">0.276 ns</td>
+<td style="text-align:right">35.50 ns</td>
+<td style="text-align:right">0.777 ns</td>
+<td style="text-align:right">0.763 ns</td>
+<td style="text-align:right">35.48 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">35.58 ns</td>
+<td style="text-align:right">0.787 ns</td>
+<td style="text-align:right">1.129 ns</td>
+<td style="text-align:right">35.47 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">35.78 ns</td>
+<td style="text-align:right">0.754 ns</td>
+<td style="text-align:right">1.218 ns</td>
+<td style="text-align:right">35.79 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>35.89 ns</strong></td>
+<td style="text-align:right"><strong>0.707 ns</strong></td>
+<td style="text-align:right"><strong>0.786 ns</strong></td>
+<td style="text-align:right"><strong>35.98 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.07 ns</td>
+<td style="text-align:right">0.650 ns</td>
+<td style="text-align:right">0.576 ns</td>
+<td style="text-align:right">34.99 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.72 ns</td>
+<td style="text-align:right">0.784 ns</td>
+<td style="text-align:right">0.695 ns</td>
+<td style="text-align:right">35.66 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.39 ns</td>
+<td style="text-align:right">0.710 ns</td>
+<td style="text-align:right">0.923 ns</td>
+<td style="text-align:right">35.42 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">38.12 ns</td>
+<td style="text-align:right">0.635 ns</td>
+<td style="text-align:right">0.563 ns</td>
+<td style="text-align:right">38.16 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>39.13 ns</strong></td>
+<td style="text-align:right"><strong>0.392 ns</strong></td>
+<td style="text-align:right"><strong>0.306 ns</strong></td>
+<td style="text-align:right"><strong>39.21 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">37.85 ns</td>
+<td style="text-align:right">0.781 ns</td>
+<td style="text-align:right">0.692 ns</td>
+<td style="text-align:right">37.82 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">41.74 ns</td>
+<td style="text-align:right">0.870 ns</td>
+<td style="text-align:right">1.069 ns</td>
 <td style="text-align:right">41.66 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">40.39 ns</td>
+<td style="text-align:right">0.776 ns</td>
+<td style="text-align:right">0.648 ns</td>
+<td style="text-align:right">40.42 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
 <td>Pooled</td>
-<td style="text-align:right">43.57 ns</td>
+<td>Singleton</td>
+<td style="text-align:right">36.00 ns</td>
 <td style="text-align:right">0.751 ns</td>
-<td style="text-align:right">0.737 ns</td>
-<td style="text-align:right">43.34 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Pooled</td>
-<td style="text-align:right">41.38 ns</td>
-<td style="text-align:right">0.862 ns</td>
-<td style="text-align:right">0.720 ns</td>
-<td style="text-align:right">41.05 ns</td>
+<td style="text-align:right">1.052 ns</td>
+<td style="text-align:right">35.94 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
-<td><strong>AOT</strong></td>
-<td><strong>Pooled</strong></td>
-<td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>42.84 ns</strong></td>
-<td style="text-align:right"><strong>0.795 ns</strong></td>
-<td style="text-align:right"><strong>0.705 ns</strong></td>
-<td style="text-align:right"><strong>42.65 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">43.80 ns</td>
-<td style="text-align:right">0.649 ns</td>
-<td style="text-align:right">0.575 ns</td>
-<td style="text-align:right">43.72 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">42.06 ns</td>
-<td style="text-align:right">0.876 ns</td>
-<td style="text-align:right">0.820 ns</td>
-<td style="text-align:right">41.81 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">43.44 ns</td>
-<td style="text-align:right">0.907 ns</td>
-<td style="text-align:right">0.970 ns</td>
-<td style="text-align:right">43.00 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Scoped</td>
-<td style="text-align:right">48.72 ns</td>
-<td style="text-align:right">0.545 ns</td>
-<td style="text-align:right">0.425 ns</td>
-<td style="text-align:right">48.70 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>AOT</strong></td>
-<td><strong>Pooled</strong></td>
-<td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>48.46 ns</strong></td>
-<td style="text-align:right"><strong>0.878 ns</strong></td>
-<td style="text-align:right"><strong>0.778 ns</strong></td>
-<td style="text-align:right"><strong>48.45 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">47.73 ns</td>
-<td style="text-align:right">0.611 ns</td>
-<td style="text-align:right">0.510 ns</td>
-<td style="text-align:right">47.82 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">47.58 ns</td>
-<td style="text-align:right">0.954 ns</td>
-<td style="text-align:right">1.696 ns</td>
-<td style="text-align:right">46.97 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">47.38 ns</td>
-<td style="text-align:right">0.765 ns</td>
-<td style="text-align:right">0.678 ns</td>
-<td style="text-align:right">47.20 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Pooled</td>
-<td>Singleton</td>
-<td style="text-align:right">45.05 ns</td>
-<td style="text-align:right">0.912 ns</td>
-<td style="text-align:right">0.976 ns</td>
-<td style="text-align:right">44.77 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Pooled</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>88.12 ns</strong></td>
-<td style="text-align:right"><strong>1.069 ns</strong></td>
-<td style="text-align:right"><strong>0.948 ns</strong></td>
-<td style="text-align:right"><strong>88.18 ns</strong></td>
+<td style="text-align:right"><strong>56.70 ns</strong></td>
+<td style="text-align:right"><strong>1.190 ns</strong></td>
+<td style="text-align:right"><strong>1.628 ns</strong></td>
+<td style="text-align:right"><strong>56.20 ns</strong></td>
 <td style="text-align:right"><strong>0.0010</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">124.39 ns</td>
-<td style="text-align:right">1.255 ns</td>
-<td style="text-align:right">1.113 ns</td>
-<td style="text-align:right">124.21 ns</td>
+<td style="text-align:right">87.47 ns</td>
+<td style="text-align:right">1.802 ns</td>
+<td style="text-align:right">1.770 ns</td>
+<td style="text-align:right">87.11 ns</td>
 <td style="text-align:right">0.0060</td>
 <td style="text-align:right">112 B</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">91.28 ns</td>
-<td style="text-align:right">1.361 ns</td>
-<td style="text-align:right">1.206 ns</td>
-<td style="text-align:right">90.91 ns</td>
+<td style="text-align:right">56.86 ns</td>
+<td style="text-align:right">1.094 ns</td>
+<td style="text-align:right">1.461 ns</td>
+<td style="text-align:right">56.98 ns</td>
 <td style="text-align:right">0.0010</td>
 <td style="text-align:right">24 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">131.67 ns</td>
-<td style="text-align:right">0.906 ns</td>
-<td style="text-align:right">0.756 ns</td>
-<td style="text-align:right">131.72 ns</td>
+<td style="text-align:right">91.10 ns</td>
+<td style="text-align:right">0.816 ns</td>
+<td style="text-align:right">0.681 ns</td>
+<td style="text-align:right">91.02 ns</td>
 <td style="text-align:right">0.0100</td>
 <td style="text-align:right">192 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
 <td>Pooled</td>
 <td>Transient</td>
-<td style="text-align:right">48.50 ns</td>
-<td style="text-align:right">0.790 ns</td>
-<td style="text-align:right">0.701 ns</td>
-<td style="text-align:right">48.27 ns</td>
+<td style="text-align:right">35.70 ns</td>
+<td style="text-align:right">0.618 ns</td>
+<td style="text-align:right">0.548 ns</td>
+<td style="text-align:right">35.72 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>41.38 ns</strong></td>
-<td style="text-align:right"><strong>0.691 ns</strong></td>
-<td style="text-align:right"><strong>0.612 ns</strong></td>
-<td style="text-align:right"><strong>41.15 ns</strong></td>
+<td style="text-align:right"><strong>37.20 ns</strong></td>
+<td style="text-align:right"><strong>0.814 ns</strong></td>
+<td style="text-align:right"><strong>0.836 ns</strong></td>
+<td style="text-align:right"><strong>37.24 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">44.00 ns</td>
-<td style="text-align:right">0.471 ns</td>
-<td style="text-align:right">0.368 ns</td>
-<td style="text-align:right">44.15 ns</td>
+<td style="text-align:right">35.45 ns</td>
+<td style="text-align:right">0.787 ns</td>
+<td style="text-align:right">1.178 ns</td>
+<td style="text-align:right">35.32 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">44.28 ns</td>
-<td style="text-align:right">0.321 ns</td>
-<td style="text-align:right">0.268 ns</td>
-<td style="text-align:right">44.26 ns</td>
+<td style="text-align:right">35.67 ns</td>
+<td style="text-align:right">0.792 ns</td>
+<td style="text-align:right">0.741 ns</td>
+<td style="text-align:right">35.57 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">42.74 ns</td>
-<td style="text-align:right">0.511 ns</td>
-<td style="text-align:right">0.426 ns</td>
-<td style="text-align:right">42.53 ns</td>
+<td style="text-align:right">35.35 ns</td>
+<td style="text-align:right">0.764 ns</td>
+<td style="text-align:right">0.880 ns</td>
+<td style="text-align:right">35.24 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
 <td>Scoped</td>
 <td>Pooled</td>
-<td style="text-align:right">42.05 ns</td>
-<td style="text-align:right">0.567 ns</td>
-<td style="text-align:right">0.503 ns</td>
-<td style="text-align:right">42.14 ns</td>
+<td style="text-align:right">38.14 ns</td>
+<td style="text-align:right">0.745 ns</td>
+<td style="text-align:right">0.697 ns</td>
+<td style="text-align:right">38.08 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>41.02 ns</strong></td>
-<td style="text-align:right"><strong>0.618 ns</strong></td>
-<td style="text-align:right"><strong>0.516 ns</strong></td>
-<td style="text-align:right"><strong>41.02 ns</strong></td>
+<td style="text-align:right"><strong>35.93 ns</strong></td>
+<td style="text-align:right"><strong>0.770 ns</strong></td>
+<td style="text-align:right"><strong>1.128 ns</strong></td>
+<td style="text-align:right"><strong>35.70 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">35.36 ns</td>
+<td style="text-align:right">0.505 ns</td>
+<td style="text-align:right">0.422 ns</td>
+<td style="text-align:right">35.38 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">36.03 ns</td>
+<td style="text-align:right">0.729 ns</td>
+<td style="text-align:right">0.647 ns</td>
+<td style="text-align:right">36.12 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">36.64 ns</td>
+<td style="text-align:right">0.800 ns</td>
+<td style="text-align:right">1.172 ns</td>
+<td style="text-align:right">36.69 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
 <td>Scoped</td>
 <td>Scoped</td>
 <td style="text-align:right">43.46 ns</td>
-<td style="text-align:right">0.896 ns</td>
-<td style="text-align:right">0.838 ns</td>
-<td style="text-align:right">43.25 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">46.41 ns</td>
-<td style="text-align:right">0.966 ns</td>
-<td style="text-align:right">0.903 ns</td>
-<td style="text-align:right">46.18 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">42.45 ns</td>
-<td style="text-align:right">0.639 ns</td>
-<td style="text-align:right">0.566 ns</td>
-<td style="text-align:right">42.42 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Scoped</td>
-<td style="text-align:right">48.57 ns</td>
-<td style="text-align:right">0.577 ns</td>
-<td style="text-align:right">0.451 ns</td>
-<td style="text-align:right">48.55 ns</td>
+<td style="text-align:right">0.900 ns</td>
+<td style="text-align:right">1.647 ns</td>
+<td style="text-align:right">43.77 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Scoped</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>46.99 ns</strong></td>
-<td style="text-align:right"><strong>0.506 ns</strong></td>
-<td style="text-align:right"><strong>0.423 ns</strong></td>
-<td style="text-align:right"><strong>46.84 ns</strong></td>
+<td style="text-align:right"><strong>41.56 ns</strong></td>
+<td style="text-align:right"><strong>0.853 ns</strong></td>
+<td style="text-align:right"><strong>1.723 ns</strong></td>
+<td style="text-align:right"><strong>41.07 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Scoped</td>
 <td>Singleton</td>
-<td style="text-align:right">48.59 ns</td>
-<td style="text-align:right">0.611 ns</td>
-<td style="text-align:right">0.477 ns</td>
-<td style="text-align:right">48.46 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">47.43 ns</td>
-<td style="text-align:right">0.756 ns</td>
-<td style="text-align:right">0.670 ns</td>
-<td style="text-align:right">47.18 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">46.87 ns</td>
-<td style="text-align:right">0.663 ns</td>
-<td style="text-align:right">0.554 ns</td>
-<td style="text-align:right">46.71 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Singleton</td>
-<td style="text-align:right">43.69 ns</td>
-<td style="text-align:right">0.561 ns</td>
-<td style="text-align:right">0.468 ns</td>
-<td style="text-align:right">43.55 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>AOT</strong></td>
-<td><strong>Scoped</strong></td>
-<td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>92.41 ns</strong></td>
-<td style="text-align:right"><strong>0.780 ns</strong></td>
-<td style="text-align:right"><strong>0.691 ns</strong></td>
-<td style="text-align:right"><strong>92.45 ns</strong></td>
-<td style="text-align:right"><strong>0.0010</strong></td>
-<td style="text-align:right"><strong>24 B</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">123.23 ns</td>
-<td style="text-align:right">2.006 ns</td>
-<td style="text-align:right">2.679 ns</td>
-<td style="text-align:right">122.34 ns</td>
-<td style="text-align:right">0.0060</td>
-<td style="text-align:right">112 B</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">90.90 ns</td>
+<td style="text-align:right">40.03 ns</td>
 <td style="text-align:right">0.834 ns</td>
-<td style="text-align:right">0.739 ns</td>
-<td style="text-align:right">90.64 ns</td>
-<td style="text-align:right">0.0010</td>
-<td style="text-align:right">24 B</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">129.53 ns</td>
-<td style="text-align:right">1.022 ns</td>
-<td style="text-align:right">0.906 ns</td>
-<td style="text-align:right">129.73 ns</td>
-<td style="text-align:right">0.0100</td>
-<td style="text-align:right">192 B</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Scoped</td>
-<td>Transient</td>
-<td style="text-align:right">40.36 ns</td>
-<td style="text-align:right">0.829 ns</td>
-<td style="text-align:right">0.814 ns</td>
-<td style="text-align:right">40.25 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>AOT</strong></td>
-<td><strong>Singleton</strong></td>
-<td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>41.51 ns</strong></td>
-<td style="text-align:right"><strong>0.502 ns</strong></td>
-<td style="text-align:right"><strong>0.392 ns</strong></td>
-<td style="text-align:right"><strong>41.54 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">43.03 ns</td>
-<td style="text-align:right">0.838 ns</td>
-<td style="text-align:right">0.897 ns</td>
-<td style="text-align:right">42.70 ns</td>
+<td style="text-align:right">0.819 ns</td>
+<td style="text-align:right">40.05 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
+<td>Scoped</td>
 <td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">43.70 ns</td>
-<td style="text-align:right">0.915 ns</td>
-<td style="text-align:right">0.811 ns</td>
-<td style="text-align:right">43.44 ns</td>
+<td style="text-align:right">39.27 ns</td>
+<td style="text-align:right">0.470 ns</td>
+<td style="text-align:right">0.393 ns</td>
+<td style="text-align:right">39.31 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
+<td>Scoped</td>
 <td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">41.77 ns</td>
-<td style="text-align:right">0.884 ns</td>
+<td style="text-align:right">39.98 ns</td>
+<td style="text-align:right">0.862 ns</td>
+<td style="text-align:right">0.806 ns</td>
+<td style="text-align:right">40.13 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">38.27 ns</td>
 <td style="text-align:right">0.784 ns</td>
-<td style="text-align:right">41.47 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Pooled</td>
-<td style="text-align:right">40.91 ns</td>
-<td style="text-align:right">0.850 ns</td>
-<td style="text-align:right">0.835 ns</td>
-<td style="text-align:right">40.96 ns</td>
+<td style="text-align:right">0.992 ns</td>
+<td style="text-align:right">38.29 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
-<td><strong>Singleton</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>42.21 ns</strong></td>
-<td style="text-align:right"><strong>0.496 ns</strong></td>
-<td style="text-align:right"><strong>0.439 ns</strong></td>
-<td style="text-align:right"><strong>42.04 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Scoped</td>
-<td style="text-align:right">43.29 ns</td>
-<td style="text-align:right">0.701 ns</td>
-<td style="text-align:right">0.585 ns</td>
-<td style="text-align:right">43.30 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Scoped</td>
-<td style="text-align:right">41.54 ns</td>
-<td style="text-align:right">0.354 ns</td>
-<td style="text-align:right">0.296 ns</td>
-<td style="text-align:right">41.39 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Scoped</td>
-<td style="text-align:right">43.15 ns</td>
-<td style="text-align:right">0.260 ns</td>
-<td style="text-align:right">0.217 ns</td>
-<td style="text-align:right">43.15 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Scoped</td>
-<td style="text-align:right">46.44 ns</td>
-<td style="text-align:right">0.970 ns</td>
-<td style="text-align:right">1.328 ns</td>
-<td style="text-align:right">46.17 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>AOT</strong></td>
-<td><strong>Singleton</strong></td>
-<td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>51.81 ns</strong></td>
-<td style="text-align:right"><strong>1.072 ns</strong></td>
-<td style="text-align:right"><strong>1.467 ns</strong></td>
-<td style="text-align:right"><strong>51.10 ns</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-<td style="text-align:right"><strong>-</strong></td>
-</tr>
-<tr>
-<td>NonGenericProxy</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">47.83 ns</td>
-<td style="text-align:right">0.937 ns</td>
-<td style="text-align:right">0.732 ns</td>
-<td style="text-align:right">47.69 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Generic</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">47.43 ns</td>
-<td style="text-align:right">1.019 ns</td>
-<td style="text-align:right">0.953 ns</td>
-<td style="text-align:right">47.35 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Lazy</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">46.85 ns</td>
-<td style="text-align:right">0.431 ns</td>
-<td style="text-align:right">0.337 ns</td>
-<td style="text-align:right">46.76 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td>Enumerable</td>
-<td>AOT</td>
-<td>Singleton</td>
-<td>Singleton</td>
-<td style="text-align:right">44.15 ns</td>
-<td style="text-align:right">0.897 ns</td>
-<td style="text-align:right">0.921 ns</td>
-<td style="text-align:right">43.58 ns</td>
-<td style="text-align:right">-</td>
-<td style="text-align:right">-</td>
-</tr>
-<tr>
-<td><strong>NonGeneric</strong></td>
-<td><strong>AOT</strong></td>
-<td><strong>Singleton</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>96.08 ns</strong></td>
-<td style="text-align:right"><strong>1.010 ns</strong></td>
-<td style="text-align:right"><strong>0.843 ns</strong></td>
-<td style="text-align:right"><strong>95.71 ns</strong></td>
+<td style="text-align:right"><strong>59.45 ns</strong></td>
+<td style="text-align:right"><strong>0.886 ns</strong></td>
+<td style="text-align:right"><strong>0.740 ns</strong></td>
+<td style="text-align:right"><strong>59.31 ns</strong></td>
 <td style="text-align:right"><strong>0.0010</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
-<td>Singleton</td>
+<td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">136.38 ns</td>
-<td style="text-align:right">1.592 ns</td>
-<td style="text-align:right">1.412 ns</td>
-<td style="text-align:right">135.58 ns</td>
+<td style="text-align:right">89.88 ns</td>
+<td style="text-align:right">1.788 ns</td>
+<td style="text-align:right">1.913 ns</td>
+<td style="text-align:right">89.67 ns</td>
 <td style="text-align:right">0.0060</td>
 <td style="text-align:right">112 B</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
-<td>Singleton</td>
+<td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">97.05 ns</td>
-<td style="text-align:right">0.888 ns</td>
-<td style="text-align:right">0.787 ns</td>
-<td style="text-align:right">96.81 ns</td>
+<td style="text-align:right">57.52 ns</td>
+<td style="text-align:right">1.211 ns</td>
+<td style="text-align:right">1.244 ns</td>
+<td style="text-align:right">56.89 ns</td>
 <td style="text-align:right">0.0010</td>
 <td style="text-align:right">24 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
-<td>Singleton</td>
+<td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">131.70 ns</td>
-<td style="text-align:right">1.116 ns</td>
-<td style="text-align:right">0.989 ns</td>
-<td style="text-align:right">131.40 ns</td>
+<td style="text-align:right">91.22 ns</td>
+<td style="text-align:right">1.813 ns</td>
+<td style="text-align:right">2.158 ns</td>
+<td style="text-align:right">91.66 ns</td>
 <td style="text-align:right">0.0100</td>
 <td style="text-align:right">192 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
-<td>Singleton</td>
+<td>Scoped</td>
 <td>Transient</td>
-<td style="text-align:right">43.26 ns</td>
-<td style="text-align:right">0.658 ns</td>
-<td style="text-align:right">0.584 ns</td>
-<td style="text-align:right">43.20 ns</td>
+<td style="text-align:right">37.99 ns</td>
+<td style="text-align:right">0.794 ns</td>
+<td style="text-align:right">0.780 ns</td>
+<td style="text-align:right">37.87 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>36.85 ns</strong></td>
+<td style="text-align:right"><strong>0.771 ns</strong></td>
+<td style="text-align:right"><strong>0.721 ns</strong></td>
+<td style="text-align:right"><strong>36.77 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">35.31 ns</td>
+<td style="text-align:right">0.762 ns</td>
+<td style="text-align:right">0.936 ns</td>
+<td style="text-align:right">35.19 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">35.24 ns</td>
+<td style="text-align:right">0.768 ns</td>
+<td style="text-align:right">0.719 ns</td>
+<td style="text-align:right">35.05 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">34.96 ns</td>
+<td style="text-align:right">0.530 ns</td>
+<td style="text-align:right">0.443 ns</td>
+<td style="text-align:right">35.00 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">36.04 ns</td>
+<td style="text-align:right">0.745 ns</td>
+<td style="text-align:right">0.828 ns</td>
+<td style="text-align:right">35.88 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>37.04 ns</strong></td>
+<td style="text-align:right"><strong>0.792 ns</strong></td>
+<td style="text-align:right"><strong>0.880 ns</strong></td>
+<td style="text-align:right"><strong>36.98 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">34.88 ns</td>
+<td style="text-align:right">0.769 ns</td>
+<td style="text-align:right">0.886 ns</td>
+<td style="text-align:right">35.06 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">35.47 ns</td>
+<td style="text-align:right">0.757 ns</td>
+<td style="text-align:right">0.872 ns</td>
+<td style="text-align:right">35.47 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">37.15 ns</td>
+<td style="text-align:right">0.590 ns</td>
+<td style="text-align:right">0.493 ns</td>
+<td style="text-align:right">37.10 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">35.40 ns</td>
+<td style="text-align:right">0.725 ns</td>
+<td style="text-align:right">0.806 ns</td>
+<td style="text-align:right">35.19 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>39.20 ns</strong></td>
+<td style="text-align:right"><strong>0.628 ns</strong></td>
+<td style="text-align:right"><strong>0.557 ns</strong></td>
+<td style="text-align:right"><strong>39.22 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">38.64 ns</td>
+<td style="text-align:right">0.840 ns</td>
+<td style="text-align:right">0.825 ns</td>
+<td style="text-align:right">38.49 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">42.78 ns</td>
+<td style="text-align:right">0.833 ns</td>
+<td style="text-align:right">1.481 ns</td>
+<td style="text-align:right">42.50 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">39.92 ns</td>
+<td style="text-align:right">0.857 ns</td>
+<td style="text-align:right">0.802 ns</td>
+<td style="text-align:right">39.74 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">37.17 ns</td>
+<td style="text-align:right">0.785 ns</td>
+<td style="text-align:right">1.126 ns</td>
+<td style="text-align:right">36.71 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>64.97 ns</strong></td>
+<td style="text-align:right"><strong>1.215 ns</strong></td>
+<td style="text-align:right"><strong>1.015 ns</strong></td>
+<td style="text-align:right"><strong>65.04 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">88.87 ns</td>
+<td style="text-align:right">1.483 ns</td>
+<td style="text-align:right">1.239 ns</td>
+<td style="text-align:right">88.74 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">63.73 ns</td>
+<td style="text-align:right">1.286 ns</td>
+<td style="text-align:right">1.140 ns</td>
+<td style="text-align:right">63.37 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">90.78 ns</td>
+<td style="text-align:right">1.865 ns</td>
+<td style="text-align:right">1.995 ns</td>
+<td style="text-align:right">90.51 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>False</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">35.77 ns</td>
+<td style="text-align:right">0.749 ns</td>
+<td style="text-align:right">0.974 ns</td>
+<td style="text-align:right">35.61 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Pooled</strong></td>
-<td style="text-align:right"><strong>42.39 ns</strong></td>
-<td style="text-align:right"><strong>0.920 ns</strong></td>
-<td style="text-align:right"><strong>0.861 ns</strong></td>
-<td style="text-align:right"><strong>42.23 ns</strong></td>
+<td style="text-align:right"><strong>35.86 ns</strong></td>
+<td style="text-align:right"><strong>0.648 ns</strong></td>
+<td style="text-align:right"><strong>0.575 ns</strong></td>
+<td style="text-align:right"><strong>35.99 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">42.94 ns</td>
-<td style="text-align:right">0.654 ns</td>
-<td style="text-align:right">0.510 ns</td>
-<td style="text-align:right">43.12 ns</td>
+<td style="text-align:right">35.67 ns</td>
+<td style="text-align:right">0.778 ns</td>
+<td style="text-align:right">1.116 ns</td>
+<td style="text-align:right">35.50 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">42.83 ns</td>
-<td style="text-align:right">0.703 ns</td>
-<td style="text-align:right">0.587 ns</td>
-<td style="text-align:right">42.66 ns</td>
+<td style="text-align:right">35.36 ns</td>
+<td style="text-align:right">0.618 ns</td>
+<td style="text-align:right">0.516 ns</td>
+<td style="text-align:right">35.42 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">43.99 ns</td>
-<td style="text-align:right">0.779 ns</td>
-<td style="text-align:right">0.690 ns</td>
-<td style="text-align:right">43.78 ns</td>
+<td style="text-align:right">35.69 ns</td>
+<td style="text-align:right">0.699 ns</td>
+<td style="text-align:right">0.884 ns</td>
+<td style="text-align:right">35.70 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Pooled</td>
-<td style="text-align:right">41.92 ns</td>
-<td style="text-align:right">0.874 ns</td>
-<td style="text-align:right">1.196 ns</td>
-<td style="text-align:right">41.67 ns</td>
+<td style="text-align:right">36.21 ns</td>
+<td style="text-align:right">0.752 ns</td>
+<td style="text-align:right">0.895 ns</td>
+<td style="text-align:right">36.19 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>43.14 ns</strong></td>
-<td style="text-align:right"><strong>0.937 ns</strong></td>
-<td style="text-align:right"><strong>0.920 ns</strong></td>
-<td style="text-align:right"><strong>43.20 ns</strong></td>
+<td style="text-align:right"><strong>36.70 ns</strong></td>
+<td style="text-align:right"><strong>0.791 ns</strong></td>
+<td style="text-align:right"><strong>1.083 ns</strong></td>
+<td style="text-align:right"><strong>36.53 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">43.72 ns</td>
-<td style="text-align:right">0.671 ns</td>
-<td style="text-align:right">0.595 ns</td>
-<td style="text-align:right">43.51 ns</td>
+<td style="text-align:right">37.68 ns</td>
+<td style="text-align:right">0.809 ns</td>
+<td style="text-align:right">1.135 ns</td>
+<td style="text-align:right">37.64 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">42.82 ns</td>
-<td style="text-align:right">0.887 ns</td>
-<td style="text-align:right">0.787 ns</td>
-<td style="text-align:right">42.66 ns</td>
+<td style="text-align:right">36.18 ns</td>
+<td style="text-align:right">0.781 ns</td>
+<td style="text-align:right">0.652 ns</td>
+<td style="text-align:right">36.20 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">42.96 ns</td>
-<td style="text-align:right">0.840 ns</td>
-<td style="text-align:right">0.744 ns</td>
-<td style="text-align:right">42.76 ns</td>
+<td style="text-align:right">35.57 ns</td>
+<td style="text-align:right">0.783 ns</td>
+<td style="text-align:right">1.287 ns</td>
+<td style="text-align:right">35.14 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Scoped</td>
-<td style="text-align:right">43.16 ns</td>
-<td style="text-align:right">0.654 ns</td>
-<td style="text-align:right">0.546 ns</td>
-<td style="text-align:right">43.00 ns</td>
+<td style="text-align:right">39.18 ns</td>
+<td style="text-align:right">0.639 ns</td>
+<td style="text-align:right">0.533 ns</td>
+<td style="text-align:right">39.17 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>48.80 ns</strong></td>
-<td style="text-align:right"><strong>0.992 ns</strong></td>
-<td style="text-align:right"><strong>0.928 ns</strong></td>
-<td style="text-align:right"><strong>48.73 ns</strong></td>
+<td style="text-align:right"><strong>39.13 ns</strong></td>
+<td style="text-align:right"><strong>0.725 ns</strong></td>
+<td style="text-align:right"><strong>0.606 ns</strong></td>
+<td style="text-align:right"><strong>39.08 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">48.02 ns</td>
-<td style="text-align:right">1.040 ns</td>
-<td style="text-align:right">1.620 ns</td>
-<td style="text-align:right">47.34 ns</td>
+<td style="text-align:right">40.18 ns</td>
+<td style="text-align:right">0.801 ns</td>
+<td style="text-align:right">0.749 ns</td>
+<td style="text-align:right">40.15 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">47.73 ns</td>
-<td style="text-align:right">1.030 ns</td>
-<td style="text-align:right">1.186 ns</td>
-<td style="text-align:right">47.40 ns</td>
+<td style="text-align:right">39.09 ns</td>
+<td style="text-align:right">0.761 ns</td>
+<td style="text-align:right">0.635 ns</td>
+<td style="text-align:right">39.08 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">46.04 ns</td>
-<td style="text-align:right">0.806 ns</td>
-<td style="text-align:right">0.715 ns</td>
-<td style="text-align:right">45.96 ns</td>
+<td style="text-align:right">39.01 ns</td>
+<td style="text-align:right">0.855 ns</td>
+<td style="text-align:right">0.800 ns</td>
+<td style="text-align:right">38.75 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Singleton</td>
-<td style="text-align:right">41.18 ns</td>
-<td style="text-align:right">0.454 ns</td>
-<td style="text-align:right">0.379 ns</td>
-<td style="text-align:right">41.23 ns</td>
+<td style="text-align:right">35.95 ns</td>
+<td style="text-align:right">0.634 ns</td>
+<td style="text-align:right">0.529 ns</td>
+<td style="text-align:right">35.96 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td><strong>NonGeneric</strong></td>
+<td><strong>False</strong></td>
 <td><strong>AOT</strong></td>
 <td><strong>Transient</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>124.13 ns</strong></td>
-<td style="text-align:right"><strong>1.194 ns</strong></td>
-<td style="text-align:right"><strong>1.059 ns</strong></td>
-<td style="text-align:right"><strong>123.61 ns</strong></td>
+<td style="text-align:right"><strong>62.93 ns</strong></td>
+<td style="text-align:right"><strong>1.128 ns</strong></td>
+<td style="text-align:right"><strong>1.000 ns</strong></td>
+<td style="text-align:right"><strong>62.64 ns</strong></td>
 <td style="text-align:right"><strong>0.0025</strong></td>
 <td style="text-align:right"><strong>48 B</strong></td>
 </tr>
 <tr>
 <td>NonGenericProxy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">191.15 ns</td>
-<td style="text-align:right">3.312 ns</td>
-<td style="text-align:right">3.098 ns</td>
-<td style="text-align:right">191.49 ns</td>
+<td style="text-align:right">117.91 ns</td>
+<td style="text-align:right">1.518 ns</td>
+<td style="text-align:right">1.345 ns</td>
+<td style="text-align:right">118.09 ns</td>
 <td style="text-align:right">0.0120</td>
 <td style="text-align:right">224 B</td>
 </tr>
 <tr>
 <td>Generic</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">128.22 ns</td>
-<td style="text-align:right">2.224 ns</td>
-<td style="text-align:right">2.080 ns</td>
-<td style="text-align:right">127.07 ns</td>
+<td style="text-align:right">64.08 ns</td>
+<td style="text-align:right">0.966 ns</td>
+<td style="text-align:right">0.856 ns</td>
+<td style="text-align:right">64.01 ns</td>
 <td style="text-align:right">0.0025</td>
 <td style="text-align:right">48 B</td>
 </tr>
 <tr>
 <td>Lazy</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">129.20 ns</td>
-<td style="text-align:right">1.480 ns</td>
-<td style="text-align:right">1.312 ns</td>
-<td style="text-align:right">129.15 ns</td>
+<td style="text-align:right">88.39 ns</td>
+<td style="text-align:right">1.778 ns</td>
+<td style="text-align:right">1.576 ns</td>
+<td style="text-align:right">88.18 ns</td>
 <td style="text-align:right">0.0100</td>
 <td style="text-align:right">192 B</td>
 </tr>
 <tr>
 <td>Enumerable</td>
+<td>False</td>
 <td>AOT</td>
 <td>Transient</td>
 <td>Transient</td>
-<td style="text-align:right">41.42 ns</td>
+<td style="text-align:right">37.94 ns</td>
+<td style="text-align:right">0.705 ns</td>
+<td style="text-align:right">0.625 ns</td>
+<td style="text-align:right">37.95 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>37.65 ns</strong></td>
+<td style="text-align:right"><strong>0.631 ns</strong></td>
+<td style="text-align:right"><strong>0.493 ns</strong></td>
+<td style="text-align:right"><strong>37.60 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">34.81 ns</td>
+<td style="text-align:right">0.746 ns</td>
+<td style="text-align:right">1.046 ns</td>
+<td style="text-align:right">34.51 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">35.55 ns</td>
+<td style="text-align:right">0.770 ns</td>
+<td style="text-align:right">0.946 ns</td>
+<td style="text-align:right">35.50 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">36.42 ns</td>
+<td style="text-align:right">0.758 ns</td>
+<td style="text-align:right">0.672 ns</td>
+<td style="text-align:right">36.27 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">36.33 ns</td>
+<td style="text-align:right">0.689 ns</td>
+<td style="text-align:right">0.919 ns</td>
+<td style="text-align:right">36.34 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>36.14 ns</strong></td>
+<td style="text-align:right"><strong>0.795 ns</strong></td>
+<td style="text-align:right"><strong>0.744 ns</strong></td>
+<td style="text-align:right"><strong>35.97 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">34.67 ns</td>
+<td style="text-align:right">0.733 ns</td>
+<td style="text-align:right">0.720 ns</td>
+<td style="text-align:right">34.71 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">34.68 ns</td>
+<td style="text-align:right">0.640 ns</td>
+<td style="text-align:right">0.534 ns</td>
+<td style="text-align:right">34.75 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.18 ns</td>
+<td style="text-align:right">0.753 ns</td>
+<td style="text-align:right">0.629 ns</td>
+<td style="text-align:right">35.11 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">37.19 ns</td>
+<td style="text-align:right">0.766 ns</td>
+<td style="text-align:right">0.787 ns</td>
+<td style="text-align:right">37.03 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>39.35 ns</strong></td>
+<td style="text-align:right"><strong>0.708 ns</strong></td>
+<td style="text-align:right"><strong>0.627 ns</strong></td>
+<td style="text-align:right"><strong>39.52 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">35.33 ns</td>
+<td style="text-align:right">0.761 ns</td>
+<td style="text-align:right">0.989 ns</td>
+<td style="text-align:right">35.05 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">36.62 ns</td>
+<td style="text-align:right">0.589 ns</td>
+<td style="text-align:right">0.492 ns</td>
+<td style="text-align:right">36.67 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">35.74 ns</td>
+<td style="text-align:right">0.788 ns</td>
+<td style="text-align:right">0.968 ns</td>
+<td style="text-align:right">35.58 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">36.57 ns</td>
+<td style="text-align:right">0.759 ns</td>
+<td style="text-align:right">0.844 ns</td>
+<td style="text-align:right">36.13 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>114.36 ns</strong></td>
+<td style="text-align:right"><strong>1.045 ns</strong></td>
+<td style="text-align:right"><strong>0.926 ns</strong></td>
+<td style="text-align:right"><strong>114.46 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">117.23 ns</td>
+<td style="text-align:right">1.540 ns</td>
+<td style="text-align:right">1.440 ns</td>
+<td style="text-align:right">116.59 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">119.66 ns</td>
+<td style="text-align:right">0.946 ns</td>
+<td style="text-align:right">0.839 ns</td>
+<td style="text-align:right">119.63 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">88.21 ns</td>
+<td style="text-align:right">0.992 ns</td>
+<td style="text-align:right">0.880 ns</td>
+<td style="text-align:right">88.31 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">39.06 ns</td>
+<td style="text-align:right">0.449 ns</td>
+<td style="text-align:right">0.375 ns</td>
+<td style="text-align:right">38.96 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>37.37 ns</strong></td>
+<td style="text-align:right"><strong>0.787 ns</strong></td>
+<td style="text-align:right"><strong>0.736 ns</strong></td>
+<td style="text-align:right"><strong>37.24 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">35.47 ns</td>
+<td style="text-align:right">0.773 ns</td>
+<td style="text-align:right">0.645 ns</td>
+<td style="text-align:right">35.44 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">36.30 ns</td>
+<td style="text-align:right">0.489 ns</td>
+<td style="text-align:right">0.382 ns</td>
+<td style="text-align:right">36.37 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">36.63 ns</td>
+<td style="text-align:right">0.555 ns</td>
+<td style="text-align:right">0.463 ns</td>
+<td style="text-align:right">36.50 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">37.96 ns</td>
+<td style="text-align:right">0.391 ns</td>
+<td style="text-align:right">0.306 ns</td>
+<td style="text-align:right">37.97 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>36.56 ns</strong></td>
+<td style="text-align:right"><strong>0.450 ns</strong></td>
+<td style="text-align:right"><strong>0.376 ns</strong></td>
+<td style="text-align:right"><strong>36.52 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">36.26 ns</td>
+<td style="text-align:right">0.693 ns</td>
+<td style="text-align:right">0.579 ns</td>
+<td style="text-align:right">36.25 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">36.64 ns</td>
+<td style="text-align:right">0.425 ns</td>
+<td style="text-align:right">0.332 ns</td>
+<td style="text-align:right">36.61 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">37.39 ns</td>
+<td style="text-align:right">0.447 ns</td>
+<td style="text-align:right">0.349 ns</td>
+<td style="text-align:right">37.35 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">37.62 ns</td>
+<td style="text-align:right">0.565 ns</td>
+<td style="text-align:right">0.501 ns</td>
+<td style="text-align:right">37.52 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>36.91 ns</strong></td>
+<td style="text-align:right"><strong>0.799 ns</strong></td>
+<td style="text-align:right"><strong>1.120 ns</strong></td>
+<td style="text-align:right"><strong>37.04 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">38.83 ns</td>
+<td style="text-align:right">0.825 ns</td>
+<td style="text-align:right">1.529 ns</td>
+<td style="text-align:right">39.35 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">36.77 ns</td>
+<td style="text-align:right">0.793 ns</td>
+<td style="text-align:right">0.881 ns</td>
+<td style="text-align:right">36.57 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">37.91 ns</td>
+<td style="text-align:right">0.807 ns</td>
+<td style="text-align:right">1.303 ns</td>
+<td style="text-align:right">37.74 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">37.74 ns</td>
+<td style="text-align:right">0.754 ns</td>
+<td style="text-align:right">0.629 ns</td>
+<td style="text-align:right">37.59 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>111.92 ns</strong></td>
+<td style="text-align:right"><strong>1.192 ns</strong></td>
+<td style="text-align:right"><strong>1.057 ns</strong></td>
+<td style="text-align:right"><strong>111.80 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">143.66 ns</td>
+<td style="text-align:right">1.489 ns</td>
+<td style="text-align:right">1.320 ns</td>
+<td style="text-align:right">143.47 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">87.47 ns</td>
+<td style="text-align:right">0.935 ns</td>
+<td style="text-align:right">0.829 ns</td>
+<td style="text-align:right">87.23 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">91.49 ns</td>
+<td style="text-align:right">1.542 ns</td>
+<td style="text-align:right">1.443 ns</td>
+<td style="text-align:right">90.90 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">36.24 ns</td>
+<td style="text-align:right">0.628 ns</td>
+<td style="text-align:right">0.524 ns</td>
+<td style="text-align:right">36.24 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>38.45 ns</strong></td>
+<td style="text-align:right"><strong>0.808 ns</strong></td>
+<td style="text-align:right"><strong>0.755 ns</strong></td>
+<td style="text-align:right"><strong>38.15 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">35.93 ns</td>
+<td style="text-align:right">0.521 ns</td>
+<td style="text-align:right">0.462 ns</td>
+<td style="text-align:right">35.81 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">36.95 ns</td>
+<td style="text-align:right">0.769 ns</td>
+<td style="text-align:right">1.517 ns</td>
+<td style="text-align:right">36.38 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">37.25 ns</td>
+<td style="text-align:right">0.777 ns</td>
+<td style="text-align:right">0.763 ns</td>
+<td style="text-align:right">37.06 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">36.84 ns</td>
+<td style="text-align:right">0.612 ns</td>
+<td style="text-align:right">0.572 ns</td>
+<td style="text-align:right">36.68 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>37.07 ns</strong></td>
+<td style="text-align:right"><strong>0.618 ns</strong></td>
+<td style="text-align:right"><strong>0.516 ns</strong></td>
+<td style="text-align:right"><strong>37.03 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">37.07 ns</td>
+<td style="text-align:right">0.819 ns</td>
+<td style="text-align:right">0.910 ns</td>
+<td style="text-align:right">37.21 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">36.12 ns</td>
+<td style="text-align:right">0.751 ns</td>
+<td style="text-align:right">0.803 ns</td>
+<td style="text-align:right">35.99 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">37.64 ns</td>
+<td style="text-align:right">0.796 ns</td>
+<td style="text-align:right">0.706 ns</td>
+<td style="text-align:right">37.52 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">37.60 ns</td>
+<td style="text-align:right">0.791 ns</td>
+<td style="text-align:right">1.082 ns</td>
+<td style="text-align:right">37.24 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>37.17 ns</strong></td>
+<td style="text-align:right"><strong>0.820 ns</strong></td>
+<td style="text-align:right"><strong>1.675 ns</strong></td>
+<td style="text-align:right"><strong>36.89 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">36.59 ns</td>
+<td style="text-align:right">0.803 ns</td>
+<td style="text-align:right">1.527 ns</td>
+<td style="text-align:right">36.73 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">36.88 ns</td>
+<td style="text-align:right">0.771 ns</td>
+<td style="text-align:right">1.626 ns</td>
+<td style="text-align:right">36.30 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">37.07 ns</td>
+<td style="text-align:right">0.816 ns</td>
+<td style="text-align:right">1.196 ns</td>
+<td style="text-align:right">36.84 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">36.82 ns</td>
+<td style="text-align:right">0.756 ns</td>
+<td style="text-align:right">1.009 ns</td>
+<td style="text-align:right">36.77 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>105.56 ns</strong></td>
+<td style="text-align:right"><strong>2.051 ns</strong></td>
+<td style="text-align:right"><strong>2.014 ns</strong></td>
+<td style="text-align:right"><strong>105.16 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">140.83 ns</td>
+<td style="text-align:right">1.897 ns</td>
+<td style="text-align:right">1.682 ns</td>
+<td style="text-align:right">140.30 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">88.00 ns</td>
+<td style="text-align:right">1.756 ns</td>
+<td style="text-align:right">1.642 ns</td>
+<td style="text-align:right">87.87 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">85.59 ns</td>
+<td style="text-align:right">1.757 ns</td>
+<td style="text-align:right">2.630 ns</td>
+<td style="text-align:right">84.75 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">35.80 ns</td>
+<td style="text-align:right">0.752 ns</td>
+<td style="text-align:right">0.738 ns</td>
+<td style="text-align:right">36.02 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>37.03 ns</strong></td>
+<td style="text-align:right"><strong>0.804 ns</strong></td>
+<td style="text-align:right"><strong>0.789 ns</strong></td>
+<td style="text-align:right"><strong>37.37 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">35.42 ns</td>
+<td style="text-align:right">0.748 ns</td>
+<td style="text-align:right">0.663 ns</td>
+<td style="text-align:right">35.37 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">37.00 ns</td>
+<td style="text-align:right">0.605 ns</td>
+<td style="text-align:right">0.505 ns</td>
+<td style="text-align:right">37.19 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">37.28 ns</td>
+<td style="text-align:right">0.816 ns</td>
 <td style="text-align:right">0.838 ns</td>
-<td style="text-align:right">0.784 ns</td>
-<td style="text-align:right">41.03 ns</td>
+<td style="text-align:right">37.09 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">39.62 ns</td>
+<td style="text-align:right">0.826 ns</td>
+<td style="text-align:right">0.811 ns</td>
+<td style="text-align:right">39.44 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>36.81 ns</strong></td>
+<td style="text-align:right"><strong>0.651 ns</strong></td>
+<td style="text-align:right"><strong>0.543 ns</strong></td>
+<td style="text-align:right"><strong>36.60 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">35.11 ns</td>
+<td style="text-align:right">0.621 ns</td>
+<td style="text-align:right">0.550 ns</td>
+<td style="text-align:right">35.04 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">35.63 ns</td>
+<td style="text-align:right">0.761 ns</td>
+<td style="text-align:right">1.139 ns</td>
+<td style="text-align:right">35.35 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">35.96 ns</td>
+<td style="text-align:right">0.751 ns</td>
+<td style="text-align:right">0.666 ns</td>
+<td style="text-align:right">35.82 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">35.68 ns</td>
+<td style="text-align:right">0.733 ns</td>
+<td style="text-align:right">0.873 ns</td>
+<td style="text-align:right">35.42 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>38.35 ns</strong></td>
+<td style="text-align:right"><strong>0.661 ns</strong></td>
+<td style="text-align:right"><strong>0.552 ns</strong></td>
+<td style="text-align:right"><strong>38.27 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">35.54 ns</td>
+<td style="text-align:right">0.770 ns</td>
+<td style="text-align:right">0.791 ns</td>
+<td style="text-align:right">35.52 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">37.12 ns</td>
+<td style="text-align:right">0.799 ns</td>
+<td style="text-align:right">0.785 ns</td>
+<td style="text-align:right">37.22 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">36.82 ns</td>
+<td style="text-align:right">0.803 ns</td>
+<td style="text-align:right">0.751 ns</td>
+<td style="text-align:right">36.73 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">38.06 ns</td>
+<td style="text-align:right">0.797 ns</td>
+<td style="text-align:right">1.036 ns</td>
+<td style="text-align:right">37.97 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>JIT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>110.15 ns</strong></td>
+<td style="text-align:right"><strong>2.126 ns</strong></td>
+<td style="text-align:right"><strong>2.611 ns</strong></td>
+<td style="text-align:right"><strong>109.29 ns</strong></td>
+<td style="text-align:right"><strong>0.0025</strong></td>
+<td style="text-align:right"><strong>48 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">162.23 ns</td>
+<td style="text-align:right">1.351 ns</td>
+<td style="text-align:right">1.128 ns</td>
+<td style="text-align:right">161.72 ns</td>
+<td style="text-align:right">0.0120</td>
+<td style="text-align:right">224 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">95.52 ns</td>
+<td style="text-align:right">1.459 ns</td>
+<td style="text-align:right">1.293 ns</td>
+<td style="text-align:right">95.51 ns</td>
+<td style="text-align:right">0.0025</td>
+<td style="text-align:right">48 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">87.99 ns</td>
+<td style="text-align:right">1.764 ns</td>
+<td style="text-align:right">1.650 ns</td>
+<td style="text-align:right">87.80 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>JIT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">37.09 ns</td>
+<td style="text-align:right">0.575 ns</td>
+<td style="text-align:right">0.480 ns</td>
+<td style="text-align:right">37.05 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>37.39 ns</strong></td>
+<td style="text-align:right"><strong>0.497 ns</strong></td>
+<td style="text-align:right"><strong>0.415 ns</strong></td>
+<td style="text-align:right"><strong>37.28 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">35.97 ns</td>
+<td style="text-align:right">0.775 ns</td>
+<td style="text-align:right">0.829 ns</td>
+<td style="text-align:right">36.02 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">35.93 ns</td>
+<td style="text-align:right">0.497 ns</td>
+<td style="text-align:right">0.415 ns</td>
+<td style="text-align:right">35.98 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">37.51 ns</td>
+<td style="text-align:right">0.732 ns</td>
+<td style="text-align:right">0.685 ns</td>
+<td style="text-align:right">37.51 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Pooled</td>
+<td style="text-align:right">37.92 ns</td>
+<td style="text-align:right">0.788 ns</td>
+<td style="text-align:right">1.078 ns</td>
+<td style="text-align:right">37.66 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>36.14 ns</strong></td>
+<td style="text-align:right"><strong>0.766 ns</strong></td>
+<td style="text-align:right"><strong>0.852 ns</strong></td>
+<td style="text-align:right"><strong>36.08 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.36 ns</td>
+<td style="text-align:right">0.654 ns</td>
+<td style="text-align:right">0.546 ns</td>
+<td style="text-align:right">35.32 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.12 ns</td>
+<td style="text-align:right">0.714 ns</td>
+<td style="text-align:right">0.633 ns</td>
+<td style="text-align:right">35.04 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">35.55 ns</td>
+<td style="text-align:right">0.741 ns</td>
+<td style="text-align:right">0.793 ns</td>
+<td style="text-align:right">35.49 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Scoped</td>
+<td style="text-align:right">37.63 ns</td>
+<td style="text-align:right">0.791 ns</td>
+<td style="text-align:right">1.208 ns</td>
+<td style="text-align:right">37.39 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>37.62 ns</strong></td>
+<td style="text-align:right"><strong>0.835 ns</strong></td>
+<td style="text-align:right"><strong>1.324 ns</strong></td>
+<td style="text-align:right"><strong>37.63 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">37.09 ns</td>
+<td style="text-align:right">0.800 ns</td>
+<td style="text-align:right">1.147 ns</td>
+<td style="text-align:right">36.95 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">36.95 ns</td>
+<td style="text-align:right">0.686 ns</td>
+<td style="text-align:right">0.573 ns</td>
+<td style="text-align:right">36.84 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">37.60 ns</td>
+<td style="text-align:right">0.778 ns</td>
+<td style="text-align:right">0.650 ns</td>
+<td style="text-align:right">37.57 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Singleton</td>
+<td style="text-align:right">36.53 ns</td>
+<td style="text-align:right">0.733 ns</td>
+<td style="text-align:right">0.753 ns</td>
+<td style="text-align:right">36.46 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Pooled</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>56.96 ns</strong></td>
+<td style="text-align:right"><strong>1.187 ns</strong></td>
+<td style="text-align:right"><strong>1.458 ns</strong></td>
+<td style="text-align:right"><strong>56.52 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">86.56 ns</td>
+<td style="text-align:right">1.805 ns</td>
+<td style="text-align:right">1.689 ns</td>
+<td style="text-align:right">86.24 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">55.47 ns</td>
+<td style="text-align:right">1.122 ns</td>
+<td style="text-align:right">1.102 ns</td>
+<td style="text-align:right">55.11 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">87.44 ns</td>
+<td style="text-align:right">1.808 ns</td>
+<td style="text-align:right">3.852 ns</td>
+<td style="text-align:right">87.35 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Pooled</td>
+<td>Transient</td>
+<td style="text-align:right">35.39 ns</td>
+<td style="text-align:right">0.731 ns</td>
+<td style="text-align:right">0.976 ns</td>
+<td style="text-align:right">35.30 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>37.44 ns</strong></td>
+<td style="text-align:right"><strong>0.811 ns</strong></td>
+<td style="text-align:right"><strong>0.933 ns</strong></td>
+<td style="text-align:right"><strong>37.19 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">33.73 ns</td>
+<td style="text-align:right">0.730 ns</td>
+<td style="text-align:right">0.781 ns</td>
+<td style="text-align:right">33.49 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">36.36 ns</td>
+<td style="text-align:right">0.799 ns</td>
+<td style="text-align:right">1.039 ns</td>
+<td style="text-align:right">36.37 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">34.85 ns</td>
+<td style="text-align:right">0.735 ns</td>
+<td style="text-align:right">0.817 ns</td>
+<td style="text-align:right">34.67 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Pooled</td>
+<td style="text-align:right">36.48 ns</td>
+<td style="text-align:right">0.765 ns</td>
+<td style="text-align:right">1.630 ns</td>
+<td style="text-align:right">36.06 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>34.55 ns</strong></td>
+<td style="text-align:right"><strong>0.763 ns</strong></td>
+<td style="text-align:right"><strong>1.018 ns</strong></td>
+<td style="text-align:right"><strong>34.53 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">34.44 ns</td>
+<td style="text-align:right">0.642 ns</td>
+<td style="text-align:right">0.713 ns</td>
+<td style="text-align:right">34.33 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">33.87 ns</td>
+<td style="text-align:right">0.481 ns</td>
+<td style="text-align:right">0.375 ns</td>
+<td style="text-align:right">33.88 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">34.95 ns</td>
+<td style="text-align:right">0.748 ns</td>
+<td style="text-align:right">0.625 ns</td>
+<td style="text-align:right">34.95 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Scoped</td>
+<td style="text-align:right">39.64 ns</td>
+<td style="text-align:right">0.810 ns</td>
+<td style="text-align:right">0.718 ns</td>
+<td style="text-align:right">39.56 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>35.95 ns</strong></td>
+<td style="text-align:right"><strong>0.790 ns</strong></td>
+<td style="text-align:right"><strong>0.940 ns</strong></td>
+<td style="text-align:right"><strong>35.61 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">35.16 ns</td>
+<td style="text-align:right">0.772 ns</td>
+<td style="text-align:right">1.202 ns</td>
+<td style="text-align:right">35.28 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">36.89 ns</td>
+<td style="text-align:right">0.616 ns</td>
+<td style="text-align:right">0.515 ns</td>
+<td style="text-align:right">36.99 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">34.57 ns</td>
+<td style="text-align:right">0.750 ns</td>
+<td style="text-align:right">0.770 ns</td>
+<td style="text-align:right">34.51 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Singleton</td>
+<td style="text-align:right">36.51 ns</td>
+<td style="text-align:right">0.764 ns</td>
+<td style="text-align:right">0.849 ns</td>
+<td style="text-align:right">36.68 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Scoped</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>56.16 ns</strong></td>
+<td style="text-align:right"><strong>1.175 ns</strong></td>
+<td style="text-align:right"><strong>1.257 ns</strong></td>
+<td style="text-align:right"><strong>56.06 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">86.43 ns</td>
+<td style="text-align:right">1.734 ns</td>
+<td style="text-align:right">1.703 ns</td>
+<td style="text-align:right">86.43 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">57.45 ns</td>
+<td style="text-align:right">1.183 ns</td>
+<td style="text-align:right">1.580 ns</td>
+<td style="text-align:right">57.27 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">84.73 ns</td>
+<td style="text-align:right">1.712 ns</td>
+<td style="text-align:right">1.682 ns</td>
+<td style="text-align:right">84.29 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Scoped</td>
+<td>Transient</td>
+<td style="text-align:right">37.71 ns</td>
+<td style="text-align:right">0.732 ns</td>
+<td style="text-align:right">0.719 ns</td>
+<td style="text-align:right">37.77 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>36.15 ns</strong></td>
+<td style="text-align:right"><strong>0.785 ns</strong></td>
+<td style="text-align:right"><strong>1.455 ns</strong></td>
+<td style="text-align:right"><strong>35.93 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">34.36 ns</td>
+<td style="text-align:right">0.708 ns</td>
+<td style="text-align:right">0.921 ns</td>
+<td style="text-align:right">34.30 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">34.17 ns</td>
+<td style="text-align:right">0.697 ns</td>
+<td style="text-align:right">0.652 ns</td>
+<td style="text-align:right">34.11 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">34.20 ns</td>
+<td style="text-align:right">0.756 ns</td>
+<td style="text-align:right">0.631 ns</td>
+<td style="text-align:right">34.29 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Pooled</td>
+<td style="text-align:right">38.97 ns</td>
+<td style="text-align:right">0.781 ns</td>
+<td style="text-align:right">0.836 ns</td>
+<td style="text-align:right">39.01 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>36.22 ns</strong></td>
+<td style="text-align:right"><strong>0.773 ns</strong></td>
+<td style="text-align:right"><strong>1.180 ns</strong></td>
+<td style="text-align:right"><strong>35.98 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">34.50 ns</td>
+<td style="text-align:right">0.681 ns</td>
+<td style="text-align:right">0.568 ns</td>
+<td style="text-align:right">34.61 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">35.10 ns</td>
+<td style="text-align:right">0.737 ns</td>
+<td style="text-align:right">0.653 ns</td>
+<td style="text-align:right">35.31 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">35.55 ns</td>
+<td style="text-align:right">0.785 ns</td>
+<td style="text-align:right">1.396 ns</td>
+<td style="text-align:right">35.45 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Scoped</td>
+<td style="text-align:right">36.42 ns</td>
+<td style="text-align:right">0.756 ns</td>
+<td style="text-align:right">1.155 ns</td>
+<td style="text-align:right">36.13 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>35.37 ns</strong></td>
+<td style="text-align:right"><strong>0.657 ns</strong></td>
+<td style="text-align:right"><strong>0.703 ns</strong></td>
+<td style="text-align:right"><strong>35.19 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">34.13 ns</td>
+<td style="text-align:right">0.761 ns</td>
+<td style="text-align:right">1.092 ns</td>
+<td style="text-align:right">33.98 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">34.63 ns</td>
+<td style="text-align:right">0.499 ns</td>
+<td style="text-align:right">0.417 ns</td>
+<td style="text-align:right">34.47 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">36.04 ns</td>
+<td style="text-align:right">0.571 ns</td>
+<td style="text-align:right">0.477 ns</td>
+<td style="text-align:right">35.95 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Singleton</td>
+<td style="text-align:right">35.58 ns</td>
+<td style="text-align:right">0.728 ns</td>
+<td style="text-align:right">1.629 ns</td>
+<td style="text-align:right">35.43 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Singleton</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>57.22 ns</strong></td>
+<td style="text-align:right"><strong>1.176 ns</strong></td>
+<td style="text-align:right"><strong>1.307 ns</strong></td>
+<td style="text-align:right"><strong>56.67 ns</strong></td>
+<td style="text-align:right"><strong>0.0010</strong></td>
+<td style="text-align:right"><strong>24 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">84.35 ns</td>
+<td style="text-align:right">1.470 ns</td>
+<td style="text-align:right">1.963 ns</td>
+<td style="text-align:right">83.91 ns</td>
+<td style="text-align:right">0.0060</td>
+<td style="text-align:right">112 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">58.56 ns</td>
+<td style="text-align:right">1.044 ns</td>
+<td style="text-align:right">0.925 ns</td>
+<td style="text-align:right">58.83 ns</td>
+<td style="text-align:right">0.0010</td>
+<td style="text-align:right">24 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">86.42 ns</td>
+<td style="text-align:right">1.792 ns</td>
+<td style="text-align:right">4.689 ns</td>
+<td style="text-align:right">86.93 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Singleton</td>
+<td>Transient</td>
+<td style="text-align:right">36.05 ns</td>
+<td style="text-align:right">0.756 ns</td>
+<td style="text-align:right">1.510 ns</td>
+<td style="text-align:right">35.92 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Pooled</strong></td>
+<td style="text-align:right"><strong>34.87 ns</strong></td>
+<td style="text-align:right"><strong>0.763 ns</strong></td>
+<td style="text-align:right"><strong>1.523 ns</strong></td>
+<td style="text-align:right"><strong>34.77 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">33.42 ns</td>
+<td style="text-align:right">0.717 ns</td>
+<td style="text-align:right">0.636 ns</td>
+<td style="text-align:right">33.32 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">36.58 ns</td>
+<td style="text-align:right">0.765 ns</td>
+<td style="text-align:right">1.546 ns</td>
+<td style="text-align:right">36.19 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">34.19 ns</td>
+<td style="text-align:right">0.745 ns</td>
+<td style="text-align:right">1.092 ns</td>
+<td style="text-align:right">34.14 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Pooled</td>
+<td style="text-align:right">41.30 ns</td>
+<td style="text-align:right">0.862 ns</td>
+<td style="text-align:right">0.885 ns</td>
+<td style="text-align:right">41.32 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Scoped</strong></td>
+<td style="text-align:right"><strong>34.65 ns</strong></td>
+<td style="text-align:right"><strong>0.770 ns</strong></td>
+<td style="text-align:right"><strong>2.173 ns</strong></td>
+<td style="text-align:right"><strong>34.37 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">33.34 ns</td>
+<td style="text-align:right">0.744 ns</td>
+<td style="text-align:right">1.180 ns</td>
+<td style="text-align:right">33.23 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">33.60 ns</td>
+<td style="text-align:right">0.742 ns</td>
+<td style="text-align:right">1.928 ns</td>
+<td style="text-align:right">32.95 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">32.85 ns</td>
+<td style="text-align:right">0.724 ns</td>
+<td style="text-align:right">0.915 ns</td>
+<td style="text-align:right">32.45 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Scoped</td>
+<td style="text-align:right">37.16 ns</td>
+<td style="text-align:right">0.779 ns</td>
+<td style="text-align:right">1.556 ns</td>
+<td style="text-align:right">37.46 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Singleton</strong></td>
+<td style="text-align:right"><strong>35.96 ns</strong></td>
+<td style="text-align:right"><strong>0.775 ns</strong></td>
+<td style="text-align:right"><strong>1.565 ns</strong></td>
+<td style="text-align:right"><strong>35.77 ns</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+<td style="text-align:right"><strong>-</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">36.06 ns</td>
+<td style="text-align:right">0.637 ns</td>
+<td style="text-align:right">0.565 ns</td>
+<td style="text-align:right">35.87 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">38.67 ns</td>
+<td style="text-align:right">0.777 ns</td>
+<td style="text-align:right">0.689 ns</td>
+<td style="text-align:right">38.73 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">35.06 ns</td>
+<td style="text-align:right">0.544 ns</td>
+<td style="text-align:right">0.425 ns</td>
+<td style="text-align:right">34.99 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Singleton</td>
+<td style="text-align:right">37.91 ns</td>
+<td style="text-align:right">0.787 ns</td>
+<td style="text-align:right">1.103 ns</td>
+<td style="text-align:right">37.50 ns</td>
+<td style="text-align:right">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>NonGeneric</strong></td>
+<td><strong>True</strong></td>
+<td><strong>AOT</strong></td>
+<td><strong>Transient</strong></td>
+<td><strong>Transient</strong></td>
+<td style="text-align:right"><strong>62.11 ns</strong></td>
+<td style="text-align:right"><strong>0.939 ns</strong></td>
+<td style="text-align:right"><strong>0.833 ns</strong></td>
+<td style="text-align:right"><strong>62.14 ns</strong></td>
+<td style="text-align:right"><strong>0.0025</strong></td>
+<td style="text-align:right"><strong>48 B</strong></td>
+</tr>
+<tr>
+<td>NonGenericProxy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">115.25 ns</td>
+<td style="text-align:right">2.117 ns</td>
+<td style="text-align:right">3.479 ns</td>
+<td style="text-align:right">114.73 ns</td>
+<td style="text-align:right">0.0120</td>
+<td style="text-align:right">224 B</td>
+</tr>
+<tr>
+<td>Generic</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">63.92 ns</td>
+<td style="text-align:right">1.337 ns</td>
+<td style="text-align:right">2.511 ns</td>
+<td style="text-align:right">63.46 ns</td>
+<td style="text-align:right">0.0025</td>
+<td style="text-align:right">48 B</td>
+</tr>
+<tr>
+<td>Lazy</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">83.62 ns</td>
+<td style="text-align:right">1.753 ns</td>
+<td style="text-align:right">3.461 ns</td>
+<td style="text-align:right">83.84 ns</td>
+<td style="text-align:right">0.0100</td>
+<td style="text-align:right">192 B</td>
+</tr>
+<tr>
+<td>Enumerable</td>
+<td>True</td>
+<td>AOT</td>
+<td>Transient</td>
+<td>Transient</td>
+<td style="text-align:right">36.79 ns</td>
+<td style="text-align:right">0.774 ns</td>
+<td style="text-align:right">1.528 ns</td>
+<td style="text-align:right">37.12 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
