@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Internals
 
         public int Count => FPath.Count;
 
-        public AbstractServiceEntry? Last => FPath.Count > 0 ? FPath[^1] : null;
+        public AbstractServiceEntry? Last => FPath.Count > 0 ? FPath[FPath.Count - 1] : null;
 
         public AbstractServiceEntry this[int index] => FPath[index];
 
