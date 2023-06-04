@@ -232,7 +232,7 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
       ...
   }
 
-  public object Invoke(IInvocationContext context, InvokeInterceptorDelegate callNext)
+  public object? Invoke(IInvocationContext context, Next<IInvocationContext, object?> callNext)
   {
     foreach(var descr in context.TargetMethod.GetParameters().Select(
       (p, i) => new 
@@ -248,7 +248,7 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
       }
     }
 
-    return callNext();
+    return callNext(context);
   }
 }
 ```
