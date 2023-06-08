@@ -19,6 +19,7 @@ Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options.get -> Solti.Utils.DI.Int
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.get -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString(bool shortForm) -> string
+Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.AspectAttribute
 Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> factory) -> void
 Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Type interceptor) -> void
@@ -47,6 +48,7 @@ Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.DI.Interface
 Solti.Utils.DI.Interfaces.IDelegateCompiler
 Solti.Utils.DI.Interfaces.IDelegateCompiler.Compile<TDelegate>(System.Linq.Expressions.Expression<TDelegate> expression, System.Action<TDelegate> completionCallback) -> void
 Solti.Utils.DI.Interfaces.IDependencyResolver
+Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression injector, Solti.Utils.DI.Interfaces.DependencyDescriptor dependency, object userData, object context, Solti.Utils.DI.Interfaces.Next<object, System.Linq.Expressions.Expression> next) -> System.Linq.Expressions.Expression
 Solti.Utils.DI.Interfaces.IFactoryVisitor
 Solti.Utils.DI.Interfaces.IFactoryVisitor.Visit(System.Linq.Expressions.LambdaExpression factory, Solti.Utils.DI.Interfaces.AbstractServiceEntry entry) -> System.Linq.Expressions.LambdaExpression
 Solti.Utils.DI.Interfaces.IHasTag
@@ -57,13 +59,21 @@ Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.Sco
 Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type iface, string name = null) -> object
 Solti.Utils.DI.Interfaces.IInjectorBasicExtensions
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext context, Solti.Utils.DI.Interfaces.Next<Solti.Utils.DI.Interfaces.IInvocationContext, object> callNext) -> object
 Solti.Utils.DI.Interfaces.IInvocationContext
 Solti.Utils.DI.Interfaces.IInvocationContext.Args.get -> object[]
 Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember.get -> System.Reflection.MemberInfo
 Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMethod.get -> System.Reflection.MethodInfo
+Solti.Utils.DI.Interfaces.IInvocationContext.InvokeInterceptor() -> object
+Solti.Utils.DI.Interfaces.IInvocationContext.Next.get -> Solti.Utils.DI.Interfaces.IInvocationContext
 Solti.Utils.DI.Interfaces.IInvocationContext.ProxyInstance.get -> object
 Solti.Utils.DI.Interfaces.IInvocationContext.TargetMember.get -> System.Reflection.MemberInfo
 Solti.Utils.DI.Interfaces.IInvocationContext.TargetMethod.get -> System.Reflection.MethodInfo
+Solti.Utils.DI.Interfaces.IInvocationContext.UserData.get -> object
+Solti.Utils.DI.Interfaces.IInvocationContext.UserData.set -> void
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce
 Solti.Utils.DI.Interfaces.InjectAttribute
 Solti.Utils.DI.Interfaces.InjectAttribute.InjectAttribute() -> void
 Solti.Utils.DI.Interfaces.IProxyEngine
@@ -87,6 +97,7 @@ Solti.Utils.DI.Interfaces.LifetimeBase
 Solti.Utils.DI.Interfaces.LifetimeBase.LifetimeBase() -> void
 Solti.Utils.DI.Interfaces.MissingServiceEntry
 Solti.Utils.DI.Interfaces.MissingServiceEntry.MissingServiceEntry(System.Type interface, string name) -> void
+Solti.Utils.DI.Interfaces.Next<TConext, TResult>
 Solti.Utils.DI.Interfaces.OptionsAttribute
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.get -> string
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.init -> void
@@ -123,6 +134,7 @@ Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsAspects = 8 -> Solti.Util
 Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsBuild = 4 -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures
 Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Built = 1 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
+Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Default = 0 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated = 4 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated = 2 -> Solti.Utils.DI.Interfaces.ServiceEntryStates

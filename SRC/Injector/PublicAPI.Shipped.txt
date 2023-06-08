@@ -1,6 +1,7 @@
 ﻿#nullable enable
 const Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts.INVALID_SLOT = -1 -> int (forwarded, contained in Solti.Utils.DI.Interfaces)
 const Solti.Utils.DI.Interfaces.IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX = "$" -> string (forwarded, contained in Solti.Utils.DI.Interfaces)
+override sealed Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.Invoke(Solti.Utils.Proxy.InvocationContext context) -> object
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.Decorators.get -> System.Collections.Generic.IReadOnlyList<System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate>>
 override sealed Solti.Utils.DI.Internals.ProducibleServiceEntry.UpdateState(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> void
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -27,6 +28,7 @@ Solti.Utils.DI.Interfaces.AbstractServiceEntry.Options.get -> Solti.Utils.DI.Int
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.get -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.State.set -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString(bool shortForm) -> string (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.AbstractServiceEntry.UpdateStateInternal(Solti.Utils.DI.Interfaces.ServiceEntryStates newState) -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AspectAttribute (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate> factory) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Type interceptor) -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -43,6 +45,10 @@ Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.Sco
 Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type iface, string name = null) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjectorBasicExtensions (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext context, Solti.Utils.DI.Interfaces.Next<Solti.Utils.DI.Interfaces.IInvocationContext, object> callNext) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ILazy<TInterfce> (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.InjectAttribute (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.InjectAttribute.InjectAttribute() -> void (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IScopeFactory (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -84,6 +90,7 @@ Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsAspects = 8 -> Solti.Util
 Solti.Utils.DI.Interfaces.ServiceEntryFeatures.SupportsBuild = 4 -> Solti.Utils.DI.Interfaces.ServiceEntryFeatures (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Built = 1 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Default = 0 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated = 4 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated = 2 -> Solti.Utils.DI.Interfaces.ServiceEntryStates (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -94,6 +101,8 @@ Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(stri
 Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.AOT = 1 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ServiceResolutionMode.JIT = 0 -> Solti.Utils.DI.Interfaces.ServiceResolutionMode (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>
+Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.InterceptorAggregator(TTarget target, params Solti.Utils.DI.Interfaces.IInterfaceInterceptor[] interceptors) -> void
 Solti.Utils.DI.Internals.ProducibleServiceEntry
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type interface, string name, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate> factory, Solti.Utils.DI.Interfaces.ServiceOptions options) -> void
 Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type interface, string name, System.Type implementation, object explicitArgs, Solti.Utils.DI.Interfaces.ServiceOptions options) -> void
@@ -154,6 +163,10 @@ static Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService<TInt
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsInternal(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, params (System.Type Interceptor, object ExplicitArg)[] interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, params System.Type[] interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, System.Type iface, string name, params (System.Type Interceptor, object ExplicitArg)[] interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, System.Type iface, string name, params System.Type[] interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, System.Type iface, string name, System.Type interceptor) -> Solti.Utils.DI.Interfaces.IServiceCollection
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, System.Type iface, string name, System.Type interceptor, object explicitArgs) -> Solti.Utils.DI.Interfaces.IServiceCollection
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, System.Type iface, System.Type interceptor) -> Solti.Utils.DI.Interfaces.IServiceCollection

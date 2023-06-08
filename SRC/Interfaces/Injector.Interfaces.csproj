@@ -10,7 +10,6 @@
   <ItemGroup>
     <None Remove="Abstractions\IServiceEntryLookup.cs.bak" />
     <None Remove="Abstractions\IServiceEntryLookupFactory.cs.bak" />
-    <None Remove="PublicAPI.Shipped.txt" />
   </ItemGroup>
 
   <ItemGroup>
