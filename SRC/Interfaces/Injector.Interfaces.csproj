@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\Common\IsExternalInit.cs" Link="IsExternalInit.cs" />
+    <Compile Include="..\Common\IsExternalInit.cs" Link="Private\IsExternalInit.cs" />
   </ItemGroup>
 
   <ItemGroup>
