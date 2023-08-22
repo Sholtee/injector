@@ -4,8 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
@@ -19,51 +18,44 @@ namespace Solti.Utils.DI.Internals
     /// <remarks><code>param => param.DoComething();</code> becomes <code>substitution.DoSomething();</code></remarks>
     internal sealed class UnfoldLambdaExpressionVisitor : ExpressionVisitor
     {
-        private readonly WriteOnce<IReadOnlyList<ParameterExpression>> FParameters = new();
+        private readonly WriteOnce<ReadOnlyCollection<ParameterExpression>> FParameters = new();
 
-        private UnfoldLambdaExpressionVisitor(IReadOnlyList<Expression> parameterSubstitutions) => ParameterSubstitutions = parameterSubstitutions;
+        private readonly Expression[] FParameterSubstitutions;
 
-        public IReadOnlyList<Expression> ParameterSubstitutions { get; }
+        private UnfoldLambdaExpressionVisitor(Expression[] parameterSubstitutions) => FParameterSubstitutions = parameterSubstitutions;
 
         public static Expression Unfold(LambdaExpression lamda, params Expression[] parameterSubstitutions) =>
             new UnfoldLambdaExpressionVisitor(parameterSubstitutions).Visit(lamda);
 
-        protected override Expression VisitLambda<T>(Expression<T> node)
+        protected override Expression VisitLambda<T>(Expression<T> lambda)
         {
             if (FParameters.HasValue)
                 //
                 // In nested lambdas we just replace the captured compatible variables.
                 //
 
-                return base.VisitLambda(node);
+                return base.VisitLambda(lambda);
 
-            if (node.Parameters.Count != ParameterSubstitutions.Count)
+            if (lambda.Parameters.Count != FParameterSubstitutions.Length)
                 throw new NotSupportedException(Resources.LAMBDA_LAYOUT_NOT_SUPPORTED);
 
-            FParameters!.Value = node.Parameters;
+            FParameters.Value = lambda.Parameters;
 
             //
             // From the main method we just need the method body
             //
 
-            return Visit(node.Body);
+            return Visit(lambda.Body);
         }
 
-        protected override Expression VisitParameter(ParameterExpression node)
+        protected override Expression VisitParameter(ParameterExpression parameter)
         {
             //
             // Find the corresponding parameter
             //
 
-            int? index = FParameters
-                .Value
-                .Select(static (p, i) => new { Parameter = p, Index = i })
-                .SingleOrDefault(p => p.Parameter == node)
-                ?.Index;
-
-            return index is not null
-                ? ParameterSubstitutions[index.Value]
-                : node;
+            int index = FParameters.Value!.IndexOf(parameter);
+            return index >= 0 ? FParameterSubstitutions[index] : parameter;
         }
     }
 }
