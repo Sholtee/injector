@@ -9,6 +9,7 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives;
 
     internal sealed class RegularDependencyResolver: IDependencyResolver
     {

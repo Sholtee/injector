@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives;
     using Primitives.Threading;
 
     internal sealed partial class PooledServiceEntry

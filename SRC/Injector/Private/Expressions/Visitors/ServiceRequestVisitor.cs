@@ -10,6 +10,7 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives;
 
     /// <summary>
     /// Visits <see cref="IInjector.Get(Type, string?)"/>, <see cref="IInjector.TryGet(Type, string?)"/>, <see cref="IInjectorBasicExtensions.Get{TInterface}(Interfaces.IInjector, string?)"/> and <see cref="IInjectorBasicExtensions.TryGet{TInterface}(Interfaces.IInjector, string?)"/> invocations.
