@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Internals
@@ -50,6 +51,8 @@ namespace Solti.Utils.DI.Internals
 
         protected override Expression VisitParameter(ParameterExpression parameter)
         {
+            Debug.Assert(FParameters.HasValue, "Parameter list has not been determined");
+
             //
             // Find the corresponding parameter
             //
