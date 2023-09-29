@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </list>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, Expression<DecoratorDelegate> decorator)
+        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, Expression<DecoratorDelegate> decorator)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -134,7 +134,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </list>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IServiceCollection Decorate<TInterface>(this IServiceCollection self, string? name, Expression<DecoratorDelegate<TInterface>> decorator) where TInterface : class =>
+        public static IServiceCollection Decorate<TInterface>(this IServiceCollection self, object? name, Expression<DecoratorDelegate<TInterface>> decorator) where TInterface : class =>
             self.Decorate(typeof(TInterface), name, WrapToStandardDelegate(decorator));
 
         /// <summary>

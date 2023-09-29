@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// The exception that is thrown when a service could not be found.
     /// </summary>
-    /// <remarks>If the requested service is optional, consider using the <see cref="IInjector.TryGet(Type, string?)"/> method in order to avoid this error.</remarks>
+    /// <remarks>If the requested service is optional, consider using the <see cref="IInjector.TryGet(Type, object?)"/> method in order to avoid this error.</remarks>
     public sealed class ServiceNotFoundException : Exception
     {
         /// <summary>

@@ -135,7 +135,7 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, params (Type Interceptor, object? ExplicitArg)[] interceptors)
+        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, params (Type Interceptor, object? ExplicitArg)[] interceptors)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -166,7 +166,7 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, params Type[] interceptors)
+        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, params Type[] interceptors)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -181,7 +181,7 @@ namespace Solti.Utils.DI
             (
                 interceptors.Select
                 (
-                    static i => (i, (object?) null)
+                    static interceptor => (interceptor, (object?) null)
                 )
             );
             return self;
@@ -203,7 +203,7 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, Type interceptor, object? explicitArgs) =>
+        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, Type interceptor, object? explicitArgs) =>
             self.Decorate(iface, name, new[] { (interceptor, explicitArgs) });
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, Type interceptor) =>
+        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, Type interceptor) =>
             self.Decorate(iface, name, new[] { interceptor });
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace Solti.Utils.DI
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
         public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Type interceptor) =>
-            self.Decorate(iface, null, new[] { interceptor });
+            self.Decorate(iface, name: null, new[] { interceptor });
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
@@ -273,7 +273,7 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self, string? name, object? explicitArgs) where TInterface : class where TInterceptor : IInterfaceInterceptor
+        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self, object? name, object? explicitArgs) where TInterface : class where TInterceptor : IInterfaceInterceptor
             => self.Decorate(typeof(TInterface), name, typeof(TInterceptor), explicitArgs);
 
         /// <summary>
@@ -289,24 +289,8 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self, string? name) where TInterface: class where TInterceptor: IInterfaceInterceptor
+        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self, object? name) where TInterface: class where TInterceptor: IInterfaceInterceptor
             => self.Decorate(typeof(TInterface), name, typeof(TInterceptor));
-
-        /// <summary>
-        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
-        /// </summary>
-        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="explicitArgs">Explicit arguments to be passed.</param>
-        /// <remarks>
-        /// <list type="bullet">
-        /// <item>You can't create proxies against instances and open generic services.</item>
-        /// <item>A service can be decorated multiple times.</item>
-        /// <item>Wrapping a service into an interceptor implies that it cannot be disposed unless the service interface itself implements the <see cref="IDisposable"/>.</item>
-        /// </list>
-        /// </remarks>
-        /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self, object? explicitArgs) where TInterface : class where TInterceptor : IInterfaceInterceptor
-            => self.Decorate(typeof(TInterface), typeof(TInterceptor), explicitArgs);
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).

@@ -15,7 +15,7 @@ namespace Solti.Utils.DI
     public static class ServiceEntryAdvancedExtensions
     {
         /// <summary>
-        /// The service was registered via <see cref="IServiceCollectionAdvancedExtensions.Instance(IServiceCollection, Type, string, object, ServiceOptions?)"/> call.
+        /// The service was registered via <see cref="IServiceCollectionAdvancedExtensions.Instance(IServiceCollection, Type, object?, object, ServiceOptions?)"/> call.
         /// </summary>
         public static bool IsInstance(this AbstractServiceEntry self)
         {

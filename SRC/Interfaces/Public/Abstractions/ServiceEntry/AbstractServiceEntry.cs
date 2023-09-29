@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="options">Options to be assigned to this instance.</param>
         /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> is not a class.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions? options)
+        protected AbstractServiceEntry(Type @interface, object? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions? options)
         {
             if (@interface is null)
                 throw new ArgumentNullException(nameof(@interface));
@@ -93,7 +93,7 @@ namespace Solti.Utils.DI.Interfaces
         /// The (optional) service name.
         /// </summary>
         /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
-        public string? Name { get; }
+        public object? Name { get; }
 
         /// <summary>
         /// The (optional) implementation of the service.

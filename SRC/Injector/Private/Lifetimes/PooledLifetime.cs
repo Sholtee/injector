@@ -14,12 +14,16 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : Lifetime
     {
-        private static string GetPoolName(Type iface, string? name)
+        private static object GetPoolName(Type iface, object? name)
         {
             if (iface.IsConstructedGenericType)
-                iface= iface.GetGenericTypeDefinition();
+                iface = iface.GetGenericTypeDefinition();
 
-            return $"{IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.TypeHandle.Value:X}{name?.Insert(0, ":")}";
+            return new
+            {
+                __pool_interface = iface,
+                __pool_name = name
+            };
         }
 
         private AbstractServiceEntry GetPoolService(PooledServiceEntry entry) => new SingletonServiceEntry
@@ -39,7 +43,7 @@ namespace Solti.Utils.DI.Internals
 
         public PooledLifetime() : base(precedence: 20) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Type implementation, ServiceOptions serviceOptions)
         {
             PooledServiceEntry entry = new
             (
@@ -54,7 +58,7 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
         {
             PooledServiceEntry entry = new
             (
@@ -70,7 +74,7 @@ namespace Solti.Utils.DI.Internals
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
         {
             PooledServiceEntry entry = new
             (

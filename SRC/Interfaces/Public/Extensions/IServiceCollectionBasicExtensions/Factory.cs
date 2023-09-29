@@ -27,7 +27,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         /// <remarks>You can register generic services (where the <paramref name="iface"/> parameter is an open generic type).</remarks>
-        public static IServiceCollection Factory(this IServiceCollection self, Type iface, string? name, Expression<FactoryDelegate> factory, LifetimeBase lifetime, ServiceOptions? options = null)
+        public static IServiceCollection Factory(this IServiceCollection self, Type iface, object? name, Expression<FactoryDelegate> factory, LifetimeBase lifetime, ServiceOptions? options = null)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -86,7 +86,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factory">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Factory<TInterface>(this IServiceCollection self, string? name, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime, ServiceOptions? options = null) where TInterface : class
+        public static IServiceCollection Factory<TInterface>(this IServiceCollection self, object? name, Expression<FactoryDelegate<TInterface>> factory, LifetimeBase lifetime, ServiceOptions? options = null) where TInterface : class
             => self.Factory(typeof(TInterface), name, WrapToStandardDelegate(factory), lifetime, options);
 
         /// <summary>

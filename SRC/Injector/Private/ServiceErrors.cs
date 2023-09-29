@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
     internal static class ServiceErrors
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotFound(Type iface, string? name, AbstractServiceEntry? requestor)
+        public static void NotFound(Type iface, object? name, AbstractServiceEntry? requestor)
         {
             MissingServiceEntry requested = new(iface, name);
             throw new ServiceNotFoundException

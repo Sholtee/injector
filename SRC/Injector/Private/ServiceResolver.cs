@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
         private readonly IDelegateCompiler FCompiler;
         private readonly ConcurrentDictionary<object, AbstractServiceEntry?> FEntries = new();
         private readonly ConcurrentDictionary<Type, IReadOnlyCollection<AbstractServiceEntry>> FNamedServices = new();
-        private readonly IReadOnlyCollection<string?> FNames; // all the possible service names including NULL
+        private readonly IReadOnlyCollection<object?> FNames; // all the possible service names including NULL
         private readonly bool FInitialized;
         private readonly Func<object, AbstractServiceEntry?> FValueFactory;
         private readonly object FBuildLock = new();
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals
 
         private sealed class CompositeKey : IServiceId
         {
-            public CompositeKey(Type iface, string name)
+            public CompositeKey(Type iface, object name)
             {
                 Interface = iface;
                 Name = name;
@@ -48,7 +48,7 @@ namespace Solti.Utils.DI.Internals
 
             public Type Interface { get; }
 
-            public string Name { get; }
+            public object Name { get; }
 
             //
             // DON'T use ServiceIdComparer here as it significantly degrades the performance
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
 
             public override int GetHashCode() => unchecked(Interface.GetHashCode() ^ Name.GetHashCode());
 
-            public override bool Equals(object obj) => obj is CompositeKey other && other.Interface == Interface && other.Name == Name;
+            public override bool Equals(object obj) => obj is CompositeKey other && other.Interface == Interface && other.Name.Equals(Name);
         }
 
         //
@@ -64,14 +64,14 @@ namespace Solti.Utils.DI.Internals
         //
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static object GetKey(Type iface, string? name) => name is not null
+        private static object GetKey(Type iface, object? name) => name is not null
             ? new CompositeKey(iface, name)
             : iface;
 
         private AbstractServiceEntry? Resolve(object key)
         {
             Type iface;
-            string? name;
+            object? name;
 
             if (key is CompositeKey compositeKey)
             {
@@ -136,7 +136,7 @@ namespace Solti.Utils.DI.Internals
             // Collect all the possible service names to make ResolveMany() more efficient
             //
 
-            HashSet<string?> names = new();
+            HashSet<object?> names = new();
 
             foreach (AbstractServiceEntry entry in entries)
             {
@@ -198,7 +198,7 @@ namespace Solti.Utils.DI.Internals
         #region IServiceEntryResolver
         public int Slots => FSlots;
 
-        public AbstractServiceEntry? Resolve(Type iface, string? name)
+        public AbstractServiceEntry? Resolve(Type iface, object? name)
         {
             AbstractServiceEntry? entry = FEntries.GetOrAdd(GetKey(iface, name), FValueFactory);
             if (entry is not null && !FInitialized)
@@ -215,7 +215,7 @@ namespace Solti.Utils.DI.Internals
         {
             List<AbstractServiceEntry> entries = new(FNames.Count);
 
-            foreach (string? name in FNames)
+            foreach (object? name in FNames)
             {
                 AbstractServiceEntry? entry = Resolve(iface, name);
                 if (entry is not null)

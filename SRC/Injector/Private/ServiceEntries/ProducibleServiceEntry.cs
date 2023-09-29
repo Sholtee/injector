@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Internals
                 : null;
         }
 
-        private ProducibleServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions options) : base(@interface, name, implementation, factory, explicitArgs, options)
+        private ProducibleServiceEntry(Type @interface, object? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions options) : base(@interface, name, implementation, factory, explicitArgs, options)
         {
             if (Options!.SupportAspects)
             {
@@ -57,7 +57,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -89,7 +89,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,

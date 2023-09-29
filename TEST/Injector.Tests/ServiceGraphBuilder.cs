@@ -29,9 +29,9 @@ namespace Solti.Utils.DI.Internals.Tests
             public void Dispose() { }
             public ValueTask DisposeAsync() => default;
 
-            public abstract object Get(Type iface, string name = null);
+            public abstract object Get(Type iface, object name = null);
             public abstract object GetOrCreateInstance(AbstractServiceEntry requested);
-            public abstract object TryGet(Type iface, string name = null);
+            public abstract object TryGet(Type iface, object name = null);
         }
 
         private interface IMyService

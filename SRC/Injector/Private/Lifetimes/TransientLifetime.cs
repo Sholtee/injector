@@ -15,7 +15,7 @@ namespace Solti.Utils.DI.Internals
     {
         public TransientLifetime() : base(precedence: 10) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Type implementation, ServiceOptions serviceOptions)
         {
             yield return new TransientServiceEntry
             (
@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
         {
             yield return new TransientServiceEntry
             (
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals
             );
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
         {
             yield return new TransientServiceEntry
             (

@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => Collection.Service(null, typeof(Disposable), new { }, Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), null, new { }, Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), new { }, null));
-            Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), null, Lifetime.Transient));
+            Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), explicitArgs: null, Lifetime.Transient));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -45,8 +45,8 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldThrowOnNonClassImplementation(Lifetime lifetime)
         {
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), null, typeof(int), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), null, typeof(int), new object(), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), name: null, typeof(int), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), name: null, typeof(int), new object(), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -83,7 +83,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldHandleExplicitArgs(Lifetime lifetime)
         {
-            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
+            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(null, new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 
             Expression<FactoryDelegate> fact = Collection.Last().Factory;
 
@@ -104,7 +104,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldHandleExplicitArgs2(Lifetime lifetime)
         {
-            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new { para = "cica" }, lifetime);
+            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(null, new { para = "cica" }, lifetime);
 
             Expression<FactoryDelegate> fact = Collection.Last().Factory;
 

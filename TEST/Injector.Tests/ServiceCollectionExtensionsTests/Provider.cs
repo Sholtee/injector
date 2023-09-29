@@ -28,7 +28,7 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), null));
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), new object(), null));
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), null, Lifetime.Singleton));
-            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), null, Lifetime.Singleton));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), explicitArgs: null, Lifetime.Singleton));
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), null, new object(), Lifetime.Singleton));
         }
 
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Tests
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldSupportExplicitArgs(Lifetime lifetime) =>
-            Assert.DoesNotThrow(() => Collection.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(new Dictionary<string, object> { ["val"] = 1 }, lifetime));
+            Assert.DoesNotThrow(() => Collection.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(null, new Dictionary<string, object> { ["val"] = 1 }, lifetime));
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_MayHaveDeferredDependency(Lifetime lifetime) =>

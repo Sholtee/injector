@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Interfaces
     public static class ServiceEntryExtensions
     {
         /// <summary>
-        /// Returns true if the service was registered via <see cref="IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, string, Type, LifetimeBase, ServiceOptions?)"/> call.
+        /// Returns true if the service was registered via <see cref="IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, object?, Type, LifetimeBase, ServiceOptions?)"/> call.
         /// </summary>
         public static bool IsService(this AbstractServiceEntry self)
         {
@@ -23,8 +23,9 @@ namespace Solti.Utils.DI.Interfaces
 
             return self.Implementation is not null;
         }
+
         /// <summary>
-        /// Returns true if the service was registered via <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, string, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> call.
+        /// Returns true if the service was registered via <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, object?, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> call.
         /// </summary>
         public static bool IsFactory(this AbstractServiceEntry self)
         {
@@ -32,17 +33,6 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentNullException(nameof(self));
 
             return !self.IsService() && self.Factory is not null;
-        }
-
-        /// <summary>
-        /// Returns true if the entry is intended to internal use.
-        /// </summary>
-        public static bool IsInternal(this AbstractServiceEntry self)
-        {
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
-
-            return self.Name?.StartsWith(IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX, StringComparison.Ordinal) is true;
         }
     }
 }

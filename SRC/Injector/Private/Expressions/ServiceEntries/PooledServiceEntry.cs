@@ -21,7 +21,7 @@ namespace Solti.Utils.DI.Internals
             .GetGenericMethodDefinition();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static TInterface InvokePool<TInterface>(IInjector injector, string poolName, out object disposable) where TInterface : class
+        private static TInterface InvokePool<TInterface>(IInjector injector, object poolName, out object disposable) where TInterface : class
         {
             IPoolItem<PoolScope<TInterface>> poolScope = injector
                 .Get<IPool<TInterface>>(poolName)

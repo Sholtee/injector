@@ -12,15 +12,15 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class TransientServiceEntry : ProducibleServiceEntry
     {
-        public TransientServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
+        public TransientServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, ServiceOptions options) : base(@interface, name, implementation, options)
+        public TransientServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options) : base(@interface, name, implementation, options)
         {
         }
 
-        public TransientServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
+        public TransientServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
         {
         }
 

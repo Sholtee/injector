@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
 
         public IBuildContext BuildContext { get; } = null!;
 
-        public void Build(Type iface, string? name) => Build
+        public void Build(Type iface, object? name) => Build
         (
             FResolver.Resolve(iface, name) ?? new MissingServiceEntry(iface, name)
         );

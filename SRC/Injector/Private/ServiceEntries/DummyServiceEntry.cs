@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class DummyServiceEntry : MissingServiceEntry
     {
-        public DummyServiceEntry(Type @interface, string? name) : base(@interface, name)
+        public DummyServiceEntry(Type @interface, object? name) : base(@interface, name)
         {
         }
     }

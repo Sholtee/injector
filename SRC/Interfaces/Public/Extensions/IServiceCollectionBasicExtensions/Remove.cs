@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) service name.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static IServiceCollection Remove(this IServiceCollection self, Type iface, string? name)
+        public static IServiceCollection Remove(this IServiceCollection self, Type iface, object? name)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="name">The (optional) service name.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static IServiceCollection Remove<TInterface>(this IServiceCollection self, string? name) where TInterface : class => self.Remove(typeof(TInterface), name);
+        public static IServiceCollection Remove<TInterface>(this IServiceCollection self, object? name) where TInterface : class => self.Remove(typeof(TInterface), name);
 
         /// <summary>
         /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <typeparamref name="TInterface"/>.

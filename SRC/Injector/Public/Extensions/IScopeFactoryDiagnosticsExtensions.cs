@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Diagnostics
         /// <summary>
         /// Gets the dependency graph in <a href="https://graphviz.org/">DOT graph</a> format.
         /// </summary>
-        public static string GetDependencyGraph(this IScopeFactory root, Type iface, string? name = null, string? newLine = null)
+        public static string GetDependencyGraph(this IScopeFactory root, Type iface, object? name = null, string? newLine = null)
         {
             if (root is null)
                 throw new ArgumentNullException(nameof(root));
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Diagnostics
         /// <summary>
         /// Gets the dependency graph in <a href="https://graphviz.org/">DOT graph</a> format.
         /// </summary>
-        public static string GetDependencyGraph<TService>(this IScopeFactory root, string? name = null, string? newLine = null) where TService : class =>
+        public static string GetDependencyGraph<TService>(this IScopeFactory root, object? name = null, string? newLine = null) where TService : class =>
             root.GetDependencyGraph(typeof(TService), name, newLine);
     }
 }

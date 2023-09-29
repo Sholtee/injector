@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class InstanceServiceEntry : SingletonServiceEntry
     {
-        public InstanceServiceEntry(Type iface, string? name, object instance, ServiceOptions options) : base
+        public InstanceServiceEntry(Type iface, object? name, object instance, ServiceOptions options) : base
         (
             iface,
             name,

@@ -15,9 +15,9 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     /// <summary>
-    /// Replaces the <see cref="IInjector.Get(Type, string?)"/> invocations with the corresponing <see cref="IServiceActivator.GetOrCreateInstance(AbstractServiceEntry)"/> calls.
+    /// Replaces the <see cref="IInjector.Get(Type, object?)"/> invocations with the corresponing <see cref="IServiceActivator.GetOrCreateInstance(AbstractServiceEntry)"/> calls.
     /// </summary>
-    /// <remarks>This results a quicker delegate since it saves a <see cref="IServiceResolver.Resolve(Type, string?)"/> invocation for each dependency.</remarks>
+    /// <remarks>This results a quicker delegate since it saves a <see cref="IServiceResolver.Resolve(Type, object?)"/> invocation for each dependency.</remarks>
     internal sealed class ServiceRequestReplacerVisitor : ServiceRequestVisitor, IFactoryVisitor
     {
         private static readonly MethodInfo FGetOrCreate = MethodInfoExtractor.Extract<IServiceActivator>(static fact => fact.GetOrCreateInstance(null!));

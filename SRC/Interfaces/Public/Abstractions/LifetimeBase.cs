@@ -27,22 +27,22 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="implementation"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Type implementation, ServiceOptions serviceOptions) => throw NotSupported;
 
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="implementation"/> using arbitrary constructor arguments.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions) => throw NotSupported;
 
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="factory"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions) => throw NotSupported;
 
         /// <summary>
         /// Creates one or more service entry against the given <paramref name="value"/>.
         /// </summary>
-        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, ServiceOptions serviceOptions) => throw NotSupported;
+        public virtual IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, object value, ServiceOptions serviceOptions) => throw NotSupported;
 
         /// <summary>
         /// Creates a copy from this instance using the given <paramref name="configuration"/>.

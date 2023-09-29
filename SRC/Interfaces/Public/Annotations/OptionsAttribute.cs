@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Interfaces
         /// translates to
         /// <code>scope => new MyService(scope.Get(typeof(IDependency), options.Name))</code>
         /// </summary>
-        public string? Name { get; init; }
+        public object? Name { get; init; }
 
         /// <summary>
         /// Indicates whether a dependency is optional or not. In practice:

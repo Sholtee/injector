@@ -39,7 +39,7 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Get(Type iface, string? name) => TryGet(iface, name)!;
+        public override object Get(Type iface, object? name) => TryGet(iface, name)!;
 
         public object GetService(Type serviceType) => TryGet(serviceType, null)!;
 

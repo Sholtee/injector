@@ -12,13 +12,13 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledServiceEntry : ScopedServiceEntryBase
     {
-        public PooledServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options, string poolName) : base(@interface, name, factory, options) =>
+        public PooledServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options, object poolName) : base(@interface, name, factory, options) =>
             PoolName = poolName;
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, ServiceOptions options, string poolName) : base(@interface, name, implementation, options) =>
+        public PooledServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options, object poolName) : base(@interface, name, implementation, options) =>
             PoolName = poolName;
 
-        public PooledServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options, string poolName) : base(@interface, name, implementation, explicitArgs, options) =>
+        public PooledServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options, object poolName) : base(@interface, name, implementation, explicitArgs, options) =>
             PoolName = poolName;
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
 
         public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Pooled;
 
-        public string PoolName { get; }
+        public object PoolName { get; }
 
         public override ServiceEntryFeatures Features => base.Features | ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.SupportsBuild;
     }

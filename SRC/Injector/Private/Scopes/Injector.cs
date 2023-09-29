@@ -258,7 +258,7 @@ namespace Solti.Utils.DI.Internals
         #region IInjector
         public ScopeOptions Options { get; }
 
-        public virtual object Get(Type iface, string? name)
+        public virtual object Get(Type iface, object? name)
         {
             object? instance = TryGet(iface, name);
             if (instance is null)
@@ -272,7 +272,7 @@ namespace Solti.Utils.DI.Internals
             return instance!;
         }
 
-        public object? TryGet(Type iface, string? name)
+        public object? TryGet(Type iface, object? name)
         {
             CheckNotDisposed();
 

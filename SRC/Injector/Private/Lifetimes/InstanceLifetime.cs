@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     {
         public InstanceLifetime() : base(precedence: 40) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, object value, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, object? name, object value, ServiceOptions serviceOptions)
         {
             yield return new InstanceServiceEntry
             (

@@ -21,6 +21,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The (optional) service name.
         /// </summary>
-        string? Name { get; }
+        object? Name { get; }
     }
 }

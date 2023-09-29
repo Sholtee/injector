@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives;
 
     /// <summary>
-    /// Visits <see cref="IInjector.Get(Type, string?)"/>, <see cref="IInjector.TryGet(Type, string?)"/>, <see cref="IInjectorBasicExtensions.Get{TInterface}(Interfaces.IInjector, string?)"/> and <see cref="IInjectorBasicExtensions.TryGet{TInterface}(Interfaces.IInjector, string?)"/> invocations.
+    /// Visits <see cref="IInjector.Get(Type, object?)"/>, <see cref="IInjector.TryGet(Type, object?)"/>, <see cref="IInjectorBasicExtensions.Get{TInterface}(Interfaces.IInjector, object?)"/> and <see cref="IInjectorBasicExtensions.TryGet{TInterface}(Interfaces.IInjector, object?)"/> invocations.
     /// </summary>
     internal abstract class ServiceRequestVisitor : ExpressionVisitor
     {

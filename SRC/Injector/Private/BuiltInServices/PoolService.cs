@@ -26,9 +26,9 @@ namespace Solti.Utils.DI.Internals
         {
             public IScopeFactory ScopeFactory { get; }
 
-            public string? Name { get; }
+            public object? Name { get; }
 
-            public PoolScopeLifetimeManager(IScopeFactory scopeFactory, string? name)
+            public PoolScopeLifetimeManager(IScopeFactory scopeFactory, object? name)
             {
                 ScopeFactory = scopeFactory;
                 Name = name;
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
 
         public ObjectPool<PoolScope<TInterface>> ScopePool { get; }
 
-        public PoolService(IScopeFactory scopeFactory, DI.PoolConfig config, string? name) 
+        public PoolService(IScopeFactory scopeFactory, DI.PoolConfig config, object? name) 
         {
             ScopePool = new ObjectPool<PoolScope<TInterface>>
             (

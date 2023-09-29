@@ -72,7 +72,8 @@ namespace Solti.Utils.DI.Tests
 
         private sealed class MyServiceUsingNamedDependency : IInterface_7<IInterface_1>
         {
-            public MyServiceUsingNamedDependency([Options(Name = "cica")]IInterface_1 dep) => Interface = dep;
+            public MyServiceUsingNamedDependency([Options(Name = "cica")] IInterface_1 dep) =>
+                Interface = dep;
 
             public IInterface_1 Interface { get; }
         }

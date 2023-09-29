@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Resolves the service associated with the given interface and name.
         /// </summary>
-        AbstractServiceEntry? Resolve(Type iface, string? name);
+        AbstractServiceEntry? Resolve(Type iface, object? name);
 
         /// <summary>
         /// Resolves the services associated with the given interface regardless their name.

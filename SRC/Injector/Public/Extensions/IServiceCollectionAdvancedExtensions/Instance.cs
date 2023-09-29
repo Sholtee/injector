@@ -19,7 +19,7 @@ namespace Solti.Utils.DI
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Instance(this IServiceCollection self, Type iface, string? name, object instance, ServiceOptions? options = null)
+        public static IServiceCollection Instance(this IServiceCollection self, Type iface, object? name, object instance, ServiceOptions? options = null)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI
         /// <param name="name">The (optional) name of the service.</param>
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Instance<TInterface>(this IServiceCollection self, string? name, TInterface instance, ServiceOptions? options = null) where TInterface: class 
+        public static IServiceCollection Instance<TInterface>(this IServiceCollection self, object? name, TInterface instance, ServiceOptions? options = null) where TInterface: class 
             => self.Instance(typeof(TInterface), name, instance, options);
 
         /// <summary>
@@ -69,6 +69,6 @@ namespace Solti.Utils.DI
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         public static IServiceCollection Instance<TInterface>(this IServiceCollection self, TInterface instance, ServiceOptions? options = null) where TInterface: class
-            => self.Instance(null, instance, options);
+            => self.Instance(name: null, instance, options);
     }
 }
