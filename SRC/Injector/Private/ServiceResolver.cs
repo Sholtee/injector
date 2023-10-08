@@ -13,6 +13,7 @@ using System.Threading;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives;
     using Properties;
 
     //                                        !!!ATTENTION!!!
@@ -28,7 +29,7 @@ namespace Solti.Utils.DI.Internals
     {
         #region Private
         private readonly IServiceEntryBuilder FEntryBuilder;
-        private readonly IDelegateCompiler FCompiler;
+        private readonly DelegateCompiler FCompiler;
         private readonly ConcurrentDictionary<object, AbstractServiceEntry?> FEntries = new();
         private readonly ConcurrentDictionary<Type, IReadOnlyCollection<AbstractServiceEntry>> FNamedServices = new();
         private readonly IReadOnlyCollection<object?> FNames; // all the possible service names including NULL
@@ -76,12 +77,12 @@ namespace Solti.Utils.DI.Internals
             if (key is CompositeKey compositeKey)
             {
                 iface = compositeKey.Interface;
-                name = compositeKey.Name;
+                name  = compositeKey.Name;
             }
             else
             {
                 iface = (Type) key;
-                name = null;
+                name  = null;
             }
 
             if (!iface.IsInterface)
@@ -113,6 +114,13 @@ namespace Solti.Utils.DI.Internals
                 {
                     specialized = genericEntry!.Specialize(iface.GenericTypeArguments);
                     FEntryBuilder.Build(specialized);
+
+                    //
+                    // AOT resolved dependencies are built in batch.
+                    //
+
+                    if (FInitialized)
+                        FCompiler.Compile();
                 }
                 return specialized;
             }
@@ -121,15 +129,11 @@ namespace Solti.Utils.DI.Internals
                 Monitor.Exit(FBuildLock);
             }
         }
+        #endregion
 
-        private ServiceResolver
-        (
-            IEnumerable<AbstractServiceEntry> entries,
-            IDelegateCompiler compiler,
-            ScopeOptions scopeOptions
-        )
+        public ServiceResolver(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
         {
-            FCompiler = compiler;
+            FCompiler = new DelegateCompiler();
             FBuildLockTimeout = scopeOptions.ResolutionLockTimeout;
 
             //
@@ -185,12 +189,16 @@ namespace Solti.Utils.DI.Internals
                 }
             }
 
+            //
+            // AOT resolved dependencies are built in batch.
+            //
+
+            FCompiler.Compile();
             FInitialized = true;
         }
-        #endregion
-
+        
         #region IBuildContext
-        public IDelegateCompiler Compiler => FCompiler;
+        public DelegateCompiler Compiler => FCompiler;
 
         public int AssignSlot() => Interlocked.Increment(ref FSlots) - 1;
         #endregion
@@ -225,16 +233,5 @@ namespace Solti.Utils.DI.Internals
             return entries;
         });
         #endregion
-
-        public static ServiceResolver Create(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
-        {
-            BatchedDelegateCompiler delegateCompiler = new();
-            delegateCompiler.BeginBatch();
-
-            ServiceResolver result = new(entries, delegateCompiler, scopeOptions);
-
-            delegateCompiler.Compile();
-            return result;
-        }
     }
 }

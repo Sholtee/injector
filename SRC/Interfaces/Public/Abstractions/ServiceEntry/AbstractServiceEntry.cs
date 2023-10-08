@@ -24,6 +24,11 @@ namespace Solti.Utils.DI.Interfaces
         private int FState;
 
         /// <summary>
+        /// Value of <see cref="CreateInterceptorDelegate"/> property.
+        /// </summary>
+        protected FutureDelegate<CreateServiceDelegate>? FCreateInstance;
+
+        /// <summary>
         /// Contains some constants regarding service resolution.
         /// </summary>
         public static class Consts
@@ -147,7 +152,7 @@ namespace Solti.Utils.DI.Interfaces
         /// Unconditionaly creates a new service instance.
         /// </summary>
         /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
-        public CreateServiceDelegate? CreateInstance { get; protected set; }
+        public CreateServiceDelegate? CreateInstance => FCreateInstance?.IsCompiled is true ? FCreateInstance.Value : null;
 
         /// <summary>
         /// Bound decorators.

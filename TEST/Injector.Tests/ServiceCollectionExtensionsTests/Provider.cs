@@ -15,7 +15,6 @@ namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
     using Internals;
-    using Primitives.Threading;
     using Properties;
 
     public partial class ServiceCollectionExtensionsTests
@@ -89,7 +88,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -99,6 +98,7 @@ namespace Solti.Utils.DI.Tests
                 .Last();
 
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -123,6 +123,7 @@ namespace Solti.Utils.DI.Tests
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .Last();
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector

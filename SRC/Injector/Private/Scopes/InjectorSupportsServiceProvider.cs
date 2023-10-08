@@ -26,7 +26,7 @@ namespace Solti.Utils.DI.Internals
 
         public InjectorSupportsServiceProvider(IServiceCollection services, ScopeOptions options, object? tag) : base
         (
-            ServiceResolver.Create
+            new ServiceResolver
             (
                 RegisterBuiltInServices(services),
                 options

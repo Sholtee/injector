@@ -6,10 +6,10 @@ Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type 
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AssignedSlot.get -> int
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AssignedSlot.set -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts
-Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance.get -> Solti.Utils.DI.Interfaces.CreateServiceDelegate
-Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance.set -> void
+Solti.Utils.DI.Interfaces.AbstractServiceEntry.CreateInstance.get -> Solti.Utils.DI.Interfaces.CreateServiceDelegate?
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.ExplicitArgs.get -> object
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Factory.get -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate>
+Solti.Utils.DI.Interfaces.AbstractServiceEntry.FCreateInstance -> Solti.Utils.Primitives.FutureDelegate<Solti.Utils.DI.Interfaces.CreateServiceDelegate!>?
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Implementation.get -> System.Type
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Interface.get -> System.Type
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.Name.get -> object
@@ -42,9 +42,7 @@ Solti.Utils.DI.Interfaces.FactoryDelegate
 Solti.Utils.DI.Interfaces.FactoryDelegate<TInterface>
 Solti.Utils.DI.Interfaces.IBuildContext
 Solti.Utils.DI.Interfaces.IBuildContext.AssignSlot() -> int
-Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.DI.Interfaces.IDelegateCompiler
-Solti.Utils.DI.Interfaces.IDelegateCompiler
-Solti.Utils.DI.Interfaces.IDelegateCompiler.Compile<TDelegate>(System.Linq.Expressions.Expression<TDelegate> expression, System.Action<TDelegate> completionCallback) -> void
+Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.Primitives.DelegateCompiler!
 Solti.Utils.DI.Interfaces.IDependencyResolver
 Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression injector, Solti.Utils.DI.Interfaces.DependencyDescriptor dependency, object userData, object context, Solti.Utils.DI.Interfaces.Next<object, System.Linq.Expressions.Expression> next) -> System.Linq.Expressions.Expression
 Solti.Utils.DI.Interfaces.IFactoryVisitor
