@@ -1,6 +1,9 @@
 ﻿abstract Solti.Utils.DI.Interfaces.LifetimeBase.CompareTo(Solti.Utils.DI.Interfaces.LifetimeBase other) -> int
 const Solti.Utils.DI.Interfaces.AbstractServiceEntry.Consts.INVALID_SLOT = -1 -> int
 override Solti.Utils.DI.Interfaces.AbstractServiceEntry.ToString() -> string
+override Solti.Utils.DI.Interfaces.IServiceId.Comparer.Equals(Solti.Utils.DI.Interfaces.IServiceId! x, Solti.Utils.DI.Interfaces.IServiceId! y) -> bool
+override Solti.Utils.DI.Interfaces.IServiceId.Comparer.GetHashCode(Solti.Utils.DI.Interfaces.IServiceId! obj) -> int
+override Solti.Utils.DI.Interfaces.ServiceId.ToString() -> string!
 Solti.Utils.DI.Interfaces.AbstractServiceEntry
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AbstractServiceEntry(System.Type interface, object name, System.Type implementation, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate> factory, object explicitArgs, Solti.Utils.DI.Interfaces.ServiceOptions options) -> void
 Solti.Utils.DI.Interfaces.AbstractServiceEntry.AssignedSlot.get -> int
@@ -85,15 +88,19 @@ Solti.Utils.DI.Interfaces.IServiceActivator
 Solti.Utils.DI.Interfaces.IServiceActivator.GetOrCreateInstance(Solti.Utils.DI.Interfaces.AbstractServiceEntry service) -> object
 Solti.Utils.DI.Interfaces.IServiceActivator.Super.get -> Solti.Utils.DI.Interfaces.IServiceActivator
 Solti.Utils.DI.Interfaces.IServiceCollection
+Solti.Utils.DI.Interfaces.IServiceCollection.Contains(Solti.Utils.DI.Interfaces.IServiceId! id) -> bool
+Solti.Utils.DI.Interfaces.IServiceCollection.MakeReadOnly() -> void
+Solti.Utils.DI.Interfaces.IServiceCollection.Remove(Solti.Utils.DI.Interfaces.IServiceId! id) -> bool
+Solti.Utils.DI.Interfaces.IServiceCollection.TryFind(Solti.Utils.DI.Interfaces.IServiceId! id) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry?
 Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
 Solti.Utils.DI.Interfaces.IServiceId
+Solti.Utils.DI.Interfaces.IServiceId.Comparer
+Solti.Utils.DI.Interfaces.IServiceId.Comparer.Comparer() -> void
 Solti.Utils.DI.Interfaces.IServiceId.Interface.get -> System.Type
 Solti.Utils.DI.Interfaces.IServiceId.Name.get -> object
 Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions
 Solti.Utils.DI.Interfaces.LifetimeBase
 Solti.Utils.DI.Interfaces.LifetimeBase.LifetimeBase() -> void
-Solti.Utils.DI.Interfaces.MissingServiceEntry
-Solti.Utils.DI.Interfaces.MissingServiceEntry.MissingServiceEntry(System.Type interface, object name) -> void
 Solti.Utils.DI.Interfaces.OptionsAttribute
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.get -> object
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.init -> void
@@ -134,10 +141,14 @@ Solti.Utils.DI.Interfaces.ServiceEntryStates.Collected = 8 -> Solti.Utils.DI.Int
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Default = 0 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Instantiated = 4 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
 Solti.Utils.DI.Interfaces.ServiceEntryStates.Validated = 2 -> Solti.Utils.DI.Interfaces.ServiceEntryStates
+Solti.Utils.DI.Interfaces.ServiceId
+Solti.Utils.DI.Interfaces.ServiceId.Interface.get -> System.Type!
+Solti.Utils.DI.Interfaces.ServiceId.Name.get -> object?
+Solti.Utils.DI.Interfaces.ServiceId.ServiceId(System.Type! iface, object? name) -> void
 Solti.Utils.DI.Interfaces.ServiceNotFoundException
-Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested.get -> Solti.Utils.DI.Interfaces.MissingServiceEntry
+Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requested.get -> Solti.Utils.DI.Interfaces.IServiceId!
 Solti.Utils.DI.Interfaces.ServiceNotFoundException.Requestor.get -> Solti.Utils.DI.Interfaces.AbstractServiceEntry
-Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string message, Solti.Utils.DI.Interfaces.AbstractServiceEntry requestor, Solti.Utils.DI.Interfaces.MissingServiceEntry requested) -> void
+Solti.Utils.DI.Interfaces.ServiceNotFoundException.ServiceNotFoundException(string! message, Solti.Utils.DI.Interfaces.AbstractServiceEntry? requestor, Solti.Utils.DI.Interfaces.IServiceId! requested) -> void
 Solti.Utils.DI.Interfaces.ServiceOptions
 Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver>
 Solti.Utils.DI.Interfaces.ServiceOptions.DependencyResolvers.set -> void

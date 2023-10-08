@@ -155,11 +155,7 @@ namespace Solti.Utils.DI.Internals
         {
             ServiceOptions suppressDispose = ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress };
 
-            //
-            // Copy the collection to be safe to modify it
-            //
-
-            return new ServiceCollection(services)
+            return services
                 .Factory(typeof(IInjector), static (i, _) => i, Lifetime.Scoped, suppressDispose)
                 .Factory(typeof(IServiceActivator), static (i, _) => i, Lifetime.Scoped, suppressDispose)
                 .Factory(typeof(IScopeFactory), static (i, _) => i, Lifetime.Singleton, suppressDispose) // create SF from the root only
@@ -343,7 +339,10 @@ namespace Solti.Utils.DI.Internals
             ),
             options,
             tag
-        ) {}
+        )
+        {
+            services.MakeReadOnly();
+        }
 
         public Injector(Injector super, object? tag): this(super.FServiceResolver, super.Options, tag, instantiationLock: null)
             => FSuper = super;

@@ -4,10 +4,11 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Diagnostics;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Properties;
+
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
@@ -26,11 +27,19 @@ namespace Solti.Utils.DI.Interfaces
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            bool removed = self.Remove
-            (
-                self.Find(iface, name)
-            );
-            Debug.Assert(removed, "Entry cannot be removed");
+            IServiceId serviceId = new ServiceId(iface, name);
+            if (!self.Remove(serviceId))
+                throw new ServiceNotFoundException
+                (
+                    string.Format
+                    (
+                        Resources.Culture,
+                        Resources.SERVICE_NOT_FOUND,
+                        serviceId
+                    ),
+                    null,
+                    serviceId
+                );
 
             return self;
         }

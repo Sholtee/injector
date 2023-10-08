@@ -22,10 +22,10 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void NotFound(Type iface, object? name, AbstractServiceEntry? requestor)
         {
-            MissingServiceEntry requested = new(iface, name);
+            ServiceId requested = new(iface, name);
             throw new ServiceNotFoundException
             (
-                string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString(shortForm: true)),
+                string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString()),
                 requestor,
                 requested
             );

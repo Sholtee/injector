@@ -79,6 +79,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collection is readonly..
+        /// </summary>
+        internal static string COLLECTION_IS_READONLY {
+            get {
+                return ResourceManager.GetString("COLLECTION_IS_READONLY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;{0}&quot; must have exactly one (annotated) public constructor..
         /// </summary>
         internal static string CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED {

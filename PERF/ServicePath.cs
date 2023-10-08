@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Perf
             .Assembly
             .ExportedTypes
             .Where(t => t.IsInterface && !t.IsGenericTypeDefinition)
-            .Select(t => new DummyServiceEntry(t, null))
+            .Select(t => new MissingServiceEntry(t, null))
             .Take(10)
             .ToArray();
 

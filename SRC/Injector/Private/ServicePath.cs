@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
             for(; foundIndex < FPath.Count; foundIndex++)
             {
                 AbstractServiceEntry that = FPath[foundIndex];
-                if (ServiceIdComparer.Instance.Equals(that, entry))
+                if (IServiceId.Comparer.Instance.Equals(that, entry))
                     break;
             }
 

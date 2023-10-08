@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="ServiceNotFoundException"/> instance.
         /// </summary>
-        public ServiceNotFoundException(string message, AbstractServiceEntry? requestor, MissingServiceEntry requested) : base(message)
+        public ServiceNotFoundException(string message, AbstractServiceEntry? requestor, IServiceId requested) : base(message)
         {
             Requestor = requestor;
             Requested = requested ?? throw new ArgumentNullException(nameof(requested));
@@ -31,6 +31,6 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The requested service.
         /// </summary>
-        public MissingServiceEntry Requested { get; }
+        public IServiceId Requested { get; }
     }
 }

@@ -26,7 +26,7 @@ namespace Solti.Utils.DI
             if (registerServices is null)
                 throw new ArgumentNullException(nameof(registerServices));
 
-            IServiceCollection services = ServiceCollection.Create();
+            IServiceCollection services = new ServiceCollection();
             registerServices(services);
 
             return Create(services, scopeOptions, tag);

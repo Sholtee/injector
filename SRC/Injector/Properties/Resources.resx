@@ -183,4 +183,7 @@
   <data name="SERVICE_ALREADY_REGISTERED" xml:space="preserve">
     <value>A service with the same ID has already been registered.</value>
   </data>
+  <data name="COLLECTION_IS_READONLY" xml:space="preserve">
+    <value>Collection is readonly.</value>
+  </data>
 </root>

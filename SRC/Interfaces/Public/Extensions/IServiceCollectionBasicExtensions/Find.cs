@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Interfaces
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            return self.SingleOrDefault(svc => svc.Interface == iface && svc.Name == name);
+            return self.TryFind(new ServiceId(iface, name));
         }
 
         /// <summary>
@@ -83,23 +83,18 @@ namespace Solti.Utils.DI.Interfaces
             if (iface is null)
                 throw new ArgumentNullException(nameof(iface));
 
-            AbstractServiceEntry? entry = self.TryFind(iface, name);
-            if (entry is null)
-            {
-                MissingServiceEntry missingService = new(iface, name);
-                throw new ServiceNotFoundException
+            ServiceId serviceId = new(iface, name);
+            return self.TryFind(serviceId) ??  throw new ServiceNotFoundException
+            (
+                string.Format
                 (
-                    string.Format
-                    (
-                        Resources.Culture,
-                        Resources.SERVICE_NOT_FOUND,
-                        missingService.ToString(shortForm: true)
-                    ),
-                    null,
-                    missingService
-                );
-            }
-            return entry;
+                    Resources.Culture,
+                    Resources.SERVICE_NOT_FOUND,
+                    serviceId
+                ),
+                null,
+                serviceId
+            );
         }
 
         /// <summary>
