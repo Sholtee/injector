@@ -25,6 +25,7 @@ Solti.Utils.DI.Interfaces.AspectAttribute.AspectAttribute(System.Type intercepto
 Solti.Utils.DI.Interfaces.AspectAttribute.ExplicitArgs.get -> object
 Solti.Utils.DI.Interfaces.AspectAttribute.Factory.get -> System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.CreateInterceptorDelegate>
 Solti.Utils.DI.Interfaces.AspectAttribute.Interceptor.get -> System.Type
+Solti.Utils.DI.Interfaces.CallNextDelegate<TConext, TResult>
 Solti.Utils.DI.Interfaces.CircularReferenceException
 Solti.Utils.DI.Interfaces.CircularReferenceException.Circle.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry>
 Solti.Utils.DI.Interfaces.CircularReferenceException.CircularReferenceException(string message, System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.AbstractServiceEntry> circle) -> void
@@ -45,7 +46,7 @@ Solti.Utils.DI.Interfaces.IBuildContext.AssignSlot() -> int
 Solti.Utils.DI.Interfaces.IBuildContext.Compiler.get -> Solti.Utils.Primitives.DelegateCompiler!
 Solti.Utils.DI.Interfaces.IDependencyResolver
 Solti.Utils.DI.Interfaces.IDependencyResolver.Id.get -> object!
-Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression! injector, Solti.Utils.DI.Interfaces.DependencyDescriptor! dependency, object? userData, object? context, Solti.Utils.DI.Interfaces.NextDelegate<object?, System.Linq.Expressions.Expression!>! next) -> System.Linq.Expressions.Expression!
+Solti.Utils.DI.Interfaces.IDependencyResolver.Resolve(System.Linq.Expressions.ParameterExpression! injector, Solti.Utils.DI.Interfaces.DependencyDescriptor! dependency, object? userData, object? context, Solti.Utils.DI.Interfaces.CallNextDelegate<object?, System.Linq.Expressions.Expression!>! next) -> System.Linq.Expressions.Expression!
 Solti.Utils.DI.Interfaces.IFactoryVisitor
 Solti.Utils.DI.Interfaces.IFactoryVisitor.Visit(System.Linq.Expressions.LambdaExpression factory, Solti.Utils.DI.Interfaces.AbstractServiceEntry entry) -> System.Linq.Expressions.LambdaExpression
 Solti.Utils.DI.Interfaces.IHasTag
@@ -56,7 +57,7 @@ Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.Sco
 Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type iface, object name = null) -> object
 Solti.Utils.DI.Interfaces.IInjectorBasicExtensions
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor
-Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.NextDelegate<Solti.Utils.DI.Interfaces.IInvocationContext!, object?>! callNext) -> object?
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext! context, Solti.Utils.DI.Interfaces.CallNextDelegate<Solti.Utils.DI.Interfaces.IInvocationContext!, object?>! callNext) -> object?
 Solti.Utils.DI.Interfaces.IInvocationContext
 Solti.Utils.DI.Interfaces.IInvocationContext.Args.get -> object[]
 Solti.Utils.DI.Interfaces.IInvocationContext.InterfaceMember.get -> System.Reflection.MemberInfo
@@ -93,7 +94,6 @@ Solti.Utils.DI.Interfaces.LifetimeBase
 Solti.Utils.DI.Interfaces.LifetimeBase.LifetimeBase() -> void
 Solti.Utils.DI.Interfaces.MissingServiceEntry
 Solti.Utils.DI.Interfaces.MissingServiceEntry.MissingServiceEntry(System.Type interface, object name) -> void
-Solti.Utils.DI.Interfaces.NextDelegate<TConext, TResult>
 Solti.Utils.DI.Interfaces.OptionsAttribute
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.get -> object
 Solti.Utils.DI.Interfaces.OptionsAttribute.Name.init -> void

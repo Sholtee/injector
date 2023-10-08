@@ -87,7 +87,7 @@ static Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService<TInt
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext context, Solti.Utils.DI.Interfaces.NextDelegate<Solti.Utils.DI.Interfaces.IInvocationContext, object> callNext) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext context, Solti.Utils.DI.Interfaces.CallNextDelegate<Solti.Utils.DI.Interfaces.IInvocationContext, object> callNext) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce> (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce (forwarded, contained in Solti.Utils.DI.Interfaces)

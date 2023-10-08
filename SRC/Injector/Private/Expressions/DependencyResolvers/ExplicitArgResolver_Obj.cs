@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     {
         public object Id { get; } = nameof(ExplicitArgResolver_Obj);
 
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, NextDelegate<object?, Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, CallNextDelegate<object?, Expression> next)
         {
             if (userData is object explicitArgs)
             {

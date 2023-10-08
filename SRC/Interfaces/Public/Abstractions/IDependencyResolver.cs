@@ -22,7 +22,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="context">Optional data, passed by the previous resolver.</param>
         /// <param name="next">Invokes the next resolver.</param>
         /// <returns>The resolution of the requiested dependency, for instance <code>(TDependency) injector.Get(dependency.Type, options.Name)</code></returns>
-        Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, NextDelegate<object?, Expression> next);
+        Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, CallNextDelegate<object?, Expression> next);
 
         /// <summary>
         /// Name of this resolver.

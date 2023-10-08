@@ -10,7 +10,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Contains the related context of a perticular method invocation
     /// </summary>
-    /// <remarks>This context is used during interface interception in <see cref="IInterfaceInterceptor.Invoke(IInvocationContext, NextDelegate{IInvocationContext, object?})"/> method.</remarks>
+    /// <remarks>This context is used during interface interception in <see cref="IInterfaceInterceptor.Invoke(IInvocationContext, CallNextDelegate{IInvocationContext, object?})"/> method.</remarks>
     public interface IInvocationContext
     {
         /// <summary>
