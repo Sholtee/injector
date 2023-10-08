@@ -67,6 +67,7 @@ namespace Solti.Utils.DI.Tests
             Task t2 = Task.Factory.StartNew(() => { t2Started = true; return Root.CreateScope().Get<IList<int>>(); });
             SpinWait.SpinUntil(() => t2Started);
 
+            Thread.Sleep(10);
             evt.Set();
 
             Assert.DoesNotThrow(t1.Wait);

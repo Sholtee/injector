@@ -149,7 +149,19 @@ namespace Solti.Utils.DI.Internals
                 if (!FEntries.TryAdd(key, entry))
                 {
                     InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
-                    ex.Data[nameof(entry)] = entry;
+                    try
+                    {
+                        ex.Data[nameof(entry)] = entry;
+                    }
+                    catch (ArgumentException)
+                    {
+                        //
+                        // .NET FW throws if value assigned to Exception.Data is not serializable
+                        //
+
+                        Debug.Assert(Environment.Version.Major == 4, "Only .NET FW should complain about serialization");
+                        ex.Data[nameof(entry)] = entry.ToString(shortForm: false);
+                    }
                     throw ex;
                 }
 

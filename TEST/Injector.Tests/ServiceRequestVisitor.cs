@@ -58,8 +58,8 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             get
             {
-                yield return i => i.Get(typeof(IList), new string("cica"));
-                yield return i => i.Get<IList>(new string("cica"));
+                yield return i => i.Get(typeof(IList), new string(new[] { 'c', 'i', 'c', 'a' }));
+                yield return i => i.Get<IList>(new string(new[] { 'c', 'i', 'c', 'a' }));
             }
         }
 
