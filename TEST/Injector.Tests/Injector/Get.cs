@@ -674,14 +674,14 @@ namespace Solti.Utils.DI.Tests
                 null
             );
             mockInjector
-                .Setup(i => i.CreateInstance(coll.Single()))
+                .Setup(i => i.CreateInstance(coll.Find<IInterface_1>()))
                 .CallBase();
             mockInjector
                 .Setup(i => i.Get(typeof(IInterface_1), null))
                 .CallBase();
 
             Assert.AreNotSame(mockInjector.Object.Get<IInterface_1>(), mockInjector.Object.Get<IInterface_1>());
-            mockInjector.Verify(i => i.CreateInstance(coll.Single()), Times.Exactly(disposable ? 2 : 1));
+            mockInjector.Verify(i => i.CreateInstance(coll.Find<IInterface_1>()), Times.Exactly(disposable ? 2 : 1));
         }
     }
 }
