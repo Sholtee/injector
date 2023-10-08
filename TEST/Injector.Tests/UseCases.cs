@@ -153,7 +153,7 @@ namespace Solti.Utils.DI.UseCases
         {
             private ILogger Logger { get; } = new TLogger();
 
-            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
+            public object Invoke(IInvocationContext context, NextDelegate<IInvocationContext, object> callNext)
             {
                 Logger.Write($"{context.InterfaceMethod.Name}({string.Join(", ", context.Args.Select(arg => arg?.ToString() ?? "null"))})");
 
@@ -200,7 +200,7 @@ namespace Solti.Utils.DI.UseCases
 
         public sealed class ParameterValidatorProxy : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
+            public object Invoke(IInvocationContext context, NextDelegate<IInvocationContext, object> callNext)
             {
                 foreach (var descr in context.TargetMethod.GetParameters().Select(
                   (p, i) => new

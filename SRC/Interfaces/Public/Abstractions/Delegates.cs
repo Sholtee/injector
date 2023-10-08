@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Invokes the next member of chained items.
     /// </summary>
-    public delegate TResult Next<TConext, TResult>(TConext conext);
+    public delegate TResult NextDelegate<TConext, TResult>(TConext conext);
 
     /// <summary>
     /// Factory responsible for create interceptors.

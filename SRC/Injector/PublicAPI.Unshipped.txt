@@ -42,6 +42,8 @@ Solti.Utils.DI.Interfaces.IInjector.Get(System.Type iface, object name = null) -
 Solti.Utils.DI.Interfaces.IInjector.Options.get -> Solti.Utils.DI.Interfaces.ScopeOptions (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjector.TryGet(System.Type iface, object name = null) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInjectorBasicExtensions (forwarded, contained in Solti.Utils.DI.Interfaces)
+static Solti.Utils.DI.DefaultDependencyResolvers.Value.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver!>!
+static Solti.Utils.DI.DefaultDependencyResolvers.Value.set -> void
 static Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get<TInterface>(this Solti.Utils.DI.Interfaces.IInjector self, object name = null) -> TInterface (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet<TInterface>(this Solti.Utils.DI.Interfaces.IInjector self, object name = null) -> TInterface (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.DecoratorDelegate> decorator) -> Solti.Utils.DI.Interfaces.IServiceCollection (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -85,7 +87,7 @@ static Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService<TInt
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsService(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.IInterfaceInterceptor (forwarded, contained in Solti.Utils.DI.Interfaces)
-Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext context, Solti.Utils.DI.Interfaces.Next<Solti.Utils.DI.Interfaces.IInvocationContext, object> callNext) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
+Solti.Utils.DI.Interfaces.IInterfaceInterceptor.Invoke(Solti.Utils.DI.Interfaces.IInvocationContext context, Solti.Utils.DI.Interfaces.NextDelegate<Solti.Utils.DI.Interfaces.IInvocationContext, object> callNext) -> object (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce> (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce>.IsValueCreated.get -> bool (forwarded, contained in Solti.Utils.DI.Interfaces)
 Solti.Utils.DI.Interfaces.ILazy<TInterfce>.Value.get -> TInterfce (forwarded, contained in Solti.Utils.DI.Interfaces)
@@ -158,7 +160,6 @@ Solti.Utils.DI.PoolConfig.Capacity.set -> void
 Solti.Utils.DI.ScopeFactory
 Solti.Utils.DI.ServiceCollection
 Solti.Utils.DI.ServiceEntryAdvancedExtensions
-static Solti.Utils.DI.DefaultDependencyResolvers.Value.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver>
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(this Solti.Utils.DI.Interfaces.IScopeFactory root, System.Type iface, object name = null, string newLine = null) -> string
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(this Solti.Utils.DI.Interfaces.IScopeFactory root, object name = null, string newLine = null) -> string
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection self, params (System.Type Interceptor, object ExplicitArg)[] interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection

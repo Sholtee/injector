@@ -5,7 +5,6 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -13,22 +12,20 @@ namespace Solti.Utils.DI.Internals
     using Properties;
 
     //
-    // Don't expose this class directly as it lacks some List<AbstractServiceEntry> overrides
+    // Don't expose this class directly as it lacks some HashSet<AbstractServiceEntry> overrides
     //
 
-    internal sealed class ServiceCollection : List<AbstractServiceEntry>, IServiceCollection
+    internal sealed class ServiceCollection : HashSet<AbstractServiceEntry>, IServiceCollection
     {
         public new void Add(AbstractServiceEntry item)
         {
-            if (this.Contains(item ?? throw new ArgumentNullException(nameof(item)), ServiceIdComparer.Instance))
+            if (!base.Add(item ?? throw new ArgumentNullException(nameof(item))))
                 throw new ServiceAlreadyRegisteredException(Resources.SERVICE_ALREADY_REGISTERED, item);
-  
-            base.Add(item);
         }
 
-        public ServiceCollection() { }
+        public ServiceCollection(): base(ServiceIdComparer.Instance) { }
 
-        public ServiceCollection(IServiceCollection src)
+        public ServiceCollection(IServiceCollection src): this()
         {
             foreach (AbstractServiceEntry entry in src)
             {

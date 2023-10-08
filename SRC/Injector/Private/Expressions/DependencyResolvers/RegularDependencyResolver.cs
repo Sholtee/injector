@@ -17,10 +17,12 @@ namespace Solti.Utils.DI.Internals
             FInjectorGet = MethodInfoExtractor.Extract<IInjector>(static i => i.Get(null!, null)),
             FInjectorTryGet = MethodInfoExtractor.Extract<IInjector>(static i => i.TryGet(null!, null));
 
+        public object Id { get; } = nameof(RegularDependencyResolver);
+
         /// <summary>
         /// <code>(TInterface) injector.[Try]Get(typeof(TInterface), options?.Name)</code>
         /// </summary>
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, NextDelegate<object?, Expression> next)
         {
             if (dependency.Type.IsInterface)
             {

@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals
 
         protected virtual MethodInfo CreateLazyOpt { get; } = MethodInfoExtractor.Extract(static () => CreateLazyOptImpl<object>(null!, null)).GetGenericMethodDefinition();
 
+        public virtual object Id { get; } = nameof(RegularLazyDependencyResolver);
+
         private static Lazy<TService> CreateLazyImpl<TService>(IInjector injector, string? name) =>
             new Lazy<TService>(() => (TService) injector.Get(typeof(TService), name));
 
@@ -92,7 +94,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>new Lazy&lt;TInterface&gt;(() => (TInterface) injector.[Try]Get(typeof(TInterface), options?.Name))</code>
         /// </summary>
-        public virtual Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
+        public virtual Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, NextDelegate<object?, Expression> next)
         {
             Type? iface = ParseDependency(dependency, typeof(Lazy<>));
             if (iface is null)

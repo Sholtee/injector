@@ -12,7 +12,9 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class ExplicitArgResolver_Obj : IDependencyResolver
     {
-        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
+        public object Id { get; } = nameof(ExplicitArgResolver_Obj);
+
+        public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, NextDelegate<object?, Expression> next)
         {
             if (userData is object explicitArgs)
             {

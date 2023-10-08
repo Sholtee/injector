@@ -44,7 +44,9 @@ namespace Solti.Utils.DI.Internals
                 (injector, name)
             );
 
-        public override Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, Next<object?, Expression> next)
+        public override object Id { get; } = nameof(LazyDependencyResolver);
+
+        public override Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, NextDelegate<object?, Expression> next)
         {
             Type? iface = ParseDependency(dependency, typeof(ILazy<>));
             if (iface is null)

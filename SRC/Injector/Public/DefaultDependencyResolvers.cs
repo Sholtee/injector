@@ -4,7 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Collections.Generic;
-using System.Collections.Immutable;
 
 namespace Solti.Utils.DI
 {
@@ -20,13 +19,13 @@ namespace Solti.Utils.DI
         /// <summary>
         /// The actual list.
         /// </summary>
-        public static IReadOnlyList<IDependencyResolver> Value { get; } = ImmutableArray.Create<IDependencyResolver>
-        (
+        public static IReadOnlyList<IDependencyResolver> Value { get; set; } = new List<IDependencyResolver>
+        {
             new ExplicitArgResolver_Dict(),
             new ExplicitArgResolver_Obj(),
             new RegularLazyDependencyResolver(),
             new LazyDependencyResolver(),
             new RegularDependencyResolver()
-        );
+        };
     }
 }
