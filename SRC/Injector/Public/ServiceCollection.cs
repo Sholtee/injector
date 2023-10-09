@@ -136,20 +136,5 @@ namespace Solti.Utils.DI
         /// Creates a new <see cref="ServiceCollection"/> instance.
         /// </summary>
         public ServiceCollection(bool supportsOverride = false) => SupportsOverride = supportsOverride;
-
-        /// <summary>
-        /// Cretes a new <see cref="ServiceCollection"/> instance copying values from an existing collection.
-        /// </summary>
-        public ServiceCollection(IServiceCollection src, bool supportsOverride = false): this(supportsOverride)
-        {
-            foreach (AbstractServiceEntry entry in src)
-            {
-                //
-                // Will throw if the entry is null
-                //
-
-                Add(entry);
-            }
-        }
     }
 }

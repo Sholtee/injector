@@ -54,7 +54,6 @@ Solti.Utils.DI.ServiceCollection.MakeReadOnly() -> void
 Solti.Utils.DI.ServiceCollection.Remove(Solti.Utils.DI.Interfaces.AbstractServiceEntry! item) -> bool
 Solti.Utils.DI.ServiceCollection.Remove(Solti.Utils.DI.Interfaces.IServiceId! id) -> bool
 Solti.Utils.DI.ServiceCollection.ServiceCollection(bool supportsOverride = false) -> void
-Solti.Utils.DI.ServiceCollection.ServiceCollection(Solti.Utils.DI.Interfaces.IServiceCollection! src, bool supportsOverride = false) -> void
 Solti.Utils.DI.ServiceCollection.SupportsOverride.get -> bool
 Solti.Utils.DI.ServiceCollection.TryFind(Solti.Utils.DI.Interfaces.IServiceId! id) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry?
 static Solti.Utils.DI.DefaultDependencyResolvers.Value.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver!>!

@@ -7,6 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Moq;
 using NUnit.Framework;
@@ -17,8 +19,6 @@ namespace Solti.Utils.DI.Tests
     using Internals;
     using Primitives.Patterns;
     using Properties;
-    using System.Threading.Tasks;
-    using System.Threading;
 
     public partial class InjectorTests
     {
