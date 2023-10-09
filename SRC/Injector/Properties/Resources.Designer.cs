@@ -187,15 +187,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter should not be abstract..
-        /// </summary>
-        internal static string PARAMETER_IS_ABSTRACT {
-            get {
-                return ResourceManager.GetString("PARAMETER_IS_ABSTRACT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Parameter should not be generic..
         /// </summary>
         internal static string PARAMETER_IS_GENERIC {

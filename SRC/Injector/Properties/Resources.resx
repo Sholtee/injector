@@ -150,9 +150,6 @@
   <data name="IS_NULL" xml:space="preserve">
     <value>The value of "{0}" cannot be null.</value>
   </data>
-  <data name="PARAMETER_IS_ABSTRACT" xml:space="preserve">
-    <value>Parameter should not be abstract.</value>
-  </data>
   <data name="BUILT_IN_SERVICE_OVERRIDE" xml:space="preserve">
     <value>Built in services cannot be overridden.</value>
   </data>

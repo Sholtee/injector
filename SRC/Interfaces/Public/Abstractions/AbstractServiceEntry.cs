@@ -13,7 +13,8 @@ namespace Solti.Utils.DI.Interfaces
 {
     using Primitives;
     using Primitives.Threading;
-    using Properties;
+
+    using static Properties.Resources;
 
     /// <summary>
     /// Describes an abstract service entry.
@@ -69,7 +70,7 @@ namespace Solti.Utils.DI.Interfaces
                 throw new ArgumentNullException(nameof(@interface));
 
             if (!@interface.IsInterface)
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+                throw new ArgumentException(NOT_AN_INTERFACE, nameof(@interface));
 
             //
             // The given "implementation" not necessarily implements the service interface (for instance in case 
@@ -77,7 +78,10 @@ namespace Solti.Utils.DI.Interfaces
             //
 
             if (implementation?.IsClass is false)
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
+                throw new ArgumentException(NOT_A_CLASS, nameof(implementation));
+
+            if (implementation?.IsAbstract is true)
+                throw new ArgumentException(ABSTRACT_CLASS, nameof(implementation));
 
             Interface = @interface;
             Name = name;
@@ -157,18 +161,18 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Bound decorators.
         /// </summary>
-        public virtual IReadOnlyList<Expression<DecoratorDelegate>> Decorators => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
+        public virtual IReadOnlyList<Expression<DecoratorDelegate>> Decorators => throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
         #endregion
 
         /// <summary>
         /// Specializes a service entry if it is generic.
         /// </summary>
-        public virtual AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotSupportedException(Resources.SPECIALIZATION_NOT_SUPPORTED);
+        public virtual AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotSupportedException(SPECIALIZATION_NOT_SUPPORTED);
 
         /// <summary>
         /// If implemented, alters the service instantiation process in order to wrap the original service into a proxy.
         /// </summary>
-        public virtual void Decorate(Expression<DecoratorDelegate> decorator) => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
+        public virtual void Decorate(Expression<DecoratorDelegate> decorator) => throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
 
         /// <summary>
         /// Builds this entry applying the provided factory <paramref name="visitors"/>.
@@ -211,11 +215,11 @@ namespace Solti.Utils.DI.Interfaces
                     NULL = nameof(NULL);
 
                 result
-                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
-                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? NULL)
+                    .AppendFormat(Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
+                    .AppendFormat(Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? NULL)
 
                     #pragma warning disable CA1307 // Specify StringComparison for clarity
-                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Factory), Factory?.ToString().Replace(Environment.NewLine, " ") ?? NULL);
+                    .AppendFormat(Culture, NAME_PART, nameof(Factory), Factory?.ToString().Replace(Environment.NewLine, " ") ?? NULL);
                     #pragma warning restore CA1307
             }
 

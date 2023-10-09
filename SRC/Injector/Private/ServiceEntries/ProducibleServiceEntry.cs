@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Internals
 
     using static Interfaces.Properties.Resources;
     using static Properties.Resources;
+    using static ServiceActivator;
 
     /// <summary>
     /// Reperesents the base class of producible servce entries.
@@ -33,7 +34,7 @@ namespace Solti.Utils.DI.Internals
 
             ConstructorInfo ctor = implementation.GetApplicableConstructor();  // validates the implementation even in case of a generic svc
             return !@interface.IsGenericTypeDefinition
-                ? new FactoryResolver(options.DependencyResolvers).Resolve(ctor, explicitArgs)
+                ? ResolveFactory(ctor, explicitArgs, options.DependencyResolvers)
                 : null;
         }
 

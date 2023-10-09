@@ -61,6 +61,15 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameter is an abstract class..
+        /// </summary>
+        internal static string ABSTRACT_CLASS {
+            get {
+                return ResourceManager.GetString("ABSTRACT_CLASS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The entry does not support decorators..
         /// </summary>
         internal static string DECORATING_NOT_SUPPORTED {

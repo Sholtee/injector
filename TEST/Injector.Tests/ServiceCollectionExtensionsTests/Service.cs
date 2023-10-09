@@ -198,10 +198,10 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldAssignAFactoryFunction(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(new FactoryResolver(null).Resolve(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null).GetDebugView()));
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null, null).GetDebugView()));
 
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
-            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(new FactoryResolver(null).Resolve(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }), null).GetDebugView()));
+            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }), null, null).GetDebugView()));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

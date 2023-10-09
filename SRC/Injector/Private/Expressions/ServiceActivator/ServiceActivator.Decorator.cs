@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DecoratorResolver.cs                                                          *
+* ServiceActivator.Decorator.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     using static Properties.Resources;
 
-    internal sealed class DecoratorResolver: FactoryResolverBase
+    internal static partial class ServiceActivator
     {
         /// <summary>
         /// <code>
@@ -29,7 +29,7 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<DecoratorDelegate> Resolve(Type iface, Type target, IProxyEngine? proxyEngine, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
+        public static Expression<DecoratorDelegate> ResolveProxyDecorator(Type iface, Type target, IProxyEngine? proxyEngine, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
         {
             proxyEngine ??= ProxyEngine.Instance;
 
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>injector => new Interceptor(injector.Get(...), ...)</code>
         /// </summary>
-        public Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs)
+        public static Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs, IReadOnlyList<IDependencyResolver>? resolvers)
         {
             //
             // GetApplicableContructor() will do the rest of validations
@@ -71,16 +71,9 @@ namespace Solti.Utils.DI.Internals
             return CreateActivator<CreateInterceptorDelegate>
             (
                 interceptor.GetApplicableConstructor(),
-                explicitArgs
+                explicitArgs,
+                resolvers ?? DefaultDependencyResolvers.Value
             );
         }
-
-        /// <summary>
-        /// <code>injector => new Interceptor(injector.Get(...), ...)</code>
-        /// </summary>
-        public static Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs, IReadOnlyList<IDependencyResolver>? dependencyResolvers) =>
-            new DecoratorResolver(dependencyResolvers).ResolveInterceptorFactory(interceptor, explicitArgs);
-
-        public DecoratorResolver(IReadOnlyList<IDependencyResolver>? resolvers) : base(resolvers) { }
     }
 }
