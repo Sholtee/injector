@@ -64,13 +64,6 @@ namespace Solti.Utils.DI.Interfaces
             if (iface.IsGenericTypeDefinition)
                 throw new NotSupportedException(Resources.OPEN_GENERIC);
 
-            //
-            // Provider cannot have aspects (as it doesn't implement the service interface directly).
-            //
-
-            if (provider.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
-                throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
-
             return self
                 .Service(iface, name, provider, explicitArgs, lifetime, options)
                 .Decorate(static (injector, iface, instance) => ((IServiceProvider) instance).GetService(iface));
@@ -123,13 +116,6 @@ namespace Solti.Utils.DI.Interfaces
 
             if (iface.IsGenericTypeDefinition)
                 throw new NotSupportedException(Resources.OPEN_GENERIC);
-
-            //
-            // Provider cannot have aspects (as it doesn't implement the service interface directly).
-            //
-
-            if (provider.GetCustomAttributes<AspectAttribute>(inherit: true).Any())
-                throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
 
             return self
                 .Service(iface, name, provider, lifetime, options)

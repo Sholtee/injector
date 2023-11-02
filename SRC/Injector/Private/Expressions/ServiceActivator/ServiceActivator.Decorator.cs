@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-
+    using static Interfaces.Properties.Resources;
     using static Properties.Resources;
 
     internal static partial class ServiceActivator
@@ -32,6 +32,13 @@ namespace Solti.Utils.DI.Internals
         public static Expression<DecoratorDelegate> ResolveProxyDecorator(Type iface, Type target, IProxyEngine? proxyEngine, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
         {
             proxyEngine ??= ProxyEngine.Instance;
+
+            //
+            // Esure that the target is compatible (for instance Providers cannot have aspects)
+            //
+
+            if (!iface.IsAssignableFrom(target))
+                throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
 
             return CreateActivator<DecoratorDelegate>
             (

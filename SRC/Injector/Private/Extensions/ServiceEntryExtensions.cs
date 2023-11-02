@@ -12,7 +12,8 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
+    
+    using static Properties.Resources;
 
     using static ServiceActivator;
 
@@ -24,7 +25,7 @@ namespace Solti.Utils.DI.Internals
 
             return self.Implementation is not null
                 //
-                // Return implementation targeting interceptors first
+                // Return interceptors targeting the service implementation first
                 //
 
                 ? ResolveDecorators(self.Implementation, self.Interface)
@@ -42,7 +43,7 @@ namespace Solti.Utils.DI.Internals
                             (
                                 aspect.Interceptor ?? throw new InvalidOperationException
                                 (
-                                    string.Format(Resources.Culture, Resources.NOT_NULL, nameof(aspect.Interceptor))
+                                    string.Format(Culture, NOT_NULL, nameof(aspect.Interceptor))
                                 ),
                                 aspect.ExplicitArgs,
                                 options.DependencyResolvers
@@ -88,7 +89,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             i.Interceptor ?? throw new InvalidOperationException
                             (
-                                string.Format(Resources.Culture, Resources.NOT_NULL, nameof(i.Interceptor))
+                                string.Format(Culture, NOT_NULL, nameof(i.Interceptor))
                             ),
                             i.ExplicitArgs,
                             options.DependencyResolvers
