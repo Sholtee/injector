@@ -349,5 +349,7 @@ namespace Solti.Utils.DI.Internals
 
         public Injector(Injector super, object? tag): this(super.FServiceResolver, super.Options, tag, instantiationLock: null)
             => FSuper = super;
+
+        public IServiceResolver ServiceResolver => FServiceResolver;
     }
 }

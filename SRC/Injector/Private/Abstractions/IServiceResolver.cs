@@ -30,5 +30,10 @@ namespace Solti.Utils.DI.Internals
         /// Slots required to store scoped services.
         /// </summary>
         int Slots { get; }
+
+        /// <summary>
+        /// The underlying service entry builder.
+        /// </summary>
+        IServiceEntryBuilder ServiceEntryBuilder { get; }
     }
 }

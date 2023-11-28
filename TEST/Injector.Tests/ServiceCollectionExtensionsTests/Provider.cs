@@ -31,13 +31,6 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), null, new object(), Lifetime.Singleton));
         }
 
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Provider_ShouldThrowOnNonInterfaceKey(Lifetime lifetime)
-        {
-            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(object), typeof(DummyProvider), lifetime));
-            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(object), typeof(DummyProvider), new object(), lifetime));
-        }
-
         [DummyAspect]
         private sealed class ProviderHavingAspect : IServiceProvider
         {

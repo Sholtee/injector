@@ -293,6 +293,8 @@ namespace Solti.Utils.DI.Internals
                 return null;
             }
         }
+
+        public IServiceEntryBuilder ServiceEntryBuilder => FEntryBuilder;
         #endregion
     }
 }

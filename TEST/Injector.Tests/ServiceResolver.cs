@@ -332,22 +332,20 @@ namespace Solti.Utils.DI.Internals.Tests
             BlockingServiceEntry entry = new(typeof(IList<>));
             IServiceResolver resolver = new ServiceResolver(new[] { entry }, ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
 
-            //
-            // First thread will enter the lock even if the event has not been set
-            //
+            Task<AbstractServiceEntry>[] tasks = new Task<AbstractServiceEntry>[]
+            {
+                Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<int>), null)),
+                Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<int>), null))
+            };
 
-            bool t1Started = false;
-            Task<AbstractServiceEntry> t1 = Task<AbstractServiceEntry>.Factory.StartNew(() => { t1Started = true; return resolver.Resolve(typeof(IList<int>), null); });
-            SpinWait.SpinUntil(() => t1Started);
-
-            bool t2Started = false;
-            Task<AbstractServiceEntry> t2 = Task<AbstractServiceEntry>.Factory.StartNew(() => { t2Started = true; return resolver.Resolve(typeof(IList<int>), null); });
-            SpinWait.SpinUntil(() => t2Started);
+            SpinWait.SpinUntil(() => tasks.All(t => t.Status == TaskStatus.Running));
 
             entry.Evt.Set();
 
-            Assert.DoesNotThrow(t1.Wait);
-            Assert.Throws<TimeoutException>(() => t2.GetAwaiter().GetResult());
+            //Task.WaitAll(tasks);
+            SpinWait.SpinUntil(() => tasks.All(t => t.Status > TaskStatus.Running));
+
+            Assert.That(tasks.Single(t => t.Exception is not null).Exception.InnerException, Is.InstanceOf<TimeoutException>());
         }
 
         [Test]
