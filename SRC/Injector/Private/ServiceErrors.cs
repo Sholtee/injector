@@ -20,9 +20,9 @@ namespace Solti.Utils.DI.Internals
     internal static class ServiceErrors
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotFound(Type iface, object? name, AbstractServiceEntry? requestor)
+        public static void NotFound(Type type, object? key, AbstractServiceEntry? requestor)
         {
-            ServiceId requested = new(iface, name);
+            ServiceId requested = new(type, key);
             throw new ServiceNotFoundException
             (
                 string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString()),
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void EnsureNotBreaksTheRuleOfStrictDI(AbstractServiceEntry requestor, AbstractServiceEntry requested, bool supportServiceProvider)
         {
-            if ((requested.Interface == typeof(IInjector) || (supportServiceProvider && requested.Interface == typeof(IServiceProvider))) && requested.Name is null)
+            if ((requested.Type == typeof(IInjector) || (supportServiceProvider && requested.Type == typeof(IServiceProvider))) && requested.Key is null)
             {
                 RequestNotAllowedException ex = new(STRICT_DI_SCOPE);
                 try

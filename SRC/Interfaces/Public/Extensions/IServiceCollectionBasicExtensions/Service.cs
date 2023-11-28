@@ -22,19 +22,19 @@ namespace Solti.Utils.DI.Interfaces
         /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
-        /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, object?, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
+        /// <param name="type">The service type to be registered. It can not be null and can be registered only once (with the given <paramref name="key"/>).</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
+        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the service <paramref name="type"/>. Additionally it must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, object?, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IServiceCollection Service(this IServiceCollection self, Type iface, object? name, Type implementation, LifetimeBase lifetime, ServiceOptions? options = null)
+        public static IServiceCollection Service(this IServiceCollection self, Type type, object? key, Type implementation, LifetimeBase lifetime, ServiceOptions? options = null)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
@@ -44,7 +44,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return self.Register
             (
-                lifetime.CreateFrom(iface, name, implementation, options ?? ServiceOptions.Default)
+                lifetime.CreateFrom(type, key, implementation, options ?? ServiceOptions.Default)
             );
         }
 
@@ -59,20 +59,20 @@ namespace Solti.Utils.DI.Interfaces
         /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
-        /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
+        /// <param name="type">The service type to be registered. It can not be null and can be registered only once (with the given <paramref name="key"/>).</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
+        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the service <paramref name="type"/>. Additionally it should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="explicitArgs">Explicit arguments, provided by the user (may be an anonym object or a <see cref="IReadOnlyDictionary{TKey, TValue}"/> where the key is <see cref="string"/> and value is <see cref="object"/>).</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IServiceCollection Service(this IServiceCollection self, Type iface, object? name, Type implementation, object explicitArgs, LifetimeBase lifetime, ServiceOptions? options = null)
+        public static IServiceCollection Service(this IServiceCollection self, Type type, object? key, Type implementation, object explicitArgs, LifetimeBase lifetime, ServiceOptions? options = null)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
@@ -85,7 +85,7 @@ namespace Solti.Utils.DI.Interfaces
 
             return self.Register
             (
-                lifetime.CreateFrom(iface, name, implementation, explicitArgs, options ?? ServiceOptions.Default)
+                lifetime.CreateFrom(type, key, implementation, explicitArgs, options ?? ServiceOptions.Default)
             );
         }
 
@@ -100,13 +100,13 @@ namespace Solti.Utils.DI.Interfaces
         /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
+        /// <param name="type">The service type to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the service <paramref name="type"/>. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type, Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IServiceCollection Service(this IServiceCollection self, Type iface, Type implementation, LifetimeBase lifetime, ServiceOptions? options = null) 
-            => self.Service(iface, name: null, implementation, lifetime, options);
+        public static IServiceCollection Service(this IServiceCollection self, Type type, Type implementation, LifetimeBase lifetime, ServiceOptions? options = null) 
+            => self.Service(type, key: null, implementation, lifetime, options);
 
         /// <summary>
         /// Registers a new service using arbitrary constructor arguments:
@@ -119,14 +119,14 @@ namespace Solti.Utils.DI.Interfaces
         /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the <paramref name="iface"/> interface. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type,Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
+        /// <param name="type">The service type to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="implementation">The service implementation to be registered. It can not be null and must implement the service <paramref name="type"/>. Additionally it should have only one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory(IServiceCollection, Type,Expression{FactoryDelegate}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</param>
         /// <param name="explicitArgs">Explicit arguments, provided by the user (may be an anonym object or a <see cref="IReadOnlyDictionary{TKey, TValue}"/> where the key is <see cref="string"/> and value is <see cref="object"/>).</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         /// <remarks>You may register generic services (where both the interface and the implementation are open generic types). The system will specialize the implementation if you request the concrete service.</remarks> 
-        public static IServiceCollection Service(this IServiceCollection self, Type iface, Type implementation, object explicitArgs, LifetimeBase lifetime, ServiceOptions? options = null)
-            => self.Service(iface, null, implementation, explicitArgs, lifetime, options);
+        public static IServiceCollection Service(this IServiceCollection self, Type type, Type implementation, object explicitArgs, LifetimeBase lifetime, ServiceOptions? options = null)
+            => self.Service(type, null, implementation, explicitArgs, lifetime, options);
 
         /// <summary>
         /// Registers a new service with the given implementation:
@@ -138,13 +138,13 @@ namespace Solti.Utils.DI.Interfaces
         /// )
         /// </code>
         /// </summary>
-        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
-        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TInterface}(IServiceCollection, Expression{FactoryDelegate{TInterface}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
+        /// <typeparam name="TType">The service type to be registered. It can be registered only once.</typeparam>
+        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the service <typeparamref name="TType"/> and should have only one public constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TType}(IServiceCollection, Expression{FactoryDelegate{TType}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Service<TInterface, TImplementation>(this IServiceCollection self, LifetimeBase lifetime, ServiceOptions? options = null) where TInterface : class where TImplementation: TInterface 
-            => self.Service(typeof(TInterface), typeof(TImplementation), lifetime, options);
+        public static IServiceCollection Service<TType, TImplementation>(this IServiceCollection self, LifetimeBase lifetime, ServiceOptions? options = null) where TType : class where TImplementation: TType 
+            => self.Service(typeof(TType), typeof(TImplementation), lifetime, options);
 
         /// <summary>
         /// Registers a new named service with the given implementation:
@@ -156,14 +156,14 @@ namespace Solti.Utils.DI.Interfaces
         /// )
         /// </code>
         /// </summary>
-        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
-        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TInterface}(IServiceCollection, Expression{FactoryDelegate{TInterface}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
+        /// <typeparam name="TType">The service type to be registered. It can be registered only once (with the given <paramref name="key"/>).</typeparam>
+        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the service <typeparamref name="TType"/> and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TType}(IServiceCollection, Expression{FactoryDelegate{TType}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Service<TInterface, TImplementation>(this IServiceCollection self, object? name, LifetimeBase lifetime, ServiceOptions? options = null) where TInterface : class where TImplementation : TInterface 
-            => self.Service(typeof(TInterface), name, typeof(TImplementation), lifetime, options);
+        public static IServiceCollection Service<TType, TImplementation>(this IServiceCollection self, object? key, LifetimeBase lifetime, ServiceOptions? options = null) where TType : class where TImplementation : TType 
+            => self.Service(typeof(TType), key, typeof(TImplementation), lifetime, options);
 
         /// <summary>
         /// Registers a new named service using arbitrary constructor arguments:
@@ -175,14 +175,14 @@ namespace Solti.Utils.DI.Interfaces
         /// )
         /// </code>
         /// </summary>
-        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
-        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the <typeparamref name="TInterface"/> interface and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TInterface}(IServiceCollection, Expression{FactoryDelegate{TInterface}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
+        /// <typeparam name="TType">The service type to be registered. It can be registered only once (with the given <paramref name="key"/>).</typeparam>
+        /// <typeparam name="TImplementation">The service implementation to be registered. It must implement the service <typeparamref name="TType"/> and must have only null or one constructor (that may request another dependecies). In case of multiple constructors you can use the <see cref="IServiceCollectionBasicExtensions.Factory{TType}(IServiceCollection, Expression{FactoryDelegate{TType}}, LifetimeBase, ServiceOptions?)"/> method or the <see cref="ServiceActivatorAttribute"/>.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
         /// <param name="explicitArgs">Explicit arguments, provided by the user (may be an anonym object or a <see cref="IReadOnlyDictionary{TKey, TValue}"/> where the key is <see cref="string"/> and value is <see cref="object"/>).</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Service<TInterface, TImplementation>(this IServiceCollection self, object? name, object explicitArgs, LifetimeBase lifetime, ServiceOptions? options = null) where TInterface : class where TImplementation : TInterface
-            => self.Service(typeof(TInterface), name, typeof(TImplementation), explicitArgs, lifetime, options);
+        public static IServiceCollection Service<TType, TImplementation>(this IServiceCollection self, object? key, object explicitArgs, LifetimeBase lifetime, ServiceOptions? options = null) where TType : class where TImplementation : TType
+            => self.Service(typeof(TType), key, typeof(TImplementation), explicitArgs, lifetime, options);
     }
 }

@@ -5,10 +5,11 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
@@ -82,6 +83,8 @@ namespace Solti.Utils.DI.Internals
 #endif
         object CreateInstance(AbstractServiceEntry requested)
         {
+            Assert(requested is not null, "The requested service cannot be NULL");
+
             object? instance, disposable;
 
             if (Options.StrictDI)
@@ -93,10 +96,10 @@ namespace Solti.Utils.DI.Internals
                 //
 
                 if (requestor?.State.HasFlag(ServiceEntryStates.Validated) is false)
-                    ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested, Options.SupportsServiceProvider);
+                    ServiceErrors.EnsureNotBreaksTheRuleOfStrictDI(requestor, requested!, Options.SupportsServiceProvider);
             }
 
-            Debug.Assert(requested.State.HasFlag(ServiceEntryStates.Built), "The requested service must be built");
+            Assert(requested!.State.HasFlag(ServiceEntryStates.Built), "The requested service must be built");
 
             if (!requested.State.HasFlag(ServiceEntryStates.Validated))
             {
@@ -128,8 +131,8 @@ namespace Solti.Utils.DI.Internals
                 if (instance is null)
                     throw new InvalidOperationException(string.Format(Resources.Culture, Resources.IS_NULL, nameof(instance)));
 
-                if (!requested.Interface.IsInstanceOfType(instance))  // according to perf tests this check is quite slow
-                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Interface));
+                if (!requested.Type.IsInstanceOfType(instance))  // according to perf tests this check is quite slow
+                    throw new InvalidOperationException(string.Format(Resources.Culture, Resources.INVALID_CAST, requested.Type));
 
                 ServiceEntryStates newState = ServiceEntryStates.Instantiated;
 
@@ -254,21 +257,21 @@ namespace Solti.Utils.DI.Internals
         #region IInjector
         public ScopeOptions Options { get; }
 
-        public virtual object Get(Type iface, object? name)
+        public virtual object Get(Type type, object? key)
         {
-            object? instance = TryGet(iface, name);
+            object? instance = TryGet(type, key);
             if (instance is null)
                 //
                 // Cannot provide requestor (FPath.Last) here as Injector.Get() may be called from
                 // different threads parallelly.
                 //
 
-                ServiceErrors.NotFound(iface, name, requestor: null);
+                ServiceErrors.NotFound(type, key, requestor: null);
 
             return instance!;
         }
 
-        public object? TryGet(Type iface, object? name)
+        public object? TryGet(Type type, object? key)
         {
             CheckNotDisposed();
 
@@ -277,10 +280,10 @@ namespace Solti.Utils.DI.Internals
             // to pay it on each requests.
             //
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
-            AbstractServiceEntry? entry = FServiceResolver.Resolve(iface, name);
+            AbstractServiceEntry? entry = FServiceResolver.Resolve(type, key);
             if (entry is null)
                 return null;
 
@@ -290,10 +293,10 @@ namespace Solti.Utils.DI.Internals
                 // Since the entry is supposed to be built here, something must be wrong with it
                 //
 
-                if (iface.IsGenericTypeDefinition)
-                    throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(iface));
+                if (type.IsGenericTypeDefinition)
+                    throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(type));
 
-                Debug.Fail("Entry must be built");
+                Fail("Entry must be built");
             }
 
             return GetOrCreateInstance(entry);

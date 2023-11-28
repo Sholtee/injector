@@ -123,8 +123,8 @@ namespace Solti.Utils.DI
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <param name="interceptors">Interceptors to be applied.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -135,18 +135,18 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, params (Type Interceptor, object? ExplicitArg)[] interceptors)
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, params (Type Interceptor, object? ExplicitArg)[] interceptors)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
             if (interceptors is null)
                 throw new ArgumentNullException(nameof(interceptors));
 
-            self.Find(iface, name).ApplyInterceptors(interceptors);
+            self.Find(type, key).ApplyInterceptors(interceptors);
             return self;
         }
 
@@ -154,8 +154,8 @@ namespace Solti.Utils.DI
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <param name="interceptors">Interceptors to be applied.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -166,18 +166,18 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, params Type[] interceptors)
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, params Type[] interceptors)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
             if (interceptors is null)
                 throw new ArgumentNullException(nameof(interceptors));
 
-            self.Find(iface, name).ApplyInterceptors
+            self.Find(type, key).ApplyInterceptors
             (
                 interceptors.Select
                 (
@@ -191,8 +191,8 @@ namespace Solti.Utils.DI
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <param name="interceptor">The interceptor type.</param>
         /// <param name="explicitArgs">Explicit arguments to be passed.</param>
         /// <remarks>
@@ -203,15 +203,15 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, Type interceptor, object? explicitArgs) =>
-            self.Decorate(iface, name, new[] { (interceptor, explicitArgs) });
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, Type interceptor, object? explicitArgs) =>
+            self.Decorate(type, key, new[] { (interceptor, explicitArgs) });
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <param name="interceptor">The interceptor type.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -221,14 +221,14 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, object? name, Type interceptor) =>
-            self.Decorate(iface, name, new[] { interceptor });
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, Type interceptor) =>
+            self.Decorate(type, key, new[] { interceptor });
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
+        /// <param name="type">The service type.</param>
         /// <param name="interceptor">The interceptor type.</param>
         /// <param name="explicitArgs">Explicit arguments to be passed.</param>
         /// <remarks>
@@ -239,14 +239,14 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Type interceptor, object? explicitArgs) =>
-            self.Decorate(iface, null, interceptor, explicitArgs);
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, Type interceptor, object? explicitArgs) =>
+            self.Decorate(type, null, interceptor, explicitArgs);
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
+        /// <param name="type">The service type.</param>
         /// <param name="interceptor">The interceptor type.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -256,14 +256,14 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Type interceptor) =>
-            self.Decorate(iface, name: null, new[] { interceptor });
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, Type interceptor) =>
+            self.Decorate(type, key: null, new[] { interceptor });
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <param name="explicitArgs">Explicit arguments to be passed.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -273,14 +273,14 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self, object? name, object? explicitArgs) where TInterface : class where TInterceptor : IInterfaceInterceptor
-            => self.Decorate(typeof(TInterface), name, typeof(TInterceptor), explicitArgs);
+        public static IServiceCollection Decorate<TType, TInterceptor>(this IServiceCollection self, object? key, object? explicitArgs) where TType : class where TInterceptor : IInterfaceInterceptor
+            => self.Decorate(typeof(TType), key, typeof(TInterceptor), explicitArgs);
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <remarks>
         /// <list type="bullet">
         /// <item>You can't create proxies against instances and open generic services.</item>
@@ -289,8 +289,8 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self, object? name) where TInterface: class where TInterceptor: IInterfaceInterceptor
-            => self.Decorate(typeof(TInterface), name, typeof(TInterceptor));
+        public static IServiceCollection Decorate<TType, TInterceptor>(this IServiceCollection self, object? key) where TType: class where TInterceptor: IInterfaceInterceptor
+            => self.Decorate(typeof(TType), key, typeof(TInterceptor));
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
@@ -304,7 +304,7 @@ namespace Solti.Utils.DI
         /// </list>
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate<TInterface, TInterceptor>(this IServiceCollection self) where TInterface : class where TInterceptor : IInterfaceInterceptor
-            => self.Decorate(typeof(TInterface), typeof(TInterceptor));
+        public static IServiceCollection Decorate<TType, TInterceptor>(this IServiceCollection self) where TType : class where TInterceptor : IInterfaceInterceptor
+            => self.Decorate(typeof(TType), typeof(TInterceptor));
     }
 }

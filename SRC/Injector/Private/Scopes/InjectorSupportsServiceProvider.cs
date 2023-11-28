@@ -39,9 +39,9 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Get(Type iface, object? name) => TryGet(iface, name)!;
+        public override object Get(Type type, object? key) => TryGet(type, key)!;
 
-        public object GetService(Type serviceType) => TryGet(serviceType, null)!;
+        public object GetService(Type type) => TryGet(type, null)!;
 
         public override IInjector CreateScope(object? tag)
         {

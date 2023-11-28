@@ -31,13 +31,6 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Instance_ShouldThrowOnNonInterfaceKey()
-        {
-            Assert.Throws<ArgumentException>(() => Collection.Instance<Object>(new object()), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Collection.Instance(typeof(Object), new object()), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-        }
-
-        [Test]
         public void Instance_ShouldThrowOnMultipleRegistration()
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());

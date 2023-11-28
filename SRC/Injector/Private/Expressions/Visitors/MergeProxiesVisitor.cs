@@ -16,11 +16,11 @@ namespace Solti.Utils.DI.Internals
     /// </summary>
     /// <remarks>
     /// <code>
-    /// (injector, iface) => new Proxy_2
+    /// (injector, type) => new Proxy_2
     /// (
     ///     target: new Proxy_1
     ///     (
-    ///         target: factory(injector, iface),
+    ///         target: factory(injector, type),
     ///         ...
     ///     ),
     ///     ...
@@ -35,17 +35,17 @@ namespace Solti.Utils.DI.Internals
             {
                 ParameterExpression
                     injector = Expression.Parameter(typeof(IInjector), nameof(injector)),
-                    iface = Expression.Parameter(typeof(Type), nameof(iface));
+                    type = Expression.Parameter(typeof(Type), nameof(type));
 
                 return Expression.Lambda<Func<IInjector, Type, object>>
                 (
                     entry.Decorators.Aggregate
                     (
-                        UnfoldLambdaExpressionVisitor.Unfold(factory, injector, iface),
-                        (inner, proxyExpr) => UnfoldLambdaExpressionVisitor.Unfold(proxyExpr, injector, iface, inner)
+                        UnfoldLambdaExpressionVisitor.Unfold(factory, injector, type),
+                        (inner, proxyExpr) => UnfoldLambdaExpressionVisitor.Unfold(proxyExpr, injector, type, inner)
                     ),
                     injector,
-                    iface
+                    type
                 );
             }
 

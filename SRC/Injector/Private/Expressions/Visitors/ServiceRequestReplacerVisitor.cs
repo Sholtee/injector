@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Internals
 
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry) => (LambdaExpression) Visit(factory);
 
-        protected override Expression VisitServiceRequest(MethodCallExpression request, Expression scope, Type iface, string? name)
+        protected override Expression VisitServiceRequest(MethodCallExpression request, Expression scope, Type type, object? key)
         {
             if (scope.Type != typeof(IServiceActivator))
             {
@@ -49,7 +49,7 @@ namespace Solti.Utils.DI.Internals
             // It specializes generic services ahead of time
             //
 
-            AbstractServiceEntry? entry = FServiceResolver.Resolve(iface, name);
+            AbstractServiceEntry? entry = FServiceResolver.Resolve(type, key);
             if (entry is null)
             {
                 //
@@ -61,9 +61,9 @@ namespace Solti.Utils.DI.Internals
                     // injector.[Try]Get(iface, name) -> (TInterface) null
                     //
 
-                    return Expression.Default(iface);
+                    return Expression.Default(type);
 
-                ServiceErrors.NotFound(iface, name, FPath.Last);
+                ServiceErrors.NotFound(type, key, FPath.Last);
             }
 
             //
@@ -77,7 +77,7 @@ namespace Solti.Utils.DI.Internals
                 Expression.Constant(entry, typeof(AbstractServiceEntry))
             );
 
-            return request.Method.ReturnType != iface
+            return request.Method.ReturnType != type
                 //
                 // Cast was already done in the expression since the replaced IInjector.[Try]Get() method is not typed
                 //
@@ -91,7 +91,7 @@ namespace Solti.Utils.DI.Internals
                 : Expression.Convert
                 (
                     resolve,
-                    iface
+                    type
                 );
         }
     }

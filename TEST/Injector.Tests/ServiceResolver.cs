@@ -99,7 +99,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceActivator> mockActivator = new(MockBehavior.Strict);
             mockActivator
-                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface.GetGenericTypeDefinition() == typeof(IList<>))))
+                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Type.GetGenericTypeDefinition() == typeof(IList<>))))
                 .Returns(new object());
             mockActivator
                 .SetupGet(f => f.Super)
@@ -109,14 +109,14 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<int>)));
-            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList<int>)));
+            Assert.That(grabed.Key, Is.EqualTo(name));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
 
             grabed = resolver.Resolve(typeof(IList<string>), name);
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<string>)));
-            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList<string>)));
+            Assert.That(grabed.Key, Is.EqualTo(name));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(1));
         }
 
@@ -130,7 +130,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Mock<IServiceActivator> mockActivator = new(MockBehavior.Strict);
             mockActivator
-                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Interface == typeof(IList))))
+                .Setup(f => f.GetOrCreateInstance(It.Is<ScopedServiceEntry>(e => e.Type == typeof(IList))))
                 .Returns(new object());
             mockActivator
                 .SetupGet(f => f.Super)
@@ -140,14 +140,14 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), 0.ToString());
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList)));
-            Assert.That(grabed.Name, Is.EqualTo(0.ToString()));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList)));
+            Assert.That(grabed.Key, Is.EqualTo(0.ToString()));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
 
             grabed = resolver.Resolve(typeof(IList), 1.ToString());
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList)));
-            Assert.That(grabed.Name, Is.EqualTo(1.ToString()));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList)));
+            Assert.That(grabed.Key, Is.EqualTo(1.ToString()));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(1));
         }
 
@@ -170,14 +170,14 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList), name);
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList)));
-            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList)));
+            Assert.That(grabed.Key, Is.EqualTo(name));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
 
             grabed = resolver.Resolve(typeof(IDisposable), name);
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IDisposable)));
-            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IDisposable)));
+            Assert.That(grabed.Key, Is.EqualTo(name));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(1));
         }
 
@@ -205,8 +205,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             grabed = resolver.Resolve(typeof(IList<object>), name);
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<object>)));
-            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList<object>)));
+            Assert.That(grabed.Key, Is.EqualTo(name));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(AbstractServiceEntry.Consts.INVALID_SLOT));
         }
 
@@ -227,8 +227,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<int>)));
-            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList<int>)));
+            Assert.That(grabed.Key, Is.EqualTo(name));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(AbstractServiceEntry.Consts.INVALID_SLOT));
         }
 
@@ -249,8 +249,8 @@ namespace Solti.Utils.DI.Internals.Tests
 
             AbstractServiceEntry grabed = resolver.Resolve(typeof(IList<int>), name);
 
-            Assert.That(grabed.Interface, Is.EqualTo(typeof(IList<int>)));
-            Assert.That(grabed.Name, Is.EqualTo(name));
+            Assert.That(grabed.Type, Is.EqualTo(typeof(IList<int>)));
+            Assert.That(grabed.Key, Is.EqualTo(name));
             Assert.That(grabed.AssignedSlot, Is.EqualTo(0));
         }
 
@@ -318,7 +318,7 @@ namespace Solti.Utils.DI.Internals.Tests
             public override AbstractServiceEntry Specialize(params Type[] genericArguments)
             {
                 Evt.Wait();
-                return new BlockingServiceEntry(Interface.MakeGenericType(genericArguments));
+                return new BlockingServiceEntry(Type.MakeGenericType(genericArguments));
             }
 
             public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.SupportsBuild;

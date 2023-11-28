@@ -281,6 +281,11 @@ namespace Solti.Utils.DI.Tests
         public void Aspects_ShouldThrowOnInstances() =>
             Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyServiceHavingAspect>(new MyService()), Resources.DECORATING_NOT_SUPPORTED);
 
+
+        [Test]
+        public void Aspect_ShouldThrowOnNonInterfaceServiceType() =>
+            Assert.Throws<NotSupportedException>(() => Collection.Service<MyServiceHavingAspect, MyServiceHavingAspect>(Lifetime.Scoped));
+
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
@@ -336,7 +341,7 @@ namespace Solti.Utils.DI.Tests
 
     public class MyService : IMyServiceHavingAspect { }
 
-    public class MyGenericService<T> : IMyGenericServiceHavingAspect<T> { }
+    public class MyGenericService<T> : IMyGenericService<T>, IMyGenericServiceHavingAspect<T> { }
 
     [DummyAspect]
     public class MyServiceHavingAspect : IMyService { }

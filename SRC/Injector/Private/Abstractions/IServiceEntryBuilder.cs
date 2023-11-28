@@ -18,6 +18,8 @@ namespace Solti.Utils.DI.Internals
 
         IBuildContext BuildContext { get; }
 
+        void Init(IEnumerable<AbstractServiceEntry> entries);
+
         void Build(AbstractServiceEntry entry);
     }
 }

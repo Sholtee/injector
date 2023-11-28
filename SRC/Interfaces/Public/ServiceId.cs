@@ -17,23 +17,23 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="ServiceId"/> instance.
         /// </summary>
-        public ServiceId(Type iface, object? name)
+        public ServiceId(Type type, object? key)
         {
-            Interface = iface ?? throw new ArgumentNullException(nameof(iface));
-            Name = name;
+            Type = type ?? throw new ArgumentNullException(nameof(type));
+            Key = key;
         }
 
         /// <summary>
         /// The service interface.
         /// </summary>
-        public Type Interface { get; }
+        public Type Type { get; }
 
         /// <summary>
         /// The (optional) service name.
         /// </summary>
-        public object? Name { get; }
+        public object? Key { get; }
 
         /// <inheritdoc/>
-        public override string ToString() => Interface.GetFriendlyName() + Name is not null ? $":{Name}" : string.Empty;
+        public override string ToString() => Type.GetFriendlyName() + Key is not null ? $":{Key}" : string.Empty;
     }
 }

@@ -30,16 +30,16 @@ namespace Solti.Utils.DI.Internals
             {
                 _ when Implementation is not null && ExplicitArgs is null => new PooledServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Implementation.MakeGenericType(genericArguments),
                     Options!,
                     PoolName
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
                     Options!,
@@ -47,8 +47,8 @@ namespace Solti.Utils.DI.Internals
                 ),
                 _ when Factory is not null => new PooledServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Factory,
                     Options!,
                     PoolName

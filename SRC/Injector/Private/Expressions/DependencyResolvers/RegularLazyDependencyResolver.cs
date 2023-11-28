@@ -22,12 +22,12 @@ namespace Solti.Utils.DI.Internals
         public virtual object Id { get; } = nameof(RegularLazyDependencyResolver);
 
         private static Lazy<TService> CreateLazyImpl<TService>(IInjector injector, string? name) =>
-            new Lazy<TService>(() => (TService) injector.Get(typeof(TService), name));
+            new(() => (TService) injector.Get(typeof(TService), name));
 
         private static Lazy<TService> CreateLazyOptImpl<TService>(IInjector injector, string? name) =>
-            new Lazy<TService>(() => (TService)injector.TryGet(typeof(TService), name)!);
+            new(() => (TService) injector.TryGet(typeof(TService), name)!);
 
-        internal Expression ResolveLazyService(ParameterExpression injector, Type iface, OptionsAttribute? options)
+        internal Expression ResolveLazyService(ParameterExpression injector, Type type, OptionsAttribute? options)
         {
             //
             // According to tests, runtime built lambdas containing a nested function are ridiculously slow
@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals
             Type delegateType = typeof(Func<>).MakeGenericType(iface);
 
             //
-            // () => (iface) injector.[Try]Get(iface, svcName)
+            // () => (type) injector.[Try]Get(type, key)
             //
 
             LambdaExpression valueFactory = Expression.Lambda
@@ -48,10 +48,10 @@ namespace Solti.Utils.DI.Internals
             );
 
             //
-            // new Lazy<iface>(() => (iface) injector.[Try]Get(iface, svcName))
+            // new Lazy<type>(() => (type) injector.[Try]Get(type, key))
             //
 
-            Type lazyType = typeof(Lazy<>).MakeGenericType(iface);
+            Type lazyType = typeof(Lazy<>).MakeGenericType(type);
 
             return Expression.New
             (
@@ -71,24 +71,18 @@ namespace Solti.Utils.DI.Internals
 
             return Expression.Call
             (
-                createLazy.MakeGenericMethod(iface),
+                createLazy.MakeGenericMethod(type),
                 injector,
-                Expression.Constant(options?.Name, typeof(string))
+                Expression.Constant(options?.Key, typeof(string))
             );
         }
 
         protected static Type? ParseDependency(DependencyDescriptor dependency, Type lazyType)
         {
             Type type = dependency.Type;
-
-            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == lazyType)
-            {
-                type = type.GetGenericArguments().Single();
-                if (type.IsInterface)
-                    return type;
-            }
-
-            return null;
+            return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == lazyType
+                ? type.GetGenericArguments().Single()
+                : null;
         }
 
         /// <summary>
@@ -96,14 +90,14 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public virtual Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, CallNextDelegate<object?, Expression> next)
         {
-            Type? iface = ParseDependency(dependency, typeof(Lazy<>));
-            if (iface is null)
+            Type? type = ParseDependency(dependency, typeof(Lazy<>));
+            if (type is null)
                 return next(context);
 
             return ResolveLazyService
             (
                 injector,
-                iface,
+                type,
                 dependency.Options
             );
         }

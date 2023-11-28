@@ -56,24 +56,20 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
-        /// <param name="interface">The interface of the service.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="type">The type of the service.</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="factory">The (optional) factory of the service.</param>
         /// <param name="explicitArgs">Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <see cref="Implementation"/>.</param>
         /// <param name="options">Options to be assigned to this instance.</param>
-        /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> is not a class.</exception>
-        protected AbstractServiceEntry(Type @interface, object? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions? options)
+        protected AbstractServiceEntry(Type type, object? key, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions? options)
         {
-            if (@interface is null)
-                throw new ArgumentNullException(nameof(@interface));
-
-            if (!@interface.IsInterface)
-                throw new ArgumentException(NOT_AN_INTERFACE, nameof(@interface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
             //
-            // The given "implementation" not necessarily implements the service interface (for instance in case 
+            // The given "implementation" not necessarily implements the service type (for instance in case 
             // of Proxy recipe) therefore the missing validation.
             //
 
@@ -83,8 +79,8 @@ namespace Solti.Utils.DI.Interfaces
             if (implementation?.IsAbstract is true)
                 throw new ArgumentException(ABSTRACT_CLASS, nameof(implementation));
 
-            Interface = @interface;
-            Name = name;
+            Type = type;
+            Key = key;
             Implementation = implementation;
             ExplicitArgs = explicitArgs;
             Factory = factory;
@@ -93,16 +89,16 @@ namespace Solti.Utils.DI.Interfaces
 
         #region Immutables
         /// <summary>
-        /// The service interface.
+        /// The service type.
         /// </summary>
-        /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
-        public Type Interface { get; }
+        /// <remarks>A service is identified by its <see cref="Type"/> and <see cref="Key"/>.</remarks>
+        public Type Type { get; }
 
         /// <summary>
-        /// The (optional) service name.
+        /// The (optional) service key (usually a name).
         /// </summary>
-        /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
-        public object? Name { get; }
+        /// <remarks>A service is identified by its <see cref="Type"/> and <see cref="Key"/>.</remarks>
+        public object? Key { get; }
 
         /// <summary>
         /// The (optional) implementation of the service.
@@ -203,10 +199,10 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         public string ToString(bool shortForm)
         {
-            StringBuilder result = new(Interface.GetFriendlyName());
+            StringBuilder result = new(Type.GetFriendlyName());
             
-            if (Name is not null)
-                result.Append($":{Name}");
+            if (Key is not null)
+                result.Append($":{Key}");
 
             if (!shortForm)
             {

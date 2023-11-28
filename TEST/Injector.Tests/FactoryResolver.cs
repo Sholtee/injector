@@ -30,7 +30,7 @@ namespace Solti.Utils.DI.Internals.Tests
             public IList Dep2 { get; }
             public int Int { get; }
 
-            public MyClass(IDisposable dep1, [Options(Name = "cica")] IList dep2)
+            public MyClass(IDisposable dep1, [Options(Key = "cica")] IList dep2)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 Int  = _int;
             }
 
-            public MyClass([Options(Name = "cica")] Lazy<IDisposable> dep1, Lazy<IList> dep2)
+            public MyClass([Options(Key = "cica")] Lazy<IDisposable> dep1, Lazy<IList> dep2)
             {
                 Dep1 = dep1.Value;
                 Dep2 = dep2.Value;
@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private class MyClass2
         {
-            [Inject, Options(Name = "cica")]
+            [Inject, Options(Key = "cica")]
             public IDisposable Dep1 { get; init; }
             [Inject]
             public IList Dep2 { get; init; }
@@ -65,7 +65,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private class MyClassHavingLazyProperty
         {
-            [Inject, Options(Name = "cica")]
+            [Inject, Options(Key = "cica")]
             public Lazy<IDisposable> Dep1 { get; init; }
             [Inject]
             public Lazy<IList> Dep2 { get; init; }
@@ -557,7 +557,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Func<IInjector, Lazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, Lazy<IDisposable>>>
             (
-                new RegularLazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                new RegularLazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Key = svcName }),
                 injector
             ).Compile();
 
@@ -585,7 +585,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Func<IInjector, ILazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, ILazy<IDisposable>>>
             (
-                new LazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                new LazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Key = svcName }),
                 injector
             ).Compile();
 

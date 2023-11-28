@@ -34,9 +34,9 @@ namespace Solti.Utils.DI.Internals
 
         public IBuildContext BuildContext { get; } = null!;
 
-        public void Build(Type iface, object? name) => Build
+        public void Build(Type type, object? key) => Build
         (
-            FResolver.Resolve(iface, name) ?? new MissingServiceEntry(iface, name)
+            FResolver.Resolve(type, key) ?? new MissingServiceEntry(type, key)
         );
 
         public void Build(AbstractServiceEntry entry)
@@ -89,5 +89,7 @@ namespace Solti.Utils.DI.Internals
                 FPath.Pop();
             }
         }
+
+        public void Init(IEnumerable<AbstractServiceEntry> entries) { }
     }
 }

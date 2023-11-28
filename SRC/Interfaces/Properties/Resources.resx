@@ -126,9 +126,6 @@
   <data name="INAPROPRIATE_OWNERSHIP" xml:space="preserve">
     <value>Not owned entry can not be proxied.</value>
   </data>
-  <data name="NOT_AN_INTERFACE" xml:space="preserve">
-    <value>Parameter must be an interface.</value>
-  </data>
   <data name="NOT_A_CLASS" xml:space="preserve">
     <value>Parameter must be a class.</value>
   </data>

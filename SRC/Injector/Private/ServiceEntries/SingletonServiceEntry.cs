@@ -40,23 +40,23 @@ namespace Solti.Utils.DI.Internals
             {
                 _ when Implementation is not null && ExplicitArgs is null => new SingletonServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Implementation.MakeGenericType(genericArguments),
                     Options!
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new SingletonServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
                     Options!
                 ),
                 _ when Factory is not null => new SingletonServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Factory,
                     Options!
                 ),

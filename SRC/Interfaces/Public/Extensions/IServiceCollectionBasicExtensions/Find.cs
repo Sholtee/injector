@@ -16,43 +16,40 @@ namespace Solti.Utils.DI.Interfaces
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry? TryFind(this IServiceCollection self, Type iface, object? name)
+        public static AbstractServiceEntry? TryFind(this IServiceCollection self, Type type, object? key)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
-            return self.TryFind(new ServiceId(iface, name));
+            return self.TryFind(new ServiceId(type, key));
         }
 
         /// <summary>
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
+        /// <param name="type">The service type.</param>
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry? TryFind(this IServiceCollection self, Type iface) =>
-            self.TryFind(iface, null);
+        public static AbstractServiceEntry? TryFind(this IServiceCollection self, Type type) =>
+            self.TryFind(type, null);
 
         /// <summary>
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry? TryFind<TInterface>(this IServiceCollection self, object? name) where TInterface : class =>
-            self.TryFind(typeof(TInterface), name);
+        public static AbstractServiceEntry? TryFind<TType>(this IServiceCollection self, object? key) where TType : class =>
+            self.TryFind(typeof(TType), key);
 
         /// <summary>
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
@@ -61,29 +58,27 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">When the requested service could not be found.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry? TryFind<TInterface>(this IServiceCollection self) where TInterface : class =>
-            self.TryFind<TInterface>(null);
+        public static AbstractServiceEntry? TryFind<TType>(this IServiceCollection self) where TType : class =>
+            self.TryFind<TType>(null);
 
         /// <summary>
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">The requested service could not be found.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry Find(this IServiceCollection self, Type iface, object? name)
+        public static AbstractServiceEntry Find(this IServiceCollection self, Type type, object? key)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
-            ServiceId serviceId = new(iface, name);
+            ServiceId serviceId = new(type, key);
             return self.TryFind(serviceId) ??  throw new ServiceNotFoundException
             (
                 string.Format
@@ -101,25 +96,23 @@ namespace Solti.Utils.DI.Interfaces
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
+        /// <param name="type">The service type.</param>
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">When the requested service could not be found.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry Find(this IServiceCollection self, Type iface) =>
-            self.Find(iface, null);
+        public static AbstractServiceEntry Find(this IServiceCollection self, Type type) =>
+            self.Find(type, null);
 
         /// <summary>
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">When the requested service could not be found.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry Find<TInterface>(this IServiceCollection self, object? name) where TInterface : class =>
-            self.Find(typeof(TInterface), name);
+        public static AbstractServiceEntry Find<TType>(this IServiceCollection self, object? key) where TType : class =>
+            self.Find(typeof(TType), key);
 
         /// <summary>
         /// Tries to find a service descriptor (<see cref="AbstractServiceEntry"/>) in the given collection.
@@ -128,8 +121,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <returns>The service descriptor.</returns>
         /// <exception cref="ArgumentNullException">Some of the passed arguments is null.</exception>
         /// <exception cref="ServiceNotFoundException">When the requested service could not be found.</exception>
-        /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static AbstractServiceEntry Find<TInterface>(this IServiceCollection self) where TInterface : class =>
-            self.Find<TInterface>(null);
+        public static AbstractServiceEntry Find<TType>(this IServiceCollection self) where TType : class =>
+            self.Find<TType>(null);
     }
 }

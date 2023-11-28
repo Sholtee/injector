@@ -124,7 +124,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A dependency must be an interface/Lazy&lt;interface&gt;..
+        ///   Looks up a localized string similar to Invalid dependency..
         /// </summary>
         internal static string INVALID_DEPENDENCY {
             get {
@@ -201,15 +201,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string PARAMETER_NOT_A_CLASS {
             get {
                 return ResourceManager.GetString("PARAMETER_NOT_A_CLASS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameter must be an interface..
-        /// </summary>
-        internal static string PARAMETER_NOT_AN_INTERFACE {
-            get {
-                return ResourceManager.GetString("PARAMETER_NOT_AN_INTERFACE", resourceCulture);
             }
         }
         

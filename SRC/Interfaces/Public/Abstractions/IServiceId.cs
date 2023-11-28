@@ -12,7 +12,7 @@ namespace Solti.Utils.DI.Interfaces
     /// <summary>
     /// Describes an abstract service identifier.
     /// </summary>
-    /// <remarks>A service can be identified uniquely by its <see cref="Interface"/> and <see cref="Name"/></remarks>
+    /// <remarks>A service can be identified uniquely by its <see cref="Type"/> and <see cref="Key"/></remarks>
     public interface IServiceId
     {
         /// <summary>
@@ -21,20 +21,20 @@ namespace Solti.Utils.DI.Interfaces
         public sealed class Comparer : ComparerBase<Comparer, IServiceId>
         {
             /// <inheritdoc/>
-            public override bool Equals(IServiceId x, IServiceId y) => x.Interface == y.Interface && x.Name == y.Name;
+            public override bool Equals(IServiceId x, IServiceId y) => x.Type == y.Type && x.Key == y.Key;
 
             /// <inheritdoc/>
-            public override int GetHashCode(IServiceId obj) => unchecked(obj.Interface.GetHashCode() ^ (obj.Name?.GetHashCode() ?? 0));
+            public override int GetHashCode(IServiceId obj) => unchecked(obj.Type.GetHashCode() ^ (obj.Key?.GetHashCode() ?? 0));
         }
 
         /// <summary>
-        /// The service interface.
+        /// Type of the service.
         /// </summary>
-        Type Interface { get; }
+        Type Type { get; }
 
         /// <summary>
-        /// The (optional) service name.
+        /// The (optional) service key (usually a name).
         /// </summary>
-        object? Name { get; }
+        object? Key { get; }
     }
 }

@@ -119,7 +119,7 @@ namespace Solti.Utils.DI.Perf
         }
 
         [Benchmark]
-        public IDependant NonGeneric() => Injector.Get<IDependant>(name: null);
+        public IDependant NonGeneric() => Injector.Get<IDependant>(key: null);
 
         [GlobalSetup(Target = nameof(NonGenericProxy))]
         public void SetupNonGenericProxy()
@@ -133,7 +133,7 @@ namespace Solti.Utils.DI.Perf
         }
 
         [Benchmark]
-        public IDependant NonGenericProxy() => Injector.Get<IDependant>(name: null);
+        public IDependant NonGenericProxy() => Injector.Get<IDependant>(key: null);
 
         [GlobalSetup(Target = nameof(Generic))]
         public void SetupGeneric()
@@ -145,7 +145,7 @@ namespace Solti.Utils.DI.Perf
         }
 
         [Benchmark]
-        public IDependant<string> Generic() => Injector.Get<IDependant<string>>(name: null);
+        public IDependant<string> Generic() => Injector.Get<IDependant<string>>(key: null);
 
         [GlobalSetup(Target = nameof(Lazy))]
         public void SetupLazy()
@@ -157,7 +157,7 @@ namespace Solti.Utils.DI.Perf
         }
 
         [Benchmark]
-        public IDependantLazy Lazy() => Injector.Get<IDependantLazy>(name: null);
+        public IDependantLazy Lazy() => Injector.Get<IDependantLazy>(key: null);
 
         [GlobalSetup(Target = nameof(Enumerable))]
         public void SetupEnumerable()
@@ -170,7 +170,7 @@ namespace Solti.Utils.DI.Perf
         }
 
         [Benchmark]
-        public /*IEnumerable<IDependant>*/ void Enumerable() => Injector.Get<IEnumerable<IDependant>>(name: null);
+        public /*IEnumerable<IDependant>*/ void Enumerable() => Injector.Get<IEnumerable<IDependant>>(key: null);
     }
 
     [MemoryDiagnoser]

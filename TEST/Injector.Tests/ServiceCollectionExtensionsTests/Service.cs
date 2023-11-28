@@ -36,17 +36,10 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Service_ShouldThrowOnNonInterfaceKey(Lifetime lifetime)
-        {
-            Assert.Throws<ArgumentException>(() => Collection.Service<Object, Object>(lifetime), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(Object), typeof(Object), lifetime), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-        }
-
-        [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldThrowOnNonClassImplementation(Lifetime lifetime)
         {
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), name: null, typeof(int), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), name: null, typeof(int), new object(), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), key: null, typeof(int), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), key: null, typeof(int), new object(), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -57,7 +50,7 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection.Last().Specialize(typeof(int));
 
             Assert.That(entry, Is.Not.Null);
-            Assert.That(entry.Interface, Is.EqualTo(typeof(IInterface_3<int>)));
+            Assert.That(entry.Type, Is.EqualTo(typeof(IInterface_3<int>)));
             Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_3_IInterface_1_Dependant<int>)));
         }
 
@@ -65,7 +58,7 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldHandleNamedServices(Lifetime lifetime) 
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_1_No_Dep>("svc1", lifetime));
-            Assert.That(Collection.Last().Name, Is.EqualTo("svc1"));
+            Assert.That(Collection.Last().Key, Is.EqualTo("svc1"));
         }
 
         private interface IServiceHavingNonInterfaceCtorArg

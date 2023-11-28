@@ -36,7 +36,7 @@ namespace Solti.Utils.DI.Internals
             (
                 entry.CreateLifetimeManager
                 (
-                    UnfoldLambdaExpressionVisitor.Unfold(factory, scope, Expression.Constant(entry.Interface)),
+                    UnfoldLambdaExpressionVisitor.Unfold(factory, scope, Expression.Constant(entry.Type)),
                     scope,
                     disposable
                 ),

@@ -19,11 +19,11 @@ namespace Solti.Utils.DI.Internals.Tests
     {
         private sealed class ServiceRequestVisitorEx : ServiceRequestVisitor
         {
-            private readonly Func<MethodCallExpression, Expression, Type, string, Expression> FVisitor;
+            private readonly Func<MethodCallExpression, Expression, Type, object, Expression> FVisitor;
 
-            protected override Expression VisitServiceRequest(MethodCallExpression method, Expression scope, Type iface, string name) => FVisitor(method, scope, iface, name);
+            protected override Expression VisitServiceRequest(MethodCallExpression method, Expression scope, Type type, object key) => FVisitor(method, scope, type, key);
 
-            public ServiceRequestVisitorEx(Func<MethodCallExpression, Expression, Type, string, Expression> visitor) => FVisitor = visitor;
+            public ServiceRequestVisitorEx(Func<MethodCallExpression, Expression, Type, object, Expression> visitor) => FVisitor = visitor;
         }
 
         public static IEnumerable<Expression<Action<IInjector>>> Expressions
@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Visit_ShouldVisitAllTheInjectorInvocations([ValueSource(nameof(Expressions))] Expression<Action<IInjector>> expresision)
         {
-            List<(Type Interface, string Name)> requests = new(); 
+            List<(Type Interface, object Name)> requests = new(); 
 
             ServiceRequestVisitorEx visitor = new((orig, _, iface, name) =>
             {
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Visit_ShouldSkipInjectorInvocationsHavingNonConstantParameter([ValueSource(nameof(ElaborateExpressions))] Expression<Action<IInjector>> expresision)
         {
-            List<(Type Interface, string Name)> requests = new();
+            List<(Type Interface, object Name)> requests = new();
 
             ServiceRequestVisitorEx visitor = new((orig, _, iface, name) =>
             {
@@ -81,7 +81,7 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Visit_ShouldSupportNull()
         {
-            List<(Type Interface, string Name)> requests = new();
+            List<(Type Interface, object Name)> requests = new();
 
             ServiceRequestVisitorEx visitor = new((orig, _, iface, name) =>
             {

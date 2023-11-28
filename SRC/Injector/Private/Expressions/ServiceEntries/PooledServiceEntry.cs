@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Internals
 
             ifFalse: Expression.Call
             (
-                FInvokePool.MakeGenericMethod(Interface),
+                FInvokePool.MakeGenericMethod(Type),
                 scope,
                 Expression.Constant(PoolName),
                 disposable

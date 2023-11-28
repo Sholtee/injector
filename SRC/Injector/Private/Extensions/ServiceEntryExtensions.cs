@@ -28,8 +28,8 @@ namespace Solti.Utils.DI.Internals
                 // Return interceptors targeting the service implementation first
                 //
 
-                ? ResolveDecorators(self.Implementation, self.Interface)
-                : ResolveDecorators(self.Interface);
+                ? ResolveDecorators(self.Implementation, self.Type)
+                : ResolveDecorators(self.Type);
 
             IEnumerable<Expression<DecoratorDelegate>> ResolveDecorators(params Type[] targets)
             {
@@ -58,7 +58,7 @@ namespace Solti.Utils.DI.Internals
 
                     yield return ResolveProxyDecorator
                     (
-                        self.Interface,
+                        self.Type,
                         target,
                         options.ProxyEngine,
                         delegates
@@ -75,13 +75,13 @@ namespace Solti.Utils.DI.Internals
             (
                 ResolveProxyDecorator
                 (
-                    entry.Interface,
+                    entry.Type,
 
                     //
                     // Proxies registered by this way always target the service interface.
                     //
 
-                    entry.Interface,
+                    entry.Type,
                     options.ProxyEngine,
                     interceptors.Select
                     (

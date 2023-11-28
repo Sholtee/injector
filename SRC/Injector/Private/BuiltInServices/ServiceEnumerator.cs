@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals
 
         public IEnumerator<TInterface> GetEnumerator()
         {
-            foreach (AbstractServiceEntry entry in ServiceResolver.ResolveMany(typeof(TInterface)))
+            foreach (AbstractServiceEntry entry in ServiceResolver.ResolveMany(typeof(TInterface)) ?? Array<AbstractServiceEntry>.Empty)
             {
                 yield return (TInterface) Scope.GetOrCreateInstance(entry);
             }

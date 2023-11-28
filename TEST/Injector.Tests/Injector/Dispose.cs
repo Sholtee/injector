@@ -98,7 +98,7 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector = Root.CreateScope()) 
             {
                 var svc = injector.Get<IInterface_7<Lazy<IDisposableEx>>>();
-                Assert.That(svc.Interface, Is.Not.Null);              
+                Assert.That(svc.Dependency, Is.Not.Null);              
             }
 
             Assert.That(disposable.Disposed, Is.False);
@@ -106,7 +106,7 @@ namespace Solti.Utils.DI.Tests
             using (IInjector injector = Root.CreateScope())
             {
                 var svc = injector.Get<IInterface_7<Lazy<IDisposableEx>>>();
-                Assert.That(svc.Interface.Value, Is.Not.Null);
+                Assert.That(svc.Dependency.Value, Is.Not.Null);
             }
 
             Assert.That(disposable.Disposed);
@@ -213,7 +213,7 @@ namespace Solti.Utils.DI.Tests
                 }
             }
 
-            Assert.That(inst.Interface.Disposed);
+            Assert.That(inst.Dependency.Disposed);
         }
 
         [Test]

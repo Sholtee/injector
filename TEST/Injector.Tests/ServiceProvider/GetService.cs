@@ -37,7 +37,7 @@ namespace Solti.Utils.DI.Tests
             {
                 IInterface_7<IServiceProvider> svc = provider.GetService<IInterface_7<IServiceProvider>>();
 
-                Assert.That(svc.Interface, Is.EqualTo(provider));
+                Assert.That(svc.Dependency, Is.EqualTo(provider));
             }
         }
 
@@ -66,16 +66,16 @@ namespace Solti.Utils.DI.Tests
                 IInterface_7<IInterface_1> svc = provider.GetService<IInterface_7<IInterface_1>>();
 
                 Assert.That(svc, Is.Not.Null);
-                Assert.That(svc.Interface, Is.Null);
+                Assert.That(svc.Dependency, Is.Null);
             }
         }
 
         private sealed class MyServiceUsingNamedDependency : IInterface_7<IInterface_1>
         {
-            public MyServiceUsingNamedDependency([Options(Name = "cica")] IInterface_1 dep) =>
-                Interface = dep;
+            public MyServiceUsingNamedDependency([Options(Key = "cica")] IInterface_1 dep) =>
+                Dependency = dep;
 
-            public IInterface_1 Interface { get; }
+            public IInterface_1 Dependency { get; }
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Solti.Utils.DI.Tests
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 
                 Assert.That(svc, Is.Not.Null);
-                Assert.That(svc.Interface, Is.InstanceOf<Implementation_1_No_Dep>());
+                Assert.That(svc.Dependency, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
 
@@ -114,7 +114,7 @@ namespace Solti.Utils.DI.Tests
                 var svc = provider.GetService<IInterface_7<IInterface_1>>();
 
                 Assert.That(svc, Is.Not.Null);
-                Assert.That(svc.Interface, Is.InstanceOf<Implementation_1_No_Dep>());
+                Assert.That(svc.Dependency, Is.InstanceOf<Implementation_1_No_Dep>());
             }
         }
 

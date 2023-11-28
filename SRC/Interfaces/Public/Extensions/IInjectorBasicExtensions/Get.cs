@@ -10,36 +10,36 @@ namespace Solti.Utils.DI.Interfaces
     public static partial class IInjectorBasicExtensions
     {
         /// <summary>
-        /// Gets the service instance associated with the given interface and (optional) name:
+        /// Gets the service instance associated with the given type and (optional) key:
         /// <code>IMyService svc = scope.Get&lt;IMyService&gt;();</code>
         /// </summary>
-        /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
+        /// <typeparam name="TType">The "id" of the service to be resolved.</typeparam>
         /// <param name="self">The injector itself.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="key">The (optional) service key.</param>
         /// <returns>The resolved service.</returns>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
-        public static TInterface Get<TInterface>(this IInjector self, object? name = null) where TInterface : class
+        public static TType Get<TType>(this IInjector self, object? key = null) where TType : class
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            return (TInterface) self.Get(typeof(TInterface), name);
+            return (TType) self.Get(typeof(TType), key);
         }
 
         /// <summary>
-        /// Tries to get the service instance associated with the given interface and (optional) name:
+        /// Tries to get the service instance associated with the given type and (optional) key:
         /// <code>IMyService? svc = scope.TryGet&lt;IMyService&gt;();</code>
         /// </summary>
-        /// <typeparam name="TInterface">The "id" of the service to be resolved. It must be an interface.</typeparam>
+        /// <typeparam name="TType">The "id" of the service to be resolved.</typeparam>
         /// <param name="self">The injector itself.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="key">The (optional) service key.</param>
         /// <returns>The requested service instance if the resolution was successful, null otherwise.</returns>
-        public static TInterface? TryGet<TInterface>(this IInjector self, object? name = null) where TInterface : class
+        public static TType? TryGet<TType>(this IInjector self, object? key = null) where TType : class
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            return (TInterface?) self.TryGet(typeof(TInterface), name);
+            return (TType?) self.TryGet(typeof(TType), key);
         }
     }
 }

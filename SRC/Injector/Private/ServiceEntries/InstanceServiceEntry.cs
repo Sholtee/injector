@@ -13,10 +13,10 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class InstanceServiceEntry : SingletonServiceEntry
     {
-        public InstanceServiceEntry(Type iface, object? name, object instance, ServiceOptions options) : base
+        public InstanceServiceEntry(Type type, object? key, object instance, ServiceOptions options) : base
         (
-            iface,
-            name,
+            type,
+            key,
             (_, _) => instance,
             options with { DisposalMode = ServiceDisposalMode.Suppress }
         )
@@ -24,8 +24,8 @@ namespace Solti.Utils.DI.Internals
             if (instance is null)
                 throw new ArgumentNullException(nameof(instance));
 
-            if (iface.IsGenericTypeDefinition)
-                throw new ArgumentException(Resources.OPEN_GENERIC, nameof(iface));
+            if (type.IsGenericTypeDefinition)
+                throw new ArgumentException(Resources.OPEN_GENERIC, nameof(type));
         }
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)

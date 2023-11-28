@@ -24,12 +24,14 @@ namespace Solti.Utils.DI.Internals
 
         public void Build(AbstractServiceEntry requested)
         {
-            Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
+            Debug.Assert(!requested.Type.IsGenericTypeDefinition, "Generic entry cannot be built");
 
             if (!requested.Features.HasFlag(ServiceEntryFeatures.SupportsBuild) || requested.State.HasFlag(ServiceEntryStates.Built))
                 return;
 
             requested.Build(BuildContext, Visitors);
         }
+
+        public void Init(IEnumerable<AbstractServiceEntry> entries) { }
     }
 }

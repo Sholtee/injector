@@ -12,22 +12,22 @@ namespace Solti.Utils.DI.Interfaces
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
-        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <paramref name="iface"/> and (optional) <paramref name="name"/>.
+        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <paramref name="type"/> and (optional) <paramref name="key"/>.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static IServiceCollection Remove(this IServiceCollection self, Type iface, object? name)
+        public static IServiceCollection Remove(this IServiceCollection self, Type type, object? key)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
-            IServiceId serviceId = new ServiceId(iface, name);
+            IServiceId serviceId = new ServiceId(type, key);
             if (!self.Remove(serviceId))
                 throw new ServiceNotFoundException
                 (
@@ -45,31 +45,31 @@ namespace Solti.Utils.DI.Interfaces
         }
 
         /// <summary>
-        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <paramref name="iface"/>.
+        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <paramref name="type"/>.
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
+        /// <param name="type">The service type.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static IServiceCollection Remove(this IServiceCollection self, Type iface) => self.Remove(iface, null);
+        public static IServiceCollection Remove(this IServiceCollection self, Type type) => self.Remove(type, null);
 
         /// <summary>
-        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <typeparamref name="TInterface"/> and (optional) <paramref name="name"/>.
+        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <typeparamref name="TType"/> and (optional) <paramref name="key"/>.
         /// </summary>
-        /// <typeparam name="TInterface">The service interface.</typeparam>
+        /// <typeparam name="TType">The service type.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static IServiceCollection Remove<TInterface>(this IServiceCollection self, object? name) where TInterface : class => self.Remove(typeof(TInterface), name);
+        public static IServiceCollection Remove<TType>(this IServiceCollection self, object? key) where TType : class => self.Remove(typeof(TType), key);
 
         /// <summary>
-        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <typeparamref name="TInterface"/>.
+        /// Removes the <see cref="AbstractServiceEntry"/> associated with the given <typeparamref name="TType"/>.
         /// </summary>
-        /// <typeparam name="TInterface">The service interface.</typeparam>
+        /// <typeparam name="TType">The service type.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <exception cref="ServiceNotFoundException">The service could not be found.</exception>
         /// <remarks>This method uses linear search so should be avoided in perfomance critical places.</remarks>
-        public static IServiceCollection Remove<TInterface>(this IServiceCollection self) where TInterface : class => self.Remove(typeof(TInterface));
+        public static IServiceCollection Remove<TType>(this IServiceCollection self) where TType : class => self.Remove(typeof(TType));
     }
 }

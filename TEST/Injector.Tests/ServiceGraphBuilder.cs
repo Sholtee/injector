@@ -184,7 +184,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(typeof(IList<int>), null))
                 .Returns(new List<int>());
             mockInjector
-                .Setup(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>))))
+                .Setup(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Type == typeof(IList<int>))))
                 .Returns(new List<int>());
 
             Root = ScopeFactory.Create
@@ -208,7 +208,7 @@ namespace Solti.Utils.DI.Internals.Tests
             }
             else if (resolutionMode is ServiceResolutionMode.AOT)
             {
-                mockInjector.Verify(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Interface == typeof(IList<int>))), Times.Once);
+                mockInjector.Verify(i => i.GetOrCreateInstance(It.Is<AbstractServiceEntry>(se => se.Type == typeof(IList<int>))), Times.Once);
                 mockInjector.Verify(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
                 mockInjector.Verify(i => i.TryGet(It.IsAny<Type>(), It.IsAny<string>()), Times.Never);
             }

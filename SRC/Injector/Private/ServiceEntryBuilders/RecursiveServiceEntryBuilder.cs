@@ -38,7 +38,7 @@ namespace Solti.Utils.DI.Internals
 
         public void Build(AbstractServiceEntry requested)
         {
-            Debug.Assert(!requested.Interface.IsGenericTypeDefinition, "Generic entry cannot be built");
+            Debug.Assert(!requested.Type.IsGenericTypeDefinition, "Generic entry cannot be built");
 
             if (FOptions.StrictDI)
             {
@@ -74,6 +74,27 @@ namespace Solti.Utils.DI.Internals
             //
 
             requested.UpdateState(ServiceEntryStates.Validated);
+        }
+
+        public void Init(IEnumerable<AbstractServiceEntry> entries)
+        {
+            foreach (AbstractServiceEntry entry in entries)
+            {
+                //
+                // In initialization phase, build the full dependency graph.
+                //
+
+                if (!entry.Type.IsGenericTypeDefinition)
+                {
+                    Build(entry);
+                }
+            }
+
+            //
+            // AOT resolved dependencies are built in batch.
+            //
+
+            BuildContext.Compiler.Compile();
         }
     }
 }

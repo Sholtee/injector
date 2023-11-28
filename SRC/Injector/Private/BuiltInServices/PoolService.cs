@@ -26,12 +26,12 @@ namespace Solti.Utils.DI.Internals
         {
             public IScopeFactory ScopeFactory { get; }
 
-            public object? Name { get; }
+            public object? Key { get; }
 
-            public PoolScopeLifetimeManager(IScopeFactory scopeFactory, object? name)
+            public PoolScopeLifetimeManager(IScopeFactory scopeFactory, object? key)
             {
                 ScopeFactory = scopeFactory;
-                Name = name;
+                Key = key;
             }
 
             public void CheckIn(PoolScope<TInterface> item)
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Internals
             public PoolScope<TInterface> Create()
             {
                 IInjector scope = ScopeFactory.CreateScope(tag: PooledLifetime.POOL_SCOPE);
-                return new PoolScope<TInterface>(scope, scope.Get<TInterface>(Name));
+                return new PoolScope<TInterface>(scope, scope.Get<TInterface>(Key));
             }
 
             public void Dispose(PoolScope<TInterface> item)
@@ -51,11 +51,11 @@ namespace Solti.Utils.DI.Internals
 
         public ObjectPool<PoolScope<TInterface>> ScopePool { get; }
 
-        public PoolService(IScopeFactory scopeFactory, DI.PoolConfig config, object? name) 
+        public PoolService(IScopeFactory scopeFactory, DI.PoolConfig config, object? key) 
         {
             ScopePool = new ObjectPool<PoolScope<TInterface>>
             (
-                new PoolScopeLifetimeManager(scopeFactory, name),
+                new PoolScopeLifetimeManager(scopeFactory, key),
                 PoolConfig.Default with 
                 {
                     Capacity = config.Capacity,

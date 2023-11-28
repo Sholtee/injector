@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Internals
         /// </summary>
         public Expression Resolve(ParameterExpression injector, DependencyDescriptor dependency, object? userData, object? context, CallNextDelegate<object?, Expression> next)
         {
-            if (dependency.Type.IsInterface)
+            if (dependency.Type.IsClass || dependency.Type.IsInterface)
             {
                 return Expression.Convert
                 (
@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals
                         injector,
                         dependency.Options?.Optional is true ? FInjectorTryGet : FInjectorGet,
                         Expression.Constant(dependency.Type),
-                        Expression.Constant(dependency.Options?.Name, typeof(string))
+                        Expression.Constant(dependency.Options?.Key, typeof(string))
                     ),
                     dependency.Type
                 );

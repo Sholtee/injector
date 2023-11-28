@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Internals
             {
                 case ServiceDisposalMode.Soft:
                 {
-                    if (typeof(IDisposable).IsAssignableFrom(Interface) || typeof(IAsyncDisposable).IsAssignableFrom(Interface))
+                    if (typeof(IDisposable).IsAssignableFrom(Type) || typeof(IAsyncDisposable).IsAssignableFrom(Type))
                     {
                         ParameterExpression service = Expression.Parameter(getService.Type, nameof(service));
 

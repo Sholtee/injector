@@ -162,16 +162,16 @@ namespace Solti.Utils.DI.Tests
             IInterface_3<T> Interface3 { get; }
         }
 
-        public interface IInterface_7<TInterface> where TInterface : class
+        public interface IInterface_7<TDependency> where TDependency : class
         {
-            TInterface Interface { get; }
+            TDependency Dependency { get; }
         }
 
-        public class Implementation_7<TInterface>: IInterface_7<TInterface> where TInterface : class
+        public class Implementation_7<TDependency>: IInterface_7<TDependency> where TDependency : class
         {
-            public TInterface Interface { get; }
+            public TDependency Dependency { get; }
 
-            public Implementation_7(TInterface iface) => Interface = iface;
+            public Implementation_7(TDependency dep) => Dependency = dep;
         }
 
         public interface IInterface_7_Disposable<TInterface> : IDisposableEx where TInterface : class
@@ -228,10 +228,10 @@ namespace Solti.Utils.DI.Tests
         {
             public Implementation_7_TInterface_Dependant(TInterface dep)
             {
-                Interface = dep;
+                Dependency = dep;
             }
 
-            public TInterface Interface { get; }
+            public TInterface Dependency { get; }
         }
 
         public class Implementation_10_RecursiveCDep : IInterface_1
