@@ -6,7 +6,7 @@
 using System;
 
 using Stashbox;
-using Stashbox.Extensions.Dependencyinjection;
+using Stashbox.Extensions.DependencyInjection;
 using Stashbox.Lifetime;
 
 namespace Solti.Utils.DI.Perf

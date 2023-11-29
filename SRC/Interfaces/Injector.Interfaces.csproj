@@ -34,7 +34,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  
+
   <PropertyGroup>
     <Description>Abstractions for Injector.NET</Description>
     <PackageId>Injector.NET.Interfaces</PackageId>
