@@ -315,10 +315,10 @@ namespace Solti.Utils.DI.Internals.Tests
             {
             }
 
-            public override AbstractServiceEntry Specialize(params Type[] genericArguments)
+            public override void Build(IBuildContext context, IReadOnlyList<IFactoryVisitor> visitors)
             {
                 Evt.Wait();
-                return new BlockingServiceEntry(Type.MakeGenericType(genericArguments));
+                base.Build(context, visitors);
             }
 
             public override ServiceEntryFeatures Features { get; } = ServiceEntryFeatures.SupportsBuild;
@@ -329,23 +329,22 @@ namespace Solti.Utils.DI.Internals.Tests
         [Test]
         public void Resolver_ShouldHaveTimeout()
         {
-            BlockingServiceEntry entry = new(typeof(IList<>));
-            IServiceResolver resolver = new ServiceResolver(new[] { entry }, ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
-
-            Task<AbstractServiceEntry>[] tasks = new Task<AbstractServiceEntry>[]
+            BlockingServiceEntry entry = new(typeof(IMyService));
+            IServiceResolver resolver = new ServiceResolver(new[] { entry }, ScopeOptions.Default with
             {
-                Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<int>), null)),
-                Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IList<int>), null))
-            };
+                ResolutionLockTimeout = TimeSpan.FromMilliseconds(1),
+                ServiceResolutionMode = ServiceResolutionMode.JIT
+            });
 
-            SpinWait.SpinUntil(() => tasks.All(t => t.Status == TaskStatus.Running));
+            Task<AbstractServiceEntry> t1 = Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IMyService), null));
+            SpinWait.SpinUntil(() => t1.Status == TaskStatus.Running);
+
+            Task<AbstractServiceEntry> t2 = Task<AbstractServiceEntry>.Factory.StartNew(() => resolver.Resolve(typeof(IMyService), null));
+            AggregateException ex = Assert.Throws<AggregateException>(t2.Wait);
+            Assert.That(ex.InnerException, Is.InstanceOf<TimeoutException>());
 
             entry.Evt.Set();
-
-            //Task.WaitAll(tasks);
-            SpinWait.SpinUntil(() => tasks.All(t => t.Status > TaskStatus.Running));
-
-            Assert.That(tasks.Single(t => t.Exception is not null).Exception.InnerException, Is.InstanceOf<TimeoutException>());
+            Assert.DoesNotThrow(t1.Wait);
         }
 
         [Test]
