@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Tests
             ManualResetEventSlim evt = new();   
             Func<IInjector, Type, object> fact = Factory;
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IList<>), (i, t) => fact(i, t), Lifetime.Singleton), ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
+            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IList<>), factoryExpr: (i, t) => fact(i, t), Lifetime.Singleton), ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
 
             bool t1Started = false;
             Task t1 = Task.Factory.StartNew(() => { t1Started = true; return Root.CreateScope().Get<IList<int>>(); });
@@ -410,8 +410,8 @@ namespace Solti.Utils.DI.Tests
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
-                    .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
+                    .Factory<IInterface_4>(factoryExpr: injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
+                    .Factory<IInterface_5>(factoryExpr: injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
                 new ScopeOptions {ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 
@@ -427,7 +427,7 @@ namespace Solti.Utils.DI.Tests
         {
             Root = ScopeFactory.Create
             (
-                svcs => svcs.Factory<IInterface_1>(injector => (IInterface_1) null, lifetime),
+                svcs => svcs.Factory<IInterface_1>(factoryExpr: injector => (IInterface_1) null, lifetime),
                 new ScopeOptions { ServiceResolutionMode = resolutionMode }
             );
 
@@ -513,7 +513,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Injector_Get_ShouldBeTypeChecked([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IInterface_1), (injector, iface) => new object(), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IInterface_1), factoryExpr: (injector, iface) => new object(), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope()) 
             {
@@ -663,7 +663,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(d => d.Dispose());
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Transient), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(factoryExpr: i => mockDisposable.Object, Lifetime.Transient), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -683,7 +683,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(d => d.Dispose());
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Scoped), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(factoryExpr: i => mockDisposable.Object, Lifetime.Scoped), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -703,7 +703,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(d => d.Dispose());
 
-            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Singleton), new ScopeOptions { ServiceResolutionMode = resolutionMode }))
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(factoryExpr: i => mockDisposable.Object, Lifetime.Singleton), new ScopeOptions { ServiceResolutionMode = resolutionMode }))
             {
                 using (IInjector injector = root.CreateScope())
                 {

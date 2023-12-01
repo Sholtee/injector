@@ -168,7 +168,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.Factory(i => new Mock<IMyServiceHavingDependantAspect>().Object, lifetime);
+            Collection.Factory(factoryExpr: i => new Mock<IMyServiceHavingDependantAspect>().Object, lifetime);
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
@@ -307,7 +307,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.Factory(i => mockService.Object, lifetime);
+            Collection.Factory(factoryExpr: i => mockService.Object, lifetime);
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });

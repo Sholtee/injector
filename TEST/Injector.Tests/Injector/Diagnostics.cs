@@ -71,10 +71,10 @@ namespace Solti.Utils.DI.Tests
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Factory<IInterface_1>(injector => (IInterface_1) (object) new { Dep1 = injector.Get<IInterface_2>(null), Dep2 = injector.Get<IInterface_3<int>>(null) }, Lifetime.Singleton)
-                    .Factory<IInterface_2>(injector => (IInterface_2) (object) new { Dep1 = injector.TryGet<IInterface_4>(null) /*non-exsiting*/, Dep2 = injector.Get<IInterface_7<object>>("cica") }, Lifetime.Scoped)
-                    .Factory(typeof(IInterface_3<>), (_, _) => null, Lifetime.Transient)
-                    .Factory(typeof(IInterface_7<>), "cica", (injector, _) => new { Dep1 = injector.Get(typeof(IInterface_1), null) }, Lifetime.Transient),
+                    .Factory<IInterface_1>(factoryExpr: injector => (IInterface_1) (object) new { Dep1 = injector.Get<IInterface_2>(null), Dep2 = injector.Get<IInterface_3<int>>(null) }, Lifetime.Singleton)
+                    .Factory<IInterface_2>(factoryExpr: injector => (IInterface_2) (object) new { Dep1 = injector.TryGet<IInterface_4>(null) /*non-exsiting*/, Dep2 = injector.Get<IInterface_7<object>>("cica") }, Lifetime.Scoped)
+                    .Factory(typeof(IInterface_3<>), factoryExpr: (_, _) => null, Lifetime.Transient)
+                    .Factory(typeof(IInterface_7<>), "cica", factoryExpr: (injector, _) => new { Dep1 = injector.Get(typeof(IInterface_1), null) }, Lifetime.Transient),
                 new ScopeOptions
                 {
                     ServiceResolutionMode = ServiceResolutionMode.JIT
@@ -84,14 +84,14 @@ namespace Solti.Utils.DI.Tests
             string dotGraph = Root.GetDependencyGraph<IInterface_1>(newLine: "\n");
             Assert.That(dotGraph, Is.EqualTo(File.ReadAllText("graph_4.txt").Replace("\r", string.Empty)));
         }
-        
+
         [Test]
         public void GetDependencyGraph_ShouldTakeProxiesIntoAccount()
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Factory<IDisposable>(_ => new Disposable(false), Lifetime.Scoped)
+                    .Factory<IDisposable>(factoryExpr: _ => new Disposable(false), Lifetime.Scoped)
                     .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Scoped).Decorate((scope, _, current) => DummyDecorator(scope.Get<IDisposable>(null), current))
             );
 

@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.UseCases
 
             using IScopeFactory root = ScopeFactory.Create(static svcs => svcs
                 .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
-                .Factory<IConfiguration>(_ => new ConfigurationBuilder().AddJsonStream
+                .Factory<IConfiguration>(factoryExpr: _ => new ConfigurationBuilder().AddJsonStream
                 (
                     new MemoryStream
                     (
@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.UseCases
         [Test]
         public void LoggerAspectTest()
         {
-            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory(i => new Mock<IModuleUsingAspect>().Object, Lifetime.Transient));
+            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory(factoryExpr: i => new Mock<IModuleUsingAspect>().Object, Lifetime.Transient));
 
             IInjector injector = root.CreateScope();
 

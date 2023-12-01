@@ -23,7 +23,7 @@ namespace Solti.Utils.DI.Tests
 
             Root = ScopeFactory.Create
             (
-                svcs => svcs.Factory(inj => mockSingleton.Object, lifetime),
+                svcs => svcs.Factory(factoryExpr: inj => mockSingleton.Object, lifetime),
                 new ScopeOptions { SupportsServiceProvider = true }
             );
 
@@ -45,7 +45,7 @@ namespace Solti.Utils.DI.Tests
 
             Root = ScopeFactory.Create
             (
-                svcs => svcs.Factory(inj => mockSingleton.Object, lifetime),
+                svcs => svcs.Factory(factoryExpr: inj => mockSingleton.Object, lifetime),
                 new ScopeOptions { SupportsServiceProvider = true }
             );
 

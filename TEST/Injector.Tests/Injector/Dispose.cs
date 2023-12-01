@@ -24,7 +24,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(s => s.Dispose());
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
+            Root = ScopeFactory.Create(svcs => svcs.Factory(factoryExpr: inj => mockDisposable.Object, lifetime));
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -42,7 +42,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(s => s.DisposeAsync())
                 .Returns(default(ValueTask));
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
+            Root = ScopeFactory.Create(svcs => svcs.Factory(factoryExpr: inj => mockDisposable.Object, lifetime));
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -60,7 +60,7 @@ namespace Solti.Utils.DI.Tests
                 .Setup(s => s.DisposeAsync())
                 .Returns(default(ValueTask));
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
+            Root = ScopeFactory.Create(svcs => svcs.Factory(factoryExpr: inj => mockDisposable.Object, lifetime));
 
             await using (IInjector injector = Root.CreateScope())
             {
@@ -76,7 +76,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IDisposable>(MockBehavior.Strict);
             mockDisposable.Setup(s => s.Dispose());
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory(inj => mockDisposable.Object, lifetime));
+            Root = ScopeFactory.Create(svcs => svcs.Factory(factoryExpr: inj => mockDisposable.Object, lifetime));
 
             await using (IInjector injector = Root.CreateScope())
             {
@@ -92,7 +92,7 @@ namespace Solti.Utils.DI.Tests
             var disposable = new Disposable();
 
             Root = ScopeFactory.Create(svcs => svcs
-                .Factory<IDisposableEx>(i => disposable, lifetime)
+                .Factory<IDisposableEx>(factoryExpr: i => disposable, lifetime)
                 .Service<IInterface_7<Lazy<IDisposableEx>>, Implementation_7_TInterface_Dependant<Lazy<IDisposableEx>>>(lifetime));
 
             using (IInjector injector = Root.CreateScope()) 
@@ -171,9 +171,9 @@ namespace Solti.Utils.DI.Tests
                 s3;
 
             Root = ScopeFactory.Create(svcs => svcs
-                .Factory<IDisposableEx>("0", _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l1)
-                .Factory<IDisposableEx>("1", _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l2)
-                .Factory<IDisposableEx>("2", _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l3));
+                .Factory<IDisposableEx>("0", factoryExpr: _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l1)
+                .Factory<IDisposableEx>("1", factoryExpr: _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l2)
+                .Factory<IDisposableEx>("2", factoryExpr: _ => new DisposableServiceNotifiesOnDispose(disposed.Add), l3));
 
             using (IInjector injector = Root.CreateScope())
             {

@@ -22,7 +22,16 @@ namespace Solti.Utils.DI.Internals
     {
         protected static new IServiceCollection RegisterBuiltInServices(IServiceCollection services) => Injector
             .RegisterBuiltInServices(services)
-            .Factory(typeof(IServiceProvider), static (i, _) =>  i, Lifetime.Scoped, ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress });
+            .Factory
+            (
+                type: typeof(IServiceProvider),
+                factoryExpr: static (i, _) =>  i,
+                lifetime: Lifetime.Scoped,
+                options: ServiceOptions.Default with
+                {
+                    DisposalMode = ServiceDisposalMode.Suppress
+                }
+            );
 
         public InjectorSupportsServiceProvider(IServiceCollection services, ScopeOptions options, object? tag) : base
         (
