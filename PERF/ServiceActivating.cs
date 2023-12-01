@@ -70,7 +70,7 @@ namespace Solti.Utils.DI.Perf
     {
         private sealed class DummyInterceptor : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
+            public object Invoke(IInvocationContext context, CallNextDelegate<IInvocationContext, object> callNext) => callNext(context);
         }
 
         private IServiceActivator Injector { get; set; }
@@ -83,7 +83,7 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup]
         public void Setup()
         {
-            IServiceCollection coll = DI.ServiceCollection.Create()
+            IServiceCollection coll = new DI.ServiceCollection()
                 .Service<IService, MyService>(Lifetime.Transient);
 
             if (SimpleDecorate)
@@ -131,7 +131,7 @@ namespace Solti.Utils.DI.Perf
         [GlobalSetup]
         public void Setup()
         {
-            IServiceCollection coll = DI.ServiceCollection.Create()
+            IServiceCollection coll = new DI.ServiceCollection()
                 .Service<IService, MyService>(Lifetime, ServiceOptions.Default with { DisposalMode = DisposalMode });
 
             Entry = coll.Last();

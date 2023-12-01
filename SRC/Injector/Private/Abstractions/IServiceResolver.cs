@@ -19,16 +19,21 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Resolves the service associated with the given interface and name.
         /// </summary>
-        AbstractServiceEntry? Resolve(Type iface, string? name);
+        AbstractServiceEntry? Resolve(Type type, object? key);
 
         /// <summary>
         /// Resolves the services associated with the given interface regardless their name.
         /// </summary>
-        IEnumerable<AbstractServiceEntry> ResolveMany(Type iface);
+        IReadOnlyCollection<AbstractServiceEntry>? ResolveMany(Type type);
 
         /// <summary>
         /// Slots required to store scoped services.
         /// </summary>
         int Slots { get; }
+
+        /// <summary>
+        /// The underlying service entry builder.
+        /// </summary>
+        IServiceEntryBuilder ServiceEntryBuilder { get; }
     }
 }

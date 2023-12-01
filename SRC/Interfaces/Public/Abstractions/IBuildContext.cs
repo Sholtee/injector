@@ -7,6 +7,8 @@ using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using Primitives;
+
     /// <summary>
     /// Context used during the build phase.
     /// </summary>
@@ -19,8 +21,8 @@ namespace Solti.Utils.DI.Interfaces
         int AssignSlot();
 
         /// <summary>
-        /// The compiler to be used to build <see cref="Expression"/>s.
+        /// The compiler to be used to build <see cref="LambdaExpression"/>s.
         /// </summary>
-        IDelegateCompiler Compiler { get; }
+        DelegateCompiler Compiler { get; }
     }
 }

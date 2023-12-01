@@ -127,10 +127,7 @@
     <value>"{0}" must have exactly one (annotated) public constructor.</value>
   </data>
   <data name="INVALID_DEPENDENCY" xml:space="preserve">
-    <value>A dependency must be an interface/Lazy&lt;interface&gt;.</value>
-  </data>
-  <data name="PARAMETER_NOT_AN_INTERFACE" xml:space="preserve">
-    <value>Parameter must be an interface.</value>
+    <value>Invalid dependency.</value>
   </data>
   <data name="PARAMETER_NOT_A_CLASS" xml:space="preserve">
     <value>Parameter must be a class.</value>
@@ -149,9 +146,6 @@
   </data>
   <data name="IS_NULL" xml:space="preserve">
     <value>The value of "{0}" cannot be null.</value>
-  </data>
-  <data name="PARAMETER_IS_ABSTRACT" xml:space="preserve">
-    <value>Parameter should not be abstract.</value>
   </data>
   <data name="BUILT_IN_SERVICE_OVERRIDE" xml:space="preserve">
     <value>Built in services cannot be overridden.</value>
@@ -182,5 +176,8 @@
   </data>
   <data name="SERVICE_ALREADY_REGISTERED" xml:space="preserve">
     <value>A service with the same ID has already been registered.</value>
+  </data>
+  <data name="COLLECTION_IS_READONLY" xml:space="preserve">
+    <value>Collection is readonly.</value>
   </data>
 </root>

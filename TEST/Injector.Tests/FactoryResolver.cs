@@ -19,6 +19,8 @@ namespace Solti.Utils.DI.Internals.Tests
     using Primitives.Patterns;
     using Properties;
 
+    using static ServiceActivator;
+
     [TestFixture]
     public sealed class FactoryResolverTests
     {
@@ -28,7 +30,7 @@ namespace Solti.Utils.DI.Internals.Tests
             public IList Dep2 { get; }
             public int Int { get; }
 
-            public MyClass(IDisposable dep1, [Options(Name = "cica")] IList dep2)
+            public MyClass(IDisposable dep1, [Options(Key = "cica")] IList dep2)
             {
                 Dep1 = dep1;
                 Dep2 = dep2;
@@ -41,7 +43,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 Int  = _int;
             }
 
-            public MyClass([Options(Name = "cica")] Lazy<IDisposable> dep1, Lazy<IList> dep2)
+            public MyClass([Options(Key = "cica")] Lazy<IDisposable> dep1, Lazy<IList> dep2)
             {
                 Dep1 = dep1.Value;
                 Dep2 = dep2.Value;
@@ -54,7 +56,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private class MyClass2
         {
-            [Inject, Options(Name = "cica")]
+            [Inject, Options(Key = "cica")]
             public IDisposable Dep1 { get; init; }
             [Inject]
             public IList Dep2 { get; init; }
@@ -63,7 +65,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
         private class MyClassHavingLazyProperty
         {
-            [Inject, Options(Name = "cica")]
+            [Inject, Options(Key = "cica")]
             public Lazy<IDisposable> Dep1 { get; init; }
             [Inject]
             public Lazy<IList> Dep2 { get; init; }
@@ -76,27 +78,25 @@ namespace Solti.Utils.DI.Internals.Tests
             public IList Dep { get; init; }
         }
 
-        private static FactoryResolver FactoryResolver { get; } = new FactoryResolver(null);
-
         public static IEnumerable<Func<ConstructorInfo, Func<IInjector, object>>> Activators
         {
             get
             {
                 yield return ctor =>
                 {
-                    FactoryDelegate factory = FactoryResolver.Resolve(ctor, null).Compile();
+                    FactoryDelegate factory = ResolveFactory(ctor, null, null).Compile();
                     return injector => factory(injector, null);
                 };
 
                 yield return ctor =>
                 {
-                    FactoryDelegate factory = FactoryResolver.Resolve(ctor, new Dictionary<string, object>(0)).Compile();
+                    FactoryDelegate factory = ResolveFactory(ctor, new Dictionary<string, object>(0), null).Compile();
                     return injector => factory(injector, null);
                 };
 
                 yield return ctor =>
                 {
-                    FactoryDelegate factory = FactoryResolver.Resolve(ctor, new { }).Compile();
+                    FactoryDelegate factory = ResolveFactory(ctor, new { }, null).Compile();
                     return injector => factory(injector, null);
                 };
             }
@@ -216,7 +216,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClassHavingOptionalProperty), null).Compile();
+            FactoryDelegate factory = ResolveFactory(typeof(MyClassHavingOptionalProperty).GetApplicableConstructor(), null, null).Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, typeof(IList)));
 
@@ -229,7 +229,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            FactoryDelegate factory = FactoryResolver.Resolve(typeof(MyClass).GetConstructor(Type.EmptyTypes), null).Compile();
+            FactoryDelegate factory = ResolveFactory(typeof(MyClass).GetConstructor(Type.EmptyTypes), null, null).Compile();
 
             Assert.That(factory, Is.Not.Null);
 
@@ -248,12 +248,15 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(List<string>).GetConstructor(new[] {typeof(int)}), new Dictionary<string, object>
+            FactoryDelegate factory = ResolveFactory
+            (
+                typeof(List<string>).GetConstructor(new[] {typeof(int)}),
+                new Dictionary<string, object>
                 {
                     {"capacity", 10}
-                })
-                .Compile();
+                },
+                null
+            ).Compile();
 
             object lst = factory(mockInjector.Object, null);
 
@@ -269,8 +272,7 @@ namespace Solti.Utils.DI.Internals.Tests
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
             mockInjector.Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()));
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(List<string>).GetConstructor(new[] { typeof(int) }), new { capacity = 10 })
+            FactoryDelegate factory = ResolveFactory(typeof(List<string>).GetConstructor(new[] { typeof(int) }), new { capacity = 10 }, null)
                 .Compile();
 
             object lst = factory(mockInjector.Object, null);
@@ -286,12 +288,15 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new Dictionary<string, object>
+            FactoryDelegate factory = ResolveFactory
+            (
+                typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes),
+                new Dictionary<string, object>
                 {
                     {nameof(MyClassHavingOptionalProperty.Dep), new List<string>()}
-                })
-                .Compile();
+                },
+                null
+            ).Compile();
 
             var ret = (MyClassHavingOptionalProperty) factory(mockInjector.Object, null);
 
@@ -304,12 +309,15 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes), new
+            FactoryDelegate factory = ResolveFactory
+            (
+                typeof(MyClassHavingOptionalProperty).GetConstructor(Type.EmptyTypes),
+                new
                 {
                     Dep = (IList) new List<string>()
-                })
-                .Compile();
+                },
+                null
+            ).Compile();
 
             var ret = (MyClassHavingOptionalProperty)factory(mockInjector.Object, null);
 
@@ -335,8 +343,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IDisposable), null))
                 .Returns(null);
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyServiceHavingDependency), new Dictionary<string, object>())
+            FactoryDelegate factory = ResolveFactory(typeof(MyServiceHavingDependency).GetApplicableConstructor(), new Dictionary<string, object>(), null)
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -356,8 +363,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IDisposable), null))
                 .Returns(null);
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyServiceHavingDependency), new { })
+            FactoryDelegate factory = ResolveFactory(typeof(MyServiceHavingDependency).GetApplicableConstructor(), new { }, null)
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -374,8 +380,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyClassHavingOptionalProperty), new Dictionary<string, object>())
+            FactoryDelegate factory = ResolveFactory(typeof(MyClassHavingOptionalProperty).GetApplicableConstructor(), new Dictionary<string, object>(), null)
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -391,8 +396,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.TryGet(typeof(IList), null))
                 .Returns(new List<IDictionary>());
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyClassHavingOptionalProperty), new {})
+            FactoryDelegate factory = ResolveFactory(typeof(MyClassHavingOptionalProperty).GetApplicableConstructor(), new {}, null)
                 .Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
@@ -405,9 +409,12 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
 
-            FactoryDelegate factory =  FactoryResolver
-                .Resolve(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new Dictionary<string, object>())
-                .Compile();
+            FactoryDelegate factory = ResolveFactory
+            (
+                typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }),
+                new Dictionary<string, object>(),
+                null
+            ).Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
         }
@@ -417,9 +424,12 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             var mockInjector = new Mock<IInjector>(MockBehavior.Loose);
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }), new { })
-                .Compile();
+            FactoryDelegate factory = ResolveFactory
+            (
+                typeof(MyClass).GetConstructor(new[] { typeof(Lazy<IDisposable>), typeof(Lazy<IList>) }),
+                new { },
+                null
+            ).Compile();
 
             Assert.DoesNotThrow(() => factory.Invoke(mockInjector.Object, null));
         }
@@ -429,7 +439,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, null), Resources.INVALID_DEPENDENCY);
+            Assert.Throws<ArgumentException>(() => ResolveFactory(ctor, null, null), Resources.INVALID_DEPENDENCY);
         }
 
         [Test]
@@ -437,31 +447,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(ctor, new { }), Resources.INVALID_DEPENDENCY);
-        }
-
-        [Test]
-        public void Resolve_ShouldValidate() 
-        {
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable), null), Resources.PARAMETER_NOT_A_CLASS);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>), null), Resources.PARAMETER_IS_GENERIC);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass), null), Resources.PARAMETER_IS_ABSTRACT);
-        }
-
-        [Test]
-        public void Resolve_ShouldValidate2()
-        {
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable), new { }), Resources.PARAMETER_NOT_A_CLASS);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>), new { }), Resources.PARAMETER_IS_GENERIC);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass), new { }), Resources.PARAMETER_IS_ABSTRACT);
-        }
-
-        [Test]
-        public void Resolve_ShouldValidate3()
-        {
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IDisposable), new Dictionary<string, object>()), Resources.PARAMETER_NOT_A_CLASS);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(IList<>), new Dictionary<string, object>()), Resources.PARAMETER_IS_GENERIC);
-            Assert.Throws<ArgumentException>(() => FactoryResolver.Resolve(typeof(AbstractClass), new Dictionary<string, object>()), Resources.PARAMETER_IS_ABSTRACT);
+            Assert.Throws<ArgumentException>(() => ResolveFactory(ctor, new { }, null), Resources.INVALID_DEPENDENCY);
         }
 
         private abstract class AbstractClass { }
@@ -474,12 +460,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IList) }), new Dictionary<string, object>
+            FactoryDelegate factory = ResolveFactory
+            (
+                typeof(MyClass).GetConstructor(new[] {typeof(IDisposable), typeof(IList) }),
+                new Dictionary<string, object>
                 {
                     {"dep2", null}
-                })
-                .Compile();
+                },
+                null
+            ).Compile();
 
             object obj = factory(mockInjector.Object, null);
 
@@ -497,12 +486,15 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            FactoryDelegate factory = FactoryResolver
-                .Resolve(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), new
+            FactoryDelegate factory = ResolveFactory
+            (
+                typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }),
+                new
                 {
                     dep2 = (IList) null
-                })
-                .Compile();
+                },
+                null
+            ).Compile();
 
             object obj = factory(mockInjector.Object, null);
 
@@ -524,8 +516,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            MyClass obj = FactoryResolver
-                .Resolve(ctor, new Dictionary<string, object> { { "_int", TEN } })
+            MyClass obj = ResolveFactory(ctor, new Dictionary<string, object> { { "_int", TEN } }, null)
                 .Compile()
                 .Invoke(mockInjector.Object, null) as MyClass;
 
@@ -545,8 +536,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .Setup(i => i.Get(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns<Type, string>((type, name) => null);
 
-            MyClass obj = FactoryResolver
-                .Resolve(ctor, new { _int = TEN })
+            MyClass obj = ResolveFactory(ctor, new { _int = TEN }, null)
                 .Compile()
                 .Invoke(mockInjector.Object, null) as MyClass;
 
@@ -567,7 +557,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Func<IInjector, Lazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, Lazy<IDisposable>>>
             (
-                new RegularLazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                new RegularLazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Key = svcName }),
                 injector
             ).Compile();
 
@@ -595,7 +585,7 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Func<IInjector, ILazy<IDisposable>> factory = Expression.Lambda<Func<IInjector, ILazy<IDisposable>>>
             (
-                new LazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Name = svcName }),
+                new LazyDependencyResolver().ResolveLazyService(injector, typeof(IDisposable), new OptionsAttribute { Key = svcName }),
                 injector
             ).Compile();
 

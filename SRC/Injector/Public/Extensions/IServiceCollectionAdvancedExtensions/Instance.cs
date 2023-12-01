@@ -15,17 +15,17 @@ namespace Solti.Utils.DI
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once (with the given <paramref name="name"/>).</param>
-        /// <param name="name">The (optional) name of the service.</param>
-        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
+        /// <param name="type">The service type to be registered. It can not be null and can be registered only once (with the given <paramref name="key"/>).</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
+        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="type"/> interface.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Instance(this IServiceCollection self, Type iface, string? name, object instance, ServiceOptions? options = null)
+        public static IServiceCollection Instance(this IServiceCollection self, Type type, object? key, object instance, ServiceOptions? options = null)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
-            if (iface is null)
-                throw new ArgumentNullException(nameof(iface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
             if (instance is null)
                 throw new ArgumentNullException(nameof(instance));
@@ -36,7 +36,7 @@ namespace Solti.Utils.DI
                 // Further validations are done by the created InstanceServiceEntry
                 //
 
-                Lifetime.Instance.CreateFrom(iface, name, instance, options ?? ServiceOptions.Default)
+                Lifetime.Instance.CreateFrom(type, key, instance, options ?? ServiceOptions.Default)
             );
         }
 
@@ -44,31 +44,31 @@ namespace Solti.Utils.DI
         /// Registers a pre-created instance. Useful to creating "constant" values (e.g. command-line arguments).
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface to be registered. It can not be null and can be registered only once.</param>
-        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="iface"/> interface.</param>
+        /// <param name="type">The service type to be registered. It can not be null and can be registered only once.</param>
+        /// <param name="instance">The pre-created instance to be registered. It can not be null and must implement the <paramref name="type"/> interface.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Instance(this IServiceCollection self, Type iface, object instance, ServiceOptions? options = null)
-            => self.Instance(iface, null, instance, options);
+        public static IServiceCollection Instance(this IServiceCollection self, Type type, object instance, ServiceOptions? options = null)
+            => self.Instance(type, null, instance, options);
 
         /// <summary>
         /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).
         /// </summary>
-        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once (with the given <paramref name="name"/>).</typeparam>
+        /// <typeparam name="TType">The service type to be registered. It can be registered only once (with the given <paramref name="key"/>).</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Instance<TInterface>(this IServiceCollection self, string? name, TInterface instance, ServiceOptions? options = null) where TInterface: class 
-            => self.Instance(typeof(TInterface), name, instance, options);
+        public static IServiceCollection Instance<TType>(this IServiceCollection self, object? key, TType instance, ServiceOptions? options = null) where TType: class 
+            => self.Instance(typeof(TType), key, instance, options);
 
         /// <summary>
         /// Registers a pre-created instance. Useful when creating "constant" values (e.g. from command-line arguments).
         /// </summary>
-        /// <typeparam name="TInterface">The service interface to be registered. It can be registered only once.</typeparam>
+        /// <typeparam name="TType">The service type to be registered. It can be registered only once.</typeparam>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
         /// <param name="instance">The pre-created instance to be registered.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
-        public static IServiceCollection Instance<TInterface>(this IServiceCollection self, TInterface instance, ServiceOptions? options = null) where TInterface: class
-            => self.Instance(null, instance, options);
+        public static IServiceCollection Instance<TType>(this IServiceCollection self, TType instance, ServiceOptions? options = null) where TType: class
+            => self.Instance(key: null, instance, options);
     }
 }

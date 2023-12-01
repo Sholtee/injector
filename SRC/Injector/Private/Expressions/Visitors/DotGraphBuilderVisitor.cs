@@ -21,9 +21,9 @@ namespace Solti.Utils.DI.Internals
 
         public LambdaExpression Visit(LambdaExpression factory, AbstractServiceEntry entry) => (LambdaExpression) Visit(factory);
 
-        protected override Expression VisitServiceRequest(MethodCallExpression method, Expression scope, Type iface, string? name)
+        protected override Expression VisitServiceRequest(MethodCallExpression method, Expression scope, Type type, object? key)
         {
-            FBuilder.Build(iface, name);
+            FBuilder.Build(type, key);
             return method;
         }
     }

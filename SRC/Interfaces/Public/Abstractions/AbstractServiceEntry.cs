@@ -13,7 +13,8 @@ namespace Solti.Utils.DI.Interfaces
 {
     using Primitives;
     using Primitives.Threading;
-    using Properties;
+
+    using static Properties.Resources;
 
     /// <summary>
     /// Describes an abstract service entry.
@@ -22,6 +23,11 @@ namespace Solti.Utils.DI.Interfaces
     public abstract class AbstractServiceEntry: IServiceId
     {
         private int FState;
+
+        /// <summary>
+        /// Value of <see cref="CreateInterceptorDelegate"/> property.
+        /// </summary>
+        protected FutureDelegate<CreateServiceDelegate>? FCreateInstance;
 
         /// <summary>
         /// Contains some constants regarding service resolution.
@@ -50,32 +56,31 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// Creates a new <see cref="AbstractServiceEntry"/> instance.
         /// </summary>
-        /// <param name="interface">The interface of the service.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="type">The type of the service.</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
         /// <param name="implementation">The (optional) implementation of the service.</param>
         /// <param name="factory">The (optional) factory of the service.</param>
         /// <param name="explicitArgs">Optional explicit arguments (in form of {ctorArg1 = ..., ctorArg2 = ...}) to be passed to the constructor of <see cref="Implementation"/>.</param>
         /// <param name="options">Options to be assigned to this instance.</param>
-        /// <exception cref="ArgumentException">The <paramref name="interface"/> is not an interface.</exception>
         /// <exception cref="ArgumentException">The <paramref name="implementation"/> is not a class.</exception>
-        protected AbstractServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions? options)
+        protected AbstractServiceEntry(Type type, object? key, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions? options)
         {
-            if (@interface is null)
-                throw new ArgumentNullException(nameof(@interface));
-
-            if (!@interface.IsInterface)
-                throw new ArgumentException(Resources.NOT_AN_INTERFACE, nameof(@interface));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
 
             //
-            // The given "implementation" not necessarily implements the service interface (for instance in case 
+            // The given "implementation" not necessarily implements the service type (for instance in case 
             // of Proxy recipe) therefore the missing validation.
             //
 
             if (implementation?.IsClass is false)
-                throw new ArgumentException(Resources.NOT_A_CLASS, nameof(implementation));
+                throw new ArgumentException(NOT_A_CLASS, nameof(implementation));
 
-            Interface = @interface;
-            Name = name;
+            if (implementation?.IsAbstract is true)
+                throw new ArgumentException(ABSTRACT_CLASS, nameof(implementation));
+
+            Type = type;
+            Key = key;
             Implementation = implementation;
             ExplicitArgs = explicitArgs;
             Factory = factory;
@@ -84,16 +89,16 @@ namespace Solti.Utils.DI.Interfaces
 
         #region Immutables
         /// <summary>
-        /// The service interface.
+        /// The service type.
         /// </summary>
-        /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
-        public Type Interface { get; }
+        /// <remarks>A service is identified by its <see cref="Type"/> and <see cref="Key"/>.</remarks>
+        public Type Type { get; }
 
         /// <summary>
-        /// The (optional) service name.
+        /// The (optional) service key (usually a name).
         /// </summary>
-        /// <remarks>A service is identified by its <see cref="Interface"/> and <see cref="Name"/>.</remarks>
-        public string? Name { get; }
+        /// <remarks>A service is identified by its <see cref="Type"/> and <see cref="Key"/>.</remarks>
+        public object? Key { get; }
 
         /// <summary>
         /// The (optional) implementation of the service.
@@ -147,23 +152,23 @@ namespace Solti.Utils.DI.Interfaces
         /// Unconditionaly creates a new service instance.
         /// </summary>
         /// <remarks>To assign value to this property, invoke the <see cref="Build(IBuildContext, IReadOnlyList{IFactoryVisitor})"/> method.</remarks>
-        public CreateServiceDelegate? CreateInstance { get; protected set; }
+        public CreateServiceDelegate? CreateInstance => FCreateInstance?.IsCompiled is true ? FCreateInstance.Value : null;
 
         /// <summary>
         /// Bound decorators.
         /// </summary>
-        public virtual IReadOnlyList<Expression<DecoratorDelegate>> Decorators => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
+        public virtual IReadOnlyList<Expression<DecoratorDelegate>> Decorators => throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
         #endregion
 
         /// <summary>
         /// Specializes a service entry if it is generic.
         /// </summary>
-        public virtual AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotSupportedException(Resources.SPECIALIZATION_NOT_SUPPORTED);
+        public virtual AbstractServiceEntry Specialize(params Type[] genericArguments) => throw new NotSupportedException(SPECIALIZATION_NOT_SUPPORTED);
 
         /// <summary>
         /// If implemented, alters the service instantiation process in order to wrap the original service into a proxy.
         /// </summary>
-        public virtual void Decorate(Expression<DecoratorDelegate> decorator) => throw new NotSupportedException(Resources.DECORATING_NOT_SUPPORTED);
+        public virtual void Decorate(Expression<DecoratorDelegate> decorator) => throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
 
         /// <summary>
         /// Builds this entry applying the provided factory <paramref name="visitors"/>.
@@ -194,10 +199,10 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         public string ToString(bool shortForm)
         {
-            StringBuilder result = new(Interface.GetFriendlyName());
+            StringBuilder result = new(Type.GetFriendlyName());
             
-            if (Name is not null)
-                result.Append($":{Name}");
+            if (Key is not null)
+                result.Append($":{Key}");
 
             if (!shortForm)
             {
@@ -206,11 +211,11 @@ namespace Solti.Utils.DI.Interfaces
                     NULL = nameof(NULL);
 
                 result
-                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
-                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? NULL)
+                    .AppendFormat(Culture, NAME_PART, nameof(Lifetime), Lifetime?.ToString() ?? NULL)
+                    .AppendFormat(Culture, NAME_PART, nameof(Implementation), Implementation?.GetFriendlyName() ?? NULL)
 
                     #pragma warning disable CA1307 // Specify StringComparison for clarity
-                    .AppendFormat(Resources.Culture, NAME_PART, nameof(Factory), Factory?.ToString().Replace(Environment.NewLine, " ") ?? NULL);
+                    .AppendFormat(Culture, NAME_PART, nameof(Factory), Factory?.ToString().Replace(Environment.NewLine, " ") ?? NULL);
                     #pragma warning restore CA1307
             }
 

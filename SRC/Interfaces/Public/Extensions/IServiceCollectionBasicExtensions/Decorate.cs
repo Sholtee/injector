@@ -20,7 +20,7 @@ namespace Solti.Utils.DI.Interfaces
         /// (
         ///     svcs => svcs
         ///         .Service&lt;IMyService, MyService&gt;()
-        ///         .Decorate((scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///         .Decorate((scope, type, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
         ///     ...
         /// )
         /// </code>
@@ -55,14 +55,14 @@ namespace Solti.Utils.DI.Interfaces
         /// (
         ///     svcs => svcs
         ///         .Service&lt;IMyService, MyService&gt;("svcName")
-        ///         .Decorate(typeof(IMyService), "svcName", (scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///         .Decorate(typeof(IMyService), "svcName", (scope, type, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
         ///     ...
         /// )
         /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of decorator function.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -71,7 +71,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </list>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string? name, Expression<DecoratorDelegate> decorator)
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, Expression<DecoratorDelegate> decorator)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -79,7 +79,7 @@ namespace Solti.Utils.DI.Interfaces
             if (decorator is null)
                 throw new ArgumentNullException(nameof(decorator));
 
-            self.Find(iface, name).Decorate(decorator);
+            self.Find(type, key).Decorate(decorator);
             return self;
         }
 
@@ -92,13 +92,13 @@ namespace Solti.Utils.DI.Interfaces
         /// (
         ///     svcs => svcs
         ///         .Service&lt;IMyService, MyService&gt;()
-        ///         .Decorate(typeof(IMyService), (scope, iface, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
+        ///         .Decorate(typeof(IMyService), (scope, type, instance) => ProxyGenerator&lt;IMyService, ParameterValidatorInterceptor&lt;IMyService&gt;&gt;.Activate(Tuple.Create(instance))),
         ///     ...
         /// )
         /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="iface">The service interface.</param>
+        /// <param name="type">The service type.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -107,8 +107,8 @@ namespace Solti.Utils.DI.Interfaces
         /// </list>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Expression<DecoratorDelegate> decorator) =>
-            self.Decorate(iface, null, decorator);
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, Expression<DecoratorDelegate> decorator) =>
+            self.Decorate(type, null, decorator);
 
         /// <summary>
         /// Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):
@@ -125,7 +125,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </code>
         /// </summary>
         /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
-        /// <param name="name">The (optional) service name.</param>
+        /// <param name="key">The (optional) service name.</param>
         /// <param name="decorator">The decorator funtion. It must return the decorated instance. The original instance can be accessed via the 3rd parameter of the decorator function.</param>
         /// <remarks>
         /// <list type="bullet">
@@ -134,8 +134,8 @@ namespace Solti.Utils.DI.Interfaces
         /// </list>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IServiceCollection Decorate<TInterface>(this IServiceCollection self, string? name, Expression<DecoratorDelegate<TInterface>> decorator) where TInterface : class =>
-            self.Decorate(typeof(TInterface), name, WrapToStandardDelegate(decorator));
+        public static IServiceCollection Decorate<TType>(this IServiceCollection self, object? key, Expression<DecoratorDelegate<TType>> decorator) where TType : class =>
+            self.Decorate(typeof(TType), key, WrapToStandardDelegate(decorator));
 
         /// <summary>
         /// Hooks into the instantiating process of a registered service. Useful when you want to add additional functionality (e.g. parameter validation):
@@ -160,8 +160,8 @@ namespace Solti.Utils.DI.Interfaces
         /// </list>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When proxying not allowed (see above).</exception>
-        public static IServiceCollection Decorate<TInterface>(this IServiceCollection self, Expression<DecoratorDelegate<TInterface>> decorator) where TInterface: class =>
-            self.Decorate(typeof(TInterface), WrapToStandardDelegate(decorator));
+        public static IServiceCollection Decorate<TType>(this IServiceCollection self, Expression<DecoratorDelegate<TType>> decorator) where TType: class =>
+            self.Decorate(typeof(TType), WrapToStandardDelegate(decorator));
 
         private sealed class ParameterReplacer : ExpressionVisitor
         {
@@ -180,21 +180,21 @@ namespace Solti.Utils.DI.Interfaces
                 : base.VisitParameter(node);
         }
 
-        private static Expression<DecoratorDelegate> WrapToStandardDelegate<TInterface>(Expression<DecoratorDelegate<TInterface>> decorator) where TInterface : class
+        private static Expression<DecoratorDelegate> WrapToStandardDelegate<TType>(Expression<DecoratorDelegate<TType>> decorator) where TType : class
         {
             if (decorator is null)
                 throw new ArgumentNullException(nameof(decorator));
 
             ParameterExpression
                 injector = decorator.Parameters[0],
-                iface    = Expression.Parameter(typeof(Type), nameof(iface)),
+                type     = Expression.Parameter(typeof(Type), nameof(type)),
                 instance = Expression.Parameter(typeof(object), nameof(instance));
 
             return Expression.Lambda<DecoratorDelegate>
             (
                 new ParameterReplacer(decorator.Parameters[1], instance).Visit(decorator.Body),
                 injector,
-                iface,
+                type,
                 instance
             );
         }

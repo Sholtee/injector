@@ -16,7 +16,7 @@ namespace Solti.Utils.DI.Perf
         {
             private IScopeFactory FRoot;
 
-            private readonly IServiceCollection FServices = ServiceCollection.Create();
+            private readonly IServiceCollection FServices = new ServiceCollection();
 
             protected override void Dispose(bool disposeManaged)
             {

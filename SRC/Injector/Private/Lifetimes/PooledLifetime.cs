@@ -14,24 +14,28 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : Lifetime
     {
-        private static string GetPoolName(Type iface, string? name)
+        private static object GetPoolName(Type type, object? key)
         {
-            if (iface.IsConstructedGenericType)
-                iface= iface.GetGenericTypeDefinition();
+            if (type.IsConstructedGenericType)
+                type = type.GetGenericTypeDefinition();
 
-            return $"{IServiceCollection.Consts.INTERNAL_SERVICE_NAME_PREFIX}pool_{iface.TypeHandle.Value:X}{name?.Insert(0, ":")}";
+            return new
+            {
+                __pool_interface = type,
+                __pool_key = key
+            };
         }
 
         private AbstractServiceEntry GetPoolService(PooledServiceEntry entry) => new SingletonServiceEntry
         (
-            entry.Interface.IsGenericTypeDefinition
+            entry.Type.IsGenericTypeDefinition
                 ? typeof(IPool<>)
-                : typeof(IPool<>).MakeGenericType(entry.Interface),
+                : typeof(IPool<>).MakeGenericType(entry.Type),
             entry.PoolName,
-            entry.Interface.IsGenericTypeDefinition
+            entry.Type.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
-                : typeof(PoolService<>).MakeGenericType(entry.Interface),
-            new { config = Config, name = entry.Name },
+                : typeof(PoolService<>).MakeGenericType(entry.Type),
+            new { config = Config, key = entry.Key },
             ServiceOptions.Default with { SupportAspects = false }
         );
 
@@ -39,46 +43,46 @@ namespace Solti.Utils.DI.Internals
 
         public PooledLifetime() : base(precedence: 20) { }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type type, object? key, Type implementation, ServiceOptions serviceOptions)
         {
             PooledServiceEntry entry = new
             (
-                iface ?? throw new ArgumentNullException(nameof(iface)),
-                name,
+                type ?? throw new ArgumentNullException(nameof(type)),
+                key,
                 implementation ?? throw new ArgumentNullException(nameof(implementation)),
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
-                GetPoolName(iface, name)
+                GetPoolName(type, key)
             );
 
             yield return GetPoolService(entry);
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type type, object? key, Type implementation, object explicitArgs, ServiceOptions serviceOptions)
         {
             PooledServiceEntry entry = new
             (
-                iface ?? throw new ArgumentNullException(nameof(iface)),
-                name,
+                type ?? throw new ArgumentNullException(nameof(type)),
+                key,
                 implementation ?? throw new ArgumentNullException(nameof(implementation)),
                 explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
-                GetPoolName(iface, name)
+                GetPoolName(type, key)
             );
 
             yield return GetPoolService(entry);
             yield return entry;
         }
 
-        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type iface, string? name, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
+        public override IEnumerable<AbstractServiceEntry> CreateFrom(Type type, object? key, Expression<FactoryDelegate> factory, ServiceOptions serviceOptions)
         {
             PooledServiceEntry entry = new
             (
-                iface ?? throw new ArgumentNullException(nameof(iface)),
-                name,
+                type ?? throw new ArgumentNullException(nameof(type)),
+                key,
                 factory ?? throw new ArgumentNullException(nameof(factory)),
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
-                GetPoolName(iface, name)
+                GetPoolName(type, key)
             );
 
             yield return GetPoolService(entry);

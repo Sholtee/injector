@@ -136,7 +136,7 @@ namespace Solti.Utils.DI.Tests
 
                 using (IInjector injector = root.CreateScope())
                 {
-                    instance = (Disposable) injector.Get<IInterface_7<IDisposable>>().Interface;
+                    instance = (Disposable) injector.Get<IInterface_7<IDisposable>>().Dependency;
                     Assert.That(instance.Disposed, Is.False);
                 }
             }
@@ -151,7 +151,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope()) 
             {
-                IInjector dedicatedInjector = injector.Get<IInterface_7<IInjector>>().Interface;
+                IInjector dedicatedInjector = injector.Get<IInterface_7<IInjector>>().Dependency;
 
                 Assert.That(dedicatedInjector, Is.SameAs(Root));
             }
@@ -164,7 +164,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IInterface_7<IInjector>>().Interface, Is.SameAs(injector));
+                Assert.That(injector.Get<IInterface_7<IInjector>>().Dependency, Is.SameAs(injector));
             }
         }
 
@@ -175,7 +175,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IInterface_7<IInjector>>().Interface, Is.SameAs(Root));
+                Assert.That(injector.Get<IInterface_7<IInjector>>().Dependency, Is.SameAs(Root));
             }
         }
 
@@ -232,7 +232,7 @@ namespace Solti.Utils.DI.Tests
             {
                 IInterface_7<IInjector> svc1 = injector1.Get<IInterface_7<IInjector>>();
 
-                Assert.That(svc1.Interface, Is.Not.SameAs(injector1));
+                Assert.That(svc1.Dependency, Is.Not.SameAs(injector1));
 
                 await Task.Run(() => // kulon szal kell hogy ne ugyanazt a szerviz peldanyt kapjuk vissza
                 {
@@ -240,8 +240,8 @@ namespace Solti.Utils.DI.Tests
                     {
                         IInterface_7<IInjector> svc2 = injector2.Get<IInterface_7<IInjector>>();
 
-                        Assert.That(svc2.Interface, Is.Not.SameAs(injector2));
-                        Assert.AreNotSame(svc1.Interface, svc2.Interface);
+                        Assert.That(svc2.Dependency, Is.Not.SameAs(injector2));
+                        Assert.AreNotSame(svc1.Dependency, svc2.Dependency);
                     }
                 });
             }
@@ -280,7 +280,7 @@ namespace Solti.Utils.DI.Tests
             {
                 IInterface_7<IInterface_1> svc = injector.Get<IInterface_7<IInterface_1>>();
 
-                Assert.That(svc.Interface, Is.Not.Null);
+                Assert.That(svc.Dependency, Is.Not.Null);
             }
         }
 
@@ -295,7 +295,7 @@ namespace Solti.Utils.DI.Tests
             {
                 IInterface_7<IInterface_1> svc = injector.Get<IInterface_7<IInterface_1>>();
 
-                Assert.That(svc.Interface, Is.Not.Null);
+                Assert.That(svc.Dependency, Is.Not.Null);
             }
         }
 

@@ -32,21 +32,14 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => Collection.Service(null, typeof(Disposable), new { }, Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), null, new { }, Lifetime.Transient));
             Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), new { }, null));
-            Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), null, Lifetime.Transient));
-        }
-
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Service_ShouldThrowOnNonInterfaceKey(Lifetime lifetime)
-        {
-            Assert.Throws<ArgumentException>(() => Collection.Service<Object, Object>(lifetime), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(Object), typeof(Object), lifetime), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
+            Assert.Throws<ArgumentNullException>(() => Collection.Service(typeof(IDisposable), typeof(Disposable), explicitArgs: null, Lifetime.Transient));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldThrowOnNonClassImplementation(Lifetime lifetime)
         {
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), null, typeof(int), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
-            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), null, typeof(int), new object(), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), key: null, typeof(int), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), key: null, typeof(int), new object(), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -57,7 +50,7 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry entry = Collection.Last().Specialize(typeof(int));
 
             Assert.That(entry, Is.Not.Null);
-            Assert.That(entry.Interface, Is.EqualTo(typeof(IInterface_3<int>)));
+            Assert.That(entry.Type, Is.EqualTo(typeof(IInterface_3<int>)));
             Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_3_IInterface_1_Dependant<int>)));
         }
 
@@ -65,7 +58,7 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldHandleNamedServices(Lifetime lifetime) 
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_1_No_Dep>("svc1", lifetime));
-            Assert.That(Collection.Last().Name, Is.EqualTo("svc1"));
+            Assert.That(Collection.Last().Key, Is.EqualTo("svc1"));
         }
 
         private interface IServiceHavingNonInterfaceCtorArg
@@ -83,7 +76,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldHandleExplicitArgs(Lifetime lifetime)
         {
-            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
+            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(null, new Dictionary<string, object> { ["para"] = "cica" }, lifetime);
 
             Expression<FactoryDelegate> fact = Collection.Last().Factory;
 
@@ -104,7 +97,7 @@ namespace Solti.Utils.DI.Tests
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldHandleExplicitArgs2(Lifetime lifetime)
         {
-            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(new { para = "cica" }, lifetime);
+            Collection.Service<IServiceHavingNonInterfaceCtorArg, ServiceHavingNonInterfaceCtorArg>(null, new { para = "cica" }, lifetime);
 
             Expression<FactoryDelegate> fact = Collection.Last().Factory;
 
@@ -198,10 +191,10 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldAssignAFactoryFunction(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(new FactoryResolver(null).Resolve(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null).GetDebugView()));
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null, null).GetDebugView()));
 
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
-            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(new FactoryResolver(null).Resolve(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }), null).GetDebugView()));
+            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }), null, null).GetDebugView()));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

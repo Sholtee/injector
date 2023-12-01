@@ -22,11 +22,20 @@ namespace Solti.Utils.DI.Internals
     {
         protected static new IServiceCollection RegisterBuiltInServices(IServiceCollection services) => Injector
             .RegisterBuiltInServices(services)
-            .Factory(typeof(IServiceProvider), static (i, _) =>  i, Lifetime.Scoped, ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress });
+            .Factory
+            (
+                type: typeof(IServiceProvider),
+                factoryExpr: static (i, _) =>  i,
+                lifetime: Lifetime.Scoped,
+                options: ServiceOptions.Default with
+                {
+                    DisposalMode = ServiceDisposalMode.Suppress
+                }
+            );
 
         public InjectorSupportsServiceProvider(IServiceCollection services, ScopeOptions options, object? tag) : base
         (
-            ServiceResolver.Create
+            new ServiceResolver
             (
                 RegisterBuiltInServices(services),
                 options
@@ -39,9 +48,9 @@ namespace Solti.Utils.DI.Internals
         {
         }
 
-        public override object Get(Type iface, string? name) => TryGet(iface, name)!;
+        public override object Get(Type type, object? key) => TryGet(type, key)!;
 
-        public object GetService(Type serviceType) => TryGet(serviceType, null)!;
+        public object GetService(Type type) => TryGet(type, null)!;
 
         public override IInjector CreateScope(object? tag)
         {

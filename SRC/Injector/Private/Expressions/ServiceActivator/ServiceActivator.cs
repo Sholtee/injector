@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* FactoryResolverBase.cs                                                        *
+* ServiceActivator.cs                                                           *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -14,34 +14,18 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
     using Primitives;
-    using Properties;
 
-    internal abstract class FactoryResolverBase
+    using static Properties.Resources;
+
+    internal static partial class ServiceActivator
     {
-        private readonly IReadOnlyList<IDependencyResolver> FResolvers;
-
-        protected static void EnsureCanBeInstantiated(Type type) 
-        {
-            if (type is null)
-                throw new ArgumentNullException(nameof(type));
-
-            if (!type.IsClass)
-                throw new ArgumentException(Resources.PARAMETER_NOT_A_CLASS, nameof(type));
-
-            if (type.IsAbstract)
-                throw new ArgumentException(Resources.PARAMETER_IS_ABSTRACT, nameof(type));
-
-            if (type.IsGenericTypeDefinition)
-                throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(type));
-        }
-
-        protected virtual Expression ResolveDependency(ParameterExpression injector, DependencyDescriptor dependency, object? userData)
+        private static Expression ResolveDependency(ParameterExpression injector, DependencyDescriptor dependency, object? userData, IReadOnlyList<IDependencyResolver> resolvers)
         {
             return Resolve(0, null);
 
-            Expression Resolve(int i, object? context) => i == FResolvers.Count
-                ? throw new ArgumentException(Resources.INVALID_DEPENDENCY, dependency.Name)
-                : FResolvers[i].Resolve(injector, dependency, userData, context, context => Resolve(i + 1, context));
+            Expression Resolve(int i, object? context) => i == resolvers.Count
+                ? throw new ArgumentException(INVALID_DEPENDENCY, dependency.Name)
+                : resolvers[i].Resolve(injector, dependency, userData, context, context => Resolve(i + 1, context));
         }
 
         /// <summary>
@@ -53,7 +37,7 @@ namespace Solti.Utils.DI.Internals
         /// }
         /// </code>
         /// </summary>
-        protected virtual Expression ResolveService(ConstructorInfo constructor, ParameterExpression injector, object? userData) => Expression.MemberInit
+        private static Expression ResolveService(ConstructorInfo constructor, ParameterExpression injector, object? userData, IReadOnlyList<IDependencyResolver> resolvers) => Expression.MemberInit
         (
             Expression.New
             (
@@ -66,7 +50,8 @@ namespace Solti.Utils.DI.Internals
                         (
                             injector,
                             new DependencyDescriptor(param),
-                            userData
+                            userData,
+                            resolvers
                         )
                     )
             ),
@@ -83,13 +68,14 @@ namespace Solti.Utils.DI.Internals
                         (
                             injector,
                             new DependencyDescriptor(property),
-                            userData
+                            userData,
+                            resolvers
                         )
                     )
                 )
         );
 
-        protected static Expression<TDelegate> CreateActivator<TDelegate>(Func<IReadOnlyList<ParameterExpression>, Expression> createInstance, params ParameterExpression[] variables) where TDelegate : Delegate
+        private static Expression<TDelegate> CreateActivator<TDelegate>(Func<IReadOnlyList<ParameterExpression>, Expression> createInstance, params ParameterExpression[] variables) where TDelegate : Delegate
         {
             MethodInfo invoke = typeof(TDelegate).GetMethod(nameof(Action.Invoke));
 
@@ -119,19 +105,17 @@ namespace Solti.Utils.DI.Internals
             return resolver;
         }
 
-        protected Expression<TDelegate> CreateActivator<TDelegate>(ConstructorInfo constructor, object? userData, params ParameterExpression[] variables) where TDelegate: Delegate
+        private static Expression<TDelegate> CreateActivator<TDelegate>(ConstructorInfo constructor, object? userData, IReadOnlyList<IDependencyResolver> resolvers, params ParameterExpression[] variables) where TDelegate: Delegate
             => CreateActivator<TDelegate>
             (
                 paramz => ResolveService
                 (
                     constructor,
                     paramz.Single(static param => param.Type == typeof(IInjector)),
-                    userData
+                    userData,
+                    resolvers
                 ),
                 variables
             );
-
-        protected FactoryResolverBase(IReadOnlyList<IDependencyResolver>? resolvers)
-            => FResolvers = resolvers ?? DefaultDependencyResolvers.Value;
     }
 }

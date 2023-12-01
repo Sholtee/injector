@@ -68,7 +68,7 @@ namespace Solti.Utils.DI.UseCases
 
             using IScopeFactory root = ScopeFactory.Create(static svcs => svcs
                 .Provider<IDbConnection, DbConnectionProvider>(Lifetime.Scoped)
-                .Factory<IConfiguration>(_ => new ConfigurationBuilder().AddJsonStream
+                .Factory<IConfiguration>(factoryExpr: _ => new ConfigurationBuilder().AddJsonStream
                 (
                     new MemoryStream
                     (
@@ -127,7 +127,7 @@ namespace Solti.Utils.DI.UseCases
         [Test]
         public void LoggerAspectTest()
         {
-            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory(i => new Mock<IModuleUsingAspect>().Object, Lifetime.Transient));
+            using IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory(factoryExpr: i => new Mock<IModuleUsingAspect>().Object, Lifetime.Transient));
 
             IInjector injector = root.CreateScope();
 
@@ -153,7 +153,7 @@ namespace Solti.Utils.DI.UseCases
         {
             private ILogger Logger { get; } = new TLogger();
 
-            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
+            public object Invoke(IInvocationContext context, CallNextDelegate<IInvocationContext, object> callNext)
             {
                 Logger.Write($"{context.InterfaceMethod.Name}({string.Join(", ", context.Args.Select(arg => arg?.ToString() ?? "null"))})");
 
@@ -200,7 +200,7 @@ namespace Solti.Utils.DI.UseCases
 
         public sealed class ParameterValidatorProxy : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
+            public object Invoke(IInvocationContext context, CallNextDelegate<IInvocationContext, object> callNext)
             {
                 foreach (var descr in context.TargetMethod.GetParameters().Select(
                   (p, i) => new

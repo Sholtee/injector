@@ -40,7 +40,7 @@ namespace Solti.Utils.DI.Tests
         public void Remove_ShouldBeNullChecked()
         {
             Assert.Throws<ArgumentNullException>(() => IServiceCollectionBasicExtensions.Remove<IInterface_1>(null));
-            Assert.Throws<ArgumentNullException>(() => Collection.Remove(iface: null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Remove(type: null));
         }
     }
 }

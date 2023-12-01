@@ -13,7 +13,7 @@ namespace Solti.Utils.DI.Internals
     using Primitives;
 
     /// <summary>
-    /// Visits <see cref="IInjector.Get(Type, string?)"/>, <see cref="IInjector.TryGet(Type, string?)"/>, <see cref="IInjectorBasicExtensions.Get{TInterface}(Interfaces.IInjector, string?)"/> and <see cref="IInjectorBasicExtensions.TryGet{TInterface}(Interfaces.IInjector, string?)"/> invocations.
+    /// Visits <see cref="IInjector.Get(Type, object?)"/>, <see cref="IInjector.TryGet(Type, object?)"/>, <see cref="IInjectorBasicExtensions.Get{TInterface}(Interfaces.IInjector, object?)"/> and <see cref="IInjectorBasicExtensions.TryGet{TInterface}(Interfaces.IInjector, object?)"/> invocations.
     /// </summary>
     internal abstract class ServiceRequestVisitor : ExpressionVisitor
     {
@@ -29,33 +29,33 @@ namespace Solti.Utils.DI.Internals
                 MethodInfoExtractor.Extract<IInjector>(static i => i.TryGet<object>(null)).GetGenericMethodDefinition()
             };
 
-        protected abstract Expression VisitServiceRequest(MethodCallExpression request, Expression scope, Type iface, string? name);
+        protected abstract Expression VisitServiceRequest(MethodCallExpression request, Expression scope, Type type, object? key);
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (!node.Method.IsGenericMethod)
             {
-                if (Array.IndexOf(FInjectorGet, node.Method) >= 0 && node.Arguments[0] is ConstantExpression iface && node.Arguments[1] is ConstantExpression name)
+                if (Array.IndexOf(FInjectorGet, node.Method) >= 0 && node.Arguments[0] is ConstantExpression type && node.Arguments[1] is ConstantExpression key)
                 {
                     return VisitServiceRequest
                     (
                         node,
                         node.Object,
-                        (Type) iface.Value,
-                        (string?) name.Value
+                        (Type) type.Value,
+                        key.Value
                     );
                 }
             }
             else
             {
-                if (Array.IndexOf(FGenericInjectorGet, node.Method.GetGenericMethodDefinition()) >= 0 && node.Arguments[1] is ConstantExpression name)
+                if (Array.IndexOf(FGenericInjectorGet, node.Method.GetGenericMethodDefinition()) >= 0 && node.Arguments[1] is ConstantExpression key)
                 {
                     return VisitServiceRequest
                     (
                         node,
                         node.Arguments[0],
                         node.Method.GetGenericArguments()[0],
-                        (string?) name.Value
+                        key.Value
                     );
                 }
             }

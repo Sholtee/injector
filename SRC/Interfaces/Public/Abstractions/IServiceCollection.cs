@@ -4,26 +4,33 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Solti.Utils.DI.Interfaces
 {
     /// <summary>
     /// Specifies the contract of service entry sets.
     /// </summary>
-    /// <remarks>Only one entry can be registered with a particular <see cref="AbstractServiceEntry.Interface"/> and <see cref="AbstractServiceEntry.Name"/> pair.</remarks>
+    /// <remarks>Only one entry can be registered with a particular <see cref="AbstractServiceEntry.Type"/> and <see cref="AbstractServiceEntry.Key"/> pair.</remarks>
     public interface IServiceCollection : ICollection<AbstractServiceEntry>
     {
         /// <summary>
-        /// Contains some constants related to the <see cref="IServiceCollection"/> interface.
+        /// Determines if the collection contains entry with the specific <paramref name="id"/>
         /// </summary>
-        public static class Consts
-        {
-            /// <summary>
-            /// Marks a service as internal
-            /// </summary>
-            [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Using upper case and underscore together highlights that the member is a constant value")]
-            public const string INTERNAL_SERVICE_NAME_PREFIX = "$";
-        }
+        bool Contains(IServiceId id);
+
+        /// <summary>
+        /// Removes the entry associated with the given <paramref name="id"/>.
+        /// </summary>
+        bool Remove(IServiceId id);
+
+        /// <summary>
+        /// Tries to find the entry associated with the given <paramref name="id"/>.
+        /// </summary>
+        AbstractServiceEntry? TryFind(IServiceId id);
+
+        /// <summary>
+        /// Makes this collection read only.
+        /// </summary>
+        public void MakeReadOnly();
     }
 }

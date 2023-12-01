@@ -12,7 +12,10 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    using Properties;
+    
+    using static Properties.Resources;
+
+    using static ServiceActivator;
 
     internal static class ServiceEntryExtensions
     {
@@ -22,11 +25,11 @@ namespace Solti.Utils.DI.Internals
 
             return self.Implementation is not null
                 //
-                // Return implementation targeting interceptors first
+                // Return interceptors targeting the service implementation first
                 //
 
-                ? ResolveDecorators(self.Implementation, self.Interface)
-                : ResolveDecorators(self.Interface);
+                ? ResolveDecorators(self.Implementation, self.Type)
+                : ResolveDecorators(self.Type);
 
             IEnumerable<Expression<DecoratorDelegate>> ResolveDecorators(params Type[] targets)
             {
@@ -36,11 +39,11 @@ namespace Solti.Utils.DI.Internals
                         .GetCustomAttributes<AspectAttribute>(inherit: true)
                         .Select
                         (
-                            aspect => aspect.Factory ?? DecoratorResolver.ResolveInterceptorFactory
+                            aspect => aspect.Factory ?? ResolveInterceptorFactory
                             (
                                 aspect.Interceptor ?? throw new InvalidOperationException
                                 (
-                                    string.Format(Resources.Culture, Resources.NOT_NULL, nameof(aspect.Interceptor))
+                                    string.Format(Culture, NOT_NULL, nameof(aspect.Interceptor))
                                 ),
                                 aspect.ExplicitArgs,
                                 options.DependencyResolvers
@@ -53,9 +56,9 @@ namespace Solti.Utils.DI.Internals
                     // Bulk all the aspects into a single decorator
                     //
 
-                    yield return DecoratorResolver.Resolve
+                    yield return ResolveProxyDecorator
                     (
-                        self.Interface,
+                        self.Type,
                         target,
                         options.ProxyEngine,
                         delegates
@@ -70,23 +73,23 @@ namespace Solti.Utils.DI.Internals
 
             entry.Decorate
             (
-                DecoratorResolver.Resolve
+                ResolveProxyDecorator
                 (
-                    entry.Interface,
+                    entry.Type,
 
                     //
                     // Proxies registered by this way always target the service interface.
                     //
 
-                    entry.Interface,
+                    entry.Type,
                     options.ProxyEngine,
                     interceptors.Select
                     (
-                        i => DecoratorResolver.ResolveInterceptorFactory
+                        i => ResolveInterceptorFactory
                         (
                             i.Interceptor ?? throw new InvalidOperationException
                             (
-                                string.Format(Resources.Culture, Resources.NOT_NULL, nameof(i.Interceptor))
+                                string.Format(Culture, NOT_NULL, nameof(i.Interceptor))
                             ),
                             i.ExplicitArgs,
                             options.DependencyResolvers

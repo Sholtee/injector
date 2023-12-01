@@ -38,8 +38,8 @@ namespace Solti.Utils.DI.Tests
             AbstractServiceEntry svc = Collection.Find<IInterface_1>(name);
 
             Assert.That(svc, Is.Not.Null);
-            Assert.That(svc.Interface, Is.EqualTo(typeof(IInterface_1)));
-            Assert.That(svc.Name, Is.EqualTo(name));
+            Assert.That(svc.Type, Is.EqualTo(typeof(IInterface_1)));
+            Assert.That(svc.Key, Is.EqualTo(name));
         }
     }
 }

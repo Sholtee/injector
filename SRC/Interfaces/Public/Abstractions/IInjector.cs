@@ -16,22 +16,22 @@ namespace Solti.Utils.DI.Interfaces
     public interface IInjector: IDisposableEx, IHasTag
     {
         /// <summary>
-        /// Gets the service instance associated with the given interface and (optional) name.
+        /// Gets the service instance associated with the given type and (optional) key.
         /// </summary>
-        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="type">The "id" of the service to be resolved.</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
         /// <returns>The resolved service.</returns>
         /// <exception cref="ServiceNotFoundException">The service or one or more dependencies could not be found.</exception>
         [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "The identifier won't confuse the users of the API.")]
-        object Get(Type iface, string? name = null);
+        object Get(Type type, object? key = null);
 
         /// <summary>
-        /// Tries to get the service instance associated with the given interface and (optional) name.
+        /// Tries to get the service instance associated with the given type and (optional) key.
         /// </summary>
-        /// <param name="iface">The "id" of the service to be resolved. It must be an interface.</param>
-        /// <param name="name">The (optional) name of the service.</param>
+        /// <param name="type">The "id" of the service to be resolved.</param>
+        /// <param name="key">The (optional) key of the service (usually a name).</param>
         /// <returns>The requested service instance or NULL.</returns>
-        object? TryGet(Type iface, string? name = null);
+        object? TryGet(Type type, object? key = null);
 
         /// <summary>
         /// Describes the scope behavior.

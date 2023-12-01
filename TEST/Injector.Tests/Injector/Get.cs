@@ -7,6 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Moq;
 using NUnit.Framework;
@@ -17,23 +19,9 @@ namespace Solti.Utils.DI.Tests
     using Internals;
     using Primitives.Patterns;
     using Properties;
-    using System.Threading.Tasks;
-    using System.Threading;
 
     public partial class InjectorTests
     {
-        [Test]
-        public void Injector_Get_ShouldThrowOnNonInterfaceKey([ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
-        {
-            Root = ScopeFactory.Create(svcs => { }, new ScopeOptions { ServiceResolutionMode = resolutionMode });
-
-            using (IInjector injector = Root.CreateScope())
-            {
-                Assert.Throws<ArgumentException>(() => injector.Get<Object>(), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-                Assert.Throws<ArgumentException>(() => injector.Get(typeof(Object)), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-            }
-        }
-
         [Test]
         public void Injector_Get_ShouldThrowOnDisposedScope()
         {
@@ -57,7 +45,7 @@ namespace Solti.Utils.DI.Tests
             ManualResetEventSlim evt = new();   
             Func<IInjector, Type, object> fact = Factory;
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IList<>), (i, t) => fact(i, t), Lifetime.Singleton), ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
+            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IList<>), factoryExpr: (i, t) => fact(i, t), Lifetime.Singleton), ScopeOptions.Default with { ResolutionLockTimeout = TimeSpan.Zero });
 
             bool t1Started = false;
             Task t1 = Task.Factory.StartNew(() => { t1Started = true; return Root.CreateScope().Get<IList<int>>(); });
@@ -67,6 +55,7 @@ namespace Solti.Utils.DI.Tests
             Task t2 = Task.Factory.StartNew(() => { t2Started = true; return Root.CreateScope().Get<IList<int>>(); });
             SpinWait.SpinUntil(() => t2Started);
 
+            Thread.Sleep(10);
             evt.Set();
 
             Assert.DoesNotThrow(t1.Wait);
@@ -80,15 +69,54 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldInstantiate([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_Get_ShouldInstantiate_Iface([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create(svcs => svcs.Service<IInterface_1, Implementation_1_No_Dep>(lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope())
             {
-                var instance = injector.Get<IInterface_1>();
+                IInterface_1 instance = injector.Get<IInterface_1>();
 
                 Assert.That(instance, Is.InstanceOf<Implementation_1_No_Dep>());
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldInstantiate_Class([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create(svcs => svcs.Service<Implementation_1_No_Dep, Implementation_1_No_Dep>(lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                Implementation_1_No_Dep instance = injector.Get<Implementation_1_No_Dep>();
+
+                Assert.That(instance, Is.Not.Null);
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldInstantiate_GenericIface([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(IMyGenericService<>), typeof(MyGenericService<>), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                IMyGenericService<int> instance = injector.Get<IMyGenericService<int>>();
+
+                Assert.That(instance, Is.InstanceOf<MyGenericService<int>>());
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldInstantiate_GenericClass([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create(svcs => svcs.Service(typeof(MyGenericService<>), typeof(MyGenericService<>), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                MyGenericService<int> instance = injector.Get<MyGenericService<int>>();
+
+                Assert.That(instance, Is.Not.Null);
             }
         }
 
@@ -115,7 +143,7 @@ namespace Solti.Utils.DI.Tests
             {
                 var ex = Assert.Throws<ServiceNotFoundException>(() => injector.Get<IInterface_7<IInterface_1>>());
 
-                Assert.That(ex.Requested, Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)).Using(ServiceIdComparer.Instance));
+                Assert.That(ex.Requested, Is.EqualTo(new ServiceId(typeof(IInterface_1), null)).Using(IServiceId.Comparer.Instance));
                 // Assert.That(ex.Requestor, Is.EqualTo(new DummyServiceEntry(typeof(IInterface_7<IInterface_1>), null)).Using(ServiceIdComparer.Instance));
             }
         }
@@ -134,7 +162,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldResolveDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_Get_ShouldResolveInterfaceDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
             (
@@ -154,7 +182,27 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldResolveLazyDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_Get_ShouldResolveClassDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<Implementation_1_No_Dep, Implementation_1_No_Dep>(lifetime1)
+                    .Service<IInterface_7<Implementation_1_No_Dep>, Implementation_7<Implementation_1_No_Dep>>(lifetime2),
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
+            );
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                IInterface_7<Implementation_1_No_Dep> instance = injector.Get<IInterface_7<Implementation_1_No_Dep>>();
+
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance.Dependency, Is.Not.Null);
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldResolveLazyInterfaceDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
             (
@@ -175,7 +223,28 @@ namespace Solti.Utils.DI.Tests
         }
 
         [Test]
-        public void Injector_Get_ShouldResolveGenericDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        public void Injector_Get_ShouldResolveLazyClassDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<Implementation_1_No_Dep, Implementation_1_No_Dep>(lifetime1)
+                    .Service<IInterface_7<Lazy<Implementation_1_No_Dep>>, Implementation_7<Lazy<Implementation_1_No_Dep>>> (lifetime2),
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
+            );
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                IInterface_7<Lazy<Implementation_1_No_Dep>> instance = injector.Get<IInterface_7<Lazy<Implementation_1_No_Dep>>>();
+
+                Assert.That(instance, Is.InstanceOf<IInterface_7<Lazy<Implementation_1_No_Dep>>>());
+                Assert.That(instance.Dependency, Is.InstanceOf<Lazy<Implementation_1_No_Dep>>());
+                Assert.That(instance.Dependency.Value, Is.InstanceOf<Implementation_1_No_Dep>());
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldResolveGenericInterfaceDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
         {
             Root = ScopeFactory.Create
             (
@@ -193,6 +262,27 @@ namespace Solti.Utils.DI.Tests
                 Assert.That(instance, Is.InstanceOf<Implementation_6_IInterface_3_Dependant<string>>());
                 Assert.That(instance.Interface3, Is.InstanceOf<Implementation_3_IInterface_1_Dependant<string>>());
                 Assert.That(instance.Interface3.Interface1, Is.InstanceOf<Implementation_1_No_Dep>());
+            }
+        }
+
+        [Test]
+        public void Injector_Get_ShouldResolveGenericClassDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>(Lifetime.Transient)
+                    .Service(typeof(Implementation_3_IInterface_1_Dependant<>), typeof(Implementation_3_IInterface_1_Dependant<>), Lifetime.Transient)
+                    .Service<IInterface_7<Implementation_3_IInterface_1_Dependant<int>>, Implementation_7<Implementation_3_IInterface_1_Dependant<int>>>(lifetime),
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
+            );
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                IInterface_7<Implementation_3_IInterface_1_Dependant<int>> instance = injector.Get<IInterface_7<Implementation_3_IInterface_1_Dependant<int>>>();
+
+                Assert.That(instance, Is.InstanceOf<Implementation_7<Implementation_3_IInterface_1_Dependant<int>>>());
+                Assert.That(instance.Dependency, Is.Not.Null);
             }
         }
 
@@ -246,7 +336,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                IMyService svc = injector.Get<IInterface_7<IMyService>>().Interface;
+                IMyService svc = injector.Get<IInterface_7<IMyService>>().Dependency;
 
                 Assert.DoesNotThrow(svc.DoSomething);
             }
@@ -320,8 +410,8 @@ namespace Solti.Utils.DI.Tests
             Root = ScopeFactory.Create
             (
                 svcs => svcs
-                    .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
-                    .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
+                    .Factory<IInterface_4>(factoryExpr: injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
+                    .Factory<IInterface_5>(factoryExpr: injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
                 new ScopeOptions {ServiceResolutionMode = ServiceResolutionMode.JIT }
             );
 
@@ -337,7 +427,7 @@ namespace Solti.Utils.DI.Tests
         {
             Root = ScopeFactory.Create
             (
-                svcs => svcs.Factory<IInterface_1>(injector => (IInterface_1) null, lifetime),
+                svcs => svcs.Factory<IInterface_1>(factoryExpr: injector => (IInterface_1) null, lifetime),
                 new ScopeOptions { ServiceResolutionMode = resolutionMode }
             );
 
@@ -416,14 +506,14 @@ namespace Solti.Utils.DI.Tests
             {
                 var svc = injector.Get<IInterface_7<IInjector>>();
 
-                Assert.That(svc.Interface, Is.EqualTo(injector));
+                Assert.That(svc.Dependency, Is.EqualTo(injector));
             }
         }
 
         [Test]
         public void Injector_Get_ShouldBeTypeChecked([ValueSource(nameof(Lifetimes))] Lifetime lifetime, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
-            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IInterface_1), (injector, iface) => new object(), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Factory(typeof(IInterface_1), factoryExpr: (injector, iface) => new object(), lifetime), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope()) 
             {
@@ -442,7 +532,7 @@ namespace Solti.Utils.DI.Tests
 
                 Assert.DoesNotThrow(() => svc = injector.Get<IInterface_7<IInterface_1>>());
                 Assert.That(svc, Is.Not.Null);
-                Assert.That(svc.Interface, Is.Null);
+                Assert.That(svc.Dependency, Is.Null);
             }
         }
 
@@ -459,7 +549,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IInterface_7<IInterface_1>>().Interface, Is.Not.Null);
+                Assert.That(injector.Get<IInterface_7<IInterface_1>>().Dependency, Is.Not.Null);
             }
         }
 
@@ -481,8 +571,8 @@ namespace Solti.Utils.DI.Tests
 
                 Assert.DoesNotThrow(() => svc = injector.Get<IInterface_7<Lazy<IInterface_1>>>());
                 Assert.That(svc, Is.Not.Null);
-                Assert.That(svc.Interface, Is.Not.Null);
-                Assert.That(svc.Interface.Value, Is.Null);
+                Assert.That(svc.Dependency, Is.Not.Null);
+                Assert.That(svc.Dependency.Value, Is.Null);
             }
         }
 
@@ -499,7 +589,7 @@ namespace Solti.Utils.DI.Tests
 
             using (IInjector injector = Root.CreateScope())
             {
-                Assert.That(injector.Get<IInterface_7<Lazy<IInterface_1>>>().Interface.Value, Is.Not.Null);
+                Assert.That(injector.Get<IInterface_7<Lazy<IInterface_1>>>().Dependency.Value, Is.Not.Null);
             }
         }
 
@@ -573,7 +663,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(d => d.Dispose());
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Transient), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(factoryExpr: i => mockDisposable.Object, Lifetime.Transient), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -593,7 +683,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(d => d.Dispose());
 
-            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Scoped), new ScopeOptions { ServiceResolutionMode = resolutionMode });
+            Root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(factoryExpr: i => mockDisposable.Object, Lifetime.Scoped), new ScopeOptions { ServiceResolutionMode = resolutionMode });
 
             using (IInjector injector = Root.CreateScope())
             {
@@ -613,7 +703,7 @@ namespace Solti.Utils.DI.Tests
             var mockDisposable = new Mock<IInterface_1_Disaposable>(MockBehavior.Strict);
             mockDisposable.Setup(d => d.Dispose());
 
-            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(i => mockDisposable.Object, Lifetime.Singleton), new ScopeOptions { ServiceResolutionMode = resolutionMode }))
+            using (IScopeFactory root = ScopeFactory.Create(svcs => svcs.Factory<IInterface_1_Disaposable>(factoryExpr: i => mockDisposable.Object, Lifetime.Singleton), new ScopeOptions { ServiceResolutionMode = resolutionMode }))
             {
                 using (IInjector injector = root.CreateScope())
                 {
@@ -673,14 +763,14 @@ namespace Solti.Utils.DI.Tests
                 null
             );
             mockInjector
-                .Setup(i => i.CreateInstance(coll.Single()))
+                .Setup(i => i.CreateInstance(coll.Find<IInterface_1>()))
                 .CallBase();
             mockInjector
                 .Setup(i => i.Get(typeof(IInterface_1), null))
                 .CallBase();
 
             Assert.AreNotSame(mockInjector.Object.Get<IInterface_1>(), mockInjector.Object.Get<IInterface_1>());
-            mockInjector.Verify(i => i.CreateInstance(coll.Single()), Times.Exactly(disposable ? 2 : 1));
+            mockInjector.Verify(i => i.CreateInstance(coll.Find<IInterface_1>()), Times.Exactly(disposable ? 2 : 1));
         }
     }
 }

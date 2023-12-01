@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DummyServiceEntry.cs                                                          *
+* MissingServiceEntry.cs                                                        *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -9,9 +9,9 @@ namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
 
-    internal sealed class DummyServiceEntry : MissingServiceEntry
+    internal sealed class MissingServiceEntry : AbstractServiceEntry
     {
-        public DummyServiceEntry(Type @interface, string? name) : base(@interface, name)
+        public MissingServiceEntry(Type @interface, object? name) : base(@interface, name, null, null, null, null)
         {
         }
     }

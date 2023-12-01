@@ -10,6 +10,7 @@ using NUnit.Framework;
 namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
+    using Internals;
 
     public partial class InjectorTests
     {

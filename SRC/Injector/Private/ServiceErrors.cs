@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Internals
@@ -19,12 +20,12 @@ namespace Solti.Utils.DI.Internals
     internal static class ServiceErrors
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotFound(Type iface, string? name, AbstractServiceEntry? requestor)
+        public static void NotFound(Type type, object? key, AbstractServiceEntry? requestor)
         {
-            MissingServiceEntry requested = new(iface, name);
+            ServiceId requested = new(type, key);
             throw new ServiceNotFoundException
             (
-                string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString(shortForm: true)),
+                string.Format(Culture, SERVICE_NOT_FOUND, requested.ToString()),
                 requestor,
                 requested
             );
@@ -33,11 +34,25 @@ namespace Solti.Utils.DI.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void EnsureNotBreaksTheRuleOfStrictDI(AbstractServiceEntry requestor, AbstractServiceEntry requested, bool supportServiceProvider)
         {
-            if ((requested.Interface == typeof(IInjector) || (supportServiceProvider && requested.Interface == typeof(IServiceProvider))) && requested.Name is null)
+            if ((requested.Type == typeof(IInjector) || (supportServiceProvider && requested.Type == typeof(IServiceProvider))) && requested.Key is null)
             {
                 RequestNotAllowedException ex = new(STRICT_DI_SCOPE);
-                ex.Data[nameof(requestor)] = requestor;
-                ex.Data[nameof(requested)] = requested;
+                try
+                {
+                    ex.Data[nameof(requestor)] = requestor;
+                    ex.Data[nameof(requested)] = requested;
+                }
+                catch (ArgumentException)
+                {
+                    //
+                    // .NET FW throws if value assigned to Exception.Data is not serializable
+                    //
+
+                    Debug.Assert(Environment.Version.Major == 4, "Only .NET FW should complain about serialization");
+
+                    ex.Data[nameof(requestor)] = requestor.ToString(shortForm: false);
+                    ex.Data[nameof(requested)] = requested.ToString(shortForm: false);
+                }
 
                 throw ex;
             }
@@ -49,9 +64,22 @@ namespace Solti.Utils.DI.Internals
             if (requested.Lifetime?.CompareTo(requestor.Lifetime!) < 0)
             {
                 RequestNotAllowedException ex = new(STRICT_DI_DEP);
-                ex.Data[nameof(requestor)] = requestor;
-                ex.Data[nameof(requested)] = requested;
+                try
+                {
+                    ex.Data[nameof(requestor)] = requestor;
+                    ex.Data[nameof(requested)] = requested;
+                }
+                catch (ArgumentException)
+                {
+                    //
+                    // .NET FW throws if value assigned to Exception.Data is not serializable
+                    //
 
+                    Debug.Assert(Environment.Version.Major == 4, "Only .NET FW should complain about serialization");
+
+                    ex.Data[nameof(requestor)] = requestor.ToString(shortForm: false);
+                    ex.Data[nameof(requested)] = requested.ToString(shortForm: false);
+                }
                 throw ex;
             }
         }

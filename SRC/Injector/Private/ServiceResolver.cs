@@ -6,13 +6,15 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
+
+using static System.Diagnostics.Debug;
 
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
+    using Primitives;
     using Properties;
 
     //                                        !!!ATTENTION!!!
@@ -28,35 +30,44 @@ namespace Solti.Utils.DI.Internals
     {
         #region Private
         private readonly IServiceEntryBuilder FEntryBuilder;
-        private readonly IDelegateCompiler FCompiler;
-        private readonly ConcurrentDictionary<object, AbstractServiceEntry?> FEntries = new();
+        private readonly DelegateCompiler FCompiler;
+        private readonly ConcurrentDictionary<object, AbstractServiceEntry> FEntries = new();
         private readonly ConcurrentDictionary<Type, IReadOnlyCollection<AbstractServiceEntry>> FNamedServices = new();
-        private readonly IReadOnlyCollection<string?> FNames; // all the possible service names including NULL
+        private readonly Dictionary<Type, List<object?>> FKeys; // all the possible service keys including NULL
         private readonly bool FInitialized;
-        private readonly Func<object, AbstractServiceEntry?> FValueFactory;
+        private readonly Func<object, AbstractServiceEntry> FResolve;
+        private readonly Func<Type, IReadOnlyCollection<AbstractServiceEntry>> FResolveMany;
         private readonly object FBuildLock = new();
         private readonly TimeSpan FBuildLockTimeout;
         private int FSlots;
 
+        private static readonly Exception FServiceCannotBeResolved = new();
+
         private sealed class CompositeKey : IServiceId
         {
-            public CompositeKey(Type iface, string name)
+            public CompositeKey(Type type, object key)
             {
-                Interface = iface;
-                Name = name;
+                Type = type;
+                Key = key;
             }
 
-            public Type Interface { get; }
+            public Type Type { get; }
 
-            public string Name { get; }
+            public object Key { get; }
 
             //
             // DON'T use ServiceIdComparer here as it significantly degrades the performance
             //
 
-            public override int GetHashCode() => unchecked(Interface.GetHashCode() ^ Name.GetHashCode());
+            public override int GetHashCode() => unchecked(Type.GetHashCode() ^ Key.GetHashCode());
 
-            public override bool Equals(object obj) => obj is CompositeKey other && other.Interface == Interface && other.Name == Name;
+            public override bool Equals(object obj) =>
+                //
+                // When comparing keys use Equals() instead of reference check
+                // (for proper string comparison)
+                //
+
+                obj is CompositeKey other && other.Type == Type && other.Key.Equals(Key);
         }
 
         //
@@ -64,102 +75,126 @@ namespace Solti.Utils.DI.Internals
         //
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static object GetKey(Type iface, string? name) => name is not null
-            ? new CompositeKey(iface, name)
-            : iface;
+        private static object GetKey(Type type, object? key) => key is not null
+            ? new CompositeKey(type, key)
+            : type;
 
-        private AbstractServiceEntry? Resolve(object key)
+        private AbstractServiceEntry ResolveCore(object id)
         {
-            Type iface;
-            string? name;
+            Type type;
+            object? key;
 
-            if (key is CompositeKey compositeKey)
+            if (id is CompositeKey compositeKey)
             {
-                iface = compositeKey.Interface;
-                name = compositeKey.Name;
+                type = compositeKey.Type;
+                key  = compositeKey.Key;
             }
             else
             {
-                iface = (Type) key;
-                name = null;
+                type = (Type) id;
+                key  = null;
             }
 
-            if (!iface.IsInterface)
-                throw new ArgumentException(Resources.PARAMETER_NOT_AN_INTERFACE, nameof(key));
+            if (!type.IsConstructedGenericType)
+                throw FServiceCannotBeResolved;
 
-            if (!iface.IsConstructedGenericType)
-                return null;
-
-            object genericKey = GetKey(iface.GetGenericTypeDefinition(), name);
+            object genericKey = GetKey(type.GetGenericTypeDefinition(), key);
             if (!FEntries.TryGetValue(genericKey, out AbstractServiceEntry? genericEntry))
-                return null;
-
-            Debug.Assert(genericEntry is not null, "Generic entry cannot be null here");
-
-            //
-            // Since IServiceEntryBuilder is not meant to be thread-safe, every write operations
-            // need to be exclusive.
-            //
-
-            if (!Monitor.TryEnter(FBuildLock, FBuildLockTimeout))
-                throw new TimeoutException();
-            try
-            {
                 //
-                // Another thread may have done this work while we reached here
+                // Throw here as we don't want to sotre NULLs
                 //
 
-                if (!FEntries.TryGetValue(key, out AbstractServiceEntry? specialized))
-                {
-                    specialized = genericEntry!.Specialize(iface.GenericTypeArguments);
-                    FEntryBuilder.Build(specialized);
-                }
-                return specialized;
-            }
-            finally
-            {
-                Monitor.Exit(FBuildLock);
-            }
+                throw FServiceCannotBeResolved;
+
+            Assert(genericEntry is not null, "Generic entry cannot be null here");
+            return genericEntry!.Specialize(type.GenericTypeArguments);
         }
 
-        private ServiceResolver
-        (
-            IEnumerable<AbstractServiceEntry> entries,
-            IDelegateCompiler compiler,
-            ScopeOptions scopeOptions
-        )
+        private IReadOnlyCollection<AbstractServiceEntry> ResolveManyCore(Type type)
         {
-            FCompiler = compiler;
+            //
+            // Consider the following:
+            //
+            // coll
+            //   .Service(typeof(IMyGenericSvc<int>), typeof(MyGenericSvc<int>), Lifetime.Singleton, "cica")
+            //   .Service(typeof(IMyGenericSvc<>), typeof(MyGenericSvc<>), Lifetime.Singleton, "cica");
+            //   .Service(typeof(IMyGenericSvc<>), typeof(MyGenericSvc<>), Lifetime.Singleton, "kutya");
+            // ...
+            // scope.Get<IEnumerable<int>>();
+            //
+
+            HashSet<object?> allKeys = new();
+            if (FKeys.TryGetValue(type, out List<object?> keys))
+                keys.ForEach(key => allKeys.Add(key));
+
+            if (type.IsConstructedGenericType && FKeys.TryGetValue(type.GetGenericTypeDefinition(), out keys))
+                keys.ForEach(key => allKeys.Add(key));
+
+            if (allKeys.Count is 0)
+                throw FServiceCannotBeResolved;
+
+            List<AbstractServiceEntry> entries = new(keys.Count);
+
+            foreach (object? key in allKeys)
+            {
+                AbstractServiceEntry entry = Resolve(type, key)!;
+                Assert(entry is not null, "Entry should exist here");
+                entries.Add(entry!);
+            }
+
+            return entries;
+        }
+        #endregion
+
+        public ServiceResolver(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
+        {
+            FCompiler = new DelegateCompiler();
             FBuildLockTimeout = scopeOptions.ResolutionLockTimeout;
 
             //
             // Collect all the possible service names to make ResolveMany() more efficient
             //
 
-            HashSet<string?> names = new();
+            Dictionary<Type, List<object?>> keys = new();
 
             foreach (AbstractServiceEntry entry in entries)
             {
-                object key = GetKey(entry.Interface, entry.Name);
+                object key = GetKey(entry.Type, entry.Key);
 
                 if (!FEntries.TryAdd(key, entry))
                 {
                     InvalidOperationException ex = new(Resources.SERVICE_ALREADY_REGISTERED);
-                    ex.Data[nameof(entry)] = entry;
+                    try
+                    {
+                        ex.Data[nameof(entry)] = entry;
+                    }
+                    catch (ArgumentException)
+                    {
+                        //
+                        // .NET FW throws if value assigned to Exception.Data is not serializable
+                        //
+
+                        Assert(Environment.Version.Major == 4, "Only .NET FW should complain about serialization");
+                        ex.Data[nameof(entry)] = entry.ToString(shortForm: false);
+                    }
                     throw ex;
                 }
 
-                names.Add(entry.Name);
+                if (!keys.ContainsKey(entry.Type))
+                    keys[entry.Type] = new List<object?>();
+
+                keys[entry.Type].Add(entry.Key);
             }
 
-            FNames = names;
+            FKeys = keys;
 
             //
             // Converting instance methods to delegate is a quite slow operation so do it
             // only once.
             //
 
-            FValueFactory = Resolve;
+            FResolve = ResolveCore;
+            FResolveMany = ResolveManyCore;
 
             //
             // Now its safe to build (graph builder is able the resolve all the dependencies)
@@ -171,26 +206,13 @@ namespace Solti.Utils.DI.Internals
                 ServiceResolutionMode.AOT => new RecursiveServiceEntryBuilder(this, this, scopeOptions),
                 _ => throw new NotSupportedException()
             };
-
-            foreach (AbstractServiceEntry entry in entries)
-            {
-                //
-                // In initialization phase, build the full dependency graph even if the related entry already
-                // built.
-                //
-
-                if (!entry.Interface.IsGenericTypeDefinition)
-                {
-                    FEntryBuilder.Build(entry);
-                }
-            }
+            FEntryBuilder.Init(entries);
 
             FInitialized = true;
         }
-        #endregion
-
+        
         #region IBuildContext
-        public IDelegateCompiler Compiler => FCompiler;
+        public DelegateCompiler Compiler => FCompiler;
 
         public int AssignSlot() => Interlocked.Increment(ref FSlots) - 1;
         #endregion
@@ -198,43 +220,81 @@ namespace Solti.Utils.DI.Internals
         #region IServiceEntryResolver
         public int Slots => FSlots;
 
-        public AbstractServiceEntry? Resolve(Type iface, string? name)
+        public AbstractServiceEntry? Resolve(Type type, object? key)
         {
-            AbstractServiceEntry? entry = FEntries.GetOrAdd(GetKey(iface, name), FValueFactory);
-            if (entry is not null && !FInitialized)
+            if (type.IsGenericTypeDefinition)
+                throw new ArgumentException(Resources.PARAMETER_IS_GENERIC, nameof(type));
+
+            AbstractServiceEntry entry;
+            try
+            {
+                entry = FEntries.GetOrAdd(GetKey(type, key), FResolve);
+            }
+            catch (Exception ex) when (ex == FServiceCannotBeResolved)
+            {
+                return null;
+            }
+
+            //
+            // Do NOT rely on the "State" as it can be "Built" while the "CreateInstance" is still NULL
+            // [Compile() is called after Build()]
+            //
+
+            if (entry.CreateInstance is null)
+            {
                 //
-                // In initialization phase, requested services may be unbuilt.
+                // Since IServiceEntryBuilder is not meant to be thread-safe, every write operations
+                // need to be exclusive.
                 //
 
-                FEntryBuilder.Build(entry);
+                if (!Monitor.TryEnter(FBuildLock, FBuildLockTimeout))
+                    throw new TimeoutException();
+                try
+                {
+                    //
+                    // Another thread may have already done this work.
+                    //
+
+                    if (entry.CreateInstance is null)
+                    {
+                        FEntryBuilder.Build(entry);
+
+                        //
+                        // AOT resolved dependencies are built in batch.
+                        //
+
+                        if (FInitialized)
+                            FCompiler.Compile();
+                    }
+                }
+                finally
+                {
+                    Monitor.Exit(FBuildLock);
+                }
+            }
+
+            if (FInitialized)
+            {
+                Assert(entry.State.HasFlag(ServiceEntryStates.Built), "Entry must be built");
+                Assert(entry.CreateInstance is not null, "CreateInstance must be compiled");
+            }
 
             return entry;
         }
 
-        public IEnumerable<AbstractServiceEntry> ResolveMany(Type iface) => FNamedServices.GetOrAdd(iface, iface =>
+        public IReadOnlyCollection<AbstractServiceEntry>? ResolveMany(Type type)
         {
-            List<AbstractServiceEntry> entries = new(FNames.Count);
-
-            foreach (string? name in FNames)
+            try
             {
-                AbstractServiceEntry? entry = Resolve(iface, name);
-                if (entry is not null)
-                    entries.Add(entry);
+                return FNamedServices.GetOrAdd(type, FResolveMany);
             }
-
-            return entries;
-        });
-        #endregion
-
-        public static ServiceResolver Create(IEnumerable<AbstractServiceEntry> entries, ScopeOptions scopeOptions)
-        {
-            BatchedDelegateCompiler delegateCompiler = new();
-            delegateCompiler.BeginBatch();
-
-            ServiceResolver result = new(entries, delegateCompiler, scopeOptions);
-
-            delegateCompiler.Compile();
-            return result;
+            catch (Exception ex) when (ex == FServiceCannotBeResolved)
+            {
+                return null;
+            }
         }
+
+        public IServiceEntryBuilder ServiceEntryBuilder => FEntryBuilder;
+        #endregion
     }
 }

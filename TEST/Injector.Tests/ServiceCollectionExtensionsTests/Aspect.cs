@@ -15,11 +15,16 @@ namespace Solti.Utils.DI.Tests
     using Internals;
     using Interfaces;
     using Interfaces.Properties;
+    using Primitives;
     using Primitives.Patterns;
-    using Primitives.Threading;
 
     public partial class ServiceCollectionExtensionsTests
     {
+        protected DelegateCompiler Compiler { get; set; }
+
+        [SetUp]
+        public void Setup() => Compiler = new DelegateCompiler();
+
         [Test]
         public void Aspects_MayBeDisabled([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
@@ -33,7 +38,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -42,6 +47,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             object instance = lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -62,7 +68,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -71,6 +77,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry lastEntry = Collection.Last().Specialize(typeof(int));
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             object instance = lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -89,7 +96,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -98,6 +105,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             IMyServiceHavingAspect instance = (IMyServiceHavingAspect) lastEntry
                 .CreateInstance(mockInjector.Object, out object _);
@@ -120,7 +128,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -129,6 +137,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             IMyService instance = (IMyService) lastEntry
                 .CreateInstance(mockInjector.Object, out object _);
@@ -154,15 +163,16 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.Factory(i => new Mock<IMyServiceHavingDependantAspect>().Object, lifetime);
+            Collection.Factory(factoryExpr: i => new Mock<IMyServiceHavingDependantAspect>().Object, lifetime);
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -183,7 +193,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -192,6 +202,7 @@ namespace Solti.Utils.DI.Tests
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -209,7 +220,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -221,6 +232,7 @@ namespace Solti.Utils.DI.Tests
 
             lastEntry = lastEntry.Specialize(typeof(int));
             Assert.DoesNotThrow(() => lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() }));
+            Compiler.Compile();
 
             IMyGenericServiceHavingAspect<int> instance = (IMyGenericServiceHavingAspect<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -242,7 +254,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -254,6 +266,7 @@ namespace Solti.Utils.DI.Tests
 
             lastEntry = lastEntry.Specialize(typeof(int));
             Assert.DoesNotThrow(() => lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() }));
+            Compiler.Compile();
 
             IMyGenericService<int> instance = (IMyGenericService<int>) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -267,6 +280,11 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Aspects_ShouldThrowOnInstances() =>
             Assert.Throws<NotSupportedException>(() => Collection.Instance<IMyServiceHavingAspect>(new MyService()), Resources.DECORATING_NOT_SUPPORTED);
+
+
+        [Test]
+        public void Aspect_ShouldThrowOnNonInterfaceServiceType() =>
+            Assert.Throws<NotSupportedException>(() => Collection.Service<MyServiceHavingAspect, MyServiceHavingAspect>(Lifetime.Scoped));
 
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
@@ -284,15 +302,16 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
 
-            Collection.Factory(i => mockService.Object, lifetime);
+            Collection.Factory(factoryExpr: i => mockService.Object, lifetime);
 
             AbstractServiceEntry lastEntry = Collection.Last();
             lastEntry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             IOrderInspectingService svc = (IOrderInspectingService) lastEntry.CreateInstance(mockInjector.Object, out object _);
 
@@ -322,7 +341,7 @@ namespace Solti.Utils.DI.Tests
 
     public class MyService : IMyServiceHavingAspect { }
 
-    public class MyGenericService<T> : IMyGenericServiceHavingAspect<T> { }
+    public class MyGenericService<T> : IMyGenericService<T>, IMyGenericServiceHavingAspect<T> { }
 
     [DummyAspect]
     public class MyServiceHavingAspect : IMyService { }
@@ -338,7 +357,7 @@ namespace Solti.Utils.DI.Tests
     {
         private sealed class DummyInterceptor : IInterfaceInterceptor
         {
-            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
+            public object Invoke(IInvocationContext context, CallNextDelegate<IInvocationContext, object> callNext) => callNext(context);
         }
 
         public DummyAspectAttribute() : base(typeof(DummyInterceptor)) { }
@@ -351,7 +370,7 @@ namespace Solti.Utils.DI.Tests
         {
             public DummyInterceptorHavingDependency(IDisposable dep) { }
 
-            public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext) => callNext(context);
+            public object Invoke(IInvocationContext context, CallNextDelegate<IInvocationContext, object> callNext) => callNext(context);
         }
 
         public DummyAspectHavingDependencyAttribute() : base(typeof(DummyInterceptorHavingDependency)) { }
@@ -363,7 +382,7 @@ namespace Solti.Utils.DI.Tests
 
         public OrderInspectingInterceptorBase(string name) => Name = name;
 
-        public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
+        public object Invoke(IInvocationContext context, CallNextDelegate<IInvocationContext, object> callNext)
         {
             return GetNames();
 

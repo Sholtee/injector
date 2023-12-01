@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DecoratorResolver.cs                                                          *
+* ServiceActivator.Decorator.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -11,14 +11,14 @@ using System.Linq.Expressions;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-
+    using static Interfaces.Properties.Resources;
     using static Properties.Resources;
 
-    internal sealed class DecoratorResolver: FactoryResolverBase
+    internal static partial class ServiceActivator
     {
         /// <summary>
         /// <code>
-        /// (injector, iface, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
+        /// (injector, type, current) => new GeneratedProxy // AspectAggregator&lt;TInterface, TTarget&gt;
         /// (
         ///   (TTarget) current,
         ///   new IInterfaceInterceptor[]
@@ -29,15 +29,22 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<DecoratorDelegate> Resolve(Type iface, Type target, IProxyEngine? proxyEngine, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
+        public static Expression<DecoratorDelegate> ResolveProxyDecorator(Type type, Type target, IProxyEngine? proxyEngine, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
         {
             proxyEngine ??= ProxyEngine.Instance;
+
+            //
+            // Esure that the target is compatible (for instance Providers cannot have aspects)
+            //
+
+            if (!type.IsInterface || !type.IsAssignableFrom(target))
+                throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
 
             return CreateActivator<DecoratorDelegate>
             (
                 paramz => proxyEngine.CreateActivatorExpression
                 (
-                    proxyEngine.CreateProxy(iface, target),
+                    proxyEngine.CreateProxy(type, target),
                     paramz[0], // scope
                     Expression.Convert(paramz[2], target),  // current
                     Expression.NewArrayInit
@@ -59,7 +66,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>injector => new Interceptor(injector.Get(...), ...)</code>
         /// </summary>
-        public Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs)
+        public static Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs, IReadOnlyList<IDependencyResolver>? resolvers)
         {
             //
             // GetApplicableContructor() will do the rest of validations
@@ -71,16 +78,9 @@ namespace Solti.Utils.DI.Internals
             return CreateActivator<CreateInterceptorDelegate>
             (
                 interceptor.GetApplicableConstructor(),
-                explicitArgs
+                explicitArgs,
+                resolvers ?? DefaultDependencyResolvers.Value
             );
         }
-
-        /// <summary>
-        /// <code>injector => new Interceptor(injector.Get(...), ...)</code>
-        /// </summary>
-        public static Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs, IReadOnlyList<IDependencyResolver>? dependencyResolvers) =>
-            new DecoratorResolver(dependencyResolvers).ResolveInterceptorFactory(interceptor, explicitArgs);
-
-        public DecoratorResolver(IReadOnlyList<IDependencyResolver>? resolvers) : base(resolvers) { }
     }
 }

@@ -79,6 +79,15 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collection is readonly..
+        /// </summary>
+        internal static string COLLECTION_IS_READONLY {
+            get {
+                return ResourceManager.GetString("COLLECTION_IS_READONLY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;{0}&quot; must have exactly one (annotated) public constructor..
         /// </summary>
         internal static string CONSTRUCTOR_OVERLOADING_NOT_SUPPORTED {
@@ -115,7 +124,7 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A dependency must be an interface/Lazy&lt;interface&gt;..
+        ///   Looks up a localized string similar to Invalid dependency..
         /// </summary>
         internal static string INVALID_DEPENDENCY {
             get {
@@ -178,15 +187,6 @@ namespace Solti.Utils.DI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter should not be abstract..
-        /// </summary>
-        internal static string PARAMETER_IS_ABSTRACT {
-            get {
-                return ResourceManager.GetString("PARAMETER_IS_ABSTRACT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Parameter should not be generic..
         /// </summary>
         internal static string PARAMETER_IS_GENERIC {
@@ -201,15 +201,6 @@ namespace Solti.Utils.DI.Properties {
         internal static string PARAMETER_NOT_A_CLASS {
             get {
                 return ResourceManager.GetString("PARAMETER_NOT_A_CLASS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameter must be an interface..
-        /// </summary>
-        internal static string PARAMETER_NOT_AN_INTERFACE {
-            get {
-                return ResourceManager.GetString("PARAMETER_NOT_AN_INTERFACE", resourceCulture);
             }
         }
         

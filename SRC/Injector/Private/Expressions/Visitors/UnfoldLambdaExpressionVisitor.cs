@@ -23,7 +23,8 @@ namespace Solti.Utils.DI.Internals
 
         private readonly Expression[] FParameterSubstitutions;
 
-        private UnfoldLambdaExpressionVisitor(Expression[] parameterSubstitutions) => FParameterSubstitutions = parameterSubstitutions;
+        private UnfoldLambdaExpressionVisitor(Expression[] parameterSubstitutions) =>
+            FParameterSubstitutions = parameterSubstitutions;
 
         public static Expression Unfold(LambdaExpression lamda, params Expression[] parameterSubstitutions) =>
             new UnfoldLambdaExpressionVisitor(parameterSubstitutions).Visit(lamda);

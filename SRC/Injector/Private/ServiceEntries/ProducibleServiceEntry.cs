@@ -17,6 +17,7 @@ namespace Solti.Utils.DI.Internals
 
     using static Interfaces.Properties.Resources;
     using static Properties.Resources;
+    using static ServiceActivator;
 
     /// <summary>
     /// Reperesents the base class of producible servce entries.
@@ -33,11 +34,11 @@ namespace Solti.Utils.DI.Internals
 
             ConstructorInfo ctor = implementation.GetApplicableConstructor();  // validates the implementation even in case of a generic svc
             return !@interface.IsGenericTypeDefinition
-                ? new FactoryResolver(options.DependencyResolvers).Resolve(ctor, explicitArgs)
+                ? ResolveFactory(ctor, explicitArgs, options.DependencyResolvers)
                 : null;
         }
 
-        private ProducibleServiceEntry(Type @interface, string? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions options) : base(@interface, name, implementation, factory, explicitArgs, options)
+        private ProducibleServiceEntry(Type @interface, object? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions options) : base(@interface, name, implementation, factory, explicitArgs, options)
         {
             if (Options!.SupportAspects)
             {
@@ -57,7 +58,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -70,7 +71,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -89,7 +90,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options) : this
         (
             @interface ?? throw new ArgumentNullException(nameof(@interface)),
             name,
@@ -129,9 +130,9 @@ namespace Solti.Utils.DI.Internals
             );
 
             Debug.WriteLine($"Created factory: {Environment.NewLine}{factoryExpr.GetDebugView()}");
-            context
+            FCreateInstance = context
                 .Compiler
-                .Compile(factoryExpr, factory => CreateInstance = factory);
+                .Register(factoryExpr);
 
             State = (State | ServiceEntryStates.Built) & ~ServiceEntryStates.Validated;
         }

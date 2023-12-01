@@ -19,8 +19,8 @@ namespace Solti.Utils.DI.Tests
         {
             var ex = Assert.Throws<ServiceNotFoundException>(() => ScopeFactory.Create(svcs => svcs.Service<IInterface_7<IInterface_1>, Implementation_7_TInterface_Dependant<IInterface_1>>(lifetime), new ScopeOptions { ServiceResolutionMode = ServiceResolutionMode.AOT }));
 
-            Assert.That(ex.Requested, Is.InstanceOf<MissingServiceEntry>().And.EqualTo(new MissingServiceEntry(typeof(IInterface_1), null)).Using(ServiceIdComparer.Instance));
-            Assert.That(ex.Requestor, Is.EqualTo(new DummyServiceEntry(typeof(IInterface_7<IInterface_1>), null)).Using(ServiceIdComparer.Instance));
+            Assert.That(ex.Requested, Is.EqualTo(new ServiceId(typeof(IInterface_1), null)).Using(IServiceId.Comparer.Instance));
+            Assert.That(ex.Requestor, Is.EqualTo(new ServiceId(typeof(IInterface_7<IInterface_1>), null)).Using(IServiceId.Comparer.Instance));
         }
 
         [Test]
@@ -77,8 +77,8 @@ namespace Solti.Utils.DI.Tests
         public void Injector_CreateUsingFactory_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2) => Assert.Throws<CircularReferenceException>(() => ScopeFactory.Create
         (
             svcs => svcs
-                .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
-                .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
+                .Factory<IInterface_4>(factoryExpr: injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
+                .Factory<IInterface_5>(factoryExpr: injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
             new ScopeOptions { ServiceResolutionMode = ServiceResolutionMode.AOT }
         ), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
 

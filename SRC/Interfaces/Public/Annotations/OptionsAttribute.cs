@@ -25,17 +25,17 @@ namespace Solti.Utils.DI.Interfaces
     public sealed class OptionsAttribute: Attribute
     {
         /// <summary>
-        /// The (optional) service name. The value of this property will be passed to the corresponding scope invocation:
+        /// The (optional) service key. The value of this property will be passed to the corresponding scope invocation:
         /// <code>
         /// class MyService
         /// {
-        ///     public MyService([Options(Name = "...")] IDependency dependency) {...}
+        ///     public MyService([Options(Key = "...")] IDependency dependency) {...}
         /// }
         /// </code>
         /// translates to
-        /// <code>scope => new MyService(scope.Get(typeof(IDependency), options.Name))</code>
+        /// <code>scope => new MyService(scope.Get(typeof(IDependency), options.Key))</code>
         /// </summary>
-        public string? Name { get; init; }
+        public object? Key { get; init; }
 
         /// <summary>
         /// Indicates whether a dependency is optional or not. In practice:
@@ -46,7 +46,7 @@ namespace Solti.Utils.DI.Interfaces
         /// }
         /// </code>
         /// translates to
-        /// <code>scope => new MyService(scope.TryGet(typeof(IDependency), options.Name))</code>
+        /// <code>scope => new MyService(scope.TryGet(typeof(IDependency), options.Key))</code>
         /// while
         /// <code>
         /// class MyService
@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Interfaces
         /// }
         /// </code>
         /// becomes
-        /// <code>scope => new MyService(scope.Get(typeof(IDependency), options.Name))</code>
+        /// <code>scope => new MyService(scope.Get(typeof(IDependency), options.Key))</code>
         /// </summary>
         /// <remarks>This option is ignored if you are using the MS preferred DI (<see cref="IServiceProvider"/>).</remarks>
         public bool Optional { get; init; }

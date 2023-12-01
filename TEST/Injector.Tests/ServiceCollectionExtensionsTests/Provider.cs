@@ -15,7 +15,6 @@ namespace Solti.Utils.DI.Tests
 {
     using Interfaces;
     using Internals;
-    using Primitives.Threading;
     using Properties;
 
     public partial class ServiceCollectionExtensionsTests
@@ -28,15 +27,8 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), null));
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), new object(), null));
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), null, Lifetime.Singleton));
-            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), null, Lifetime.Singleton));
+            Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), typeof(DummyProvider), explicitArgs: null, Lifetime.Singleton));
             Assert.Throws<ArgumentNullException>(() => Collection.Provider(typeof(ICloneable), null, new object(), Lifetime.Singleton));
-        }
-
-        [TestCaseSource(nameof(Lifetimes))]
-        public void Provider_ShouldThrowOnNonInterfaceKey(Lifetime lifetime)
-        {
-            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(object), typeof(DummyProvider), lifetime));
-            Assert.Throws<ArgumentException>(() => Collection.Provider(typeof(object), typeof(DummyProvider), new object(), lifetime));
         }
 
         [DummyAspect]
@@ -73,7 +65,7 @@ namespace Solti.Utils.DI.Tests
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_ShouldSupportExplicitArgs(Lifetime lifetime) =>
-            Assert.DoesNotThrow(() => Collection.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(new Dictionary<string, object> { ["val"] = 1 }, lifetime));
+            Assert.DoesNotThrow(() => Collection.Provider<IInterface_1, ProviderHavingNonInterfaceDependency>(null, new Dictionary<string, object> { ["val"] = 1 }, lifetime));
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Provider_MayHaveDeferredDependency(Lifetime lifetime) =>
@@ -89,7 +81,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -99,6 +91,7 @@ namespace Solti.Utils.DI.Tests
                 .Last();
 
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector
@@ -114,7 +107,7 @@ namespace Solti.Utils.DI.Tests
             var mockBuildContext = new Mock<IBuildContext>(MockBehavior.Strict);
             mockBuildContext
                 .SetupGet(ctx => ctx.Compiler)
-                .Returns(new SimpleDelegateCompiler());
+                .Returns(Compiler);
             mockBuildContext
                 .Setup(ctx => ctx.AssignSlot())
                 .Returns(0);
@@ -123,6 +116,7 @@ namespace Solti.Utils.DI.Tests
                 .Provider<IList<int>, GenericListProvider>(lifetime)
                 .Last();
             entry.Build(mockBuildContext.Object, new IFactoryVisitor[] { new MergeProxiesVisitor(), new ApplyLifetimeManagerVisitor() });
+            Compiler.Compile();
 
             var mockInjector = new Mock<IServiceActivator>(MockBehavior.Strict);
             mockInjector

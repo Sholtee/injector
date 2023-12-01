@@ -19,7 +19,7 @@ namespace Solti.Utils.DI.Tests
         [Test]
         public void Instance_ShouldBeNullChecked() 
         {
-            Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.Instance(null, typeof(IDisposable), new Disposable()));
+            Assert.Throws<ArgumentNullException>(() => IServiceCollectionAdvancedExtensions.Instance(null, typeof(IDisposable), null, new Disposable()));
             Assert.Throws<ArgumentNullException>(() => Collection.Instance<IDisposable>(null));
         }
 
@@ -28,13 +28,6 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Instance<IInterface_1>(new Implementation_1_No_Dep());
             Assert.That(Collection.Last().IsInstance());
-        }
-
-        [Test]
-        public void Instance_ShouldThrowOnNonInterfaceKey()
-        {
-            Assert.Throws<ArgumentException>(() => Collection.Instance<Object>(new object()), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
-            Assert.Throws<ArgumentException>(() => Collection.Instance(typeof(Object), new object()), string.Format(Resources.PARAMETER_NOT_AN_INTERFACE, "iface"));
         }
 
         [Test]

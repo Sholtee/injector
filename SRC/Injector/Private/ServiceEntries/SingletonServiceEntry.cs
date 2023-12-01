@@ -13,15 +13,15 @@ namespace Solti.Utils.DI.Internals
 
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        public SingletonServiceEntry(Type @interface, string? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
+        public SingletonServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Type implementation, ServiceOptions options) : base(@interface, name, implementation, options)
+        public SingletonServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options) : base(@interface, name, implementation, options)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, string? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
+        public SingletonServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
         {
         }
 
@@ -40,23 +40,23 @@ namespace Solti.Utils.DI.Internals
             {
                 _ when Implementation is not null && ExplicitArgs is null => new SingletonServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Implementation.MakeGenericType(genericArguments),
                     Options!
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new SingletonServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
                     Options!
                 ),
                 _ when Factory is not null => new SingletonServiceEntry
                 (
-                    Interface.MakeGenericType(genericArguments),
-                    Name,
+                    Type.MakeGenericType(genericArguments),
+                    Key,
                     Factory,
                     Options!
                 ),

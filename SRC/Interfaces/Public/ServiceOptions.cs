@@ -18,7 +18,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <remarks>
         /// You may install interceptors directly by using the decorator recipe:
         /// <code>
-        /// coll.Service&lt;IMyService, MyService&gt;().Decorate((injector, iface, instance) => ...);
+        /// coll.Service&lt;IMyService, MyService&gt;().Decorate((injector, type, instance) => ...);
         /// </code>
         /// </remarks>
         public bool SupportAspects { get; set; } = true;
