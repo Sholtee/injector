@@ -42,7 +42,7 @@
   
   <h1 id="Solti_Utils_DI_ServiceCollection" data-uid="Solti.Utils.DI.ServiceCollection" class="text-break">Class ServiceCollection
   </h1>
-  <div class="markdown level0 summary"><p>Exposes the underlying <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> implementation.</p>
+  <div class="markdown level0 summary"><p>Implements the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -50,22 +50,295 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">ServiceCollection</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.html">Solti.Utils.DI</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.dll</h6>
   <h5 id="Solti_Utils_DI_ServiceCollection_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class ServiceCollection : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ServiceCollection : Object, IServiceCollection</code></pre>
   </div>
-  <h3 id="methods">Methods
+  <h3 id="constructors">Constructors
   </h3>
-  <a id="Solti_Utils_DI_ServiceCollection_Create_" data-uid="Solti.Utils.DI.ServiceCollection.Create*"></a>
-  <h4 id="Solti_Utils_DI_ServiceCollection_Create" data-uid="Solti.Utils.DI.ServiceCollection.Create">Create()</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> instance.</p>
+  <a id="Solti_Utils_DI_ServiceCollection__ctor_" data-uid="Solti.Utils.DI.ServiceCollection.#ctor*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection__ctor_System_Boolean_" data-uid="Solti.Utils.DI.ServiceCollection.#ctor(System.Boolean)">ServiceCollection(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Solti.Utils.DI.ServiceCollection.html">ServiceCollection</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Create()</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceCollection(bool supportsOverride = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">supportsOverride</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Solti_Utils_DI_ServiceCollection_Count_" data-uid="Solti.Utils.DI.ServiceCollection.Count*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_Count" data-uid="Solti.Utils.DI.ServiceCollection.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Number of entries in this list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_IsReadOnly_" data-uid="Solti.Utils.DI.ServiceCollection.IsReadOnly*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_IsReadOnly" data-uid="Solti.Utils.DI.ServiceCollection.IsReadOnly">IsReadOnly</h4>
+  <div class="markdown level1 summary"><p>This list is</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_SupportsOverride_" data-uid="Solti.Utils.DI.ServiceCollection.SupportsOverride*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_SupportsOverride" data-uid="Solti.Utils.DI.ServiceCollection.SupportsOverride">SupportsOverride</h4>
+  <div class="markdown level1 summary"><p>Returns true if service overriding is supported.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SupportsOverride { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Solti_Utils_DI_ServiceCollection_Add_" data-uid="Solti.Utils.DI.ServiceCollection.Add*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_Add_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceCollection.Add(Solti.Utils.DI.Interfaces.AbstractServiceEntry)">Add(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"><p>Adds a new entry to this collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(AbstractServiceEntry item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceAlreadyRegisteredException.html">ServiceAlreadyRegisteredException</a></td>
+        <td><p>If <a class="xref" href="Solti.Utils.DI.ServiceCollection.html#Solti_Utils_DI_ServiceCollection_SupportsOverride">SupportsOverride</a> is false and this list already contains an entry with the given id</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_Clear_" data-uid="Solti.Utils.DI.ServiceCollection.Clear*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_Clear" data-uid="Solti.Utils.DI.ServiceCollection.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Clears this list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+  <a id="Solti_Utils_DI_ServiceCollection_Contains_" data-uid="Solti.Utils.DI.ServiceCollection.Contains*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_Contains_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceCollection.Contains(Solti.Utils.DI.Interfaces.AbstractServiceEntry)">Contains(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"><p>Check entry existance by reference.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(AbstractServiceEntry item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_Contains_" data-uid="Solti.Utils.DI.ServiceCollection.Contains*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_Contains_Solti_Utils_DI_Interfaces_IServiceId_" data-uid="Solti.Utils.DI.ServiceCollection.Contains(Solti.Utils.DI.Interfaces.IServiceId)">Contains(IServiceId)</h4>
+  <div class="markdown level1 summary"><p>Check entry existance by id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(IServiceId id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_CopyTo_" data-uid="Solti.Utils.DI.ServiceCollection.CopyTo*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_CopyTo_Solti_Utils_DI_Interfaces_AbstractServiceEntry___System_Int32_" data-uid="Solti.Utils.DI.ServiceCollection.CopyTo(Solti.Utils.DI.Interfaces.AbstractServiceEntry[],System.Int32)">CopyTo(AbstractServiceEntry[], Int32)</h4>
+  <div class="markdown level1 summary"><p>Copies the contained entries to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(AbstractServiceEntry[] array, int arrayIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>[]</td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">arrayIndex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_GetEnumerator_" data-uid="Solti.Utils.DI.ServiceCollection.GetEnumerator*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_GetEnumerator" data-uid="Solti.Utils.DI.ServiceCollection.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Enumerates the entries in this collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;AbstractServiceEntry&gt; GetEnumerator()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -77,11 +350,156 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_ServiceCollection_MakeReadOnly_" data-uid="Solti.Utils.DI.ServiceCollection.MakeReadOnly*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_MakeReadOnly" data-uid="Solti.Utils.DI.ServiceCollection.MakeReadOnly">MakeReadOnly()</h4>
+  <div class="markdown level1 summary"><p>Makes this collection read only.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MakeReadOnly()</code></pre>
+  </div>
+  <a id="Solti_Utils_DI_ServiceCollection_Remove_" data-uid="Solti.Utils.DI.ServiceCollection.Remove*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_Remove_Solti_Utils_DI_Interfaces_AbstractServiceEntry_" data-uid="Solti.Utils.DI.ServiceCollection.Remove(Solti.Utils.DI.Interfaces.AbstractServiceEntry)">Remove(AbstractServiceEntry)</h4>
+  <div class="markdown level1 summary"><p>Drops entry by reference.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(AbstractServiceEntry item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_Remove_" data-uid="Solti.Utils.DI.ServiceCollection.Remove*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_Remove_Solti_Utils_DI_Interfaces_IServiceId_" data-uid="Solti.Utils.DI.ServiceCollection.Remove(Solti.Utils.DI.Interfaces.IServiceId)">Remove(IServiceId)</h4>
+  <div class="markdown level1 summary"><p>Drops entry by id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(IServiceId id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_ServiceCollection_TryFind_" data-uid="Solti.Utils.DI.ServiceCollection.TryFind*"></a>
+  <h4 id="Solti_Utils_DI_ServiceCollection_TryFind_Solti_Utils_DI_Interfaces_IServiceId_" data-uid="Solti.Utils.DI.ServiceCollection.TryFind(Solti.Utils.DI.Interfaces.IServiceId)">TryFind(IServiceId)</h4>
+  <div class="markdown level1 summary"><p>Tries to find an entry by id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AbstractServiceEntry TryFind(IServiceId id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">System.Collections.Generic.ICollection&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">System.Collections.Generic.IEnumerable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">System.Collections.IEnumerable</a>
+  </div>
 </article>
           </div>
           

@@ -71,20 +71,20 @@
   </div>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_OptionsAttribute_Name_" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Name*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_OptionsAttribute_Name" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Name">Name</h4>
-  <div class="markdown level1 summary"><p>The (optional) service name. The value of this property will be passed to the corresponding scope invocation:</p>
+  <a id="Solti_Utils_DI_Interfaces_OptionsAttribute_Key_" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Key*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_OptionsAttribute_Key" data-uid="Solti.Utils.DI.Interfaces.OptionsAttribute.Key">Key</h4>
+  <div class="markdown level1 summary"><p>The (optional) service key. The value of this property will be passed to the corresponding scope invocation:</p>
 <pre><code>class MyService
 {
-    public MyService([Options(Name = &quot;...&quot;)] IDependency dependency) {...}
+    public MyService([Options(Key = &quot;...&quot;)] IDependency dependency) {...}
 }</code></pre>
 <p>translates to</p>
-<pre><code>scope => new MyService(scope.Get(typeof(IDependency), options.Name))</code></pre>
+<pre><code>scope => new MyService(scope.Get(typeof(IDependency), options.Key))</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public object Key { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -96,7 +96,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -109,14 +109,14 @@
     public MyService([Options(Optional = true)] IDependency dependency) {...}
 }</code></pre>
 <p>translates to</p>
-<pre><code>scope => new MyService(scope.TryGet(typeof(IDependency), options.Name))</code></pre>
+<pre><code>scope => new MyService(scope.TryGet(typeof(IDependency), options.Key))</code></pre>
 <p>while</p>
 <pre><code>class MyService
 {
     public MyService([Options(Optional = false)] IDependency dependency) {...}
 }</code></pre>
 <p>becomes</p>
-<pre><code>scope => new MyService(scope.Get(typeof(IDependency), options.Name))</code></pre>
+<pre><code>scope => new MyService(scope.Get(typeof(IDependency), options.Key))</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

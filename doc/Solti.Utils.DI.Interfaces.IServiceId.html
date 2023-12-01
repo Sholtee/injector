@@ -52,18 +52,42 @@
     <pre><code class="lang-csharp hljs">public interface IServiceId</code></pre>
   </div>
   <h5 id="Solti_Utils_DI_Interfaces_IServiceId_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>A service can be identified uniquely by its <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Interface">Interface</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Name">Name</a></p>
+  <div class="markdown level0 remarks"><p>A service can be identified uniquely by its <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Type">Type</a> and <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Key">Key</a></p>
 </div>
   <h3 id="properties">Properties
   </h3>
-  <a id="Solti_Utils_DI_Interfaces_IServiceId_Interface_" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Interface*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceId_Interface" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Interface">Interface</h4>
-  <div class="markdown level1 summary"><p>The service interface.</p>
+  <a id="Solti_Utils_DI_Interfaces_IServiceId_Key_" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Key*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceId_Key" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Key">Key</h4>
+  <div class="markdown level1 summary"><p>The (optional) service key (usually a name).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Type Interface { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">object Key { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_Interfaces_IServiceId_Type_" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Type*"></a>
+  <h4 id="Solti_Utils_DI_Interfaces_IServiceId_Type" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Type">Type</h4>
+  <div class="markdown level1 summary"><p>Type of the service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Type Type { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -76,30 +100,6 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_Interfaces_IServiceId_Name_" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Name*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IServiceId_Name" data-uid="Solti.Utils.DI.Interfaces.IServiceId.Name">Name</h4>
-  <div class="markdown level1 summary"><p>The (optional) service name.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string Name { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>

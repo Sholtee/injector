@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class DecoratorDelegate&lt;TInterface&gt;
+    <title>Class DecoratorDelegate&lt;TType&gt;
    | Injector </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class DecoratorDelegate&lt;TInterface&gt;
+    <meta name="title" content="Class DecoratorDelegate&lt;TType&gt;
    | Injector ">
     <meta name="generator" content="docfx 2.59.3.0">
     
@@ -40,7 +40,7 @@
             <article class="content wrap" id="_content" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1">
   
   
-  <h1 id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1" class="text-break">Class DecoratorDelegate&lt;TInterface&gt;
+  <h1 id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1" class="text-break">Class DecoratorDelegate&lt;TType&gt;
   </h1>
   <div class="markdown level0 summary"><p>Defines the layout of functions used to apply proxies.</p>
 </div>
@@ -48,13 +48,13 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">DecoratorDelegate&lt;TInterface&gt;</span></div>
+    <div class="level1"><span class="xref">DecoratorDelegate&lt;TType&gt;</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Solti.Utils.DI.Interfaces.html">Solti.Utils.DI.Interfaces</a></h6>
   <h6><strong>Assembly</strong>: Solti.Utils.DI.Interfaces.dll</h6>
   <h5 id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class DecoratorDelegate&lt;TInterface&gt; : MulticastDelegate</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class DecoratorDelegate&lt;TType&gt; : MulticastDelegate</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -66,7 +66,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
+        <td><span class="parametername">TType</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -106,12 +106,12 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1_BeginInvoke_" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1.BeginInvoke*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1_BeginInvoke_Solti_Utils_DI_Interfaces_IInjector__0_System_AsyncCallback_System_Object_" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,`0,System.AsyncCallback,System.Object)">BeginInvoke(IInjector, TInterface, AsyncCallback, Object)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1_BeginInvoke_Solti_Utils_DI_Interfaces_IInjector__0_System_AsyncCallback_System_Object_" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1.BeginInvoke(Solti.Utils.DI.Interfaces.IInjector,`0,System.AsyncCallback,System.Object)">BeginInvoke(IInjector, TType, AsyncCallback, Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(IInjector scope, TInterface instance, AsyncCallback callback, object object)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAsyncResult BeginInvoke(IInjector scope, TType instance, AsyncCallback callback, object object)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -129,7 +129,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td><span class="parametername">instance</span></td>
         <td></td>
       </tr>
@@ -166,7 +166,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual TInterface EndInvoke(IAsyncResult result)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual TType EndInvoke(IAsyncResult result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -195,18 +195,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1_Invoke_" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1.Invoke*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1_Invoke_Solti_Utils_DI_Interfaces_IInjector__0_" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1.Invoke(Solti.Utils.DI.Interfaces.IInjector,`0)">Invoke(IInjector, TInterface)</h4>
+  <h4 id="Solti_Utils_DI_Interfaces_DecoratorDelegate_1_Invoke_Solti_Utils_DI_Interfaces_IInjector__0_" data-uid="Solti.Utils.DI.Interfaces.DecoratorDelegate`1.Invoke(Solti.Utils.DI.Interfaces.IInjector,`0)">Invoke(IInjector, TType)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual TInterface Invoke(IInjector scope, TInterface instance)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual TType Invoke(IInjector scope, TType instance)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -224,7 +224,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td><span class="parametername">instance</span></td>
         <td></td>
       </tr>
@@ -240,7 +240,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td></td>
       </tr>
     </tbody>

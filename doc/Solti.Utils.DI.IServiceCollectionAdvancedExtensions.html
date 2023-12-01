@@ -199,13 +199,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type)">Decorate(IServiceCollection, Type, String, Type)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Type)">Decorate(IServiceCollection, Type, Object, Type)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string name, Type interceptor)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type type, object key, Type interceptor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -225,14 +225,14 @@
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface.</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) service name.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
       <tr>
@@ -258,7 +258,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><ul><li></li><li></li><li></li></ul>
 </div>
   <h5 class="exceptions">Exceptions</h5>
@@ -278,13 +278,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type,System.Object)">Decorate(IServiceCollection, Type, String, Type, Object)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Type,System.Object)">Decorate(IServiceCollection, Type, Object, Type, Object)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string name, Type interceptor, object explicitArgs)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type type, object key, Type interceptor, object explicitArgs)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -304,14 +304,14 @@
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface.</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) service name.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
       <tr>
@@ -343,7 +343,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type_System_Object__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type_System_Object__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><ul><li></li><li></li><li></li></ul>
 </div>
   <h5 class="exceptions">Exceptions</h5>
@@ -363,13 +363,13 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type___" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Type[])">Decorate(IServiceCollection, Type, String, Type[])</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type___" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Type[])">Decorate(IServiceCollection, Type, Object, Type[])</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string name, params Type[] interceptors)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type type, object key, params Type[] interceptors)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -389,14 +389,14 @@
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface.</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) service name.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
       <tr>
@@ -422,7 +422,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Type____remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p><ul><li></li><li></li><li></li></ul>
 Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.</p>
 </div>
@@ -443,13 +443,13 @@ Using this method is the preferred way to apply multiple interceptors against th
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_ValueTuple_System_Type_System_Object____" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.ValueTuple{System.Type,System.Object}[])">Decorate(IServiceCollection, Type, String, (Type, Object)[])</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_ValueTuple_System_Type_System_Object____" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.ValueTuple{System.Type,System.Object}[])">Decorate(IServiceCollection, Type, Object, (Type, Object)[])</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, string name, params (Type, object)[] interceptors)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type type, object key, params (Type, object)[] interceptors)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -469,14 +469,14 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface.</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) service name.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
       <tr>
@@ -502,7 +502,7 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_ValueTuple_System_Type_System_Object_____remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_ValueTuple_System_Type_System_Object_____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p><ul><li></li><li></li><li></li></ul>
 Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.</p>
 </div>
@@ -529,7 +529,7 @@ Using this method is the preferred way to apply multiple interceptors against th
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Type interceptor)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type type, Type interceptor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -549,8 +549,8 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface.</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type.</p>
 </td>
       </tr>
       <tr>
@@ -602,7 +602,7 @@ Using this method is the preferred way to apply multiple interceptors against th
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type iface, Type interceptor, object explicitArgs)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate(this IServiceCollection self, Type type, Type interceptor, object explicitArgs)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -622,8 +622,8 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface.</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type.</p>
 </td>
       </tr>
       <tr>
@@ -888,14 +888,14 @@ Using this method is the preferred way to apply multiple interceptors against th
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection)">Decorate&lt;TInterface, TInterceptor&gt;(IServiceCollection)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection)">Decorate&lt;TType, TInterceptor&gt;(IServiceCollection)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TInterface, TInterceptor&gt;(this IServiceCollection self)
-    where TInterface : class where TInterceptor : IInterfaceInterceptor</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TType, TInterceptor&gt;(this IServiceCollection self)
+    where TType : class where TInterceptor : IInterfaceInterceptor</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -940,7 +940,7 @@ Using this method is the preferred way to apply multiple interceptors against th
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
+        <td><span class="parametername">TType</span></td>
         <td></td>
       </tr>
       <tr>
@@ -969,14 +969,14 @@ Using this method is the preferred way to apply multiple interceptors against th
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)">Decorate&lt;TInterface, TInterceptor&gt;(IServiceCollection, Object)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)">Decorate&lt;TType, TInterceptor&gt;(IServiceCollection, Object)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TInterface, TInterceptor&gt;(this IServiceCollection self, object explicitArgs)
-    where TInterface : class where TInterceptor : IInterfaceInterceptor</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TType, TInterceptor&gt;(this IServiceCollection self, object key)
+    where TType : class where TInterceptor : IInterfaceInterceptor</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -996,8 +996,8 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">explicitArgs</span></td>
-        <td><p>Explicit arguments to be passed.</p>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
     </tbody>
@@ -1027,7 +1027,7 @@ Using this method is the preferred way to apply multiple interceptors against th
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
+        <td><span class="parametername">TType</span></td>
         <td></td>
       </tr>
       <tr>
@@ -1056,14 +1056,14 @@ Using this method is the preferred way to apply multiple interceptors against th
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String)">Decorate&lt;TInterface, TInterceptor&gt;(IServiceCollection, String)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,System.Object)">Decorate&lt;TType, TInterceptor&gt;(IServiceCollection, Object, Object)</h4>
   <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TInterface, TInterceptor&gt;(this IServiceCollection self, string name)
-    where TInterface : class where TInterceptor : IInterfaceInterceptor</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TType, TInterceptor&gt;(this IServiceCollection self, object key, object explicitArgs)
+    where TType : class where TInterceptor : IInterfaceInterceptor</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1082,96 +1082,9 @@ Using this method is the preferred way to apply multiple interceptors against th
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) service name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TInterceptor</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><ul><li></li><li></li><li></li></ul>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
-        <td><p>When proxying is not allowed (see remarks).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate``2(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,System.Object)">Decorate&lt;TInterface, TInterceptor&gt;(IServiceCollection, String, Object)</h4>
-  <div class="markdown level1 summary"><p>Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Decorate&lt;TInterface, TInterceptor&gt;(this IServiceCollection self, string name, object explicitArgs)
-    where TInterface : class where TInterceptor : IInterfaceInterceptor</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
-        <td><span class="parametername">self</span></td>
-        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) service name.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
       <tr>
@@ -1207,7 +1120,7 @@ Using this method is the preferred way to apply multiple interceptors against th
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
+        <td><span class="parametername">TType</span></td>
         <td></td>
       </tr>
       <tr>
@@ -1216,7 +1129,7 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
     </tbody>
   </table>
-  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_String_System_Object__remarks">Remarks</h5>
+  <h5 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate__2_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_System_Object__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><ul><li></li><li></li><li></li></ul>
 </div>
   <h5 class="exceptions">Exceptions</h5>
@@ -1242,7 +1155,7 @@ Using this method is the preferred way to apply multiple interceptors against th
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, object instance, ServiceOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type type, object instance, ServiceOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1262,14 +1175,14 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface to be registered. It can not be null and can be registered only once.</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type to be registered. It can not be null and can be registered only once.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">instance</span></td>
-        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
+        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">type</code> interface.</p>
 </td>
       </tr>
       <tr>
@@ -1296,13 +1209,13 @@ Using this method is the preferred way to apply multiple interceptors against th
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_String_System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.String,System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance(IServiceCollection, Type, String, Object, ServiceOptions)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Object_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Object,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance(IServiceCollection, Type, Object, Object, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful to creating &quot;constant&quot; values (e.g. command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type iface, string name, object instance, ServiceOptions options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance(this IServiceCollection self, Type type, object key, object instance, ServiceOptions options = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1322,20 +1235,20 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">iface</span></td>
-        <td><p>The service interface to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">key</code>).</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
         <td><span class="parametername">instance</span></td>
-        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">iface</code> interface.</p>
+        <td><p>The pre-created instance to be registered. It can not be null and must implement the <code data-dev-comment-type="paramref" class="paramref">type</code> interface.</p>
 </td>
       </tr>
       <tr>
@@ -1362,14 +1275,14 @@ Using this method is the preferred way to apply multiple interceptors against th
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection___0_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,``0,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance&lt;TInterface&gt;(IServiceCollection, TInterface, ServiceOptions)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection___0_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,``0,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance&lt;TType&gt;(IServiceCollection, TType, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, TInterface instance, ServiceOptions options = null)
-    where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TType&gt;(this IServiceCollection self, TType instance, ServiceOptions options = null)
+    where TType : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1388,7 +1301,7 @@ Using this method is the preferred way to apply multiple interceptors against th
 </td>
       </tr>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td><span class="parametername">instance</span></td>
         <td><p>The pre-created instance to be registered.</p>
 </td>
@@ -1426,21 +1339,21 @@ Using this method is the preferred way to apply multiple interceptors against th
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td><p>The service interface to be registered. It can be registered only once.</p>
+        <td><span class="parametername">TType</span></td>
+        <td><p>The service type to be registered. It can be registered only once.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance*"></a>
-  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_String___0_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.String,``0,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance&lt;TInterface&gt;(IServiceCollection, String, TInterface, ServiceOptions)</h4>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Instance__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object___0_Solti_Utils_DI_Interfaces_ServiceOptions_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,``0,Solti.Utils.DI.Interfaces.ServiceOptions)">Instance&lt;TType&gt;(IServiceCollection, Object, TType, ServiceOptions)</h4>
   <div class="markdown level1 summary"><p>Registers a pre-created instance. Useful when creating &quot;constant&quot; values (e.g. from command-line arguments).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TInterface&gt;(this IServiceCollection self, string name, TInterface instance, ServiceOptions options = null)
-    where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection Instance&lt;TType&gt;(this IServiceCollection self, object key, TType instance, ServiceOptions options = null)
+    where TType : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1459,13 +1372,13 @@ Using this method is the preferred way to apply multiple interceptors against th
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td><span class="parametername">instance</span></td>
         <td><p>The pre-created instance to be registered.</p>
 </td>
@@ -1503,8 +1416,8 @@ Using this method is the preferred way to apply multiple interceptors against th
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td><p>The service interface to be registered. It can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">name</code>).</p>
+        <td><span class="parametername">TType</span></td>
+        <td><p>The service type to be registered. It can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">key</code>).</p>
 </td>
       </tr>
     </tbody>

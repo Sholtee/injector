@@ -118,6 +118,9 @@ public class Service : IService
     void DoSomething([NotNull] object arg) { ...}
 }</code></pre>
 </section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.CallNextDelegate-2.html">CallNextDelegate&lt;TConext, TResult&gt;</a></h4>
+      <section><p>Invokes the next member of chained items.</p>
+</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.CircularReferenceException.html">CircularReferenceException</a></h4>
       <section><p>The exception that is thrown on circular reference.</p>
 </section>
@@ -130,7 +133,7 @@ public class Service : IService
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate.html">DecoratorDelegate</a></h4>
       <section><p>Defines the layout of functions used to apply proxies.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate-1.html">DecoratorDelegate&lt;TInterface&gt;</a></h4>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.DecoratorDelegate-1.html">DecoratorDelegate&lt;TType&gt;</a></h4>
       <section><p>Defines the layout of functions used to apply proxies.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.DependencyDescriptor.html">DependencyDescriptor</a></h4>
@@ -139,7 +142,7 @@ public class Service : IService
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.FactoryDelegate.html">FactoryDelegate</a></h4>
       <section><p>Defines the layout of functions used as service factory.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.FactoryDelegate-1.html">FactoryDelegate&lt;TInterface&gt;</a></h4>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.FactoryDelegate-1.html">FactoryDelegate&lt;TType&gt;</a></h4>
       <section><p>Defines the layout of functions used as service factory.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.html">IInjectorBasicExtensions</a></h4>
@@ -156,23 +159,17 @@ public class Service : IService
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactoryExtensions.html">IScopeFactoryExtensions</a></h4>
       <section><p>Defines some extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IScopeFactory.html">IScopeFactory</a> interface.</p>
 </section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.Consts.html">IServiceCollection.Consts</a></h4>
-      <section><p>Contains some constants related to the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface.</p>
-</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html">IServiceCollectionBasicExtensions</a></h4>
       <section><p>Defines basic extensions for the <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a> interface.</p>
+</section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.Comparer.html">IServiceId.Comparer</a></h4>
+      <section><p>Related comparer.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.html">IServiceProviderBasicExtensions</a></h4>
       <section><p>Defines basic extensions for the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> interface.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.LifetimeBase.html">LifetimeBase</a></h4>
       <section><p>Represents the contract of service lifetime descriptors.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.MissingServiceEntry.html">MissingServiceEntry</a></h4>
-      <section><p>Describes a missing service.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.Next-2.html">Next&lt;TConext, TResult&gt;</a></h4>
-      <section><p>Invokes the next member of chained items.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.OptionsAttribute.html">OptionsAttribute</a></h4>
       <section><p>Controls the <a class="xref" href="Solti.Utils.DI.Interfaces.IInjector.html">IInjector</a> during the dependency resolution.</p>
@@ -207,6 +204,9 @@ public class Service : IService
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceEntryStates.html">ServiceEntryStates</a></h4>
       <section><p>Describes the actual state of an <a class="xref" href="Solti.Utils.DI.Interfaces.AbstractServiceEntry.html">AbstractServiceEntry</a></p>
 </section>
+      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceId.html">ServiceId</a></h4>
+      <section><p>Default <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceId.html">IServiceId</a> implementation</p>
+</section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.ServiceNotFoundException.html">ServiceNotFoundException</a></h4>
       <section><p>The exception that is thrown when a service could not be found.</p>
 </section>
@@ -220,9 +220,6 @@ public class Service : IService
   </h3>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IBuildContext.html">IBuildContext</a></h4>
       <section><p>Context used during the build phase.</p>
-</section>
-      <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IDelegateCompiler.html">IDelegateCompiler</a></h4>
-      <section><p>Specifies the contract of delegate compilers.</p>
 </section>
       <h4><a class="xref" href="Solti.Utils.DI.Interfaces.IDependencyResolver.html">IDependencyResolver</a></h4>
       <section><p>Specifies the contract how to resolve a dependency (<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a> or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a>).</p>

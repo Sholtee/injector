@@ -59,15 +59,15 @@
   <h3 id="methods">Methods
   </h3>
   <a id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Get_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Get__1_Solti_Utils_DI_Interfaces_IInjector_System_String_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get``1(Solti.Utils.DI.Interfaces.IInjector,System.String)">Get&lt;TInterface&gt;(IInjector, String)</h4>
-  <div class="markdown level1 summary"><p>Gets the service instance associated with the given interface and (optional) name:</p>
+  <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_Get__1_Solti_Utils_DI_Interfaces_IInjector_System_Object_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.Get``1(Solti.Utils.DI.Interfaces.IInjector,System.Object)">Get&lt;TType&gt;(IInjector, Object)</h4>
+  <div class="markdown level1 summary"><p>Gets the service instance associated with the given type and (optional) key:</p>
 <pre><code>IMyService svc = scope.Get&lt;IMyService>();</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TInterface Get&lt;TInterface&gt;(this IInjector self, string name = null)
-    where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public static TType Get&lt;TType&gt;(this IInjector self, object key = null)
+    where TType : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -86,9 +86,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key.</p>
 </td>
       </tr>
     </tbody>
@@ -103,7 +103,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td><p>The resolved service.</p>
 </td>
       </tr>
@@ -119,8 +119,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td><p>The &quot;id&quot; of the service to be resolved. It must be an interface.</p>
+        <td><span class="parametername">TType</span></td>
+        <td><p>The &quot;id&quot; of the service to be resolved.</p>
 </td>
       </tr>
     </tbody>
@@ -142,15 +142,15 @@
     </tbody>
   </table>
   <a id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_TryGet_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet*"></a>
-  <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_TryGet__1_Solti_Utils_DI_Interfaces_IInjector_System_String_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet``1(Solti.Utils.DI.Interfaces.IInjector,System.String)">TryGet&lt;TInterface&gt;(IInjector, String)</h4>
-  <div class="markdown level1 summary"><p>Tries to get the service instance associated with the given interface and (optional) name:</p>
+  <h4 id="Solti_Utils_DI_Interfaces_IInjectorBasicExtensions_TryGet__1_Solti_Utils_DI_Interfaces_IInjector_System_Object_" data-uid="Solti.Utils.DI.Interfaces.IInjectorBasicExtensions.TryGet``1(Solti.Utils.DI.Interfaces.IInjector,System.Object)">TryGet&lt;TType&gt;(IInjector, Object)</h4>
+  <div class="markdown level1 summary"><p>Tries to get the service instance associated with the given type and (optional) key:</p>
 <pre><code>IMyService? svc = scope.TryGet&lt;IMyService>();</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TInterface TryGet&lt;TInterface&gt;(this IInjector self, string name = null)
-    where TInterface : class</code></pre>
+    <pre><code class="lang-csharp hljs">public static TType TryGet&lt;TType&gt;(this IInjector self, object key = null)
+    where TType : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -169,9 +169,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The (optional) name of the service.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key.</p>
 </td>
       </tr>
     </tbody>
@@ -186,7 +186,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TInterface</span></td>
+        <td><span class="xref">TType</span></td>
         <td><p>The requested service instance if the resolution was successful, null otherwise.</p>
 </td>
       </tr>
@@ -202,8 +202,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="parametername">TInterface</span></td>
-        <td><p>The &quot;id&quot; of the service to be resolved. It must be an interface.</p>
+        <td><span class="parametername">TType</span></td>
+        <td><p>The &quot;id&quot; of the service to be resolved.</p>
 </td>
       </tr>
     </tbody>
