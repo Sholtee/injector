@@ -63,6 +63,7 @@ namespace Solti.Utils.DI.Perf
                     new MethodContext
                     (
                         (instance, args) => ((IService) instance).Foo(),
+                        0,
                         null
                     )
                 ),
