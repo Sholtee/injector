@@ -6,7 +6,7 @@
 |**Injector.NET**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net)](https://www.nuget.org/packages/injector.net )|
 |**Injector.NET.Interfaces**|[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/injector.net.interfaces)](https://www.nuget.org/packages/injector.net.interfaces )|
 
-**This documentation refers the version 8.X of the library (which is a complete reimplementation of the library)**
+**This documentation refers the version 9.X of the library (which is a complete reimplementation of the library)**
 ## Overview
 [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection ) is a design pattern that helps you separate the dependencies of your code from its behavior. Additionaly it makes the code easy to test by let you [mock](https://en.wikipedia.org/wiki/Mock_object ) the dependencies in your unit tests.
 ## Key features
@@ -19,7 +19,7 @@
 - Extensible
 - and many more...
 ## About services in general
-- They are interfaces.
+- They are class instances (most probably imlementing a particular interface).
 - They are declared in a `IServiceCollection`.
 - They are provided by an `IInjector`.
 - Every service can be requested multiple times.
@@ -63,7 +63,7 @@ using(IScopeFactory scopeFactory = ScopeFactory.Create(svcs => /*registering ser
 ```
 In most of the cases you should use only one *factory* although you can have as much as you want.
 ### Registering services
-Registering a service may be done via several patterns (I name them recipes):
+Registering a service can be done via several patterns (I name them recipes):
 - **Service recipe**: This is the most common way to file a service.
   To register a simple service just call the `Service()` generic method with the desired interface, implementation and lifetime:
   ```csharp
@@ -98,7 +98,7 @@ Registering a service may be done via several patterns (I name them recipes):
         public MyService(IService_1 dep1, [Options(Optional = true)]IService_2 dep2) {...}
       }
       ```
-  - By default, services must not have non-interface dependency. To work around this limitation you can provide custom constructor arguments:
+  - It's also possible to pass arbitrary constructor arguments:
     ```csharp
     svcs.Service<IMyService, MyService>(new Dictionary<string, object?>{["paramName"] = someValue}, Lifetime.Transient);
     // or
@@ -108,14 +108,20 @@ Registering a service may be done via several patterns (I name them recipes):
   ```csharp
   svcs.Factory<IMyService>
   (
-    injector => new MyService(injector, injector.Get<IService_1>(), injector.Get<IService_2>())
+    factoryExpr: injector => new MyService(injector, injector.Get<IService_1>(), injector.Get<IService_2>())
     {
       Dep3 = injector.Get<IService_3>()
     },
     Lifetime.Singleton
   );
+  // or
+  svcs.Factory<IMyService>
+  (
+    factory: injector => { ...complex logic... },
+    Lifetime.Singleton
+  );
   ```
-  It can be useful e.g. if the service has more than one public constructor. In case of generic services the factory function will be called with the specialized interface:
+  It can be useful e.g. if a service has more than one public constructor. In case of generic services the factory function is called with the concrete id:
   ```csharp
   svcs.Factory(typeof(IMyGenericService<>), (injector, serviceInterface) => 
   {
@@ -124,7 +130,7 @@ Registering a service may be done via several patterns (I name them recipes):
     ...  
   });
   ```
-- **Provider recipe**: Providers are factory services with well-defined layout (see the [IServiceProvider](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) interface) and dependencies:
+- **Provider recipe**: Providers are factory services having well-defined layout (see the [IServiceProvider](https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider?view=netcore-3.1 ) interface) and dependencies:
   ```csharp
   using System;
 
@@ -156,7 +162,7 @@ Registering a service may be done via several patterns (I name them recipes):
   ...
   svcs.Provider<IDbConnectionFactory, MySqlDbConnectionFactoryProvider>(Lifetime.Singleton);
   ```
-- **Instance recipe**: Instances are "predefined values" that can act as a service: 
+- **Instance recipe**: Instances are "predefined values" that act as a service: 
   ```csharp
   svcs.Instance<IMyService>(service);
   ```
@@ -177,7 +183,7 @@ Remarks:
     ...
   }  
   ```
-  or in a _batched_ form with the magic `IEnumerable<>` service:
+  or in a _batched_ form using the magic `IEnumerable<>` service:
   ```csharp
   class MyOtherService: IMyOtherService
   {
@@ -232,7 +238,7 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
       ...
   }
 
-  public object? Invoke(IInvocationContext context, Next<IInvocationContext, object?> callNext)
+  public object? Invoke(IInvocationContext context, CallNextDelegate<IInvocationContext, object?> callNext)
   {
     foreach(var descr in context.TargetMethod.GetParameters().Select(
       (p, i) => new 
@@ -255,7 +261,7 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
 *Remarks:*
 - Proxy pattern can be applied in any number against a service.
 - Applying proxies is done on the service request.
-- Trying to decorate a non producible service (generic, instance) will throw.
+- Trying to decorate a non-producible (generic, instance) or non-interface service will throw.
 - Proxies may also have dependencies.
 - The underlying functionality is provided by the [ProxyGen.NET](https://github.com/Sholtee/proxygen ) library
 ### Aspects
@@ -295,7 +301,7 @@ Notes:
   ```
 ### Creating a scope
 ```csharp
-using (IInjector injector = scopeFactory.CreateScope())
+using (IInjector injector = scopeFactory.CreateScope()) // creating a scope is a thread-safe operation
 {
   ...
 }
@@ -308,8 +314,8 @@ await using (IInjector injector = scopeFactory.CreateScope())
 }
 ```
 *Remarks:*
-- `IInjector` instances are NOT thread safe so every session / worker must have its own scope.
-- To release resources held by the scope, at the end of the session you should dispose the `IInjector`.
+- `IInjector` instances are NOT thread-safe so every session / worker must have its own scope.
+- To release resources held by the scope, at the end of the session you should dispose the `IInjector` instance.
 ### Requesting services
 ```csharp
 IMyService svc = injector.Get<IMyService>();
@@ -339,33 +345,11 @@ IMyService svc = injector.Get<IMyService>("servicename");
   // Service instantiation is done during enumeration
   ```
 
-Alternatively you can use the `injector.Instantiate()` function that takes a `Type` (non-abstract class) you want to instantiate, resolves its dependencies (via constructor parameters) and creates a new instance from it: 
-```csharp
-public class OuterService
-{
-  // Parameter names must not be obfuscated.
-  public OuterService(IMyService dep, int num){...}
-}
-...
-using(IScopeFactory scopeFactory = ScopeFactory.Create(svcs => svcs.Service<IMyService, MyService>(Lifetime.Scoped)))
-{
-  using(IInjector injector = scopeFactory.CreateScope())
-  {  
-    OuterService instance = injector.Instantiate<OuterService>(new Dictionary<string, object>
-    {
-      {"num", 10}
-    });
-  }
-}
-```
-As you can see, there are three major differences compared to `injector.Get()`:
-- The instantiated `Type` does not have to be a registered service.
-- You can pass arbitrary arguments to the constructor via the `explicitArgs` parameter (which means the instantiated type may have non-registered/non-interface dependency).
-- The caller is responsible for freeing the returned object (that must be done before the scope disposal).
 ### Inline dependencies
 A service can request its owner `IInjector` as a regular dependency (via constructor parameter). Doing this makes it possible to get services anywhere in the implementation (by invoking the `IInjector.Get()` method). This is we call *inline dependencies*.
 
 Notes:
+- Requesting the owner scope is an anti-pattern so try to avoid it
 - Disposing inline dependencies is done by the system as well.
 ## Strict DI
 Consider the following registration:
@@ -383,7 +367,7 @@ using (IInjector injector = scopeFactory.CreateScope())
 ```
 Leaving the `using` block the `IMyService` instance requested by `MyOtherServiceDependsOnIMyService` won't be released because the requester still alives (until the root scope is disposed). This situation is called _captive dependency_. To avoid it you have two options:
 - Declare your consuming service with a `Lifetime` less than or equal to the `Lifetime` of consumed service.
-- Enable _Strict DI_ validation (disabled by default):
+- Enable _Strict DI_ validation (disabled by default) which will throw in such situations:
   ```csharp
   using(IScopeFactory scopeFactory = ScopeFactory.Create(svcs => ..., new ScopeOptions {StrictDI = true}))
   {
@@ -408,9 +392,25 @@ using(IScopeFactory scopeFactory = ScopeFactory.Create(svcs => ..., new ScopeOpt
 }
 ```
 Differences compared to `IInjector`:
-- Every requested service is optional (so `IServiceProvider.GetService()` does not throw if a service cannot be found). This rule applies to services requested via constructor parameters too.
+- Every requested service is optional (so `IServiceProvider.GetService()` won't throw if a service cannot be found). This rule applies to services requested via constructor parameters, too.
 - You can request named services only by using the `OptionsAttribute` (`IServiceProvider.GetService()` has no name parameter).
 - Since the `IServiceProvider` interface is not an `IDisposable` descendant you should release the disposable returned by the `CreateScope()` to end the scope lifetime.
+## Diagnostics
+You can also visualize the dependency graph bilongs to a particular service using the `Solti.Utils.DI.Diagnostics` namespace and a [Graphviz](https://graphviz.org/ ) [renderer](https://dreampuf.github.io/GraphvizOnline/ ):
+```csharp
+using Solti.Utils.DI.Diagnostics;
+using Solti.utils.DI.Interfaces;
+
+...
+using(IScopeFactory scopeFactory = ScopeFactory.Create(svcs => ...))
+{
+  // The returned graph descriptor is supposed to be compatible with any Graphviz rendrer
+  string dotGraph = scopeFactory.GetDependencyGraph<IMyService>(newLine: "\n");
+  ...
+}
+```
+The rendered graph should look like this:
+![Dependency Graph](Assets/dep_graph.svg)
 ## Resources
 You can browse the [detailed API docs](https://sholtee.github.io/injector ) or the [benchmark results](https://sholtee.github.io/injector/perf/ ).
 ## Supported frameworks

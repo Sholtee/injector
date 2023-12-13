@@ -32,7 +32,7 @@ namespace Solti.Utils.DI.Interfaces
     /// {
     ///     public ParameterValidator(IDependency dependency) {...}
     ///     
-    ///     public object? Invoke(IInvocationContext context, Next&lt;IInvocationContext?, object&gt; callNext)
+    ///     public object? Invoke(IInvocationContext context, CallNextDelegate&lt;IInvocationContext?, object&gt; callNext)
     ///     {
     ///         foreach (var descr in context.TargetMethod.GetParameters().Select
     ///         (
