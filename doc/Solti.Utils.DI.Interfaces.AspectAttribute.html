@@ -64,7 +64,7 @@ public class ParameterValidatorProxy : IInterfaceInterceptor
 {
     public ParameterValidator(IDependency dependency) {...}
 
-    public object? Invoke(IInvocationContext context, Next&lt;IInvocationContext?, object> callNext)
+    public object? Invoke(IInvocationContext context, CallNextDelegate&lt;IInvocationContext?, object> callNext)
     {
         foreach (var descr in context.TargetMethod.GetParameters().Select
         (
