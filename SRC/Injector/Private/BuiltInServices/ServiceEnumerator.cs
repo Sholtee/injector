@@ -33,7 +33,11 @@ namespace Solti.Utils.DI.Internals
 
         public IEnumerator<TInterface> GetEnumerator()
         {
-            foreach (AbstractServiceEntry entry in ServiceResolver.ResolveMany(typeof(TInterface)) ?? Array<AbstractServiceEntry>.Empty)
+            IReadOnlyCollection<AbstractServiceEntry>? entries = ServiceResolver.ResolveMany(typeof(TInterface));
+            if (entries is null)
+                yield break;
+
+            foreach (AbstractServiceEntry entry in entries)
             {
                 yield return (TInterface) Scope.GetOrCreateInstance(entry);
             }
