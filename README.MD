@@ -458,66 +458,82 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
 - The layout of the `InterfaceInterceptor<>.Invoke()` method has been changed: Now it has only a single parameter (`InvocationContext`) that contains all the invocation related attributes.
 ## Migrating from version 6.X
 - `Factory` and `Provider` recipe now takes `Expression<>` instead of `Func<>`. Compile time created expressions have their limitations (for e.g. they cannot contain `if` or any complex statements). To work this around:
-```csharp
-svcs.Factory<IMyService>(injector => 
-{
-    IDependency dep = injector.Get<IDependency>();
-    ...DO SOME ELABORATE STUFFS...
-    return result;
-}, ...);
-```
-needs to be refactored like:
-```csharp
-private static IMyService MyServiceFactory(IDependency dep)
-{
-    ...DO SOME ELABORATE STUFFS...
-    return result;
-}
-...
-svcs.Factory<IMyService>(injector => MyServiceFactory(injector.Get<IDependency>()), ...);
-```
+  ```csharp
+  svcs.Factory<IMyService>(injector => 
+  {
+      IDependency dep = injector.Get<IDependency>();
+      ...DO SOME ELABORATE STUFFS...
+      return result;
+  }, ...);
+  ```
+  needs to be refactored like:
+  ```csharp
+  private static IMyService MyServiceFactory(IDependency dep)
+  {
+      ...DO SOME ELABORATE STUFFS...
+      return result;
+  }
+  ...
+  svcs.Factory<IMyService>(injector => MyServiceFactory(injector.Get<IDependency>()), ...);
+  ```
 - `IServiceCollection(Basic|Advanced)Extensions.WithProxy()` has been renamed to `Decorate()`
 - Interceptors must implement the `IInterfaceInterceptor` interfacce (instead of descending from `InterfaceInterceptor<>` class directly)
 - `AspectAttribute` got a new layout. Now it returns the interceptor type via property.
 ## Migrating from version 7.X
 - `AspectAttribute` got a new layout. Interceptors now shall be passed as constructor parameters. So refactor this
-```csharp
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
-public sealed class ParameterValidatorAspect : AspectAttribute
-{
-  public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
-}
-```
-to
-```csharp
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
-public sealed class ParameterValidatorAspect : AspectAttribute
-{
-  public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
-}
-```
+  ```csharp
+  [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+  public sealed class ParameterValidatorAspect : AspectAttribute
+  {
+      public override Type UnderlyingInterceptor { get; } = typeof(ParameterValidatorProxy);
+  }
+  ```
+  to
+  ```csharp
+  [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+  public sealed class ParameterValidatorAspect : AspectAttribute
+  {
+      public ParameterValidatorAspect(): base(typeof(ParameterValidatorProxy)) { }
+  }
+  ```
 ## Migrating from version 8.X
 - `IInterfaceInterceptor.Invoke()` layout has been altered (`next()` now requires the `context` to be passed), so refactor this
-```csharp
-public class LoggerInterceptor : IInterfaceInterceptor
-{   
-    public object Invoke(IInvocationContext context, Next<object> callNext)
-    {
-        Console.WriteLine(context.InterfaceMethod);
-        return callNext();
-    }
-}
-```
-to
-```csharp
-public class LoggerInterceptor : IInterfaceInterceptor
-{
-    public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
-    {
-        Console.WriteLine(context.InterfaceMethod);
-        return callNext(context);
-    }
-}
-```
+  ```csharp
+  public class LoggerInterceptor : IInterfaceInterceptor
+  {   
+      public object Invoke(IInvocationContext context, Next<object> callNext)
+      {
+          Console.WriteLine(context.InterfaceMethod);
+          return callNext();
+      }
+  }
+  ```
+  to
+  ```csharp
+  public class LoggerInterceptor : IInterfaceInterceptor
+  {
+      public object Invoke(IInvocationContext context, Next<IInvocationContext, object> callNext)
+      {
+          Console.WriteLine(context.InterfaceMethod);
+          return callNext(context);
+      }
+  }
+  ```
+## Migrating from version 9.X
+- `Factory` recipe now accepts concrete `FactoryDelegate` alongside the `Expression<FactoryDelegate>`. In case the compiler can't decide which overload to utilize, use named arguments:
+  ```csharp
+  svcs.Factory<IMyService>(factory: injector => 
+  {
+      IDependency dep = injector.Get<IDependency>();
+      ...DO SOME ELABORATE STUFFS...
+      return result;
+  }, ...);
+  ```
+  or
+  ```csharp
+  svcs.Factory<IMyService>(factoryExpr: injector => /*simple expression*/, ...);
+  ```  
+- `name` parameter has been changed to `key` in all named service related method.
+- `Next` delegate has been renamed to `CallNextDelegate`
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )
