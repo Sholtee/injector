@@ -1995,6 +1995,24 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IServiceId.Comparer.GetHashCode
   fullName: Solti.Utils.DI.Interfaces.IServiceId.Comparer.GetHashCode
   nameWithType: IServiceId.Comparer.GetHashCode
+- uid: Solti.Utils.DI.Interfaces.IServiceId.Formatter
+  name: IServiceId.Formatter
+  href: Solti.Utils.DI.Interfaces.IServiceId.Formatter.html
+  commentId: T:Solti.Utils.DI.Interfaces.IServiceId.Formatter
+  fullName: Solti.Utils.DI.Interfaces.IServiceId.Formatter
+  nameWithType: IServiceId.Formatter
+- uid: Solti.Utils.DI.Interfaces.IServiceId.Formatter.Format(Solti.Utils.DI.Interfaces.IServiceId)
+  name: Format(IServiceId)
+  href: Solti.Utils.DI.Interfaces.IServiceId.Formatter.html#Solti_Utils_DI_Interfaces_IServiceId_Formatter_Format_Solti_Utils_DI_Interfaces_IServiceId_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceId.Formatter.Format(Solti.Utils.DI.Interfaces.IServiceId)
+  fullName: Solti.Utils.DI.Interfaces.IServiceId.Formatter.Format(Solti.Utils.DI.Interfaces.IServiceId)
+  nameWithType: IServiceId.Formatter.Format(IServiceId)
+- uid: Solti.Utils.DI.Interfaces.IServiceId.Formatter.Format*
+  name: Format
+  href: Solti.Utils.DI.Interfaces.IServiceId.Formatter.html#Solti_Utils_DI_Interfaces_IServiceId_Formatter_Format_
+  commentId: Overload:Solti.Utils.DI.Interfaces.IServiceId.Formatter.Format
+  fullName: Solti.Utils.DI.Interfaces.IServiceId.Formatter.Format
+  nameWithType: IServiceId.Formatter.Format
 - uid: Solti.Utils.DI.Interfaces.IServiceId.Key
   name: Key
   href: Solti.Utils.DI.Interfaces.IServiceId.html#Solti_Utils_DI_Interfaces_IServiceId_Key
