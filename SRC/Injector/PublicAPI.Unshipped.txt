@@ -40,7 +40,7 @@ Solti.Utils.DI.ServiceCollection.ServiceCollection(bool supportsOverride = false
 Solti.Utils.DI.ServiceCollection.SupportsOverride.get -> bool
 Solti.Utils.DI.ServiceCollection.TryFind(Solti.Utils.DI.Interfaces.IServiceId! id) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry?
 Solti.Utils.DI.ServiceEntryAdvancedExtensions
-static Solti.Utils.DI.DefaultDependencyResolvers.Value.get -> System.Collections.Generic.IReadOnlyList<Solti.Utils.DI.Interfaces.IDependencyResolver!>!
+static Solti.Utils.DI.DefaultDependencyResolvers.Value.get -> System.Collections.Immutable.ImmutableList<Solti.Utils.DI.Interfaces.IDependencyResolver!>!
 static Solti.Utils.DI.DefaultDependencyResolvers.Value.set -> void
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(this Solti.Utils.DI.Interfaces.IScopeFactory! root, System.Type! type, object? key = null, string? newLine = null) -> string!
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(this Solti.Utils.DI.Interfaces.IScopeFactory! root, object? name = null, string? newLine = null) -> string!

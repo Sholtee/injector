@@ -56,7 +56,7 @@ namespace Solti.Utils.DI.Internals
             public object Key { get; }
 
             //
-            // DON'T use ServiceIdComparer here as it significantly degrades the performance
+            // DON'T use IServiceId.Comparer here as it significantly degrades the performance
             //
 
             public override int GetHashCode() => unchecked(Type.GetHashCode() ^ Key.GetHashCode());

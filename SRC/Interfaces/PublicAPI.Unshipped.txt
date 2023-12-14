@@ -96,6 +96,7 @@ Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions
 Solti.Utils.DI.Interfaces.IServiceId
 Solti.Utils.DI.Interfaces.IServiceId.Comparer
 Solti.Utils.DI.Interfaces.IServiceId.Comparer.Comparer() -> void
+Solti.Utils.DI.Interfaces.IServiceId.Formatter
 Solti.Utils.DI.Interfaces.IServiceId.Key.get -> object?
 Solti.Utils.DI.Interfaces.IServiceId.Type.get -> System.Type!
 Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions
@@ -208,6 +209,7 @@ static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.TryFind(this 
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.TryFind(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! type, object? key) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry?
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.TryFind<TType>(this Solti.Utils.DI.Interfaces.IServiceCollection! self) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry?
 static Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.TryFind<TType>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, object? key) -> Solti.Utils.DI.Interfaces.AbstractServiceEntry?
+static Solti.Utils.DI.Interfaces.IServiceId.Formatter.Format(Solti.Utils.DI.Interfaces.IServiceId! serviceId) -> string!
 static Solti.Utils.DI.Interfaces.IServiceProviderBasicExtensions.GetService<TInterface>(this System.IServiceProvider self) -> TInterface
 static Solti.Utils.DI.Interfaces.ScopeOptions.Default.get -> Solti.Utils.DI.Interfaces.ScopeOptions
 static Solti.Utils.DI.Interfaces.ServiceEntryExtensions.IsFactory(this Solti.Utils.DI.Interfaces.AbstractServiceEntry self) -> bool

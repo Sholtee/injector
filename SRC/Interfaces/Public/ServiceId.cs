@@ -7,7 +7,7 @@ using System;
 
 namespace Solti.Utils.DI.Interfaces
 {
-    using Primitives;
+    using static IServiceId.Formatter;
 
     /// <summary>
     /// Default <see cref="IServiceId"/> implementation
@@ -34,6 +34,6 @@ namespace Solti.Utils.DI.Interfaces
         public object? Key { get; }
 
         /// <inheritdoc/>
-        public override string ToString() => Type.GetFriendlyName() + Key is not null ? $":{Key}" : string.Empty;
+        public override string ToString() => Format(this);
     }
 }

@@ -15,6 +15,7 @@ namespace Solti.Utils.DI.Interfaces
     using Primitives.Threading;
 
     using static Properties.Resources;
+    using static IServiceId.Formatter;
 
     /// <summary>
     /// Describes an abstract service entry.
@@ -199,10 +200,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </summary>
         public string ToString(bool shortForm)
         {
-            StringBuilder result = new(Type.GetFriendlyName());
-            
-            if (Key is not null)
-                result.Append($":{Key}");
+            StringBuilder result = new(Format(this));
 
             if (!shortForm)
             {

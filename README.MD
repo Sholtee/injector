@@ -396,7 +396,7 @@ Differences compared to `IInjector`:
 - You can request named services only by using the `OptionsAttribute` (`IServiceProvider.GetService()` has no name parameter).
 - Since the `IServiceProvider` interface is not an `IDisposable` descendant you should release the disposable returned by the `CreateScope()` to end the scope lifetime.
 ## Diagnostics
-You can also visualize the dependency graph bilongs to a particular service using the `Solti.Utils.DI.Diagnostics` namespace and a [Graphviz](https://graphviz.org/ ) [renderer](https://dreampuf.github.io/GraphvizOnline/ ):
+You can also visualize the dependency graph belongs to a particular service using the `Solti.Utils.DI.Diagnostics` namespace and a [Graphviz](https://graphviz.org/ ) [renderer](https://dreampuf.github.io/GraphvizOnline/ ):
 ```csharp
 using Solti.Utils.DI.Diagnostics;
 using Solti.utils.DI.Interfaces;
