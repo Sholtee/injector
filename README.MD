@@ -533,7 +533,7 @@ This project currently targets *.NET Standard* 2.0 and 2.1.
   ```csharp
   svcs.Factory<IMyService>(factoryExpr: injector => /*simple expression*/, ...);
   ```  
-- `name` parameter has been changed to `key` in all named service related method.
+- `name` parameter has been changed to `key` in all named service related methods.
 - `Next` delegate has been renamed to `CallNextDelegate`
 ## Version history
 Can be found [here](https://github.com/Sholtee/injector/blob/master/history.md )

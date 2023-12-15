@@ -284,4 +284,14 @@
   - *introduced:* `Transient` service resolution shortcut
   - *introduced:* `ILazy` interface 
   - *improved:* Proxy/Aspect invocation performance
-  - *improved:* Eliminated unnecessary type checkings 
+  - *improved:* Eliminated unnecessary type checkings
+- 10.0.0:
+  - *breaking:* `DefaultDependencyResolvers.Value` now returns `ImmutableList<IDependencyResolver>` instead of `IReadOnlyList<IDependencyResolver>`
+  - *breaking:* `Next` delegate has been renamed to `CallNextDelegate`
+  - *breaking:* Named services can be identified by any kind of `object`s (in previous versions it could be done by `string`s only)
+  - *introduced:* Extended `IServiceCollection`layout (now it has `Contains`, `Remove`, etc)
+  - *introduced:* Services no longer required to be `interface`s
+  - *introduced:* `IServiceId.Comparer` & `IServiceId.Formatter` classes
+  - *introduced:* `ServiceId` class
+  - *fixed:* Unexpected `ArgumentException` on service errors under .NET Framework
+  - *updated:* ProxyGen.NET to v9
