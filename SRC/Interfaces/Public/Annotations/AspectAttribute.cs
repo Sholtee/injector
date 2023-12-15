@@ -110,7 +110,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <summary>
         /// The underlying interceptor.
         /// </summary>
-        /// <remarks>This type must be an -instantiable- class implementing the <see cref="IInterfaceInterceptor"/> interface.</remarks>
+        /// <remarks>This type must be a class that can be instantiated and implements the <see cref="IInterfaceInterceptor"/> interface.</remarks>
         public Type? Interceptor { get; }
 
         /// <summary>
