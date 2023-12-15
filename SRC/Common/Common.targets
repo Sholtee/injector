@@ -16,9 +16,9 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>IoC;DI;DependencyInjection;Injector;AOP</PackageTags>
     <PackageReleaseNotes>See https://github.com/Sholtee/injector/blob/master/history.md </PackageReleaseNotes>
-    <!--This feature currently available in preview mode-->
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditLevel>moderate</NuGetAuditLevel>
+    <NuGetAuditMode>all</NuGetAuditMode>
     <packageSources>
       <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
     </packageSources>
