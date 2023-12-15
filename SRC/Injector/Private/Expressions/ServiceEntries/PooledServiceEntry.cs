@@ -21,10 +21,10 @@ namespace Solti.Utils.DI.Internals
             .GetGenericMethodDefinition();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static TInterface InvokePool<TInterface>(IInjector injector, object poolName, out object disposable) where TInterface : class
+        private static TInterface InvokePool<TInterface>(IInjector injector, object poolId, out object disposable) where TInterface : class
         {
             IPoolItem<PoolScope<TInterface>> poolScope = injector
-                .Get<IPool<TInterface>>(poolName)
+                .Get<IPool<TInterface>>(poolId)
                 .Get();
             disposable = poolScope;
             return poolScope
@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Internals
             (
                 FInvokePool.MakeGenericMethod(Type),
                 scope,
-                Expression.Constant(PoolName),
+                Expression.Constant(PoolId),
                 disposable
             ),
             type: typeof(object)

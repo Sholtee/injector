@@ -13,15 +13,15 @@ namespace Solti.Utils.DI.Internals
 
     internal abstract class ScopedServiceEntryBase: ProducibleServiceEntry
     {
-        protected ScopedServiceEntryBase(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
+        protected ScopedServiceEntryBase(Type type, object? key, Expression<FactoryDelegate> factory, ServiceOptions options) : base(type, key, factory, options)
         {
         }
 
-        protected ScopedServiceEntryBase(Type @interface, object? name, Type implementation, ServiceOptions options) : base(@interface, name, implementation, options)
+        protected ScopedServiceEntryBase(Type type, object? key, Type implementation, ServiceOptions options) : base(type, key, implementation, options)
         {
         }
 
-        protected ScopedServiceEntryBase(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
+        protected ScopedServiceEntryBase(Type type, object? key, Type implementation, object explicitArgs, ServiceOptions options) : base(type, key, implementation, explicitArgs, options)
         {
         }
 

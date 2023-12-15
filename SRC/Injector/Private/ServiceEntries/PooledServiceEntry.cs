@@ -12,14 +12,14 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed partial class PooledServiceEntry : ScopedServiceEntryBase
     {
-        public PooledServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options, object poolName) : base(@interface, name, factory, options) =>
-            PoolName = poolName;
+        public PooledServiceEntry(Type type, object? key, Expression<FactoryDelegate> factory, ServiceOptions options, object poolId) : base(type, key, factory, options) =>
+            PoolId = poolId;
 
-        public PooledServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options, object poolName) : base(@interface, name, implementation, options) =>
-            PoolName = poolName;
+        public PooledServiceEntry(Type type, object? key, Type implementation, ServiceOptions options, object poolId) : base(type, key, implementation, options) =>
+            PoolId = poolId;
 
-        public PooledServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options, object poolName) : base(@interface, name, implementation, explicitArgs, options) =>
-            PoolName = poolName;
+        public PooledServiceEntry(Type type, object? key, Type implementation, object explicitArgs, ServiceOptions options, object poolId) : base(type, key, implementation, explicitArgs, options) =>
+            PoolId = poolId;
 
         public override AbstractServiceEntry Specialize(params Type[] genericArguments)
         {
@@ -34,7 +34,7 @@ namespace Solti.Utils.DI.Internals
                     Key,
                     Implementation.MakeGenericType(genericArguments),
                     Options!,
-                    PoolName
+                    PoolId
                 ),
                 _ when Implementation is not null && ExplicitArgs is not null => new PooledServiceEntry
                 (
@@ -43,7 +43,7 @@ namespace Solti.Utils.DI.Internals
                     Implementation.MakeGenericType(genericArguments),
                     ExplicitArgs,
                     Options!,
-                    PoolName
+                    PoolId
                 ),
                 _ when Factory is not null => new PooledServiceEntry
                 (
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
                     Key,
                     Factory,
                     Options!,
-                    PoolName
+                    PoolId
                 ),
                 _ => throw new NotSupportedException()
             };
@@ -59,7 +59,7 @@ namespace Solti.Utils.DI.Internals
 
         public override LifetimeBase? Lifetime { get; } = DI.Lifetime.Pooled;
 
-        public object PoolName { get; }
+        public object PoolId { get; }
 
         public override ServiceEntryFeatures Features => base.Features | ServiceEntryFeatures.CreateSingleInstance | ServiceEntryFeatures.SupportsBuild;
     }

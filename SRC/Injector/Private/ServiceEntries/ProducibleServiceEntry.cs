@@ -27,18 +27,18 @@ namespace Solti.Utils.DI.Internals
         #region Private
         private readonly List<Expression<DecoratorDelegate>> FDecorators = new();
 
-        private static Expression<FactoryDelegate>? GetFactory(Type @interface, Type implementation, object? explicitArgs, ServiceOptions options)
+        private static Expression<FactoryDelegate>? GetFactory(Type type, Type implementation, object? explicitArgs, ServiceOptions options)
         {
             if (!implementation.IsClass)
                 throw new ArgumentException(NOT_A_CLASS, nameof(implementation));
 
             ConstructorInfo ctor = implementation.GetApplicableConstructor();  // validates the implementation even in case of a generic svc
-            return !@interface.IsGenericTypeDefinition
+            return !type.IsGenericTypeDefinition
                 ? ResolveFactory(ctor, explicitArgs, options.DependencyResolvers)
                 : null;
         }
 
-        private ProducibleServiceEntry(Type @interface, object? name, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions options) : base(@interface, name, implementation, factory, explicitArgs, options)
+        private ProducibleServiceEntry(Type type, object? key, Type? implementation, Expression<FactoryDelegate>? factory, object? explicitArgs, ServiceOptions options) : base(type, key, implementation, factory, explicitArgs, options)
         {
             if (Options!.SupportAspects)
             {
@@ -58,10 +58,10 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type type, object? key, Expression<FactoryDelegate> factory, ServiceOptions options) : this
         (
-            @interface ?? throw new ArgumentNullException(nameof(@interface)),
-            name,
+            type ?? throw new ArgumentNullException(nameof(type)),
+            key,
             null,
             factory ?? throw new ArgumentNullException(nameof(factory)),
             null,
@@ -71,14 +71,14 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type type, object? key, Type implementation, ServiceOptions options) : this
         (
-            @interface ?? throw new ArgumentNullException(nameof(@interface)),
-            name,
+            type ?? throw new ArgumentNullException(nameof(type)),
+            key,
             implementation ?? throw new ArgumentNullException(nameof(implementation)),
             GetFactory
             (
-                @interface,
+                type,
                 implementation,
                 null,
                 options ?? throw new ArgumentNullException(nameof(options))
@@ -90,14 +90,14 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// Creartes a new <see cref="ProducibleServiceEntry"/> instance.
         /// </summary>
-        protected ProducibleServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options) : this
+        protected ProducibleServiceEntry(Type type, object? key, Type implementation, object explicitArgs, ServiceOptions options) : this
         (
-            @interface ?? throw new ArgumentNullException(nameof(@interface)),
-            name,
+            type ?? throw new ArgumentNullException(nameof(type)),
+            key,
             implementation ?? throw new ArgumentNullException(nameof(implementation)),
             GetFactory
             (
-                @interface,
+                type,
                 implementation,
                 explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
                 options ?? throw new ArgumentNullException(nameof(options))

@@ -11,7 +11,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class MissingServiceEntry : AbstractServiceEntry
     {
-        public MissingServiceEntry(Type @interface, object? name) : base(@interface, name, null, null, null, null)
+        public MissingServiceEntry(Type type, object? key) : base(type, key, null, null, null, null)
         {
         }
     }

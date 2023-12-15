@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
 
     internal sealed class PooledLifetime : Lifetime
     {
-        private static object GetPoolName(Type type, object? key)
+        private static object GetPoolId(Type type, object? key)
         {
             if (type.IsConstructedGenericType)
                 type = type.GetGenericTypeDefinition();
@@ -31,7 +31,7 @@ namespace Solti.Utils.DI.Internals
             entry.Type.IsGenericTypeDefinition
                 ? typeof(IPool<>)
                 : typeof(IPool<>).MakeGenericType(entry.Type),
-            entry.PoolName,
+            entry.PoolId,
             entry.Type.IsGenericTypeDefinition
                 ? typeof(PoolService<>)
                 : typeof(PoolService<>).MakeGenericType(entry.Type),
@@ -51,7 +51,7 @@ namespace Solti.Utils.DI.Internals
                 key,
                 implementation ?? throw new ArgumentNullException(nameof(implementation)),
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
-                GetPoolName(type, key)
+                GetPoolId(type, key)
             );
 
             yield return GetPoolService(entry);
@@ -67,7 +67,7 @@ namespace Solti.Utils.DI.Internals
                 implementation ?? throw new ArgumentNullException(nameof(implementation)),
                 explicitArgs ?? throw new ArgumentNullException(nameof(explicitArgs)),
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
-                GetPoolName(type, key)
+                GetPoolId(type, key)
             );
 
             yield return GetPoolService(entry);
@@ -82,7 +82,7 @@ namespace Solti.Utils.DI.Internals
                 key,
                 factory ?? throw new ArgumentNullException(nameof(factory)),
                 serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions)),
-                GetPoolName(type, key)
+                GetPoolId(type, key)
             );
 
             yield return GetPoolService(entry);

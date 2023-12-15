@@ -13,15 +13,15 @@ namespace Solti.Utils.DI.Internals
 
     internal class SingletonServiceEntry : ProducibleServiceEntry
     {
-        public SingletonServiceEntry(Type @interface, object? name, Expression<FactoryDelegate> factory, ServiceOptions options) : base(@interface, name, factory, options)
+        public SingletonServiceEntry(Type type, object? key, Expression<FactoryDelegate> factory, ServiceOptions options) : base(type, key, factory, options)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, object? name, Type implementation, ServiceOptions options) : base(@interface, name, implementation, options)
+        public SingletonServiceEntry(Type type, object? key, Type implementation, ServiceOptions options) : base(type, key, implementation, options)
         {
         }
 
-        public SingletonServiceEntry(Type @interface, object? name, Type implementation, object explicitArgs, ServiceOptions options) : base(@interface, name, implementation, explicitArgs, options)
+        public SingletonServiceEntry(Type type, object? key, Type implementation, object explicitArgs, ServiceOptions options) : base(type, key, implementation, explicitArgs, options)
         {
         }
 
