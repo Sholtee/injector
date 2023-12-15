@@ -37,12 +37,12 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 
-<pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.4010/1809/October2018Update/Redstone5), VM=Hyper-V
+<pre><code>
+BenchmarkDotNet v0.13.11, Windows 10 (10.0.17763.5122/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK=7.0.203
-  [Host]     : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
-  Job-UTAKUP : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
+.NET SDK 8.0.100
+  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  Job-LLJKJU : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
 
 InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -62,20 +62,20 @@ InvocationCount=10000000  RunStrategy=Throughput
 <tbody>
 <tr>
 <td>UsingInterceptor</td>
-<td style="text-align:right">80.102 ns</td>
-<td style="text-align:right">1.6381 ns</td>
-<td style="text-align:right">2.4518 ns</td>
-<td style="text-align:right">42.60</td>
-<td style="text-align:right">3.51</td>
+<td style="text-align:right">84.328 ns</td>
+<td style="text-align:right">1.3289 ns</td>
+<td style="text-align:right">1.1781 ns</td>
+<td style="text-align:right">35.65</td>
+<td style="text-align:right">1.64</td>
 <td style="text-align:right">0.0104</td>
 <td style="text-align:right">192 B</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
 <td>Baseline</td>
-<td style="text-align:right">1.895 ns</td>
-<td style="text-align:right">0.0821 ns</td>
-<td style="text-align:right">0.1438 ns</td>
+<td style="text-align:right">2.359 ns</td>
+<td style="text-align:right">0.0872 ns</td>
+<td style="text-align:right">0.0933 ns</td>
 <td style="text-align:right">1.00</td>
 <td style="text-align:right">0.00</td>
 <td style="text-align:right">-</td>
@@ -84,22 +84,22 @@ InvocationCount=10000000  RunStrategy=Throughput
 </tr>
 <tr>
 <td>InvokeSingleInterceptor</td>
-<td style="text-align:right">34.413 ns</td>
-<td style="text-align:right">0.6650 ns</td>
-<td style="text-align:right">0.6221 ns</td>
-<td style="text-align:right">17.93</td>
-<td style="text-align:right">1.38</td>
+<td style="text-align:right">35.495 ns</td>
+<td style="text-align:right">0.2321 ns</td>
+<td style="text-align:right">0.2058 ns</td>
+<td style="text-align:right">15.01</td>
+<td style="text-align:right">0.67</td>
 <td style="text-align:right">0.0030</td>
 <td style="text-align:right">56 B</td>
 <td style="text-align:right">NA</td>
 </tr>
 <tr>
 <td>JumpToNextInterceptor</td>
-<td style="text-align:right">18.869 ns</td>
-<td style="text-align:right">0.4474 ns</td>
-<td style="text-align:right">0.7598 ns</td>
-<td style="text-align:right">9.99</td>
-<td style="text-align:right">0.81</td>
+<td style="text-align:right">20.841 ns</td>
+<td style="text-align:right">0.4219 ns</td>
+<td style="text-align:right">0.3946 ns</td>
+<td style="text-align:right">8.83</td>
+<td style="text-align:right">0.38</td>
 <td style="text-align:right">0.0030</td>
 <td style="text-align:right">56 B</td>
 <td style="text-align:right">NA</td>

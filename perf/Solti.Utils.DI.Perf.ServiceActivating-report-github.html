@@ -37,12 +37,12 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 
-<pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.4010/1809/October2018Update/Redstone5), VM=Hyper-V
+<pre><code>
+BenchmarkDotNet v0.13.11, Windows 10 (10.0.17763.5122/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK=7.0.203
-  [Host]     : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
-  Job-UTAKUP : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
+.NET SDK 8.0.100
+  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  Job-LLJKJU : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
 
 InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -63,9 +63,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Force</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>9.509 ns</strong></td>
-<td style="text-align:right"><strong>0.1559 ns</strong></td>
-<td style="text-align:right"><strong>0.1302 ns</strong></td>
+<td style="text-align:right"><strong>9.633 ns</strong></td>
+<td style="text-align:right"><strong>0.2165 ns</strong></td>
+<td style="text-align:right"><strong>0.1919 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -73,9 +73,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaCreateInstance</td>
 <td>Force</td>
 <td>Scoped</td>
-<td style="text-align:right">9.077 ns</td>
-<td style="text-align:right">0.2531 ns</td>
-<td style="text-align:right">0.3012 ns</td>
+<td style="text-align:right">12.609 ns</td>
+<td style="text-align:right">0.3215 ns</td>
+<td style="text-align:right">0.3440 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -83,9 +83,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaGetOrCreateInstance</td>
 <td>Force</td>
 <td>Scoped</td>
-<td style="text-align:right">6.225 ns</td>
-<td style="text-align:right">0.2105 ns</td>
-<td style="text-align:right">0.2162 ns</td>
+<td style="text-align:right">6.391 ns</td>
+<td style="text-align:right">0.1003 ns</td>
+<td style="text-align:right">0.0838 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -93,9 +93,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Force</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>9.275 ns</strong></td>
-<td style="text-align:right"><strong>0.1760 ns</strong></td>
-<td style="text-align:right"><strong>0.1470 ns</strong></td>
+<td style="text-align:right"><strong>9.484 ns</strong></td>
+<td style="text-align:right"><strong>0.2061 ns</strong></td>
+<td style="text-align:right"><strong>0.1827 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -103,9 +103,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaCreateInstance</td>
 <td>Force</td>
 <td>Singleton</td>
-<td style="text-align:right">9.109 ns</td>
-<td style="text-align:right">0.2620 ns</td>
-<td style="text-align:right">0.2451 ns</td>
+<td style="text-align:right">12.147 ns</td>
+<td style="text-align:right">0.2784 ns</td>
+<td style="text-align:right">0.2468 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -113,9 +113,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaGetOrCreateInstance</td>
 <td>Force</td>
 <td>Singleton</td>
-<td style="text-align:right">11.038 ns</td>
-<td style="text-align:right">0.2350 ns</td>
-<td style="text-align:right">0.1963 ns</td>
+<td style="text-align:right">11.217 ns</td>
+<td style="text-align:right">0.2869 ns</td>
+<td style="text-align:right">0.2240 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -123,9 +123,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Force</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>9.935 ns</strong></td>
-<td style="text-align:right"><strong>0.1904 ns</strong></td>
-<td style="text-align:right"><strong>0.1688 ns</strong></td>
+<td style="text-align:right"><strong>9.851 ns</strong></td>
+<td style="text-align:right"><strong>0.2750 ns</strong></td>
+<td style="text-align:right"><strong>0.2943 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -133,9 +133,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaCreateInstance</td>
 <td>Force</td>
 <td>Transient</td>
-<td style="text-align:right">9.070 ns</td>
-<td style="text-align:right">0.2245 ns</td>
-<td style="text-align:right">0.1990 ns</td>
+<td style="text-align:right">12.341 ns</td>
+<td style="text-align:right">0.2811 ns</td>
+<td style="text-align:right">0.2347 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -143,9 +143,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaGetOrCreateInstance</td>
 <td>Force</td>
 <td>Transient</td>
-<td style="text-align:right">14.626 ns</td>
-<td style="text-align:right">0.3549 ns</td>
-<td style="text-align:right">0.2964 ns</td>
+<td style="text-align:right">17.569 ns</td>
+<td style="text-align:right">0.2456 ns</td>
+<td style="text-align:right">0.2051 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -153,9 +153,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Suppress</strong></td>
 <td><strong>Scoped</strong></td>
-<td style="text-align:right"><strong>9.790 ns</strong></td>
-<td style="text-align:right"><strong>0.2689 ns</strong></td>
-<td style="text-align:right"><strong>0.2384 ns</strong></td>
+<td style="text-align:right"><strong>9.576 ns</strong></td>
+<td style="text-align:right"><strong>0.1913 ns</strong></td>
+<td style="text-align:right"><strong>0.1696 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -163,9 +163,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaCreateInstance</td>
 <td>Suppress</td>
 <td>Scoped</td>
-<td style="text-align:right">8.924 ns</td>
-<td style="text-align:right">0.2446 ns</td>
-<td style="text-align:right">0.2168 ns</td>
+<td style="text-align:right">11.875 ns</td>
+<td style="text-align:right">0.3114 ns</td>
+<td style="text-align:right">0.2913 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -173,9 +173,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaGetOrCreateInstance</td>
 <td>Suppress</td>
 <td>Scoped</td>
-<td style="text-align:right">6.181 ns</td>
-<td style="text-align:right">0.1638 ns</td>
-<td style="text-align:right">0.1682 ns</td>
+<td style="text-align:right">6.410 ns</td>
+<td style="text-align:right">0.2069 ns</td>
+<td style="text-align:right">0.1935 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -183,9 +183,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Suppress</strong></td>
 <td><strong>Singleton</strong></td>
-<td style="text-align:right"><strong>9.753 ns</strong></td>
-<td style="text-align:right"><strong>0.2743 ns</strong></td>
-<td style="text-align:right"><strong>0.2566 ns</strong></td>
+<td style="text-align:right"><strong>9.701 ns</strong></td>
+<td style="text-align:right"><strong>0.2568 ns</strong></td>
+<td style="text-align:right"><strong>0.2402 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -193,9 +193,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaCreateInstance</td>
 <td>Suppress</td>
 <td>Singleton</td>
-<td style="text-align:right">8.943 ns</td>
-<td style="text-align:right">0.2522 ns</td>
-<td style="text-align:right">0.2698 ns</td>
+<td style="text-align:right">13.216 ns</td>
+<td style="text-align:right">0.3368 ns</td>
+<td style="text-align:right">0.3879 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -203,9 +203,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaGetOrCreateInstance</td>
 <td>Suppress</td>
 <td>Singleton</td>
-<td style="text-align:right">11.027 ns</td>
-<td style="text-align:right">0.2268 ns</td>
-<td style="text-align:right">0.2011 ns</td>
+<td style="text-align:right">12.035 ns</td>
+<td style="text-align:right">0.3140 ns</td>
+<td style="text-align:right">0.3615 ns</td>
 <td style="text-align:right">-</td>
 <td style="text-align:right">-</td>
 </tr>
@@ -213,9 +213,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>ViaFactory</strong></td>
 <td><strong>Suppress</strong></td>
 <td><strong>Transient</strong></td>
-<td style="text-align:right"><strong>9.946 ns</strong></td>
-<td style="text-align:right"><strong>0.2773 ns</strong></td>
-<td style="text-align:right"><strong>0.2593 ns</strong></td>
+<td style="text-align:right"><strong>10.204 ns</strong></td>
+<td style="text-align:right"><strong>0.2466 ns</strong></td>
+<td style="text-align:right"><strong>0.2936 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
@@ -223,9 +223,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaCreateInstance</td>
 <td>Suppress</td>
 <td>Transient</td>
-<td style="text-align:right">8.764 ns</td>
-<td style="text-align:right">0.2380 ns</td>
-<td style="text-align:right">0.2110 ns</td>
+<td style="text-align:right">11.836 ns</td>
+<td style="text-align:right">0.2550 ns</td>
+<td style="text-align:right">0.2261 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
@@ -233,9 +233,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td>ViaGetOrCreateInstance</td>
 <td>Suppress</td>
 <td>Transient</td>
-<td style="text-align:right">13.538 ns</td>
-<td style="text-align:right">0.3429 ns</td>
-<td style="text-align:right">0.3812 ns</td>
+<td style="text-align:right">16.505 ns</td>
+<td style="text-align:right">0.1841 ns</td>
+<td style="text-align:right">0.1632 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>

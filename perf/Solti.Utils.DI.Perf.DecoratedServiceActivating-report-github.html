@@ -37,12 +37,12 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 
-<pre><code class="lang-ini">
-BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.17763.4010/1809/October2018Update/Redstone5), VM=Hyper-V
+<pre><code>
+BenchmarkDotNet v0.13.11, Windows 10 (10.0.17763.5122/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
-.NET SDK=7.0.203
-  [Host]     : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
-  Job-UTAKUP : .NET 7.0.5 (7.0.523.17405), X64 RyuJIT AVX2
+.NET SDK 8.0.100
+  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  Job-LLJKJU : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
 
 InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -53,7 +53,6 @@ InvocationCount=10000000  RunStrategy=Throughput
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
-<th style="text-align:right">Median</th>
 <th style="text-align:right">Gen0</th>
 <th style="text-align:right">Allocated</th>
 </tr>
@@ -62,40 +61,36 @@ InvocationCount=10000000  RunStrategy=Throughput
 <tr>
 <td><strong>ViaCreateInstance</strong></td>
 <td><strong>False</strong></td>
-<td style="text-align:right"><strong>41.216 ns</strong></td>
-<td style="text-align:right"><strong>3.2620 ns</strong></td>
-<td style="text-align:right"><strong>9.6180 ns</strong></td>
-<td style="text-align:right"><strong>36.786 ns</strong></td>
+<td style="text-align:right"><strong>42.62 ns</strong></td>
+<td style="text-align:right"><strong>0.907 ns</strong></td>
+<td style="text-align:right"><strong>0.931 ns</strong></td>
 <td style="text-align:right"><strong>0.0061</strong></td>
 <td style="text-align:right"><strong>112 B</strong></td>
 </tr>
 <tr>
 <td>ViaGetOrCreateInstance</td>
 <td>False</td>
-<td style="text-align:right">39.268 ns</td>
-<td style="text-align:right">0.8464 ns</td>
-<td style="text-align:right">0.8313 ns</td>
-<td style="text-align:right">39.301 ns</td>
+<td style="text-align:right">44.22 ns</td>
+<td style="text-align:right">0.491 ns</td>
+<td style="text-align:right">0.435 ns</td>
 <td style="text-align:right">0.0061</td>
 <td style="text-align:right">112 B</td>
 </tr>
 <tr>
 <td><strong>ViaCreateInstance</strong></td>
 <td><strong>True</strong></td>
-<td style="text-align:right"><strong>9.153 ns</strong></td>
-<td style="text-align:right"><strong>0.2319 ns</strong></td>
-<td style="text-align:right"><strong>0.1936 ns</strong></td>
-<td style="text-align:right"><strong>9.112 ns</strong></td>
+<td style="text-align:right"><strong>13.11 ns</strong></td>
+<td style="text-align:right"><strong>0.224 ns</strong></td>
+<td style="text-align:right"><strong>0.199 ns</strong></td>
 <td style="text-align:right"><strong>0.0013</strong></td>
 <td style="text-align:right"><strong>24 B</strong></td>
 </tr>
 <tr>
 <td>ViaGetOrCreateInstance</td>
 <td>True</td>
-<td style="text-align:right">15.028 ns</td>
-<td style="text-align:right">0.3712 ns</td>
-<td style="text-align:right">0.4419 ns</td>
-<td style="text-align:right">15.011 ns</td>
+<td style="text-align:right">17.35 ns</td>
+<td style="text-align:right">0.198 ns</td>
+<td style="text-align:right">0.166 ns</td>
 <td style="text-align:right">0.0013</td>
 <td style="text-align:right">24 B</td>
 </tr>
