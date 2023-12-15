@@ -62,7 +62,7 @@
   <h3 id="fields">Fields
   </h3>
   <h4 id="Solti_Utils_DI_Interfaces_ServiceDisposalMode_Force" data-uid="Solti.Utils.DI.Interfaces.ServiceDisposalMode.Force">Force</h4>
-  <div class="markdown level1 summary"><p>The service gets disposed when the implementation is an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> descendant.</p>
+  <div class="markdown level1 summary"><p>The service gets disposed when its <strong>implementation</strong> is an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> (or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>) descendant.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -85,7 +85,7 @@
     </tbody>
   </table>
   <h4 id="Solti_Utils_DI_Interfaces_ServiceDisposalMode_Soft" data-uid="Solti.Utils.DI.Interfaces.ServiceDisposalMode.Soft">Soft</h4>
-  <div class="markdown level1 summary"><p>The service gets disposed only when its interface is an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> descendant.</p>
+  <div class="markdown level1 summary"><p>The service gets disposed only when its <strong>type</strong> is an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a> (or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>) descendant.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
