@@ -1854,6 +1854,24 @@ references:
   fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Remove(Of TType)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object)
   nameWithType: IServiceCollectionBasicExtensions.Remove<TType>(IServiceCollection, Object)
   nameWithType.vb: IServiceCollectionBasicExtensions.Remove(Of TType)(IServiceCollection, Object)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: Service(IServiceCollection, Type, LifetimeBase, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, LifetimeBase, ServiceOptions)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: Service(IServiceCollection, Type, Object, LifetimeBase, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Object, LifetimeBase, ServiceOptions)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: Service(IServiceCollection, Type, Object, Object, LifetimeBase, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Object, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: IServiceCollectionBasicExtensions.Service(IServiceCollection, Type, Object, Object, LifetimeBase, ServiceOptions)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Type,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
   name: Service(IServiceCollection, Type, Object, Type, LifetimeBase, ServiceOptions)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
@@ -1884,6 +1902,33 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service
   fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service
   nameWithType: IServiceCollectionBasicExtensions.Service
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``1(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: Service<TType>(IServiceCollection, LifetimeBase, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__1_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``1(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name.vb: Service(Of TType)(IServiceCollection, LifetimeBase, ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TType>(Solti.Utils.DI.Interfaces.IServiceCollection, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TType)(Solti.Utils.DI.Interfaces.IServiceCollection, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: IServiceCollectionBasicExtensions.Service<TType>(IServiceCollection, LifetimeBase, ServiceOptions)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TType)(IServiceCollection, LifetimeBase, ServiceOptions)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: Service<TType>(IServiceCollection, Object, LifetimeBase, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name.vb: Service(Of TType)(IServiceCollection, Object, LifetimeBase, ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TType>(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TType)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: IServiceCollectionBasicExtensions.Service<TType>(IServiceCollection, Object, LifetimeBase, ServiceOptions)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TType)(IServiceCollection, Object, LifetimeBase, ServiceOptions)
+- uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name: Service<TType>(IServiceCollection, Object, Object, LifetimeBase, ServiceOptions)
+  href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_System_Object_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
+  commentId: M:Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object,System.Object,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
+  name.vb: Service(Of TType)(IServiceCollection, Object, Object, LifetimeBase, ServiceOptions)
+  fullName: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service<TType>(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  fullName.vb: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service(Of TType)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object, System.Object, Solti.Utils.DI.Interfaces.LifetimeBase, Solti.Utils.DI.Interfaces.ServiceOptions)
+  nameWithType: IServiceCollectionBasicExtensions.Service<TType>(IServiceCollection, Object, Object, LifetimeBase, ServiceOptions)
+  nameWithType.vb: IServiceCollectionBasicExtensions.Service(Of TType)(IServiceCollection, Object, Object, LifetimeBase, ServiceOptions)
 - uid: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.Service``2(Solti.Utils.DI.Interfaces.IServiceCollection,Solti.Utils.DI.Interfaces.LifetimeBase,Solti.Utils.DI.Interfaces.ServiceOptions)
   name: Service<TType, TImplementation>(IServiceCollection, LifetimeBase, ServiceOptions)
   href: Solti.Utils.DI.Interfaces.IServiceCollectionBasicExtensions.html#Solti_Utils_DI_Interfaces_IServiceCollectionBasicExtensions_Service__2_Solti_Utils_DI_Interfaces_IServiceCollection_Solti_Utils_DI_Interfaces_LifetimeBase_Solti_Utils_DI_Interfaces_ServiceOptions_
