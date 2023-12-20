@@ -97,7 +97,7 @@ namespace Solti.Utils.DI.Interfaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The type must implement the &quot;{0}&quot; interface..
+        ///   Looks up a localized string similar to Type ({0}) must be implemented..
         /// </summary>
         internal static string NOT_IMPLEMENTED {
             get {

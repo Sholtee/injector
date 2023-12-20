@@ -43,6 +43,13 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
+        public void Service_ShouldThrowOnMissingImplementation(Lifetime lifetime)
+        {
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), key: null, typeof(object), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+            Assert.Throws<ArgumentException>(() => Collection.Service(typeof(IDisposable), key: null, typeof(object), new object(), lifetime), string.Format(Resources.PARAMETER_NOT_A_CLASS, "implementation"));
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldHandleGenericTypes(Lifetime lifetime)
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);

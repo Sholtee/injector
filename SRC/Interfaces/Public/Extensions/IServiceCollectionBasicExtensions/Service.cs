@@ -9,6 +9,8 @@ using System.Linq.Expressions;
 
 namespace Solti.Utils.DI.Interfaces
 {
+    using static Properties.Resources;
+
     public static partial class IServiceCollectionBasicExtensions
     {
         /// <summary>
@@ -38,6 +40,9 @@ namespace Solti.Utils.DI.Interfaces
 
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
+
+            if (!type.IsAssignableFrom(implementation))
+                throw new ArgumentException(string.Format(Culture, NOT_IMPLEMENTED, type), nameof(type));
 
             if (lifetime is null)
                 throw new ArgumentNullException(nameof(lifetime));
@@ -76,6 +81,9 @@ namespace Solti.Utils.DI.Interfaces
 
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
+
+            if (!type.IsAssignableFrom(implementation))
+                throw new ArgumentException(string.Format(Culture, NOT_IMPLEMENTED, type), nameof(type));
 
             if (explicitArgs is null)
                 throw new ArgumentNullException(nameof(explicitArgs));

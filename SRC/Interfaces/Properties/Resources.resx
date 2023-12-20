@@ -130,7 +130,7 @@
     <value>Parameter must be a class.</value>
   </data>
   <data name="NOT_IMPLEMENTED" xml:space="preserve">
-    <value>The type must implement the "{0}" interface.</value>
+    <value>Type ({0}) must be implemented.</value>
   </data>
   <data name="OPEN_GENERIC" xml:space="preserve">
     <value>Open generics are not supported.</value>
