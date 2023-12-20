@@ -4,8 +4,6 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -65,7 +63,10 @@ namespace Solti.Utils.DI.Interfaces
                 throw new NotSupportedException(Resources.OPEN_GENERIC);
 
             return self
-                .Service(type, key, provider, explicitArgs, lifetime, options)
+                .Register
+                (
+                    lifetime.CreateFrom(type, key, provider, explicitArgs, options ?? ServiceOptions.Default)
+                )
                 .Decorate(static (injector, type, instance) => ((IServiceProvider) instance).GetService(type));
         }
 
@@ -118,7 +119,10 @@ namespace Solti.Utils.DI.Interfaces
                 throw new NotSupportedException(Resources.OPEN_GENERIC);
 
             return self
-                .Service(type, key, provider, lifetime, options)
+                .Register
+                (
+                    lifetime.CreateFrom(type, key, provider, options ?? ServiceOptions.Default)
+                )
                 .Decorate(static (injector, type, instance) => ((IServiceProvider) instance).GetService(type));
         }
 

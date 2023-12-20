@@ -13,6 +13,51 @@ namespace Solti.Utils.DI.Interfaces
 
     public static partial class IServiceCollectionBasicExtensions
     {
+        //
+        // IsAssignableFrom() won't work against generic interfaces
+        //
+
+        private static bool Implements(this Type src, Type that)
+        {
+            if (!src.IsClass)
+                return false;
+
+            if (that.IsInterface)
+            {
+                if (that.IsGenericTypeDefinition)
+                {
+                    foreach (Type iface in src.GetInterfaces())
+                    {
+                        if (iface.IsGenericType && iface.GetGenericTypeDefinition() == that)
+                            return true;
+                    }
+                }
+                else
+                {
+                    foreach (Type iface in src.GetInterfaces())
+                    {
+                        if (iface == that)
+                            return true;
+                    }
+                }
+            }
+            else
+            {
+                if (that.IsGenericTypeDefinition)
+                {
+                    if (src.IsGenericType && src.GetGenericTypeDefinition() == that)
+                        return true;
+                }
+                else
+                {
+                    if (src == that)
+                        return true;
+                }
+            }
+
+            return src.BaseType?.Implements(that) is true;
+        }
+
         /// <summary>
         /// Registers a new named service with the given implementation:
         /// <code>
@@ -41,7 +86,7 @@ namespace Solti.Utils.DI.Interfaces
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
 
-            if (!type.IsAssignableFrom(implementation))
+            if (!implementation.Implements(type))     
                 throw new ArgumentException(string.Format(Culture, NOT_IMPLEMENTED, type), nameof(type));
 
             if (lifetime is null)
@@ -82,7 +127,7 @@ namespace Solti.Utils.DI.Interfaces
             if (implementation is null)
                 throw new ArgumentNullException(nameof(implementation));
 
-            if (!type.IsAssignableFrom(implementation))
+            if (!implementation.Implements(type))
                 throw new ArgumentException(string.Format(Culture, NOT_IMPLEMENTED, type), nameof(type));
 
             if (explicitArgs is null)
