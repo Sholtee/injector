@@ -50,7 +50,7 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Service_ShouldHandleGenericTypes(Lifetime lifetime)
+        public void Service_ShouldHandleGenericTypes_Iface(Lifetime lifetime)
         {
             Collection.Service(typeof(IInterface_3<>), typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
 
@@ -58,6 +58,18 @@ namespace Solti.Utils.DI.Tests
 
             Assert.That(entry, Is.Not.Null);
             Assert.That(entry.Type, Is.EqualTo(typeof(IInterface_3<int>)));
+            Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_3_IInterface_1_Dependant<int>)));
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Service_ShouldHandleGenericTypes(Lifetime lifetime)
+        {
+            Collection.Service(typeof(Implementation_3_IInterface_1_Dependant<>), lifetime);
+
+            AbstractServiceEntry entry = Collection.Last().Specialize(typeof(int));
+
+            Assert.That(entry, Is.Not.Null);
+            Assert.That(entry.Type, Is.EqualTo(typeof(Implementation_3_IInterface_1_Dependant<int>)));
             Assert.That(entry.Implementation, Is.EqualTo(typeof(Implementation_3_IInterface_1_Dependant<int>)));
         }
 
@@ -177,9 +189,15 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Service_ShouldHandleClosedGenericTypes(Lifetime lifetime)
+        public void Service_ShouldHandleClosedGenericTypes_Iface(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_3<int>, Implementation_3_IInterface_1_Dependant<int>>(lifetime));
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Service_ShouldHandleClosedGenericTypes(Lifetime lifetime)
+        {
+            Assert.DoesNotThrow(() => Collection.Service<Implementation_3_IInterface_1_Dependant<int>>(lifetime));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
@@ -195,11 +213,21 @@ namespace Solti.Utils.DI.Tests
         }
 
         [TestCaseSource(nameof(Lifetimes))]
-        public void Service_ShouldAssignAFactoryFunction(Lifetime lifetime)
+        public void Service_ShouldAssignAFactoryFunction_Iface(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null, null).GetDebugView()));
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null, null).GetDebugView()));        }
 
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Service_ShouldAssignAFactoryFunction(Lifetime lifetime)
+        {
+            Assert.DoesNotThrow(() => Collection.Service<Implementation_8_MultiCtor>(lifetime));
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null, null).GetDebugView()));
+        }
+
+        [TestCaseSource(nameof(Lifetimes))]
+        public void Service_ShouldAssignAFactoryFunction_Generic(Lifetime lifetime)
+        {
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
             Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }), null, null).GetDebugView()));
         }
@@ -210,11 +238,20 @@ namespace Solti.Utils.DI.Tests
             Assert.Throws<ArgumentException>(() => Collection.Service<IInterface_1, Implementation_1_Non_Interface_Dep>(lifetime));
         }
 
-        public void Service_ShouldThrowOnMultipleRegistration([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
+        [Test]
+        public void Service_ShouldThrowOnMultipleRegistration_Iface([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
         {
             Collection.Service<IInterface_1, Implementation_1_No_Dep>(lifetime1);
 
             Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Service<IInterface_1, Implementation_1_No_Dep>(lifetime2));
+        }
+
+        [Test]
+        public void Service_ShouldThrowOnMultipleRegistration([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2)
+        {
+            Collection.Service<Implementation_1_No_Dep>(lifetime1);
+
+            Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Service<Implementation_1_No_Dep>(lifetime2));
         }
     }
 }
