@@ -58,6 +58,48 @@ references:
   fullName.vb: Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(Of TService)(Solti.Utils.DI.Interfaces.IScopeFactory, System.Object, System.String)
   nameWithType: IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(IScopeFactory, Object, String)
   nameWithType.vb: IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(Of TService)(IScopeFactory, Object, String)
+- uid: Solti.Utils.DI.IInjectorAdvancedExtensions
+  name: IInjectorAdvancedExtensions
+  href: Solti.Utils.DI.IInjectorAdvancedExtensions.html
+  commentId: T:Solti.Utils.DI.IInjectorAdvancedExtensions
+  fullName: Solti.Utils.DI.IInjectorAdvancedExtensions
+  nameWithType: IInjectorAdvancedExtensions
+- uid: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object)
+  name: AssignScopeLocal(IInjector, Type, Object)
+  href: Solti.Utils.DI.IInjectorAdvancedExtensions.html#Solti_Utils_DI_IInjectorAdvancedExtensions_AssignScopeLocal_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object)
+  fullName: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object)
+  nameWithType: IInjectorAdvancedExtensions.AssignScopeLocal(IInjector, Type, Object)
+- uid: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object)
+  name: AssignScopeLocal(IInjector, Type, Object, Object)
+  href: Solti.Utils.DI.IInjectorAdvancedExtensions.html#Solti_Utils_DI_IInjectorAdvancedExtensions_AssignScopeLocal_Solti_Utils_DI_Interfaces_IInjector_System_Type_System_Object_System_Object_
+  commentId: M:Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Solti.Utils.DI.Interfaces.IInjector,System.Type,System.Object,System.Object)
+  fullName: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Solti.Utils.DI.Interfaces.IInjector, System.Type, System.Object, System.Object)
+  nameWithType: IInjectorAdvancedExtensions.AssignScopeLocal(IInjector, Type, Object, Object)
+- uid: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal*
+  name: AssignScopeLocal
+  href: Solti.Utils.DI.IInjectorAdvancedExtensions.html#Solti_Utils_DI_IInjectorAdvancedExtensions_AssignScopeLocal_
+  commentId: Overload:Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal
+  fullName: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal
+  nameWithType: IInjectorAdvancedExtensions.AssignScopeLocal
+- uid: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal``1(Solti.Utils.DI.Interfaces.IInjector,``0)
+  name: AssignScopeLocal<TType>(IInjector, TType)
+  href: Solti.Utils.DI.IInjectorAdvancedExtensions.html#Solti_Utils_DI_IInjectorAdvancedExtensions_AssignScopeLocal__1_Solti_Utils_DI_Interfaces_IInjector___0_
+  commentId: M:Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal``1(Solti.Utils.DI.Interfaces.IInjector,``0)
+  name.vb: AssignScopeLocal(Of TType)(IInjector, TType)
+  fullName: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal<TType>(Solti.Utils.DI.Interfaces.IInjector, TType)
+  fullName.vb: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Of TType)(Solti.Utils.DI.Interfaces.IInjector, TType)
+  nameWithType: IInjectorAdvancedExtensions.AssignScopeLocal<TType>(IInjector, TType)
+  nameWithType.vb: IInjectorAdvancedExtensions.AssignScopeLocal(Of TType)(IInjector, TType)
+- uid: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal``1(Solti.Utils.DI.Interfaces.IInjector,System.Object,``0)
+  name: AssignScopeLocal<TType>(IInjector, Object, TType)
+  href: Solti.Utils.DI.IInjectorAdvancedExtensions.html#Solti_Utils_DI_IInjectorAdvancedExtensions_AssignScopeLocal__1_Solti_Utils_DI_Interfaces_IInjector_System_Object___0_
+  commentId: M:Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal``1(Solti.Utils.DI.Interfaces.IInjector,System.Object,``0)
+  name.vb: AssignScopeLocal(Of TType)(IInjector, Object, TType)
+  fullName: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal<TType>(Solti.Utils.DI.Interfaces.IInjector, System.Object, TType)
+  fullName.vb: Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(Of TType)(Solti.Utils.DI.Interfaces.IInjector, System.Object, TType)
+  nameWithType: IInjectorAdvancedExtensions.AssignScopeLocal<TType>(IInjector, Object, TType)
+  nameWithType.vb: IInjectorAdvancedExtensions.AssignScopeLocal(Of TType)(IInjector, Object, TType)
 - uid: Solti.Utils.DI.Interfaces
   name: Solti.Utils.DI.Interfaces
   href: Solti.Utils.DI.Interfaces.html
@@ -3183,6 +3225,42 @@ references:
   fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Instance(Of TType)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object, TType, Solti.Utils.DI.Interfaces.ServiceOptions)
   nameWithType: IServiceCollectionAdvancedExtensions.Instance<TType>(IServiceCollection, Object, TType, ServiceOptions)
   nameWithType.vb: IServiceCollectionAdvancedExtensions.Instance(Of TType)(IServiceCollection, Object, TType, ServiceOptions)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)
+  name: SetupScopeLocal(IServiceCollection, Type)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type)
+  nameWithType: IServiceCollectionAdvancedExtensions.SetupScopeLocal(IServiceCollection, Type)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)
+  name: SetupScopeLocal(IServiceCollection, Type, Object)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Object)
+  nameWithType: IServiceCollectionAdvancedExtensions.SetupScopeLocal(IServiceCollection, Type, Object)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal*
+  name: SetupScopeLocal
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_
+  commentId: Overload:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal
+  nameWithType: IServiceCollectionAdvancedExtensions.SetupScopeLocal
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal``1(Solti.Utils.DI.Interfaces.IServiceCollection)
+  name: SetupScopeLocal<TType>(IServiceCollection)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal__1_Solti_Utils_DI_Interfaces_IServiceCollection_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal``1(Solti.Utils.DI.Interfaces.IServiceCollection)
+  name.vb: SetupScopeLocal(Of TType)(IServiceCollection)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal<TType>(Solti.Utils.DI.Interfaces.IServiceCollection)
+  fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Of TType)(Solti.Utils.DI.Interfaces.IServiceCollection)
+  nameWithType: IServiceCollectionAdvancedExtensions.SetupScopeLocal<TType>(IServiceCollection)
+  nameWithType.vb: IServiceCollectionAdvancedExtensions.SetupScopeLocal(Of TType)(IServiceCollection)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)
+  name: SetupScopeLocal<TType>(IServiceCollection, Object)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)
+  name.vb: SetupScopeLocal(Of TType)(IServiceCollection, Object)
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal<TType>(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object)
+  fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Of TType)(Solti.Utils.DI.Interfaces.IServiceCollection, System.Object)
+  nameWithType: IServiceCollectionAdvancedExtensions.SetupScopeLocal<TType>(IServiceCollection, Object)
+  nameWithType.vb: IServiceCollectionAdvancedExtensions.SetupScopeLocal(Of TType)(IServiceCollection, Object)
 - uid: Solti.Utils.DI.Lifetime
   name: Lifetime
   href: Solti.Utils.DI.Lifetime.html

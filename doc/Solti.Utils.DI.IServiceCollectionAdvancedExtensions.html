@@ -1422,6 +1422,228 @@ Using this method is the preferred way to apply multiple interceptors against th
       </tr>
     </tbody>
   </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)">SetupScopeLocal(IServiceCollection, Type)</h4>
+  <div class="markdown level1 summary"><p>Registers a slot for a scope-local variable. Scope-locals are instances (for example the HTTP request object) provided by the current session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection SetupScopeLocal(this IServiceCollection self, Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type to be registered. It can not be null and can be registered only once.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)">SetupScopeLocal(IServiceCollection, Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Registers a slot for a scope-local variable. Scope-locals are instances (for example the HTTP request object) provided by the current session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection SetupScopeLocal(this IServiceCollection self, Type type, object key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The service type to be registered. It can not be null and can be registered only once (with the given <code data-dev-comment-type="paramref" class="paramref">key</code>).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal__1_Solti_Utils_DI_Interfaces_IServiceCollection_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal``1(Solti.Utils.DI.Interfaces.IServiceCollection)">SetupScopeLocal&lt;TType&gt;(IServiceCollection)</h4>
+  <div class="markdown level1 summary"><p>Registers a slot for a scope-local variable. Scope-locals are instances (for example the HTTP request object) provided by the current session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection SetupScopeLocal&lt;TType&gt;(this IServiceCollection self)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal*"></a>
+  <h4 id="Solti_Utils_DI_IServiceCollectionAdvancedExtensions_SetupScopeLocal__1_Solti_Utils_DI_Interfaces_IServiceCollection_System_Object_" data-uid="Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal``1(Solti.Utils.DI.Interfaces.IServiceCollection,System.Object)">SetupScopeLocal&lt;TType&gt;(IServiceCollection, Object)</h4>
+  <div class="markdown level1 summary"><p>Registers a slot for a scope-local variable. Scope-locals are instances (for example the HTTP request object) provided by the current session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection SetupScopeLocal&lt;TType&gt;(this IServiceCollection self, object key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td><span class="parametername">self</span></td>
+        <td><p>The target <a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The (optional) service key (usually a name).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Solti.Utils.DI.Interfaces.IServiceCollection.html">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
