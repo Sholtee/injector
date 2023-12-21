@@ -1,1 +1,10 @@
-﻿
+﻿Solti.Utils.DI.IInjectorAdvancedExtensions
+static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(this Solti.Utils.DI.Interfaces.IScopeFactory! root, object? key = null, string? newLine = null) -> string!
+static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(this Solti.Utils.DI.Interfaces.IInjector! self, System.Type! type, object! value) -> void
+static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(this Solti.Utils.DI.Interfaces.IInjector! self, System.Type! type, object? key, object! value) -> void
+static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal<TType>(this Solti.Utils.DI.Interfaces.IInjector! self, object? key, TType value) -> void
+static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal<TType>(this Solti.Utils.DI.Interfaces.IInjector! self, TType value) -> void
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! type) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! type, object? key) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal<TType>(this Solti.Utils.DI.Interfaces.IServiceCollection! self) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal<TType>(this Solti.Utils.DI.Interfaces.IServiceCollection! self, object? key) -> Solti.Utils.DI.Interfaces.IServiceCollection!

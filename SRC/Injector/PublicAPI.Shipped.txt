@@ -44,7 +44,6 @@ Solti.Utils.DI.ServiceEntryAdvancedExtensions
 static Solti.Utils.DI.DefaultDependencyResolvers.Value.get -> System.Collections.Immutable.ImmutableList<Solti.Utils.DI.Interfaces.IDependencyResolver!>!
 static Solti.Utils.DI.DefaultDependencyResolvers.Value.set -> void
 static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph(this Solti.Utils.DI.Interfaces.IScopeFactory! root, System.Type! type, object? key = null, string? newLine = null) -> string!
-static Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions.GetDependencyGraph<TService>(this Solti.Utils.DI.Interfaces.IScopeFactory! root, object? name = null, string? newLine = null) -> string!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, params (System.Type! Interceptor, object? ExplicitArg)[]! interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, params System.Type![]! interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! interceptor) -> Solti.Utils.DI.Interfaces.IServiceCollection!
