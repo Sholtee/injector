@@ -4,6 +4,7 @@
   "app": "\\SRC\\Injector\\Injector.csproj",
   "vendor": "\\Vendor",
   "tests": "\\Test\\*\\*.Tests.csproj",
+  "coverage": ["Solti.Utils.DI.dll", "Solti.Utils.DI.Interfaces.dll"],
   "artifacts": "\\Artifacts",
   "perftests": "\\PERF\\Injector.Perf.csproj",
   "docsbranch": "gh-pages",
