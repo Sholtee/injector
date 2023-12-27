@@ -3075,6 +3075,15 @@ references:
   commentId: T:Solti.Utils.DI.IServiceCollectionAdvancedExtensions
   fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions
   nameWithType: IServiceCollectionAdvancedExtensions
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.Object}})
+  name: Decorate(IServiceCollection, IEnumerable<(Type, Object)>)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Type_System_Object___
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.Object}})
+  name.vb: Decorate(IServiceCollection, IEnumerable(Of (Type, Object)(Of Type, Object)))
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Collections.Generic.IEnumerable<System.ValueTuple<System.Type, System.Object>>)
+  fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Collections.Generic.IEnumerable(Of System.ValueTuple(Of System.Type, System.Object)))
+  nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, IEnumerable<(Type, Object)>)
+  nameWithType.vb: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, IEnumerable(Of (Type, Object)(Of Type, Object)))
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type)
   name: Decorate(IServiceCollection, Type)
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_
@@ -3087,6 +3096,15 @@ references:
   commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object)
   fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Object)
   nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, Object)
+- uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.Object}})
+  name: Decorate(IServiceCollection, Type, Object, IEnumerable<(Type, Object)>)
+  href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Type_System_Object___
+  commentId: M:Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Type,System.Object}})
+  name.vb: Decorate(IServiceCollection, Type, Object, IEnumerable(Of (Type, Object)(Of Type, Object)))
+  fullName: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Object, System.Collections.Generic.IEnumerable<System.ValueTuple<System.Type, System.Object>>)
+  fullName.vb: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection, System.Type, System.Object, System.Collections.Generic.IEnumerable(Of System.ValueTuple(Of System.Type, System.Object)))
+  nameWithType: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, Object, IEnumerable<(Type, Object)>)
+  nameWithType.vb: IServiceCollectionAdvancedExtensions.Decorate(IServiceCollection, Type, Object, IEnumerable(Of (Type, Object)(Of Type, Object)))
 - uid: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(Solti.Utils.DI.Interfaces.IServiceCollection,System.Type,System.Object,System.Type)
   name: Decorate(IServiceCollection, Type, Object, Type)
   href: Solti.Utils.DI.IServiceCollectionAdvancedExtensions.html#Solti_Utils_DI_IServiceCollectionAdvancedExtensions_Decorate_Solti_Utils_DI_Interfaces_IServiceCollection_System_Type_System_Object_System_Type_
