@@ -95,6 +95,13 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
+        public void Remove_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => Collection.Remove(item: null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Remove(id: null));
+        }
+
+        [Test]
         public void ContainsById_ShouldSearch()
         {
             Collection.Add(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default));
@@ -109,6 +116,13 @@ namespace Solti.Utils.DI.Internals.Tests
 
             Assert.False(Collection.Contains(item: new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default)));
             Assert.That(Collection.Contains(item: entry));
+        }
+
+        [Test]
+        public void Contains_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => Collection.Contains(item: null));
+            Assert.Throws<ArgumentNullException>(() => Collection.Contains(id: null));
         }
 
         [Test]
@@ -136,6 +150,14 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.Throws<InvalidOperationException>(() => Collection.Remove(item: new TransientServiceEntry(typeof(IMyService), "cica", typeof(MyService), ServiceOptions.Default)));
             Assert.Throws<InvalidOperationException>(() => Collection.Remove(id: new ServiceId(typeof(IMyService), "cica")));
             Assert.Throws<InvalidOperationException>(() => Collection.Clear());
+        }
+
+        [Test]
+        public void CopyTo_ShouldCopy()
+        {
+            Collection.Add(new TransientServiceEntry(typeof(IMyService), null, typeof(MyService), ServiceOptions.Default));
+
+            Assert.That(Collection.ToArray().SequenceEqual(Collection));
         }
     }
 }

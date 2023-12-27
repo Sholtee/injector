@@ -48,5 +48,12 @@ namespace Solti.Utils.DI.Tests
             Assert.False(new TransientServiceEntry(typeof(IDisposable), null, (_, _) => new MyDisposable(), ServiceOptions.Default).IsInstance());
             Assert.True(new InstanceServiceEntry(typeof(IDisposable), null, new MyDisposable(), ServiceOptions.Default).IsInstance());
         }
+
+
+        [Test]
+        public void IsInstance_ShouldBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => ServiceEntryAdvancedExtensions.IsInstance(null));
+        }
     }
 }

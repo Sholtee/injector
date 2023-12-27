@@ -175,6 +175,12 @@ namespace Solti.Utils.DI.Tests
                 yield return coll => coll.Decorate<MyInterceptorHavingDependency>();
                 yield return coll => coll.Decorate<IInterface_2, MyInterceptorHavingDependency>();
                 yield return coll => coll.Decorate<IInterface_2, MyInterceptorHavingDependency>(null);
+                yield return coll => coll.Decorate<IInterface_2, MyInterceptorHavingDependency>(null, null);
+
+                yield return coll => coll.Decorate(typeof(MyInterceptorHavingDependency));
+                yield return coll => coll.Decorate(typeof(MyInterceptorHavingDependency), explicitArgs: null);
+                yield return coll => coll.Decorate(typeof(IInterface_2), typeof(MyInterceptorHavingDependency));
+                yield return coll => coll.Decorate(typeof(IInterface_2), key: null, typeof(MyInterceptorHavingDependency));
             }
         }
 

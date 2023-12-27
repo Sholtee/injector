@@ -112,7 +112,7 @@ namespace Solti.Utils.DI
         {
             CheckNotReadOnly();
 
-            if (Contains(item ?? throw new ArgumentNullException(nameof(item))))
+            if (Contains(item))
             {
                 FEntries.Remove(item);
                 return true;
