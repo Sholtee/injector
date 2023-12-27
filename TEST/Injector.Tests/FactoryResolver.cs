@@ -450,6 +450,22 @@ namespace Solti.Utils.DI.Internals.Tests
             Assert.Throws<ArgumentException>(() => ResolveFactory(ctor, new { }, null), Resources.INVALID_DEPENDENCY);
         }
 
+        [Test]
+        public void DependencyResolvers_MayBeAltered()
+        {
+            Mock<IReadOnlyList<IDependencyResolver>> mockResolvers = new(MockBehavior.Strict);
+            mockResolvers
+                .SetupGet(res => res.Count)
+                .Returns(1);
+            mockResolvers
+                .SetupGet(res => res[0])
+                .Returns(DefaultDependencyResolvers.Value[DefaultDependencyResolvers.Value.Count - 1]);
+
+            ResolveFactory(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), null, mockResolvers.Object);
+
+            mockResolvers.VerifyGet(res => res[0], Times.AtLeastOnce);
+        }
+
         private abstract class AbstractClass { }
 
         [Test]
