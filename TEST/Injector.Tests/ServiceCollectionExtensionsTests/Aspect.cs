@@ -283,8 +283,16 @@ namespace Solti.Utils.DI.Tests
 
 
         [Test]
-        public void Aspect_ShouldThrowOnNonInterfaceServiceType() =>
+        public void Aspects_ShouldThrowOnNonInterfaceServiceType() =>
             Assert.Throws<NotSupportedException>(() => Collection.Service<MyServiceHavingAspect, MyServiceHavingAspect>(Lifetime.Scoped));
+
+        [Test]
+        public void Aspects_ShoulBeNullChecked()
+        {
+            Assert.Throws<ArgumentNullException>(() => new AspectAttribute(interceptor: null));
+            Assert.Throws<ArgumentNullException>(() => new AspectAttribute(interceptor: typeof(object), explicitArgs: null));
+            Assert.Throws<ArgumentNullException>(() => new AspectAttribute(factory: null));
+        }
 
         [Test]
         public void Aspects_ApplyingAspectsShouldBeSequential([ValueSource(nameof(Lifetimes))] Lifetime lifetime)
