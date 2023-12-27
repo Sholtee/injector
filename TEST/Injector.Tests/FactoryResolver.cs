@@ -30,6 +30,7 @@ namespace Solti.Utils.DI.Internals.Tests
             public IList Dep2 { get; }
             public int Int { get; }
 
+            [ServiceActivator]
             public MyClass(IDisposable dep1, [Options(Key = "cica")] IList dep2)
             {
                 Dep1 = dep1;
@@ -461,7 +462,7 @@ namespace Solti.Utils.DI.Internals.Tests
                 .SetupGet(res => res[0])
                 .Returns(DefaultDependencyResolvers.Value[DefaultDependencyResolvers.Value.Count - 1]);
 
-            ResolveFactory(typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList) }), null, mockResolvers.Object);
+            new SingletonServiceEntry(typeof(MyClass), null, typeof(MyClass), ServiceOptions.Default with { DependencyResolvers = mockResolvers.Object });
 
             mockResolvers.VerifyGet(res => res[0], Times.AtLeastOnce);
         }
