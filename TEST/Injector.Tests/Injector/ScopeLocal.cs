@@ -66,5 +66,18 @@ namespace Solti.Utils.DI.Tests
 
             Assert.Throws<InvalidOperationException>(() => injector.Get<IMyService>());
         }
+
+        [Test]
+        public void Injector_AssignedScopeLocal_ShouldBeNullChecked()
+        {
+            Root = ScopeFactory.Create(svcs => svcs.SetupScopeLocal<IMyService>());
+
+            using IInjector injector = Root.CreateScope();
+
+            Assert.Throws<ArgumentNullException>(() => injector.AssignScopeLocal(null, null, new object()));
+            Assert.Throws<ArgumentNullException>(() => injector.AssignScopeLocal(typeof(IMyService), null));
+            Assert.Throws<ArgumentNullException>(() => injector.AssignScopeLocal<IMyService>(null));
+            Assert.Throws<ArgumentNullException>(() => IInjectorAdvancedExtensions.AssignScopeLocal(null, typeof(IMyService), new object()));
+        }
     }
 }

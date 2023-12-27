@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Solti.Utils.DI
@@ -27,7 +28,7 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, params (Type Interceptor, object? ExplicitArg)[] interceptors)
+        public static IServiceCollection Decorate(this IServiceCollection self, IEnumerable<(Type Interceptor, object? ExplicitArg)> interceptors)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -53,23 +54,30 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, params Type[] interceptors)
-        {
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
+        public static IServiceCollection Decorate(this IServiceCollection self, params (Type Interceptor, object? ExplicitArg)[] interceptors) =>
+            self.Decorate((IEnumerable<(Type, object?)>) interceptors);
 
-            if (interceptors is null)
-                throw new ArgumentNullException(nameof(interceptors));
-
-            self.Last().ApplyInterceptors
+        /// <summary>
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
+        /// <param name="interceptors">The interceptors to be applied.</param>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>You can't create proxies against instances and open generic services.</item>
+        /// <item>A service can be decorated multiple times.</item>
+        /// <item>Wrapping a service into an interceptor implies that it cannot be disposed unless the service interface itself implements the <see cref="IDisposable"/>.</item>
+        /// </list>
+        /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
+        public static IServiceCollection Decorate(this IServiceCollection self, params Type[] interceptors) => self.Decorate
+        (
+            interceptors.Select
             (
-                interceptors.Select
-                (
-                    static i => (i, (object?) null)
-                )
-            );
-            return self;
-        }
+                static i => (i, (object?) null)
+            )
+        );
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
@@ -135,7 +143,7 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, params (Type Interceptor, object? ExplicitArg)[] interceptors)
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, IEnumerable<(Type Interceptor, object? ExplicitArg)> interceptors)
         {
             if (self is null)
                 throw new ArgumentNullException(nameof(self));
@@ -166,26 +174,34 @@ namespace Solti.Utils.DI
         /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
         /// </remarks>
         /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
-        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, params Type[] interceptors)
-        {
-            if (self is null)
-                throw new ArgumentNullException(nameof(self));
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, params (Type Interceptor, object? ExplicitArg)[] interceptors) =>
+            self.Decorate(type, key, (IEnumerable<(Type, object?)>) interceptors);
 
-            if (type is null)
-                throw new ArgumentNullException(nameof(type));
-
-            if (interceptors is null)
-                throw new ArgumentNullException(nameof(interceptors));
-
-            self.Find(type, key).ApplyInterceptors
+        /// <summary>
+        /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).
+        /// </summary>
+        /// <param name="self">The target <see cref="IServiceCollection"/>.</param>
+        /// <param name="type">The service type.</param>
+        /// <param name="key">The (optional) service key (usually a name).</param>
+        /// <param name="interceptors">Interceptors to be applied.</param>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item>You can't create proxies against instances and open generic services.</item>
+        /// <item>A service can be decorated multiple times.</item>
+        /// <item>Wrapping a service into an interceptor implies that it cannot be disposed unless the service interface itself implements the <see cref="IDisposable"/>.</item>
+        /// </list>
+        /// Using this method is the preferred way to apply multiple interceptors against the same service as it will only create one backing proxy.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">When proxying is not allowed (see remarks).</exception>
+        public static IServiceCollection Decorate(this IServiceCollection self, Type type, object? key, params Type[] interceptors) => self.Decorate
+        (
+            type,
+            key,
+            interceptors.Select
             (
-                interceptors.Select
-                (
-                    static interceptor => (interceptor, (object?) null)
-                )
-            );
-            return self;
-        }
+                static interceptor => (interceptor, (object?) null)
+            )
+        );
 
         /// <summary>
         /// Hooks into the instantiating process to let you decorate the original service. Useful when you want to add additional functionality (e.g. parameter validation).

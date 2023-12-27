@@ -30,6 +30,7 @@ namespace Solti.Utils.DI.Internals.Tests
             public IList Dep2 { get; }
             public int Int { get; }
 
+            [ServiceActivator]
             public MyClass(IDisposable dep1, [Options(Key = "cica")] IList dep2)
             {
                 Dep1 = dep1;
@@ -448,6 +449,22 @@ namespace Solti.Utils.DI.Internals.Tests
             ConstructorInfo ctor = typeof(MyClass).GetConstructor(new[] { typeof(IDisposable), typeof(IList), typeof(int) });
 
             Assert.Throws<ArgumentException>(() => ResolveFactory(ctor, new { }, null), Resources.INVALID_DEPENDENCY);
+        }
+
+        [Test]
+        public void DependencyResolvers_MayBeAltered()
+        {
+            Mock<IReadOnlyList<IDependencyResolver>> mockResolvers = new(MockBehavior.Strict);
+            mockResolvers
+                .SetupGet(res => res.Count)
+                .Returns(1);
+            mockResolvers
+                .SetupGet(res => res[0])
+                .Returns(DefaultDependencyResolvers.Value[DefaultDependencyResolvers.Value.Count - 1]);
+
+            new SingletonServiceEntry(typeof(MyClass), null, typeof(MyClass), ServiceOptions.Default with { DependencyResolvers = mockResolvers.Object });
+
+            mockResolvers.VerifyGet(res => res[0], Times.AtLeastOnce);
         }
 
         private abstract class AbstractClass { }

@@ -4,9 +4,8 @@
   "app": "\\SRC\\Injector\\Injector.csproj",
   "vendor": "\\Vendor",
   "tests": "\\Test\\*\\*.Tests.csproj",
-  "skipon": ["net7.0"],
+  "coverage": ["Solti.Utils.DI.dll", "Solti.Utils.DI.Interfaces.dll"],
   "artifacts": "\\Artifacts",
-  "coveragefilter": "+[Solti.Utils.DI*]* -[Solti.Utils.DI*Tests]* -[*]*.Properties.*",
   "perftests": "\\PERF\\Injector.Perf.csproj",
   "docsbranch": "gh-pages",
   "CI": "AppVeyor"

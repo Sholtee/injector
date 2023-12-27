@@ -4,6 +4,8 @@ static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(this Solti.Ut
 static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal(this Solti.Utils.DI.Interfaces.IInjector! self, System.Type! type, object? key, object! value) -> void
 static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal<TType>(this Solti.Utils.DI.Interfaces.IInjector! self, object? key, TType value) -> void
 static Solti.Utils.DI.IInjectorAdvancedExtensions.AssignScopeLocal<TType>(this Solti.Utils.DI.Interfaces.IInjector! self, TType value) -> void
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Collections.Generic.IEnumerable<(System.Type! Interceptor, object? ExplicitArg)>! interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection!
+static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.Decorate(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! type, object? key, System.Collections.Generic.IEnumerable<(System.Type! Interceptor, object? ExplicitArg)>! interceptors) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! type) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal(this Solti.Utils.DI.Interfaces.IServiceCollection! self, System.Type! type, object? key) -> Solti.Utils.DI.Interfaces.IServiceCollection!
 static Solti.Utils.DI.IServiceCollectionAdvancedExtensions.SetupScopeLocal<TType>(this Solti.Utils.DI.Interfaces.IServiceCollection! self) -> Solti.Utils.DI.Interfaces.IServiceCollection!
