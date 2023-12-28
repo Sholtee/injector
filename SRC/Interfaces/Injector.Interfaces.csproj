@@ -8,11 +8,6 @@
   <Import Project="..\Common\Common.targets" />
 
   <ItemGroup>
-    <None Remove="Abstractions\IServiceEntryLookup.cs.bak" />
-    <None Remove="Abstractions\IServiceEntryLookupFactory.cs.bak" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\Common\IsExternalInit.cs" Link="Private\IsExternalInit.cs" />
   </ItemGroup>
 
