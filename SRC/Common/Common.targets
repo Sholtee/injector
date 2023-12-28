@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>CA1062;CA2007;NU5104;RS0026;RS0036</NoWarn>
+    <NoWarn>CA1062;CA2007;NU5104;RS0026;</NoWarn>
     <OutputPath>..\..\BIN\$(Configuration)\</OutputPath>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Product>Injector.NET</Product>
