@@ -14,7 +14,7 @@ namespace Solti.Utils.DI.Internals
     using static Interfaces.Properties.Resources;
     using static Properties.Resources;
 
-    internal static partial class ServiceActivator
+    internal partial class ServiceActivator
     {
         /// <summary>
         /// <code>
@@ -29,16 +29,16 @@ namespace Solti.Utils.DI.Internals
         /// ); 
         /// </code>
         /// </summary>
-        public static Expression<DecoratorDelegate> ResolveProxyDecorator(Type type, Type target, IProxyEngine? proxyEngine, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
+        public Expression<DecoratorDelegate> ResolveProxyDecorator(Type type, Type target, IEnumerable<Expression<CreateInterceptorDelegate>> factories)
         {
-            proxyEngine ??= ProxyEngine.Instance;
-
             //
             // Esure that the target is compatible (for instance Providers cannot have aspects)
             //
 
             if (!type.IsInterface || !type.IsAssignableFrom(target))
                 throw new NotSupportedException(DECORATING_NOT_SUPPORTED);
+
+            IProxyEngine proxyEngine = Options.ProxyEngine ?? ProxyEngine.Instance;
 
             return CreateActivator<DecoratorDelegate>
             (
@@ -66,7 +66,7 @@ namespace Solti.Utils.DI.Internals
         /// <summary>
         /// <code>injector => new Interceptor(injector.Get(...), ...)</code>
         /// </summary>
-        public static Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs, IReadOnlyList<IDependencyResolver>? resolvers)
+        public Expression<CreateInterceptorDelegate> ResolveInterceptorFactory(Type interceptor, object? explicitArgs)
         {
             //
             // GetApplicableContructor() will do the rest of validations
@@ -78,8 +78,7 @@ namespace Solti.Utils.DI.Internals
             return CreateActivator<CreateInterceptorDelegate>
             (
                 interceptor.GetApplicableConstructor(),
-                explicitArgs,
-                resolvers ?? DefaultDependencyResolvers.Value
+                explicitArgs
             );
         }
     }

@@ -12,16 +12,13 @@ using System.Reflection;
 namespace Solti.Utils.DI.Internals
 {
     using Interfaces;
-    
     using static Properties.Resources;
-
-    using static ServiceActivator;
 
     internal static class ServiceEntryExtensions
     {
         internal static IEnumerable<Expression<DecoratorDelegate>> ResolveDecorators(this AbstractServiceEntry self)
         {
-            ServiceOptions options = self.Options ?? ServiceOptions.Default;
+            ServiceActivator serviceActivator = new(self.Options);
 
             return self.Implementation is not null
                 //
@@ -39,60 +36,54 @@ namespace Solti.Utils.DI.Internals
                         .GetCustomAttributes<AspectAttribute>(inherit: true)
                         .Select
                         (
-                            aspect => aspect.Factory ?? ResolveInterceptorFactory
+                            aspect => aspect.Factory ?? serviceActivator.ResolveInterceptorFactory
                             (
                                 aspect.Interceptor ?? throw new InvalidOperationException
                                 (
                                     string.Format(Culture, NOT_NULL, nameof(aspect.Interceptor))
                                 ),
-                                aspect.ExplicitArgs,
-                                options.DependencyResolvers
+                                aspect.ExplicitArgs
                             )
                         );
-                    if (!delegates.Any())
-                        continue;
+                    if (delegates.Any())
+                        //
+                        // Bulk all the aspects into a single decorator
+                        //
 
-                    //
-                    // Bulk all the aspects into a single decorator
-                    //
-
-                    yield return ResolveProxyDecorator
-                    (
-                        self.Type,
-                        target,
-                        options.ProxyEngine,
-                        delegates
-                    );
+                        yield return serviceActivator.ResolveProxyDecorator
+                        (
+                            self.Type,
+                            target,
+                            delegates
+                        );
                 }
             }
         }
 
-        internal static void ApplyInterceptors(this AbstractServiceEntry entry, IEnumerable<(Type Interceptor, object? ExplicitArgs)> interceptors)
+        internal static void ApplyInterceptors(this AbstractServiceEntry self, IEnumerable<(Type Interceptor, object? ExplicitArgs)> interceptors)
         {
-            ServiceOptions options = entry.Options ?? ServiceOptions.Default;
+            ServiceActivator serviceActivator = new(self.Options);
 
-            entry.Decorate
+            self.Decorate
             (
-                ResolveProxyDecorator
+                serviceActivator.ResolveProxyDecorator
                 (
-                    entry.Type,
+                    self.Type,
 
                     //
                     // Proxies registered by this way always target the service interface.
                     //
 
-                    entry.Type,
-                    options.ProxyEngine,
+                    self.Type,
                     interceptors.Select
                     (
-                        i => ResolveInterceptorFactory
+                        i => serviceActivator.ResolveInterceptorFactory
                         (
                             i.Interceptor ?? throw new InvalidOperationException
                             (
                                 string.Format(Culture, NOT_NULL, nameof(i.Interceptor))
                             ),
-                            i.ExplicitArgs,
-                            options.DependencyResolvers
+                            i.ExplicitArgs
                         )
                     )
                 )

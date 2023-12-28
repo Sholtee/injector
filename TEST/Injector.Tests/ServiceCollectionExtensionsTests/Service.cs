@@ -216,20 +216,21 @@ namespace Solti.Utils.DI.Tests
         public void Service_ShouldAssignAFactoryFunction_Iface(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<IInterface_1, Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null, null).GetDebugView()));        }
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(new ServiceActivator(null).ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null).GetDebugView()));
+        }
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldAssignAFactoryFunction(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service<Implementation_8_MultiCtor>(lifetime));
-            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null, null).GetDebugView()));
+            Assert.That(Collection.Last().Factory.GetDebugView(), Is.EqualTo(new ServiceActivator(null).ResolveFactory(typeof(Implementation_8_MultiCtor).GetConstructor(Type.EmptyTypes), null).GetDebugView()));
         }
 
         [TestCaseSource(nameof(Lifetimes))]
         public void Service_ShouldAssignAFactoryFunction_Generic(Lifetime lifetime)
         {
             Assert.DoesNotThrow(() => Collection.Service(typeof(IInterface_3<>), typeof(Implementation_9_MultiCtor<>), lifetime));
-            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(ServiceActivator.ResolveFactory(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }), null, null).GetDebugView()));
+            Assert.That(Collection.Last().Specialize(typeof(int)).Factory.GetDebugView(), Is.EqualTo(new ServiceActivator(null).ResolveFactory(typeof(Implementation_9_MultiCtor<int>).GetConstructor(new Type[] { typeof(IInterface_1) }), null).GetDebugView()));
         }
 
         [TestCaseSource(nameof(Lifetimes))]

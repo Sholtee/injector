@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* FactoryResolver.cs                                                            *
+* ServiceActivator.Factory.cs                                                   *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -19,11 +19,12 @@ namespace Solti.Utils.DI.Internals.Tests
     using Primitives.Patterns;
     using Properties;
 
-    using static ServiceActivator;
-
     [TestFixture]
-    public sealed class FactoryResolverTests
+    public sealed partial class ServiceActivatorTests
     {
+        private static Expression<FactoryDelegate>  ResolveFactory(ConstructorInfo constructor, object userData, ServiceOptions opts) =>
+            new ServiceActivator(opts).ResolveFactory(constructor, userData);
+
         private class MyClass
         {
             public IDisposable Dep1 { get; }
@@ -64,6 +65,12 @@ namespace Solti.Utils.DI.Internals.Tests
             public int Int { get; init; }
         }
 
+        private sealed class MyClassHavingInvalidInject
+        {
+            [Inject]
+            public IList Dep { get; }
+        }
+
         private class MyClassHavingLazyProperty
         {
             [Inject, Options(Key = "cica")]
@@ -79,25 +86,25 @@ namespace Solti.Utils.DI.Internals.Tests
             public IList Dep { get; init; }
         }
 
-        public static IEnumerable<Func<ConstructorInfo, Func<IInjector, object>>> Activators
+        public static IEnumerable<Func<ConstructorInfo, ServiceOptions, Func<IInjector, object>>> Activators
         {
             get
             {
-                yield return ctor =>
+                yield return (ctor, opts) =>
                 {
-                    FactoryDelegate factory = ResolveFactory(ctor, null, null).Compile();
+                    FactoryDelegate factory = ResolveFactory(ctor, null, opts).Compile();
                     return injector => factory(injector, null);
                 };
 
-                yield return ctor =>
+                yield return (ctor, opts) =>
                 {
-                    FactoryDelegate factory = ResolveFactory(ctor, new Dictionary<string, object>(0), null).Compile();
+                    FactoryDelegate factory = ResolveFactory(ctor, new Dictionary<string, object>(0), opts).Compile();
                     return injector => factory(injector, null);
                 };
 
-                yield return ctor =>
+                yield return (ctor, opts) =>
                 {
-                    FactoryDelegate factory = ResolveFactory(ctor, new { }, null).Compile();
+                    FactoryDelegate factory = ResolveFactory(ctor, new { }, opts).Compile();
                     return injector => factory(injector, null);
                 };
             }
@@ -137,7 +144,8 @@ namespace Solti.Utils.DI.Internals.Tests
                    
             MyClass instance = (MyClass) Activators.ToList()[activatorFactoryIdx]
             (
-                typeof(MyClass).GetConstructor(new[] {dep1, dep2})
+                typeof(MyClass).GetConstructor(new[] {dep1, dep2}),
+                null
             ).Invoke(mockInjector.Object);
 
             Assert.That(instance, Is.Not.Null);
@@ -150,7 +158,7 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Factory_ShouldResolveProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, Func<IInjector, object>> activatorFactory)
+        public void Factory_ShouldResolveProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, ServiceOptions, Func<IInjector, object>> activatorFactory)
         {
             var mockDisposable = new Mock<IDisposable>();
             var mockList = new Mock<IList>();
@@ -167,7 +175,7 @@ namespace Solti.Utils.DI.Internals.Tests
                     return null;
                 });
 
-            MyClass2 instance = (MyClass2) activatorFactory(typeof(MyClass2).GetConstructor(Type.EmptyTypes)).Invoke(mockInjector.Object);
+            MyClass2 instance = (MyClass2) activatorFactory(typeof(MyClass2).GetConstructor(Type.EmptyTypes), null).Invoke(mockInjector.Object);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.SameAs(mockDisposable.Object));
@@ -179,7 +187,35 @@ namespace Solti.Utils.DI.Internals.Tests
         }
 
         [Test]
-        public void Factory_ShouldResolveLazyProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, Func<IInjector, object>> activatorFactory)
+        public void Factory_ShouldResolveCompatiblePropertiesOnly([ValueSource(nameof(Activators))] Func<ConstructorInfo, ServiceOptions, Func<IInjector, object>> activatorFactory)
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+
+            MyClassHavingInvalidInject obj = (MyClassHavingInvalidInject) activatorFactory(typeof(MyClassHavingInvalidInject).GetApplicableConstructor(), null).Invoke(mockInjector.Object);
+
+            Assert.IsNull(obj.Dep);
+        }
+#if NET7_0_OR_GREATER
+        private sealed class MyClassHavingRequiredProperty
+        {
+            public required IList Dep { get; set; }
+        }
+
+        [Test]
+        public void Factory_ShouldResolveRequiredProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, ServiceOptions, Func<IInjector, object>> activatorFactory, [Values(true, false)] bool autoInject)
+        {
+            var mockInjector = new Mock<IInjector>(MockBehavior.Strict);
+            mockInjector
+                .Setup(i => i.Get(typeof(IList), null))
+                .Returns(Array.Empty<object>());
+
+            MyClassHavingRequiredProperty obj = (MyClassHavingRequiredProperty) activatorFactory(typeof(MyClassHavingRequiredProperty).GetApplicableConstructor(), ServiceOptions.Default with { AutoInject = autoInject }).Invoke(mockInjector.Object);
+
+            Assert.That(obj.Dep is not null, Is.EqualTo(autoInject));
+        }
+#endif
+        [Test]
+        public void Factory_ShouldResolveLazyProperties([ValueSource(nameof(Activators))] Func<ConstructorInfo, ServiceOptions, Func<IInjector, object>> activatorFactory)
         {
             var mockDisposable = new Mock<IDisposable>();
             var mockList = new Mock<IList>();
@@ -196,7 +232,7 @@ namespace Solti.Utils.DI.Internals.Tests
                     return null;
                 });
 
-            MyClassHavingLazyProperty instance = (MyClassHavingLazyProperty) activatorFactory(typeof(MyClassHavingLazyProperty).GetConstructor(Type.EmptyTypes)).Invoke(mockInjector.Object);
+            MyClassHavingLazyProperty instance = (MyClassHavingLazyProperty) activatorFactory(typeof(MyClassHavingLazyProperty).GetConstructor(Type.EmptyTypes), null).Invoke(mockInjector.Object);
 
             Assert.That(instance, Is.Not.Null);
             Assert.That(instance.Dep1, Is.Not.Null);

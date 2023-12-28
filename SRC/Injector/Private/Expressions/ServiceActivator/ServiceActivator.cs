@@ -17,10 +17,16 @@ namespace Solti.Utils.DI.Internals
 
     using static Properties.Resources;
 
-    internal static partial class ServiceActivator
+    internal partial class ServiceActivator
     {
-        private static Expression ResolveDependency(ParameterExpression injector, DependencyDescriptor dependency, object? userData, IReadOnlyList<IDependencyResolver> resolvers)
+        public ServiceOptions Options { get; }
+
+        public ServiceActivator(ServiceOptions? options) => Options = options ?? ServiceOptions.Default;
+
+        private Expression ResolveDependency(ParameterExpression injector, DependencyDescriptor dependency, object? userData)
         {
+            IReadOnlyList<IDependencyResolver> resolvers = Options.DependencyResolvers ?? DefaultDependencyResolvers.Value;
+
             return Resolve(0, null);
 
             Expression Resolve(int i, object? context) => i == resolvers.Count
@@ -37,7 +43,7 @@ namespace Solti.Utils.DI.Internals
         /// }
         /// </code>
         /// </summary>
-        private static Expression ResolveService(ConstructorInfo constructor, ParameterExpression injector, object? userData, IReadOnlyList<IDependencyResolver> resolvers) => Expression.MemberInit
+        private Expression ResolveService(ConstructorInfo constructor, ParameterExpression injector, object? userData) => Expression.MemberInit
         (
             Expression.New
             (
@@ -50,15 +56,20 @@ namespace Solti.Utils.DI.Internals
                         (
                             injector,
                             new DependencyDescriptor(param),
-                            userData,
-                            resolvers
+                            userData
                         )
                     )
             ),
             constructor
                 .ReflectedType
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.FlattenHierarchy)
-                .Where(static property => property.GetCustomAttribute<InjectAttribute>() is not null)
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public /*| BindingFlags.SetProperty*/ | BindingFlags.FlattenHierarchy)
+                .Where
+                (
+                    property => property.CanWrite && property.GetCustomAttributes().Any
+                    (
+                        attr => attr is InjectAttribute || (Options.AutoInject && attr.GetType().FullName == "System.Runtime.CompilerServices.RequiredMemberAttribute")
+                    )
+                )
                 .Select
                 (
                     property => Expression.Bind
@@ -68,8 +79,7 @@ namespace Solti.Utils.DI.Internals
                         (
                             injector,
                             new DependencyDescriptor(property),
-                            userData,
-                            resolvers
+                            userData
                         )
                     )
                 )
@@ -79,12 +89,10 @@ namespace Solti.Utils.DI.Internals
         {
             MethodInfo invoke = typeof(TDelegate).GetMethod(nameof(Action.Invoke));
 
-            List<ParameterExpression> paramz = new
-            (
-                invoke
-                    .GetParameters()
-                    .Select(static param => Expression.Parameter(param.ParameterType, param.Name))
-            );
+            List<ParameterExpression> paramz = invoke
+                .GetParameters()
+                .Select(static param => Expression.Parameter(param.ParameterType, param.Name))
+                .ToList();
 
             Expression<TDelegate> resolver = Expression.Lambda<TDelegate>
             (
@@ -105,17 +113,14 @@ namespace Solti.Utils.DI.Internals
             return resolver;
         }
 
-        private static Expression<TDelegate> CreateActivator<TDelegate>(ConstructorInfo constructor, object? userData, IReadOnlyList<IDependencyResolver> resolvers, params ParameterExpression[] variables) where TDelegate: Delegate
-            => CreateActivator<TDelegate>
+        private Expression<TDelegate> CreateActivator<TDelegate>(ConstructorInfo constructor, object? userData) where TDelegate: Delegate => CreateActivator<TDelegate>
+        (
+            paramz => ResolveService
             (
-                paramz => ResolveService
-                (
-                    constructor,
-                    paramz.Single(static param => param.Type == typeof(IInjector)),
-                    userData,
-                    resolvers
-                ),
-                variables
-            );
+                constructor,
+                paramz.Single(static param => param.Type == typeof(IInjector)),
+                userData
+            )
+        );
     }
 }

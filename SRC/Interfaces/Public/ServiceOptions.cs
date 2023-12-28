@@ -24,6 +24,11 @@ namespace Solti.Utils.DI.Interfaces
         public bool SupportAspects { get; set; } = true;
 
         /// <summary>
+        /// If set to true, the system tries to resolve <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-11.0/required-members">required</a> properties, too.
+        /// </summary>
+        public bool AutoInject { get; set; }
+
+        /// <summary>
         /// The proxy engine to be used. Leave blank to use the default engine.
         /// </summary>
         /// <remarks>The default value for this property is provided by the <a href="https://github.com/Sholtee/proxygen">ProxyGen.NET</a> library.</remarks>

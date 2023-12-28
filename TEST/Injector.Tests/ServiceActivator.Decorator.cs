@@ -1,5 +1,5 @@
 ﻿/********************************************************************************
-* DecoratorResolver.cs                                                          *
+* ServiceActivator.Decorator.cs                                                 *
 *                                                                               *
 * Author: Denes Solti                                                           *
 ********************************************************************************/
@@ -17,7 +17,7 @@ namespace Solti.Utils.DI.Internals.Tests
     using Interfaces;
 
     [TestFixture]
-    public class DecoratorResolverTests
+    public sealed partial class ServiceActivatorTests
     {
         private sealed class AspectExposingInvalidInterceptor : AspectAttribute
         {

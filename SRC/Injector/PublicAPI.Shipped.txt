@@ -12,9 +12,6 @@ Solti.Utils.DI.Diagnostics.IScopeFactoryDiagnosticsExtensions
 Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>
 Solti.Utils.DI.Internals.InterceptorAggregator<TInterface, TTarget>.InterceptorAggregator(TTarget! target, params Solti.Utils.DI.Interfaces.IInterfaceInterceptor![]! interceptors) -> void
 Solti.Utils.DI.Internals.ProducibleServiceEntry
-Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type! type, object? key, System.Linq.Expressions.Expression<Solti.Utils.DI.Interfaces.FactoryDelegate!>! factory, Solti.Utils.DI.Interfaces.ServiceOptions! options) -> void
-Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type! type, object? key, System.Type! implementation, object! explicitArgs, Solti.Utils.DI.Interfaces.ServiceOptions! options) -> void
-Solti.Utils.DI.Internals.ProducibleServiceEntry.ProducibleServiceEntry(System.Type! type, object? key, System.Type! implementation, Solti.Utils.DI.Interfaces.ServiceOptions! options) -> void
 Solti.Utils.DI.IServiceCollectionAdvancedExtensions
 Solti.Utils.DI.Lifetime
 Solti.Utils.DI.Lifetime.Lifetime(int precedence) -> void
