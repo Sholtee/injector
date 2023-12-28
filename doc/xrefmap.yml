@@ -2760,6 +2760,18 @@ references:
   commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.{Clone}$
   fullName: Solti.Utils.DI.Interfaces.ServiceOptions.<Clone>$
   nameWithType: ServiceOptions.<Clone>$
+- uid: Solti.Utils.DI.Interfaces.ServiceOptions.AutoInject
+  name: AutoInject
+  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_AutoInject
+  commentId: P:Solti.Utils.DI.Interfaces.ServiceOptions.AutoInject
+  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.AutoInject
+  nameWithType: ServiceOptions.AutoInject
+- uid: Solti.Utils.DI.Interfaces.ServiceOptions.AutoInject*
+  name: AutoInject
+  href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_AutoInject_
+  commentId: Overload:Solti.Utils.DI.Interfaces.ServiceOptions.AutoInject
+  fullName: Solti.Utils.DI.Interfaces.ServiceOptions.AutoInject
+  nameWithType: ServiceOptions.AutoInject
 - uid: Solti.Utils.DI.Interfaces.ServiceOptions.Default
   name: Default
   href: Solti.Utils.DI.Interfaces.ServiceOptions.html#Solti_Utils_DI_Interfaces_ServiceOptions_Default
