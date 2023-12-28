@@ -246,6 +246,24 @@ namespace Solti.Utils.DI.Tests
         public interface IInterface_2_Disaposable : IInterface_2, IDisposable
         {
         }
+
+        public sealed class ServiceHavingKeyedDependency : IInterface_7<IInterface_1>
+        {
+            public ServiceHavingKeyedDependency([Options(Key = "cica")] IInterface_1 dep) =>
+                Dependency = dep;
+
+            public IInterface_1 Dependency { get; }
+        }
+
+        public class ServiceHavingMultipleKeyedDependency
+        {
+            public ServiceHavingMultipleKeyedDependency([Options(Key = 1986)] IInterface_1 dep) => Dependency_1 = dep;
+
+            public IInterface_1 Dependency_1 { get; }
+
+            [Inject, Options(Key = 1990)]
+            public IDisposable Dependency_2 { get; set; }
+        }
         #endregion
 
         public IScopeFactory Root { get; set; }

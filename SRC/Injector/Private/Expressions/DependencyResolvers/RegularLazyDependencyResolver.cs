@@ -21,11 +21,11 @@ namespace Solti.Utils.DI.Internals
 
         public virtual object Id { get; } = nameof(RegularLazyDependencyResolver);
 
-        private static Lazy<TService> CreateLazyImpl<TService>(IInjector injector, string? name) =>
-            new(() => (TService) injector.Get(typeof(TService), name));
+        private static Lazy<TService> CreateLazyImpl<TService>(IInjector injector, object? key) =>
+            new(() => (TService) injector.Get(typeof(TService), key));
 
-        private static Lazy<TService> CreateLazyOptImpl<TService>(IInjector injector, string? name) =>
-            new(() => (TService) injector.TryGet(typeof(TService), name)!);
+        private static Lazy<TService> CreateLazyOptImpl<TService>(IInjector injector, object? key) =>
+            new(() => (TService) injector.TryGet(typeof(TService), key)!);
 
         internal Expression ResolveLazyService(ParameterExpression injector, Type type, OptionsAttribute? options)
         {
@@ -35,7 +35,7 @@ namespace Solti.Utils.DI.Internals
             //
 
             /*
-            Type delegateType = typeof(Func<>).MakeGenericType(iface);
+            Type delegateType = typeof(Func<>).MakeGenericType(type);
 
             //
             // () => (type) injector.[Try]Get(type, key)
@@ -73,7 +73,7 @@ namespace Solti.Utils.DI.Internals
             (
                 createLazy.MakeGenericMethod(type),
                 injector,
-                Expression.Constant(options?.Key, typeof(string))
+                Expression.Constant(options?.Key, typeof(object))
             );
         }
 

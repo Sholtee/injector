@@ -772,5 +772,27 @@ namespace Solti.Utils.DI.Tests
             Assert.AreNotSame(mockInjector.Object.Get<IInterface_1>(), mockInjector.Object.Get<IInterface_1>());
             mockInjector.Verify(i => i.CreateInstance(coll.Find<IInterface_1>()), Times.Exactly(disposable ? 2 : 1));
         }
+
+        [Test]
+        public void Injector_Get_ShouldResolveKeyedDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode)
+        {
+            Root = ScopeFactory.Create
+            (
+                svcs => svcs
+                    .Service<IInterface_1, Implementation_1_No_Dep>(1986, lifetime1)
+                    .Service<IDisposable, Disposable>(1990, new { supportFinalizer = false }, lifetime2)
+                    .Service<ServiceHavingMultipleKeyedDependency>("cica", Lifetime.Transient),
+                new ScopeOptions { ServiceResolutionMode = resolutionMode }
+            );
+
+            using (IInjector injector = Root.CreateScope())
+            {
+                var svc = injector.Get<ServiceHavingMultipleKeyedDependency>("cica");
+
+                Assert.That(svc, Is.Not.Null);
+                Assert.That(svc.Dependency_1, Is.InstanceOf<Implementation_1_No_Dep>());
+                Assert.That(svc.Dependency_2, Is.InstanceOf<Disposable>());
+            }
+        }
     }
 }

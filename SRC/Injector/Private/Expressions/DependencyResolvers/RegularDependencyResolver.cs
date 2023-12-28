@@ -33,7 +33,7 @@ namespace Solti.Utils.DI.Internals
                         injector,
                         dependency.Options?.Optional is true ? FInjectorTryGet : FInjectorGet,
                         Expression.Constant(dependency.Type),
-                        Expression.Constant(dependency.Options?.Key, typeof(string))
+                        Expression.Constant(dependency.Options?.Key, typeof(object))
                     ),
                     dependency.Type
                 );

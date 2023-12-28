@@ -70,22 +70,14 @@ namespace Solti.Utils.DI.Tests
             }
         }
 
-        private sealed class MyServiceUsingNamedDependency : IInterface_7<IInterface_1>
-        {
-            public MyServiceUsingNamedDependency([Options(Key = "cica")] IInterface_1 dep) =>
-                Dependency = dep;
-
-            public IInterface_1 Dependency { get; }
-        }
-
         [Test]
-        public void ServiceProvider_GetService_ShouldResolveNamedDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
+        public void ServiceProvider_GetService_ShouldResolveKeyedDependencies([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2, [ValueSource(nameof(ResolutionModes))] ServiceResolutionMode resolutionMode) 
         {
             Root = ScopeFactory.Create
             (
                 svcs => svcs
                     .Service<IInterface_1, Implementation_1_No_Dep>("cica", lifetime1)
-                    .Service<IInterface_7<IInterface_1>, MyServiceUsingNamedDependency>(lifetime2),
+                    .Service<IInterface_7<IInterface_1>, ServiceHavingKeyedDependency>(lifetime2),
                 new ScopeOptions { SupportsServiceProvider = true, ServiceResolutionMode = resolutionMode }
             );
 

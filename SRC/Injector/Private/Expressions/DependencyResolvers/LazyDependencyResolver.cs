@@ -18,30 +18,32 @@ namespace Solti.Utils.DI.Internals
 
         protected override MethodInfo CreateLazyOpt { get; } = MethodInfoExtractor.Extract(static () => CreateLazyOptImpl<object>(null!, null)).GetGenericMethodDefinition();
 
+        private sealed record LazyContext(IInjector Injector, object? Key);
+
         private static class Factories<TService>
         {
             //
             // Converting methods to delegates may take a while, so do it only once
             //
 
-            public static readonly Func<(IInjector Injector, string? Name), TService> Factory =
-                static ctx => (TService) ctx.Injector.Get(typeof(TService), ctx.Name);
-            public static readonly Func<(IInjector Injector, string? Name), TService> FactoryOpt =
-                static ctx => (TService) ctx.Injector.TryGet(typeof(TService), ctx.Name)!;
+            public static readonly Func<LazyContext, TService> Factory =
+                static ctx => (TService) ctx.Injector.Get(typeof(TService), ctx.Key);
+            public static readonly Func<LazyContext, TService> FactoryOpt =
+                static ctx => (TService) ctx.Injector.TryGet(typeof(TService), ctx.Key)!;
         }
 
-        private static ILazy<TService> CreateLazyImpl<TService>(IInjector injector, string? name) =>
-            new LazyHavingContext<TService, (IInjector, string?)>
+        private static ILazy<TService> CreateLazyImpl<TService>(IInjector injector, object? key) =>
+            new LazyHavingContext<TService, LazyContext>
             (
                 Factories<TService>.Factory,
-                (injector, name)
+                new LazyContext(injector, key)
             );
 
-        private static ILazy<TService> CreateLazyOptImpl<TService>(IInjector injector, string? name) =>
-            new LazyHavingContext<TService, (IInjector, string?)>
+        private static ILazy<TService> CreateLazyOptImpl<TService>(IInjector injector, object? key) =>
+            new LazyHavingContext<TService, LazyContext>
             (
                 Factories<TService>.FactoryOpt,
-                (injector, name)
+                new LazyContext(injector, key)
             );
 
         public override object Id { get; } = nameof(LazyDependencyResolver);
