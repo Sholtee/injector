@@ -295,3 +295,9 @@
   - *introduced:* `ServiceId` class
   - *fixed:* Unexpected `ArgumentException` on service errors under .NET Framework
   - *updated:* ProxyGen.NET to v9
+- 10.1.0:
+  - *fixed:* Service resolution issue when the `key` type was other than `string` or `null`
+  - *fixed:* Validate service implementations properly
+  - *introduced:* Some new `IServiceCollectionBasicExtensions.Service()` overloads
+  - *introduced:* `ScopeLocal` support
+  - *introduced:* `required` property support (disabled by default)
