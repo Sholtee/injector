@@ -41,8 +41,8 @@
 BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5576/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK 8.0.300
-  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
 
 </code></pre><table>
 <thead>
@@ -51,29 +51,33 @@ Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 <th style="text-align:right">Mean</th>
 <th style="text-align:right">Error</th>
 <th style="text-align:right">StdDev</th>
+<th style="text-align:right">Median</th>
 <th style="text-align:right">Allocated</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>GetGuid</td>
-<td style="text-align:right">1,456.732 ns</td>
-<td style="text-align:right">17.1268 ns</td>
-<td style="text-align:right">16.0204 ns</td>
+<td style="text-align:right">1,466.3224 ns</td>
+<td style="text-align:right">29.0461 ns</td>
+<td style="text-align:right">33.4495 ns</td>
+<td style="text-align:right">1,473.0846 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>GetHandle</td>
-<td style="text-align:right">1.690 ns</td>
-<td style="text-align:right">0.0768 ns</td>
-<td style="text-align:right">0.0885 ns</td>
+<td style="text-align:right">0.0298 ns</td>
+<td style="text-align:right">0.0388 ns</td>
+<td style="text-align:right">0.0381 ns</td>
+<td style="text-align:right">0.0166 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 <tr>
 <td>IsAssignableFrom</td>
-<td style="text-align:right">16.756 ns</td>
-<td style="text-align:right">0.2522 ns</td>
-<td style="text-align:right">0.2235 ns</td>
+<td style="text-align:right">12.8220 ns</td>
+<td style="text-align:right">0.2508 ns</td>
+<td style="text-align:right">0.2346 ns</td>
+<td style="text-align:right">12.8128 ns</td>
 <td style="text-align:right">-</td>
 </tr>
 </tbody>

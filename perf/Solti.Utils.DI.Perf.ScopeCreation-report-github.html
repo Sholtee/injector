@@ -41,8 +41,8 @@
 BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5576/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK 8.0.300
-  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
-  Job-LMKJLM : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+  Job-QKLUOY : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
 
 InvocationCount=2000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -61,18 +61,18 @@ InvocationCount=2000000  RunStrategy=Throughput
 <tr>
 <td><strong>CreateAndDisposeScope</strong></td>
 <td><strong>JIT</strong></td>
-<td style="text-align:right"><strong>34.78 ns</strong></td>
-<td style="text-align:right"><strong>0.706 ns</strong></td>
-<td style="text-align:right"><strong>0.693 ns</strong></td>
+<td style="text-align:right"><strong>31.19 ns</strong></td>
+<td style="text-align:right"><strong>0.657 ns</strong></td>
+<td style="text-align:right"><strong>0.675 ns</strong></td>
 <td style="text-align:right"><strong>0.0050</strong></td>
 <td style="text-align:right"><strong>96 B</strong></td>
 </tr>
 <tr>
 <td><strong>CreateAndDisposeScope</strong></td>
 <td><strong>AOT</strong></td>
-<td style="text-align:right"><strong>44.63 ns</strong></td>
-<td style="text-align:right"><strong>0.915 ns</strong></td>
-<td style="text-align:right"><strong>1.222 ns</strong></td>
+<td style="text-align:right"><strong>41.42 ns</strong></td>
+<td style="text-align:right"><strong>0.870 ns</strong></td>
+<td style="text-align:right"><strong>0.967 ns</strong></td>
 <td style="text-align:right"><strong>0.0085</strong></td>
 <td style="text-align:right"><strong>160 B</strong></td>
 </tr>

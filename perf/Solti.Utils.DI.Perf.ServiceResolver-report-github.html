@@ -41,8 +41,8 @@
 BenchmarkDotNet v0.13.12, Windows 10 (10.0.17763.5576/1809/October2018Update/Redstone5) (Hyper-V)
 Intel Xeon CPU E5-2697 v3 2.60GHz, 1 CPU, 2 logical cores and 1 physical core
 .NET SDK 8.0.300
-  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
-  Job-IXRXQM : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+  Job-HREMZH : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
 
 InvocationCount=10000000  RunStrategy=Throughput  
 </code></pre><table>
@@ -63,9 +63,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>1</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>29.75 ns</strong></td>
-<td style="text-align:right"><strong>0.672 ns</strong></td>
-<td style="text-align:right"><strong>0.719 ns</strong></td>
+<td style="text-align:right"><strong>22.56 ns</strong></td>
+<td style="text-align:right"><strong>0.501 ns</strong></td>
+<td style="text-align:right"><strong>0.444 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -73,9 +73,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>1</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>53.23 ns</strong></td>
-<td style="text-align:right"><strong>0.977 ns</strong></td>
-<td style="text-align:right"><strong>1.463 ns</strong></td>
+<td style="text-align:right"><strong>41.40 ns</strong></td>
+<td style="text-align:right"><strong>0.868 ns</strong></td>
+<td style="text-align:right"><strong>0.770 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -83,9 +83,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>2</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>31.45 ns</strong></td>
-<td style="text-align:right"><strong>0.600 ns</strong></td>
-<td style="text-align:right"><strong>0.532 ns</strong></td>
+<td style="text-align:right"><strong>23.84 ns</strong></td>
+<td style="text-align:right"><strong>0.553 ns</strong></td>
+<td style="text-align:right"><strong>0.757 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -93,9 +93,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>2</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>53.75 ns</strong></td>
-<td style="text-align:right"><strong>1.091 ns</strong></td>
-<td style="text-align:right"><strong>1.167 ns</strong></td>
+<td style="text-align:right"><strong>43.84 ns</strong></td>
+<td style="text-align:right"><strong>0.648 ns</strong></td>
+<td style="text-align:right"><strong>0.574 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -103,9 +103,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>5</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>32.24 ns</strong></td>
-<td style="text-align:right"><strong>0.723 ns</strong></td>
-<td style="text-align:right"><strong>1.662 ns</strong></td>
+<td style="text-align:right"><strong>24.95 ns</strong></td>
+<td style="text-align:right"><strong>0.572 ns</strong></td>
+<td style="text-align:right"><strong>0.839 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -113,9 +113,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>5</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>54.21 ns</strong></td>
-<td style="text-align:right"><strong>1.120 ns</strong></td>
-<td style="text-align:right"><strong>1.290 ns</strong></td>
+<td style="text-align:right"><strong>42.70 ns</strong></td>
+<td style="text-align:right"><strong>0.925 ns</strong></td>
+<td style="text-align:right"><strong>0.865 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -123,9 +123,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>10</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>30.91 ns</strong></td>
-<td style="text-align:right"><strong>0.687 ns</strong></td>
-<td style="text-align:right"><strong>0.985 ns</strong></td>
+<td style="text-align:right"><strong>24.23 ns</strong></td>
+<td style="text-align:right"><strong>0.553 ns</strong></td>
+<td style="text-align:right"><strong>0.517 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -133,9 +133,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>10</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>58.22 ns</strong></td>
-<td style="text-align:right"><strong>1.222 ns</strong></td>
-<td style="text-align:right"><strong>1.713 ns</strong></td>
+<td style="text-align:right"><strong>42.50 ns</strong></td>
+<td style="text-align:right"><strong>0.891 ns</strong></td>
+<td style="text-align:right"><strong>0.915 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -143,9 +143,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>20</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>34.10 ns</strong></td>
-<td style="text-align:right"><strong>0.750 ns</strong></td>
-<td style="text-align:right"><strong>1.293 ns</strong></td>
+<td style="text-align:right"><strong>26.16 ns</strong></td>
+<td style="text-align:right"><strong>0.596 ns</strong></td>
+<td style="text-align:right"><strong>0.709 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -153,9 +153,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>20</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>63.37 ns</strong></td>
-<td style="text-align:right"><strong>1.296 ns</strong></td>
-<td style="text-align:right"><strong>1.686 ns</strong></td>
+<td style="text-align:right"><strong>47.31 ns</strong></td>
+<td style="text-align:right"><strong>0.992 ns</strong></td>
+<td style="text-align:right"><strong>1.103 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -163,9 +163,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>50</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>35.44 ns</strong></td>
-<td style="text-align:right"><strong>0.775 ns</strong></td>
-<td style="text-align:right"><strong>0.725 ns</strong></td>
+<td style="text-align:right"><strong>29.23 ns</strong></td>
+<td style="text-align:right"><strong>0.621 ns</strong></td>
+<td style="text-align:right"><strong>0.638 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -173,9 +173,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>50</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>60.70 ns</strong></td>
-<td style="text-align:right"><strong>1.285 ns</strong></td>
-<td style="text-align:right"><strong>1.962 ns</strong></td>
+<td style="text-align:right"><strong>50.64 ns</strong></td>
+<td style="text-align:right"><strong>1.080 ns</strong></td>
+<td style="text-align:right"><strong>1.478 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
@@ -183,9 +183,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>80</strong></td>
 <td><strong>?</strong></td>
-<td style="text-align:right"><strong>35.04 ns</strong></td>
-<td style="text-align:right"><strong>0.760 ns</strong></td>
-<td style="text-align:right"><strong>1.040 ns</strong></td>
+<td style="text-align:right"><strong>28.77 ns</strong></td>
+<td style="text-align:right"><strong>0.417 ns</strong></td>
+<td style="text-align:right"><strong>0.369 ns</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 <td style="text-align:right"><strong>-</strong></td>
 </tr>
@@ -193,9 +193,9 @@ InvocationCount=10000000  RunStrategy=Throughput
 <td><strong>Resolve</strong></td>
 <td><strong>80</strong></td>
 <td><strong>name</strong></td>
-<td style="text-align:right"><strong>60.57 ns</strong></td>
-<td style="text-align:right"><strong>1.264 ns</strong></td>
-<td style="text-align:right"><strong>1.599 ns</strong></td>
+<td style="text-align:right"><strong>49.54 ns</strong></td>
+<td style="text-align:right"><strong>1.065 ns</strong></td>
+<td style="text-align:right"><strong>1.494 ns</strong></td>
 <td style="text-align:right"><strong>0.0017</strong></td>
 <td style="text-align:right"><strong>32 B</strong></td>
 </tr>
