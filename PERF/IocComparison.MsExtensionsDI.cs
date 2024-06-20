@@ -54,7 +54,7 @@ namespace Solti.Utils.DI.Perf
                 return this;
             }
 
-            public override string ToString() => nameof(MsExtensionsDI);
+            public override string ToString() => GetComponentName(typeof(ServiceProvider));
         }
     }
 }

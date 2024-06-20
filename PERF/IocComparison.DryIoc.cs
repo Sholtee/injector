@@ -52,7 +52,7 @@ namespace Solti.Utils.DI.Perf
                 return this;
             }
 
-            public override string ToString() => nameof(DryIoc);
+            public override string ToString() => GetComponentName(typeof(Container));
         }
     }
 }

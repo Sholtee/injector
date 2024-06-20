@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
@@ -18,6 +19,12 @@ namespace Solti.Utils.DI.Perf
     [SimpleJob(RunStrategy.Throughput, invocationCount: 100000)]
     public partial class IocComparison
     {
+        private static string GetComponentName(Type t)
+        {
+            AssemblyName asmName = t.Assembly.GetName();
+            return $"{asmName.Name} {asmName.Version}";
+        }
+
         #region Services
         public interface IDependency
         {

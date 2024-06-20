@@ -63,7 +63,7 @@ namespace Solti.Utils.DI.Perf
                 return this;
             }
 
-            public override string ToString() => nameof(Lamar);
+            public override string ToString() => GetComponentName(typeof(Container));
         }
     }
 }

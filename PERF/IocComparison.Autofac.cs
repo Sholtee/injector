@@ -55,7 +55,7 @@ namespace Solti.Utils.DI.Perf
                 return this;
             }
 
-            public override string ToString() => nameof(Autofac);
+            public override string ToString() => GetComponentName(typeof(ContainerBuilder));
         }
     }
 }
