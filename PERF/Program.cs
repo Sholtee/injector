@@ -4,6 +4,7 @@
 * Author: Denes Solti                                                           *
 ********************************************************************************/
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 
 namespace Solti.Utils.DI.Perf
@@ -12,9 +13,11 @@ namespace Solti.Utils.DI.Perf
     {
         static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run
         (
-            args
+            args,
 #if DEBUG
-            , new DebugInProcessConfig()
+            new DebugInProcessConfig()
+#else
+            DefaultConfig.Instance.WithSummaryStyle(SummaryStyle.Default.WithMaxParameterColumnWidth(100))
 #endif
         );
     }
