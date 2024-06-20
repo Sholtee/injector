@@ -18,13 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="7.*" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.*" />
+    <PackageReference Include="Autofac" Version="8.*" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.*" />
     <PackageReference Include="BenchmarkDotNet" Version="0.*" />
 	<PackageReference Include="DryIoc.dll " Version="5.*" />
-    <PackageReference Include="Lamar" Version="12.*" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.*" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.*" />
+    <PackageReference Include="Lamar" Version="13.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.*" />
     <PackageReference Include="Stashbox.Extensions.Dependencyinjection" Version="5.*" />
   </ItemGroup>
 
