@@ -5,7 +5,7 @@
     <RootNamespace>Solti.Utils.DI</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="..\Common\Common.targets" />
+  <Import Project="..\Common.targets" />
 
   <PropertyGroup>
     <DefineConstants>BACKWARD_COMPATIBILITY</DefineConstants>

@@ -5,13 +5,13 @@
     <RootNamespace>Solti.Utils.DI.Interfaces</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="..\Common\Common.targets" />
+  <Import Project="..\Common.targets" />
 
   <ItemGroup>
-    <Compile Include="..\Common\IsExternalInit.cs" Link="Private\IsExternalInit.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="IsExternalInit" Version="1.0.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Solti.Utils.Primitives" Version="8.*" />
   </ItemGroup>
 
