@@ -8,10 +8,6 @@
   <Import Project="..\Common.targets" />
 
   <ItemGroup>
-    <PackageReference Include="IsExternalInit" Version="1.0.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Solti.Utils.Primitives" Version="8.*" />
   </ItemGroup>
 

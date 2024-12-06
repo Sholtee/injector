@@ -159,20 +159,13 @@ namespace Solti.Utils.DI.Internals
             ServiceOptions suppressDispose = ServiceOptions.Default with { DisposalMode = ServiceDisposalMode.Suppress };
 
             return services
-                .Factory(typeof(IInjector), factoryExpr: static (i, _) => i, Lifetime.Scoped, suppressDispose)
-                .Factory(typeof(IServiceActivator), factoryExpr: static (i, _) => i, Lifetime.Scoped, suppressDispose)
-                .Factory(typeof(IScopeFactory), factoryExpr: static (i, _) => i, Lifetime.Singleton, suppressDispose) // create SF from the root only
-                .Factory(typeof(IServiceResolver), factoryExpr: static (i, _) => ((Injector) i).FServiceResolver, Lifetime.Singleton, suppressDispose)
+                .Factory(typeof(IInjector), static (i, _) => i, Lifetime.Scoped, suppressDispose)
+                .Factory(typeof(IServiceActivator), static (i, _) => i, Lifetime.Scoped, suppressDispose)
+                .Factory(typeof(IScopeFactory), static (i, _) => i, Lifetime.Singleton, suppressDispose) // create SF from the root only
+                .Factory(typeof(IServiceResolver), static (i, _) => ((Injector) i).FServiceResolver, Lifetime.Singleton, suppressDispose)
                 .Service(typeof(IEnumerable<>), typeof(ServiceEnumerator<>), Lifetime.Scoped)
 #if DEBUG
-                .Factory
-                (
-                    type: typeof(IReadOnlyCollection<object>),
-                    key: "captured_disposables",
-                    factoryExpr: static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables,
-                    lifetime: Lifetime.Scoped,
-                    options: suppressDispose
-                )
+                .Factory(typeof(IReadOnlyCollection<object>), "captured_disposables", static (i, _) => ((Injector) i).DisposableStore.CapturedDisposables, Lifetime.Scoped, suppressDispose)
 #endif
                 ;
         }

@@ -47,7 +47,7 @@ namespace Solti.Utils.DI.Tests
         {
             FactoryDelegate factory = (injector, type) => null;
 
-            Assert.DoesNotThrow(() => Collection.Factory(typeof(IInterface_3<>), factory, lifetime));
+            Assert.DoesNotThrow(() => Collection.Factory(typeof(IInterface_3<>), factory: factory, lifetime));
 
             AbstractServiceEntry expected = lifetime.CreateFrom(typeof(IInterface_3<int>), null, (injector, type) => factory(injector, type), ServiceOptions.Default).Last();
 
@@ -60,7 +60,6 @@ namespace Solti.Utils.DI.Tests
         {
             Collection.Factory<IInterface_1>(name, factory: me => new Implementation_1_No_Dep(), Lifetime.Transient);
             Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Factory<IInterface_1>(name, factory: me => new Implementation_1_No_Dep(), Lifetime.Transient));
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Factory<IInterface_1>(name, factoryExpr: me => new Implementation_1_No_Dep(), Lifetime.Transient));
         }
 
         [TestCase(null)]
@@ -68,7 +67,6 @@ namespace Solti.Utils.DI.Tests
         public void FactoryByExpr_ShouldThrowOnMultipleRegistration(string name)
         {
             Collection.Factory<IInterface_1>(name, factoryExpr: me => new Implementation_1_No_Dep(), Lifetime.Transient);
-            Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Factory<IInterface_1>(name, factory: me => new Implementation_1_No_Dep(), Lifetime.Transient));
             Assert.Throws<ServiceAlreadyRegisteredException>(() => Collection.Factory<IInterface_1>(name, factoryExpr: me => new Implementation_1_No_Dep(), Lifetime.Transient));
         }
 

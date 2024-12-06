@@ -83,7 +83,7 @@ namespace Solti.Utils.DI.Internals.Tests
         {
             AbstractServiceEntry dependant = svcs.Last();
 
-            svcs = svcs.Factory<IList>(factoryExpr: _ => new List<object>(), lifetime);
+            svcs = svcs.Factory<IList>(_ => new List<object>(), lifetime);
 
             AbstractServiceEntry dependency = svcs.Last();
 
@@ -318,7 +318,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_FactoryExt([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory<IMyService>(factoryExpr: injector => new MyService(injector.Get<IList>(null)), Lifetime.Scoped);
+                .Factory<IMyService>(injector => new MyService(injector.Get<IList>(null)), Lifetime.Scoped);
 
             DoTest(svcs, resolutionMode, lifetime, optional: false);
         }
@@ -327,7 +327,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_OptionalFactoryExt([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory<IMyService>(factoryExpr: injector => new MyService_OptionalDep(injector.TryGet<IList>(null)), Lifetime.Scoped);
+                .Factory<IMyService>(injector => new MyService_OptionalDep(injector.TryGet<IList>(null)), Lifetime.Scoped);
 
             DoTest(svcs, resolutionMode, lifetime, optional: true);
         }
@@ -336,7 +336,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_Factory([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory(typeof(IMyService), factoryExpr: (injector, _) => new MyService((IList) injector.Get(typeof(IList), null)), Lifetime.Scoped);
+                .Factory(typeof(IMyService), (injector, _) => new MyService((IList) injector.Get(typeof(IList), null)), Lifetime.Scoped);
 
             DoTest(svcs, resolutionMode, lifetime, optional: false);
         }
@@ -345,7 +345,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_OptionalFactory([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory(typeof(IMyService), factoryExpr: (injector, _) => new MyService_OptionalDep((IList) injector.TryGet(typeof(IList), null)), Lifetime.Scoped);
+                .Factory(typeof(IMyService), (injector, _) => new MyService_OptionalDep((IList) injector.TryGet(typeof(IList), null)), Lifetime.Scoped);
 
             DoTest(svcs, resolutionMode, lifetime, optional: true);
         }
@@ -354,7 +354,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_FactoryExt_MissingDep([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory<IMyService>(factoryExpr: injector => new MyService_OptionalDep(injector.TryGet<IList>(null)), Lifetime.Scoped);
+                .Factory<IMyService>(injector => new MyService_OptionalDep(injector.TryGet<IList>(null)), Lifetime.Scoped);
 
             DoMissingDepTest(svcs, resolutionMode, lifetime);
         }
@@ -363,7 +363,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_Factory_MissingDep([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory(typeof(IMyService), factoryExpr: (injector, _) => new MyService_OptionalDep((IList) injector.TryGet(typeof(IList), null)), Lifetime.Scoped);
+                .Factory(typeof(IMyService), (injector, _) => new MyService_OptionalDep((IList) injector.TryGet(typeof(IList), null)), Lifetime.Scoped);
 
             DoMissingDepTest(svcs, resolutionMode, lifetime);
         }
@@ -408,7 +408,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_FactoryExt_Generic([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory<IMyService>(factoryExpr: injector => new MyService_GenericDep(injector.Get<IList<int>>(null)), Lifetime.Scoped);
+                .Factory<IMyService>(injector => new MyService_GenericDep(injector.Get<IList<int>>(null)), Lifetime.Scoped);
 
             DoGenericTest(svcs, resolutionMode, lifetime);
         }
@@ -417,7 +417,7 @@ namespace Solti.Utils.DI.Internals.Tests
         public void Builder_MayModifyInjectorInvocations_Factory_Generic([Values(ServiceResolutionMode.JIT, ServiceResolutionMode.AOT)] ServiceResolutionMode resolutionMode, [ValueSource(nameof(Lifetimes))] Lifetime lifetime)
         {
             IServiceCollection svcs = new ServiceCollection()
-                .Factory(typeof(IMyService), factoryExpr: (injector, _) => new MyService_GenericDep((IList<int>) injector.Get(typeof(IList<int>), null)), Lifetime.Scoped);
+                .Factory(typeof(IMyService), (injector, _) => new MyService_GenericDep((IList<int>) injector.Get(typeof(IList<int>), null)), Lifetime.Scoped);
 
             DoGenericTest(svcs, resolutionMode, lifetime);
         }

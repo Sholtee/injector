@@ -5,6 +5,7 @@
 ********************************************************************************/
 using System;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Solti.Utils.DI.Interfaces
 {
@@ -27,6 +28,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         /// <remarks>You can register generic services (where the <paramref name="type"/> parameter is an open generic type).</remarks>
+        [OverloadResolutionPriority(1)]
         public static IServiceCollection Factory(this IServiceCollection self, Type type, object? key, Expression<FactoryDelegate> factoryExpr, LifetimeBase lifetime, ServiceOptions? options = null)
         {
             if (self is null)
@@ -75,7 +77,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </remarks>
         public static IServiceCollection Factory(this IServiceCollection self, Type type, object? key, FactoryDelegate factory, LifetimeBase lifetime, ServiceOptions? options = null)
             => factory is not null
-                ? self.Factory(type, key, factoryExpr: (scope, type) => factory(scope, type), lifetime, options)
+                ? self.Factory(type, key, (scope, type) => factory(scope, type), lifetime, options)
                 : throw new ArgumentNullException(nameof(factory));
 
         /// <summary>
@@ -94,6 +96,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
         /// <remarks>You can register generic services (where the <paramref name="type"/> parameter is an open generic type).</remarks>
+        [OverloadResolutionPriority(1)]
         public static IServiceCollection Factory(this IServiceCollection self, Type type, Expression<FactoryDelegate> factoryExpr, LifetimeBase lifetime, ServiceOptions? options = null) 
             => self.Factory(type, null, factoryExpr, lifetime, options);
 
@@ -137,6 +140,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factoryExpr">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
+        [OverloadResolutionPriority(1)]
         public static IServiceCollection Factory<TType>(this IServiceCollection self, object? key, Expression<FactoryDelegate<TType>> factoryExpr, LifetimeBase lifetime, ServiceOptions? options = null) where TType : class
             => self.Factory(typeof(TType), key, WrapToStandardDelegate(factoryExpr), lifetime, options);
 
@@ -164,7 +168,7 @@ namespace Solti.Utils.DI.Interfaces
         /// </remarks>
         public static IServiceCollection Factory<TType>(this IServiceCollection self, object? key, FactoryDelegate<TType> factory, LifetimeBase lifetime, ServiceOptions? options = null) where TType : class
             => factory is not null
-                ? self.Factory(key, factoryExpr: scope => factory(scope), lifetime, options)
+                ? self.Factory(key, scope => factory(scope), lifetime, options)
                 : throw new ArgumentNullException(nameof(factory));
 
         /// <summary>
@@ -182,6 +186,7 @@ namespace Solti.Utils.DI.Interfaces
         /// <param name="factoryExpr">The factory function that is responsible for the instantiation. Its call count depends on the value of the <paramref name="lifetime"/> parameter.</param>
         /// <param name="lifetime">The lifetime of service.</param>
         /// <param name="options">Options to be assigned to the service being registered.</param>
+        [OverloadResolutionPriority(1)]
         public static IServiceCollection Factory<TType>(this IServiceCollection self, Expression<FactoryDelegate<TType>> factoryExpr, LifetimeBase lifetime, ServiceOptions? options = null) where TType : class
             => self.Factory(typeof(TType), null, WrapToStandardDelegate(factoryExpr), lifetime, options);
 

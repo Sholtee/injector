@@ -77,8 +77,8 @@ namespace Solti.Utils.DI.Tests
         public void Injector_CreateUsingFactory_ShouldThrowOnCircularReference([ValueSource(nameof(Lifetimes))] Lifetime lifetime1, [ValueSource(nameof(Lifetimes))] Lifetime lifetime2) => Assert.Throws<CircularReferenceException>(() => ScopeFactory.Create
         (
             svcs => svcs
-                .Factory<IInterface_4>(factoryExpr: injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
-                .Factory<IInterface_5>(factoryExpr: injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
+                .Factory<IInterface_4>(injector => new Implementation_4_CDep(injector.Get<IInterface_5>(null)), lifetime1)
+                .Factory<IInterface_5>(injector => new Implementation_5_CDep(injector.Get<IInterface_4>(null)), lifetime2),
             new ScopeOptions { ServiceResolutionMode = ServiceResolutionMode.AOT }
         ), string.Join(" -> ", typeof(IInterface_4), typeof(IInterface_5), typeof(IInterface_4)));
 

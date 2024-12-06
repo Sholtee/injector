@@ -35,17 +35,10 @@ namespace Solti.Utils.DI
 
             return self
                 .Service<ScopeLocal>(localKey, Lifetime.Scoped)
-                .Factory
-                (
-                    type,
-                    key,
-                    factoryExpr: (scope, _) => scope.Get<ScopeLocal>(localKey).Value,
-                    Lifetime.Scoped,
-                    ServiceOptions.Default with
-                    {
-                        DisposalMode = ServiceDisposalMode.Suppress
-                    }
-                );
+                .Factory(type, key, (scope, _) => scope.Get<ScopeLocal>(localKey).Value, Lifetime.Scoped, ServiceOptions.Default with
+                {
+                    DisposalMode = ServiceDisposalMode.Suppress
+                });
         }
 
         /// <summary>
